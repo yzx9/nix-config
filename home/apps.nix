@@ -27,9 +27,10 @@
 
     # dev
     cmake
+    cargo
+    rustc
     go
     python312
-    rustup
     nodejs
     corepack
     vcpkg
@@ -50,6 +51,22 @@
     gopass
     inkscape    # SVG design
   ];
+
+  programs.gpg = {
+    enable = true;
+    settings = {
+      keyid-format = "0xlong";
+      with-fingerprint = true;
+    };
+  };
+
+  programs.git = {
+    enable = true;
+    signing = {
+      key = "0xC2DD1916FE471BE2";
+      signByDefault = true;
+    };
+  };
 
 #   programs.vscode = {
 #     enable = true;

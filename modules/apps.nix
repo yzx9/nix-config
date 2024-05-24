@@ -46,6 +46,7 @@
       "maccy"
       "sfm"
       "logitech-options"
+      "firefox"
       "microsoft-edge"
       "zotero"
       "master-pdf-editor"
@@ -57,12 +58,14 @@
       "visual-studio-code"
       "docker"      # nixpkgs docker is breaked, see: https://github.com/LnL7/nix-darwin/issues/112
       "fiji"
+
       # design
       "blender"
       "preform"
       "ideamaker"
       "inkscape"
       "krita"
+
       # ldap
       "apache-directory-studio"
       "oracle-jdk" # required by apache-directory-studio
