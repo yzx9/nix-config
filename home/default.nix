@@ -4,6 +4,7 @@
   imports = [
     ./apps.nix
     ./git.nix
+    ./gopass.nix
     ./shell.nix
   ];
 

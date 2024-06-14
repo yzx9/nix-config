@@ -26,30 +26,24 @@
     # '')
 
     # dev
-    cmake
-    cargo
-    rustc
-    go
-    python312
-    nodejs
-    corepack
-    vcpkg
-    dbeaver	# SQL client
+    devenv
+    nil
+    nixpkgs-fmt
+    dbeaver # SQL client
 
     # networking tools
-    mtr         # a network diagnostic tool
-    iperf3      # the ultimate speed test tool
-    dnsutils    # `dig` + `nslookup`
-    ldns        # replacement of `dig`, it provide the command `drill`
-    socat       # replacement of openbsd-netcat
-    nmap        # a utility for network discovery and security auditing
-    ipcalc      # it is a calculator for the IPv4/v6 addresses
+    mtr # a network diagnostic tool
+    iperf3 # the ultimate speed test tool
+    dnsutils # `dig` + `nslookup`
+    ldns # replacement of `dig`, it provide the command `drill`
+    socat # replacement of openbsd-netcat
+    nmap # a utility for network discovery and security auditing
+    ipcalc # it is a calculator for the IPv4/v6 addresses
     wireshark
 
     # misc
     neofetch
-    gopass
-    inkscape    # SVG design
+    # inkscape    # SVG design
   ];
 
   programs.gpg = {
@@ -68,9 +62,9 @@
     };
   };
 
-#   programs.vscode = {
-#     enable = true;
-#     # needed for rust lang server and rust-analyzer extension
-#     package = pkgs.vscode.fhsWithPackages (ps: with ps; [ rustup zlib openssl.dev pkg-config ]);
-#   };
+  #   programs.vscode = {
+  #     enable = true;
+  #     # needed for rust lang server and rust-analyzer extension
+  #     package = pkgs.vscode.fhsWithPackages (ps: with ps; [ rustup zlib openssl.dev pkg-config ]);
+  #   };
 }

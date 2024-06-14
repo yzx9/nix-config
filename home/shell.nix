@@ -23,5 +23,10 @@
     };
   };
 
-  home.shellAliases = {};
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  #   home.shellAliases = {};
 }

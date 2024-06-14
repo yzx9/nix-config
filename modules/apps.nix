@@ -1,4 +1,4 @@
-{ pkgs, lib, ...}: {
+{ pkgs, lib, ... }: {
 
   ##########################################################################
   # 
@@ -18,7 +18,7 @@
   #
   # Related Discussion: https://discourse.nixos.org/t/darwin-again/29331
   environment.systemPackages = with pkgs; [
-    git   # required by nix
+    git # required by nix
   ];
 
   # To make this work, homebrew need to be installed manually, see https://brew.sh
@@ -33,10 +33,10 @@
       cleanup = "zap"; # 'zap': uninstalls all formulae(and related files) not listed here.
     };
 
-    taps = [];
+    taps = [ ];
 
     # `brew install`
-    brews = [];
+    brews = [ ];
 
     # `brew install --cask`
     casks = [
@@ -44,19 +44,23 @@
       "middleclick"
       "snipaste"
       "maccy"
-      "sfm"
       "logitech-options"
+      "sfm"
       "firefox"
       "microsoft-edge"
+      "vmware-fusion"
+      "openvpn-connect"
+      "steam"
+      "raspberry-pi-imager"
+
+      # dev
+      "docker" # nixpkgs docker is breaked, see: https://github.com/LnL7/nix-darwin/issues/112
+      "visual-studio-code"
+
+      # science
       "zotero"
       "master-pdf-editor"
       "eudic"
-      "vmware-fusion"
-      "openvpn-connect"
-      "raspberry-pi-imager"
-      "steam"
-      "visual-studio-code"
-      "docker"      # nixpkgs docker is breaked, see: https://github.com/LnL7/nix-darwin/issues/112
       "fiji"
 
       # design
