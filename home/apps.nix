@@ -1,5 +1,8 @@
 { pkgs, lib, username, ... }:
 
+let
+  dbeaver = pkgs.callPackage ./dbeaver.nix { };
+in
 {
   fonts.fontconfig.enable = true;
 
@@ -16,7 +19,7 @@
     # overrides. You can do that directly here, just don't forget the
     # parentheses. Maybe you want to install Nerd Fonts with a limited number of
     # fonts?
-    (nerdfonts.override { fonts = [ "CascadiaCode" "FiraCode" ]; }) # Nerd Font patched for Powerlevel10k
+    (nerdfonts.override { fonts = [ "CascadiaCode" "FiraCode" ]; }) # Nerd Font patched
 
     # You can also create simple shell scripts directly inside your
     # configuration. For example, this adds a command 'my-hello' to your
@@ -29,6 +32,12 @@
     devenv
     nil
     nixpkgs-fmt
+    cargo
+    rustc
+    go
+    python312
+    nodejs
+    corepack
     dbeaver # SQL client
 
     # networking tools
@@ -39,10 +48,10 @@
     socat # replacement of openbsd-netcat
     nmap # a utility for network discovery and security auditing
     ipcalc # it is a calculator for the IPv4/v6 addresses
-    wireshark
 
     # misc
     neofetch
+    just
     # inkscape    # SVG design
   ];
 
@@ -62,9 +71,9 @@
     };
   };
 
-  #   programs.vscode = {
-  #     enable = true;
-  #     # needed for rust lang server and rust-analyzer extension
-  #     package = pkgs.vscode.fhsWithPackages (ps: with ps; [ rustup zlib openssl.dev pkg-config ]);
-  #   };
+  # programs.vscode = {
+  #   enable = true;
+  #   # needed for rust lang server and rust-analyzer extension
+  #   package = pkgs.vscode.fhsWithPackages (ps: with ps; [ rustup zlib openssl.dev pkg-config ]);
+  # };
 }
