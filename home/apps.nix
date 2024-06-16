@@ -1,4 +1,4 @@
-{ pkgs, lib, username, ... }:
+{ pkgs, lib, ... }:
 
 let
   dbeaver = pkgs.callPackage ./dbeaver.nix { };
@@ -7,10 +7,12 @@ in
   fonts.fontconfig.enable = true;
 
   # Allow unfree packages
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "code"
-    "vscode"
-  ];
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
+    builtins.elem (lib.getName pkg) [
+      "code"
+      "vscode"
+    ];
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
@@ -19,7 +21,12 @@ in
     # overrides. You can do that directly here, just don't forget the
     # parentheses. Maybe you want to install Nerd Fonts with a limited number of
     # fonts?
-    (nerdfonts.override { fonts = [ "CascadiaCode" "FiraCode" ]; }) # Nerd Font patched
+    (nerdfonts.override {
+      fonts = [
+        "CascadiaCode"
+        "FiraCode"
+      ];
+    })
 
     # You can also create simple shell scripts directly inside your
     # configuration. For example, this adds a command 'my-hello' to your
@@ -31,7 +38,7 @@ in
     # dev
     devenv
     nil
-    nixpkgs-fmt
+    nixfmt-rfc-style
     cargo
     rustc
     go
@@ -52,6 +59,8 @@ in
     # misc
     neofetch
     just
+    gopass
+    gopass-jsonapi # you have to run `gopass-jsonapi configure` mannually, because I dont know how to do it automatically
     # inkscape    # SVG design
   ];
 

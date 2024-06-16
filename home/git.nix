@@ -1,4 +1,9 @@
-{ username, useremail, lib, ... }:
+{
+  username,
+  useremail,
+  lib,
+  ...
+}:
 
 {
   # git
@@ -6,7 +11,7 @@
   # to make git use this config file, `~/.gitconfig` should not exist!
   #
   #    https://git-scm.com/docs/git-config#Documentation/git-config.txt---global
-  home.activation.removeExistingGitconfig = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
+  home.activation.removeExistingGitconfig = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
     rm -f ~/.gitconfig
   '';
 

@@ -1,32 +1,27 @@
-{ lib
-, stdenvNoCC
-, fetchurl
-, makeWrapper
-, undmg
-, openjdk17
-, gnused
-, wrapGAppsHook3
-, autoPatchelfHook
+{
+  lib,
+  stdenvNoCC,
+  fetchurl,
+  undmg,
+  makeWrapper,
+  openjdk17,
+  gnused,
+  autoPatchelfHook,
+  wrapGAppsHook3,
 }:
 
-let
+stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "dbeaver-bin";
   version = "24.0.5";
-  meta = with lib; {
-    homepage = "https://dbeaver.io/";
-    description = "Universal SQL Client for developers, DBA and analysts. Supports MySQL, PostgreSQL, MariaDB, SQLite, and more";
-    longDescription = ''
-      Free multi-platform database tool for developers, SQL programmers, database
-      administrators and analysts. Supports all popular databases: MySQL,
-      PostgreSQL, MariaDB, SQLite, Oracle, DB2, SQL Server, Sybase, MS Access,
-      Teradata, Firebird, Derby, etc.
-    '';
-    sourceProvenance = with sourceTypes; [ binaryNativeCode ];
-    license = licenses.asl20;
-    platforms = lib.platforms.linux ++ lib.platforms.darwin;
-    maintainers = with maintainers; [ gepbird mkg20001 ];
-    mainProgram = "dbeaver";
-  };
+
+  nativeBuildInputs =
+    [ makeWrapper ]
+    ++ lib.optionals (!stdenvNoCC.isDarwin) [
+      gnused
+      wrapGAppsHook3
+      autoPatchelfHook
+    ]
+    ++ lib.optionals stdenvNoCC.isDarwin [ undmg ];
 
   src =
     let
@@ -46,25 +41,18 @@ let
       };
     in
     fetchurl {
-      url = "https://github.com/dbeaver/dbeaver/releases/download/${version}/dbeaver-ce-${version}-${suffix}";
+      url = "https://github.com/dbeaver/dbeaver/releases/download/${finalAttrs.version}/dbeaver-ce-${finalAttrs.version}-${suffix}";
       inherit hash;
     };
 
-  linux = stdenvNoCC.mkDerivation
-    (finalAttrs: {
-      inherit pname version src meta;
+  dontConfigure = true;
+  dontBuild = true;
 
-      nativeBuildInputs = [
-        makeWrapper
-        gnused
-        wrapGAppsHook3
-        autoPatchelfHook
-      ];
+  sourceRoot = lib.optional stdenvNoCC.isDarwin "dbeaver.app";
 
-      dontConfigure = true;
-      dontBuild = true;
-
-      installPhase = ''
+  installPhase =
+    if !stdenvNoCC.isDarwin then
+      ''
         runHook preInstall
         mkdir -p $out/opt/dbeaver $out/bin
         cp -r * $out/opt/dbeaver
@@ -85,37 +73,39 @@ let
         sed -i '/^Path=/d' $out/share/applications/dbeaver.desktop
 
         runHook postInstall
+      ''
+    else
+      ''
+        runHook preInstall
+
+        mkdir -p $out/{Applications/dbeaver.app,bin}
+        cp -R . $out/Applications/dbeaver.app
+        makeWrapper $out/{Applications/dbeaver.app/Contents/MacOS,bin}/dbeaver \
+          --prefix PATH : "${openjdk17}/bin" \
+          --set JAVA_HOME "${openjdk17.home}"
+
+        runHook postInstall
       '';
 
-      passthru.updateScript = ./update.sh;
-    });
+  passthru.updateScript = ./update.sh;
 
-  darwin = stdenvNoCC.mkDerivation (finalAttrs: {
-    inherit pname version src meta;
-
-    nativeBuildInputs = [
-      makeWrapper
-      undmg
-    ];
-
-    dontConfigure = true;
-    dontBuild = true;
-
-    sourceRoot = "dbeaver.app";
-
-    installPhase = ''
-      runHook preInstall
-
-      mkdir -p $out/{Applications/dbeaver.app,bin}
-      cp -R . $out/Applications/dbeaver.app
-      makeWrapper $out/{Applications/dbeaver.app/Contents/MacOS,bin}/dbeaver \
-        --prefix PATH : "${openjdk17}/bin" \
-        --set JAVA_HOME "${openjdk17.home}"
-
-      runHook postInstall
+  meta = with lib; {
+    homepage = "https://dbeaver.io/";
+    description = "Universal SQL Client for developers, DBA and analysts. Supports MySQL, PostgreSQL, MariaDB, SQLite, and more";
+    longDescription = ''
+      Free multi-platform database tool for developers, SQL programmers, database
+      administrators and analysts. Supports all popular databases: MySQL,
+      PostgreSQL, MariaDB, SQLite, Oracle, DB2, SQL Server, Sybase, MS Access,
+      Teradata, Firebird, Derby, etc.
     '';
-
-    passthru.updateScript = ./update.sh;
-  });
-in
-if stdenvNoCC.isDarwin then darwin else linux
+    sourceProvenance = with sourceTypes; [ binaryNativeCode ];
+    license = licenses.asl20;
+    platforms = platforms.linux ++ platforms.darwin;
+    maintainers = with maintainers; [
+      gepbird
+      mkg20001
+      yzx9
+    ];
+    mainProgram = "dbeaver";
+  };
+})

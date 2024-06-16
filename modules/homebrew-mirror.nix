@@ -16,7 +16,10 @@ in
   # Set environment variables for nix-darwin before run `brew bundle`.
   system.activationScripts.homebrew.text =
     let
-      env_script = lib.attrsets.foldlAttrs (acc: name: value: acc + "\nexport ${name}=${value}") "" homebrew_mirror_env;
+      env_script = lib.attrsets.foldlAttrs (
+        acc: name: value:
+        acc + "\nexport ${name}=${value}"
+      ) "" homebrew_mirror_env;
     in
     lib.mkBefore ''
       echo >&2 '${env_script}'
