@@ -2,9 +2,11 @@
 
 {
   imports = [
+    ./shell
     ./apps.nix
+    ./fonts.nix
     ./git.nix
-    ./shell.nix
+    ./proxychains4.nix
   ];
 
   # Home Manager needs a bit of information about you and the paths it should

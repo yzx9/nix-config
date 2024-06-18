@@ -17,55 +17,79 @@ import subprocess
 from pathlib import Path
 
 
-NIX_DAEMON_PLIST = Path("/Library/LaunchDaemons/org.nixos.nix-daemon.plist")
-NIX_DAEMON_NAME = "org.nixos.nix-daemon"
-HTTP_PROXY = "http://127.0.0.1:10087"
+class DarwinProxyManager:
+    nix_daemon_name = "org.nixos.nix-daemon"
 
-PLIST = plistlib.loads(NIX_DAEMON_PLIST.read_bytes())
-
-
-def update_plist():
-    os.chmod(NIX_DAEMON_PLIST, 0o644)
-    NIX_DAEMON_PLIST.write_bytes(plistlib.dumps(PLIST))
-    os.chmod(NIX_DAEMON_PLIST, 0o444)
-
-
-def reload_daemon():
-    # reload the plist
-    for cmd in (
-        f"launchctl unload {NIX_DAEMON_PLIST}",
-        f"launchctl load {NIX_DAEMON_PLIST}",
-    ):
-        print(cmd)
-        subprocess.run(shlex.split(cmd), capture_output=False)
-
-
-def set_proxy():
-    # set http/https proxy
     # NOTE: curl only accept the lowercase of `http_proxy`!
     # NOTE: https://curl.se/libcurl/c/libcurl-env.html
-    PLIST["EnvironmentVariables"]["http_proxy"] = HTTP_PROXY
-    PLIST["EnvironmentVariables"]["https_proxy"] = HTTP_PROXY
-    update_plist()
-    reload_daemon()
+    keys = ["http_proxy", "https_proxy"]
 
+    def __init__(self, proxy: str) -> None:
+        self.proxy = proxy
+        self.nix_deamon_plist = Path(
+            "/Library/LaunchDaemons/org.nixos.nix-daemon.plist"
+        )
+        self.plist = plistlib.loads(self.nix_deamon_plist.read_bytes())
 
-def unset_proxy():
-    # remove http proxy
-    PLIST["EnvironmentVariables"].pop("http_proxy", None)
-    PLIST["EnvironmentVariables"].pop("https_proxy", None)
-    update_plist()
-    reload_daemon()
+    def set_proxy(self):
+        # set http/https proxy
+        for k in self.keys:
+            self.plist["EnvironmentVariables"][k] = self.proxy
+
+        self._update_plist()
+        self._reload_daemon()
+
+    def unset_proxy(self):
+        # remove http proxy
+        for k in self.keys:
+            self.plist["EnvironmentVariables"].pop(k, None)
+
+        self._update_plist()
+        self._reload_daemon()
+
+    def auto_proxy(self):
+        for k in self.keys:
+            if k not in self.plist["EnvironmentVariables"]:
+                has_proxy = False
+                break
+        else:
+            has_proxy = True
+
+        print(f"Auto switch to {'unset' if has_proxy else 'set'} proxy")
+        if has_proxy:
+            self.unset_proxy()
+        else:
+            self.set_proxy()
+
+    def _update_plist(self):
+        os.chmod(self.nix_deamon_plist, 0o644)
+        self.nix_deamon_plist.write_bytes(plistlib.dumps(self.plist))
+        os.chmod(self.nix_deamon_plist, 0o444)
+
+    def _reload_daemon(self):
+        # reload the plist
+        for cmd in (
+            f"launchctl unload {self.nix_deamon_plist}",
+            f"launchctl load {self.nix_deamon_plist}",
+        ):
+            print(cmd)
+            subprocess.run(shlex.split(cmd), capture_output=False)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("mode", choices=["set", "unset"])
-    args = parser.parse_args()
+    parser = argparse.ArgumentParser("Set proxy for nix-daemon to speed up downloads.")
+    parser.add_argument("proxy", type=str)
+    parser.add_argument("--set", action="store_true")
+    parser.add_argument("--unset", action="store_true")
 
-    if args.mode == "set":
-        set_proxy()
-    elif args.mode == "unset":
-        unset_proxy()
-    else:
-        raise ValueError(f"Unknown mode: {args.mode}, should be 'set' or 'unset'")
+    args = parser.parse_args()
+    pm = DarwinProxyManager(args.proxy)
+    match args.set, args.unset:
+        case True, False:
+            pm.set_proxy()
+        case False, True:
+            pm.unset_proxy()
+        case False, False:
+            pm.auto_proxy()
+        case _, _:
+            raise ValueError("Invalid arguments")

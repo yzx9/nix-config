@@ -1,5 +1,11 @@
 # just is a command runner, Justfile is very similar to Makefile, but simpler.
 
+# use nushell for shell commands
+set shell := ["nu", "-c"]
+
+default:
+  @just --list
+
 ############################################################################
 #
 #  Common commands(suitable for all machines)
@@ -45,20 +51,26 @@ gitgc:
 
 ############################################################################
 #
-#  Darwin related commands, harmonica is my macbook pro's hostname
+#  Darwin related commands
 #
 ############################################################################
 
 [macos]
-darwin-proxy-set:
-  sudo python3 scripts/darwin_proxy.py set
-  sleep 1
-
+rebuild-noproxy:
+  darwin-rebuild switch --flake .
 
 [macos]
-darwin-proxy-unset:
-  sudo python3 scripts/darwin_proxy.py unset
-  sleep 1
+rebuild: proxy-set && rebuild-noproxy
+
+[macos]
+proxy:
+  sudo python3 scripts/darwin_proxy.py http://127.0.0.1:10087
+  sleep 1sec
+
+[macos]
+proxy-set:
+  sudo python3 scripts/darwin_proxy.py --set http://127.0.0.1:10087
+  sleep 1sec
 
 
 ############################################################################

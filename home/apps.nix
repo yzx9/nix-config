@@ -1,33 +1,15 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 let
-  dbeaver = pkgs.callPackage ./dbeaver.nix { };
+  dbeaver-bin = pkgs.callPackage ./custom-apps/dbeaver-bin.nix { };
 in
 {
-  fonts.fontconfig.enable = true;
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfreePredicate =
-    pkg:
-    builtins.elem (lib.getName pkg) [
-      "code"
-      "vscode"
-    ];
+  # # Allow unfree packages
+  # nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ ];
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
-    # It is sometimes useful to fine-tune packages, for example, by applying
-    # overrides. You can do that directly here, just don't forget the
-    # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # fonts?
-    (nerdfonts.override {
-      fonts = [
-        "CascadiaCode"
-        "FiraCode"
-      ];
-    })
-
     # You can also create simple shell scripts directly inside your
     # configuration. For example, this adds a command 'my-hello' to your
     # environment:
@@ -45,7 +27,7 @@ in
     python312
     nodejs
     corepack
-    dbeaver # SQL client
+    dbeaver-bin # SQL client
 
     # networking tools
     mtr # a network diagnostic tool
@@ -57,6 +39,7 @@ in
     ipcalc # it is a calculator for the IPv4/v6 addresses
 
     # misc
+    age
     neofetch
     just
     gopass
@@ -72,17 +55,9 @@ in
     };
   };
 
-  programs.git = {
+  programs.direnv = {
     enable = true;
-    signing = {
-      key = "0xC2DD1916FE471BE2";
-      signByDefault = true;
-    };
+    enableZshIntegration = true;
+    enableNushellIntegration = true;
   };
-
-  # programs.vscode = {
-  #   enable = true;
-  #   # needed for rust lang server and rust-analyzer extension
-  #   package = pkgs.vscode.fhsWithPackages (ps: with ps; [ rustup zlib openssl.dev pkg-config ]);
-  # };
 }

@@ -36,10 +36,10 @@
       pull.rebase = true;
     };
 
-    # signing = {
-    #   key = "xxx";
-    #   signByDefault = true;
-    # };
+    signing = {
+      key = "0xC2DD1916FE471BE2";
+      signByDefault = true;
+    };
 
     # delta = {
     #   enable = true;
