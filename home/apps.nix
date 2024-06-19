@@ -17,7 +17,7 @@ in
     #   echo "Hello, ${config.home.username}!"
     # '')
 
-    # dev
+    # dev tools
     devenv
     nil
     nixfmt-rfc-style
@@ -28,6 +28,10 @@ in
     nodejs
     corepack
     dbeaver-bin # SQL client
+
+    # shell tools
+    wget
+    curl
 
     # networking tools
     mtr # a network diagnostic tool
@@ -44,7 +48,7 @@ in
     just
     gopass
     gopass-jsonapi # you have to run `gopass-jsonapi configure` mannually, because I dont know how to do it automatically
-    # inkscape    # SVG design
+    inkscape # SVG design
   ];
 
   programs.gpg = {

@@ -1,14 +1,16 @@
 {
   description = "Nix for macOS configuration";
 
-  # the nixConfig here only affects the flake itself, not the system configuration!
-  nixConfig = {
-    substituters = [
-      # Query the mirror of USTC first, and then the official cache.
-      "https://mirrors.ustc.edu.cn/nix-channels/store"
-      "https://cache.nixos.org"
-    ];
-  };
+  ## the nixConfig here only affects the flake itself, not the system configuration!
+  ##
+  ## Skip mirror since we are using proxy
+  # nixConfig = {
+  #   substituters = [
+  #     # Query the mirror of USTC first, and then the official cache.
+  #     "https://mirrors.ustc.edu.cn/nix-channels/store"
+  #     "https://cache.nixos.org"
+  #   ];
+  # };
 
   # This is the standard format for flake.nix. `inputs` are the dependencies of the flake,
   # Each item in `inputs` will be passed as a parameter to the `outputs` function after being pulled and built.

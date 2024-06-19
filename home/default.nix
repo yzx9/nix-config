@@ -6,7 +6,6 @@
     ./apps.nix
     ./fonts.nix
     ./git.nix
-    ./proxychains4.nix
   ];
 
   # Home Manager needs a bit of information about you and the paths it should
@@ -56,7 +55,7 @@
     #  /etc/profiles/per-user/${username}/etc/profile.d/hm-session-vars.sh
     #
     sessionVariables = {
-      EDITOR = "vim";
+      EDITOR = "hx";
     };
   };
 

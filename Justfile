@@ -60,7 +60,7 @@ rebuild-noproxy:
   darwin-rebuild switch --flake .
 
 [macos]
-rebuild: (proxy "set") rebuild-noproxy (proxy "set")
+rebuild: rebuild-noproxy (proxy "set")
 
 [macos]
 proxy mode="auto_switch":
