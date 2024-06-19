@@ -7,11 +7,11 @@
       # https://alacritty.org/config-alacritty.html
       live_config_reload = true;
       shell = {
-        program = "/bin/bash";
+        program = "/bin/zsh";
         args = [
           "-l"
           "-c"
-          # "nu --login --interactive" # Spawn a nushell in login mode via `bash`
+          # "nu --login --interactive" # Spawn a nushell in login mode via default shell
           "zellij"
         ];
       };
