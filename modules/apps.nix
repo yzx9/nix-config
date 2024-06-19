@@ -57,6 +57,7 @@
       # dev
       "docker" # nixpkgs docker is breaked, see: https://github.com/LnL7/nix-darwin/issues/112
       "visual-studio-code"
+      "xmake"
 
       # science
       "zotero"
