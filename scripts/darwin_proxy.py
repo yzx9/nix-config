@@ -47,7 +47,7 @@ class DarwinProxyManager:
         self._update_plist()
         self._reload_daemon()
 
-    def auto_proxy(self):
+    def auto_switch_proxy(self):
         for k in self.keys:
             if k not in self.plist["EnvironmentVariables"]:
                 has_proxy = False
@@ -78,18 +78,19 @@ class DarwinProxyManager:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Set proxy for nix-daemon to speed up downloads.")
-    parser.add_argument("proxy", type=str)
-    parser.add_argument("--set", action="store_true")
-    parser.add_argument("--unset", action="store_true")
+    parser.add_argument(
+        "mode", type=str, choices=["set", "unset", "auto_switch"], default="auto_switch"
+    )
+    parser.add_argument("proxy", type=str, default="")
 
     args = parser.parse_args()
     pm = DarwinProxyManager(args.proxy)
-    match args.set, args.unset:
-        case True, False:
+    match args.mode:
+        case "set":
             pm.set_proxy()
-        case False, True:
+        case "unset":
             pm.unset_proxy()
-        case False, False:
-            pm.auto_proxy()
+        case "auto_switch":
+            pm.auto_switch_proxy()
         case _, _:
             raise ValueError("Invalid arguments")

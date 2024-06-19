@@ -60,16 +60,11 @@ rebuild-noproxy:
   darwin-rebuild switch --flake .
 
 [macos]
-rebuild: proxy-set && rebuild-noproxy
+rebuild: (proxy "set") rebuild-noproxy
 
 [macos]
-proxy:
-  sudo python3 scripts/darwin_proxy.py http://127.0.0.1:10087
-  sleep 1sec
-
-[macos]
-proxy-set:
-  sudo python3 scripts/darwin_proxy.py --set http://127.0.0.1:10087
+proxy mode="auto_switch":
+  sudo python3 scripts/darwin_proxy.py {{mode}} http://127.0.0.1:10087
   sleep 1sec
 
 
