@@ -2,6 +2,7 @@
 
 let
   dbeaver-bin = pkgs.callPackage ./custom-apps/dbeaver-bin.nix { };
+  vaa3d-x = pkgs.callPackage ./custom-apps/vaa3d-x.nix { };
 in
 {
   # # Allow unfree packages
@@ -17,23 +18,14 @@ in
     #   echo "Hello, ${config.home.username}!"
     # '')
 
-    # dev tools
-    devenv
-    nil
-    nixfmt-rfc-style
-    cargo
-    rustc
-    go
-    python312
-    nodejs
-    corepack
-    dbeaver-bin # SQL client
-
     # shell tools
     wget
     curl
+    unzip
+    nnn
 
     # networking tools
+    # iputils
     mtr # a network diagnostic tool
     iperf3 # the ultimate speed test tool
     dnsutils # `dig` + `nslookup`
@@ -48,7 +40,12 @@ in
     just
     gopass
     gopass-jsonapi # you have to run `gopass-jsonapi configure` mannually, because I dont know how to do it automatically
+
+    # GUI apps
     inkscape # SVG design
+    dbeaver-bin # SQL client
+    vaa3d-x
+    # sfm
   ];
 
   programs.gpg = {

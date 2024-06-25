@@ -2,9 +2,11 @@
 
 {
   imports = [
+    ./dev
     ./shell
     ./apps.nix
     ./fonts.nix
+    ./editor.nix
     ./git.nix
   ];
 

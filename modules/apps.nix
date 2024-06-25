@@ -42,7 +42,7 @@
     taps = [ ];
 
     # `brew install`
-    brews = [ "xmake" ];
+    brews = [ ];
 
     # `brew install --cask`
     casks = [

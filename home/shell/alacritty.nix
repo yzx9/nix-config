@@ -1,11 +1,19 @@
 { ... }:
 
+let
+  mkBinding = key: mods: action: {
+    key = key;
+    mods = mods;
+    action = action;
+  };
+in
 {
   programs.alacritty = {
     enable = true;
     settings = {
       # https://alacritty.org/config-alacritty.html
       live_config_reload = true;
+
       shell = {
         program = "/bin/zsh";
         args = [
@@ -71,6 +79,8 @@
       #   x = 0;
       #   y = 0;
       # };
+
+      keyboard.bindings = builtins.map (binding: mkBinding binding "Command" "ReceiveChar") [ "N" ]; # reset some macos only binding
     };
   };
 }

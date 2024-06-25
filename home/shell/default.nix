@@ -1,4 +1,4 @@
-{ pkgs, username, ... }:
+{ username, ... }:
 
 {
   imports = [
@@ -33,11 +33,13 @@
           }
         }
       }
-      $env.PATH = ($env.PATH |
-        split row (char esep) |
-        prepend /home/${username}/.apps |
-        append /usr/bin/env
-      )
+      #$env.PATH = ($env.PATH |
+      #  split row (char esep) |
+      #  prepend /home/${username}/.apps |
+      #  append /usr/bin/env
+      #)
+      def nuopen [arg, --raw (-r)] { if $raw { open -r $arg } else { open $arg } }
+      alias open = ^open
     '';
   };
 
@@ -62,12 +64,6 @@
       };
     };
   };
-
-  # workspace
-  home.packages = with pkgs; [
-    nnn
-    helix
-  ];
 
   #   home.shellAliases = {};
 }
