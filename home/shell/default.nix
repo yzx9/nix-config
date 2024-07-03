@@ -1,4 +1,4 @@
-{ username, ... }:
+{ ... }:
 
 {
   imports = [
@@ -17,7 +17,7 @@
     enable = true;
     extraConfig = ''
       let carapace_completer = {|spans|
-        carapace $spans.0 nushell $spans | from json
+        carapace $spans.0 nushell ...$spans | from json
       }
       $env.config = {
         show_banner: false,
@@ -33,13 +33,8 @@
           }
         }
       }
-      #$env.PATH = ($env.PATH |
-      #  split row (char esep) |
-      #  prepend /home/${username}/.apps |
-      #  append /usr/bin/env
-      #)
-      def nuopen [arg, --raw (-r)] { if $raw { open -r $arg } else { open $arg } }
-      alias open = ^open
+      #def nuopen [arg, --raw (-r)] { if $raw { open -r $arg } else { open $arg } }
+      #alias open = ^open
     '';
   };
 

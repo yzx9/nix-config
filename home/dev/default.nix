@@ -1,19 +1,13 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
   imports = [
+    ./docker.nix
     ./frontend.nix
     ./go.nix
+    ./markdown.nix
     ./nix.nix
-  ];
-
-  home.packages = with pkgs; [
-    # dev tools
-    python312
-
-    # dev - rust
-    cargo
-    rustc
-    rust-analyzer
+    ./python.nix
+    ./rust.nix
   ];
 }

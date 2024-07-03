@@ -1,12 +1,13 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 let
   dbeaver-bin = pkgs.callPackage ./custom-apps/dbeaver-bin.nix { };
   vaa3d-x = pkgs.callPackage ./custom-apps/vaa3d-x.nix { };
+  macism = pkgs.callPackage ./custom-apps/macism.nix { };
 in
 {
-  # # Allow unfree packages
-  # nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ ];
+  # Allow unfree packages
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "Xcode.app" ];
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
@@ -19,10 +20,12 @@ in
     # '')
 
     # shell tools
+    bat
     wget
     curl
     unzip
     nnn
+    tree
 
     # networking tools
     # iputils
@@ -40,12 +43,13 @@ in
     just
     gopass
     gopass-jsonapi # you have to run `gopass-jsonapi configure` mannually, because I dont know how to do it automatically
+    macism
 
     # GUI apps
     inkscape # SVG design
     dbeaver-bin # SQL client
     vaa3d-x
-    # sfm
+    pinentry_mac
   ];
 
   programs.gpg = {

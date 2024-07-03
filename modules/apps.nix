@@ -55,7 +55,6 @@
       "firefox"
       "microsoft-edge"
       "vmware-fusion"
-      "openvpn-connect"
       "steam"
       "raspberry-pi-imager"
 
@@ -65,7 +64,7 @@
 
       # science
       "zotero"
-      "master-pdf-editor"
+      # "master-pdf-editor"
       "eudic"
       "fiji"
 
