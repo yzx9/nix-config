@@ -13,7 +13,7 @@
     biome
 
     # vue
-    nodePackages.volar
+    vue-language-server
 
     # tailwindcss
     tailwindcss-language-server
@@ -71,7 +71,7 @@
         command = "typescript-language-server";
         language-server.config.plugins = {
           name = "@vue/typescript-plugin";
-          location = "${pkgs.nodePackages.volar}/bin/vue-language-server";
+          location = "${pkgs.vue-language-server}/bin/vue-language-server";
           languages = [ "vue" ];
         };
       };

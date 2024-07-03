@@ -1,7 +1,6 @@
 { pkgs, lib, ... }:
 
 let
-  dbeaver-bin = pkgs.callPackage ./custom-apps/dbeaver-bin.nix { };
   vaa3d-x = pkgs.callPackage ./custom-apps/vaa3d-x.nix { };
   macism = pkgs.callPackage ./custom-apps/macism.nix { };
 in
