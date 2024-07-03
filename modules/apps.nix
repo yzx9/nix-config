@@ -57,6 +57,7 @@
       "vmware-fusion"
       "steam"
       "raspberry-pi-imager"
+      "canon-ufrii-driver"
 
       # dev
       "docker" # nixpkgs docker is breaked, see: https://github.com/LnL7/nix-darwin/issues/112
