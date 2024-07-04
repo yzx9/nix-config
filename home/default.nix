@@ -3,10 +3,10 @@
 {
   imports = [
     ./dev
+    ./editor
     ./shell
     ./apps.nix
     ./fonts.nix
-    ./editor.nix
     ./git.nix
   ];
 
@@ -56,9 +56,7 @@
     #
     #  /etc/profiles/per-user/${username}/etc/profile.d/hm-session-vars.sh
     #
-    sessionVariables = {
-      EDITOR = "hx";
-    };
+    sessionVariables = { };
   };
 
   # Let Home Manager install and manage itself.

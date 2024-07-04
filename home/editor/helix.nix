@@ -5,7 +5,6 @@
 
   programs.helix = {
     enable = true;
-    defaultEditor = true;
     settings = {
       theme = "autumn_night_transparent";
       editor.cursor-shape = {
@@ -63,11 +62,5 @@
     };
   };
 
-  programs.nushell.shellAliases = {
-    vi = "hx";
-    vim = "hx";
-    nano = "hx";
-  };
-
-  home.file.".config/helix/scripts/ime-switch.sh".source = ../scripts/ime_switch.sh;
+  home.file.".config/helix/scripts/ime-switch.sh".source = ../../scripts/ime_switch.sh;
 }

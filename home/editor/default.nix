@@ -1,0 +1,8 @@
+{ ... }:
+
+{
+  imports = [
+    ./neovim
+    ./helix.nix
+  ];
+}
