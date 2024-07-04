@@ -11,7 +11,7 @@
     };
   };
 
-  home.file.".config/zellij/layouts/default.kdl".text = ''
+  xdg.configFile."zellij/layouts/default.kdl".text = ''
     layout {
       pane size=1 borderless=true {
         plugin location="zellij:tab-bar"

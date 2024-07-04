@@ -1,6 +1,10 @@
 { pkgs, ... }:
 
 {
+  imports = [
+    ./languages
+  ];
+
   home.packages = with pkgs; [ tree-sitter ];
 
   programs.helix = {
@@ -62,5 +66,5 @@
     };
   };
 
-  home.file.".config/helix/scripts/ime-switch.sh".source = ../../scripts/ime_switch.sh;
+  home.file.".config/helix/scripts/ime-switch.sh".source = ../../../scripts/ime_switch.sh;
 }

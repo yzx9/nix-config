@@ -36,6 +36,14 @@ in
     nmap # a utility for network discovery and security auditing
     ipcalc # it is a calculator for the IPv4/v6 addresses
 
+    # dev
+    nodejs
+    corepack
+    go    
+    python312
+    cargo
+    rustc
+
     # misc
     age
     neofetch

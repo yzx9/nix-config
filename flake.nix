@@ -60,7 +60,7 @@
           ./modules/nix-core.nix
           ./modules/system-drawin.nix
           ./modules/apps.nix
-          ./modules/homebrew-mirror.nix
+          ./modules/homebrew.nix
           ./modules/host-users.nix
 
           # home manager
