@@ -3,6 +3,7 @@
 let
   vaa3d-x = pkgs.callPackage ./custom-apps/vaa3d-x.nix { };
   macism = pkgs.callPackage ./custom-apps/macism.nix { };
+  pinentry-mac = "${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac";
 in
 {
   # Allow unfree packages
@@ -65,6 +66,12 @@ in
       keyid-format = "0xlong";
       with-fingerprint = true;
     };
+  };
+
+  home.file = lib.mkIf pkgs.stdenv.isDarwin {
+    ".gnupg/gpg-agent.conf".text = ''
+      pinentry-program ${pinentry-mac}
+    '';
   };
 
   programs.direnv = {
