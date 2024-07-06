@@ -3,7 +3,7 @@
 let
   vaa3d-x = pkgs.callPackage ./custom-apps/vaa3d-x.nix { };
   macism = pkgs.callPackage ./custom-apps/macism.nix { };
-  pinentry-mac = "${pkgs.pinentry_mac}/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac";
+  logseq = pkgs.callPackage ./custom-apps/logseq.nix { };
 in
 {
   # Allow unfree packages
@@ -51,28 +51,14 @@ in
     just
     gopass
     gopass-jsonapi # you have to run `gopass-jsonapi configure` mannually, because I dont know how to do it automatically
-    macism
 
     # GUI apps
     inkscape # SVG design
     dbeaver-bin # SQL client
+    macism # IME mode detect
     vaa3d-x
-    pinentry_mac
+    logseq
   ];
-
-  programs.gpg = {
-    enable = true;
-    settings = {
-      keyid-format = "0xlong";
-      with-fingerprint = true;
-    };
-  };
-
-  home.file = lib.mkIf pkgs.stdenv.isDarwin {
-    ".gnupg/gpg-agent.conf".text = ''
-      pinentry-program ${pinentry-mac}
-    '';
-  };
 
   programs.direnv = {
     enable = true;

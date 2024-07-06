@@ -8,5 +8,6 @@
     ./base.nix
     ./fonts.nix
     ./git.nix
+    ./gpg.nix
   ];
 }

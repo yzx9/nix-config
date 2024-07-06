@@ -30,10 +30,9 @@ stdenv.mkDerivation (
     hash = selectSystem {
       x86_64-linux = "sha256-cJcjUoZSpD87jy4GGIxMinZW4gxRZfcGO0GdGUGXI6g=";
       aarch64-linux = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      x86_64-darwin = "sha256-8xqSL8fTveg1Y5huBTYZLyubajt27h4XUBzyYVF394A=";
-      aarch64-darwin = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+      x86_64-darwin =  "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+      aarch64-darwin = "sha256-ZOwLa4GKsqRJv9Cq5ElFeKwtJRoFdeXOJOeJmUUd9M0=";
     };
-
   in
   {
     pname = "logseq";
@@ -45,20 +44,22 @@ stdenv.mkDerivation (
       name = if (!stdenv.isDarwin) then "${pname}-${version}.AppImage" else "${pname}-${version}.dmg";
     };
 
-    dontUnpack = !stdenv.isDarwin;
-    dontConfigure = true;
-    dontBuild = true;
-
     nativeBuildInputs =
       [ makeWrapper ]
       ++ lib.optionals (!stdenv.isDarwin) [ autoPatchelfHook ] ++ lib.optionals stdenv.isDarwin [ undmg ];
     buildInputs = [ stdenv.cc.cc.lib ];
 
+    dontUnpack = !stdenv.isDarwin;
+    sourceRoot = "Logseq.app";
+
+    dontConfigure = true;
+    dontBuild = true;
+
     installPhase =
       if (!stdenv.isDarwin) then
         (
           let
-            appimageContents = lib.optional stdenv.isDarwin appimageTools.extract {
+            appimageContents = appimageTools.extract {
               inherit pname src version;
             };
           in
@@ -89,30 +90,20 @@ stdenv.mkDerivation (
         ''
           runHook preInstall
 
-          # remove the `git` in `dugite` because we want the `git` in `nixpkgs`
-          chmod +w -R $out/share/${pname}/resources/app/node_modules/dugite/git
-          chmod +w $out/share/${pname}/resources/app/node_modules/dugite
-          rm -rf $out/share/${pname}/resources/app/node_modules/dugite/git
-          chmod -w $out/share/${pname}/resources/app/node_modules/dugite
+          mkdir -p $out/{Applications/Logseq.app,bin}
+          cp -R . $out/Applications/Logseq.app 
+          makeWrapper $out/Applications/Logseq.app/Contents/MacOS/Logseq $out/bin/${pname}
 
           runHook postInstall
         '';
 
-    postFixup =
-      if !stdenv.isDarwin then
-        ''
-          # set the env "LOCAL_GIT_DIRECTORY" for dugite so that we can use the git in nixpkgs
-          makeWrapper ${electron}/bin/electron $out/bin/${pname} \
-            --set "LOCAL_GIT_DIRECTORY" ${git} \
-            --add-flags $out/share/${pname}/resources/app \
-            --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations}}"
-        ''
-      else
-        ''
-          # set the env "LOCAL_GIT_DIRECTORY" for dugite so that we can use the git in nixpkgs
-          makeWrapper ${electron}/bin/electron $out/bin/${pname} \
-            --set "LOCAL_GIT_DIRECTORY" ${git} 
-        '';
+    postFixup = lib.optionalString (!stdenv.isDarwin) ''
+        # set the env "LOCAL_GIT_DIRECTORY" for dugite so that we can use the git in nixpkgs
+        makeWrapper ${lib.getBin electron} $out/bin/${pname} \
+          --set "LOCAL_GIT_DIRECTORY" ${git} \
+          --add-flags $out/share/${pname}/resources/app \
+          --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations}}"
+      '';
 
     passthru.updateScript = nix-update-script { };
 
