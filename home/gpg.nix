@@ -16,6 +16,10 @@
   home.file = lib.mkIf pkgs.stdenv.isDarwin {
     ".gnupg/gpg-agent.conf".text = ''
       pinentry-program ${lib.getBin pkgs.pinentry_mac}/bin/pinentry-mac
+      default-cache-ttl 60480000
+      max-cache-ttl 60480000
+      default-cache-ttl-ssh 60480000
+      max-cache-ttl-ssh 60480000
     '';
   };
 }
