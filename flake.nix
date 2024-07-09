@@ -16,7 +16,11 @@
   # Each item in `inputs` will be passed as a parameter to the `outputs` function after being pulled and built.
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    #nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-23.11-darwin";
+
+    darwin = {
+      url = "github:lnl7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # home-manager, used for managing user configuration
     home-manager = {
@@ -24,8 +28,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    darwin = {
-      url = "github:lnl7/nix-darwin";
+    nixvim = {
+      url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -50,7 +54,12 @@
 
       hostname = "${username}-mbp";
       specialArgs = inputs // {
-        inherit username useremail hostname;
+        inherit
+          inputs
+          username
+          useremail
+          hostname
+          ;
       };
     in
     {

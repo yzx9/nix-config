@@ -40,7 +40,7 @@ in
     # dev
     nodejs
     corepack
-    go    
+    go
     python312
     cargo
     rustc
@@ -58,6 +58,7 @@ in
     macism # IME mode detect
     vaa3d-x
     logseq
+    yarr
   ];
 
   programs.direnv = {
