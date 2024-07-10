@@ -16,6 +16,7 @@
   # Each item in `inputs` will be passed as a parameter to the `outputs` function after being pulled and built.
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    # nur.url = "github:nix-community/NUR";
 
     darwin = {
       url = "github:lnl7/nix-darwin";
@@ -79,6 +80,7 @@
             home-manager.useUserPackages = false;
             home-manager.extraSpecialArgs = specialArgs;
             home-manager.users.${username} = import ./home;
+            # home-manager.sharedModules = [ nur.hmModules.nur ];
           }
         ];
       };
