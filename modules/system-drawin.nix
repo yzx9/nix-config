@@ -31,4 +31,10 @@
   programs.zsh.enable = true;
   environment.shells = [ pkgs.zsh ];
   environment.pathsToLink = [ "/share/zsh" ];
+
+  # disable save gpg in keychain, which cause double password prompt, see also:
+  # https://gpgtools.tenderapp.com/kb/gpg-mail-faq/gpg-mail-hidden-settings#disable-option-to-store-password-in-macos-keychain
+  system.defaults.CustomUserPreferences = {
+    "org.gpgtools.common".DisableKeychain = true;
+  };
 }
