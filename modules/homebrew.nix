@@ -42,7 +42,7 @@ in
     taps = [ ];
 
     # `brew install`
-    brews = [ ];
+    brews = [ "firefoxpwa" ];
 
     # `brew install --cask`
     casks = [
