@@ -2,7 +2,9 @@
 
 {
   imports = [
+    ./autopairs.nix
     ./cmp.nix
+    ./comment.nix
     ./dap.nix
     ./gitsigns.nix
     ./lsp.nix
@@ -13,5 +15,6 @@
     ./toggleterm.nix
     ./treesitter.nix
     ./ts-autotag.nix
+    ./ts-context-commentstring.nix
   ];
 }

@@ -6,5 +6,6 @@
 
     ./config
     ./plugins
+    ./utils.nix 
   ];
 }

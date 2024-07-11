@@ -1,5 +1,5 @@
 # neovim
 
-neovim powered by `nixvim`
+Neovim powered by `nixvim`.
 
-Inspired by [nicolas-goudry/nixvim-config](https://github.com/nicolas-goudry/nixvim-config)
+Inspired by [AstroNvim](https://github.com/AstroNvim/AstroNvim] and [nicolas-goudry/nixvim-config](https://github.com/nicolas-goudry/nixvim-config).

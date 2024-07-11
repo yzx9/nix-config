@@ -1,3 +1,4 @@
+# Neovim plugin to manage the file system and other tree like structures. 
 # homepage: https://github.com/nvim-neo-tree/neo-tree.nvim
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/neo-tree/index.html
 { ... }:
@@ -6,6 +7,12 @@
   programs.nixvim = {
     plugins.neo-tree = {
       enable = true;
+      
+      # Automatically clean up broken neo-tree buffers saved in sessions
+      autoCleanAfterSessionRestore = true;
+
+      # Close Neo-tree if it is the last window left in the tab
+      closeIfLastWindow = true;
     };
 
     keymaps = [

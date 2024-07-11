@@ -11,6 +11,9 @@
 
     luaLoader.enable = true;
 
+    # Use <Space> as leader key
+    globals.mapleader = " ";
+
     # Setup clipboard support
     clipboard = {
       # Use xsel as clipboard provider
@@ -18,29 +21,6 @@
 
       # Sync system clipboard
       register = if (pkgs.stdenv.isLinux) then "unnamedplus" else "unnamed";
-    };
-
-    # Use <Space> as leader key
-    globals.mapleader = " ";
-
-    opts = {
-      number = true; # Show line numbers
-      relativenumber = true; # Show relative line numbers
-
-      shiftwidth = 2; # Tab width should be 2
-    };
-
-    colorschemes = {
-      catppuccin = {
-        enable = true;
-
-        settings = {
-          flavour = "mocha";
-
-          # Needed to keep terminal transparency, if any
-          transparent_background = true;
-        };
-      };
     };
   };
 
