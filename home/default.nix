@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ./editor
+    ./neovim
     ./shell
     ./apps.nix
     ./base.nix
