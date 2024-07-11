@@ -4,18 +4,7 @@
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
 
+    ./config
     ./plugins
   ];
-
-  programs.nixvim = {
-    enable = true;
-    defaultEditor = true;
-
-    viAlias = true;
-    vimAlias = true;
-
-    luaLoader.enable = true;
-  };
-
-  home.shellAliases.v = "nvim";
 }
