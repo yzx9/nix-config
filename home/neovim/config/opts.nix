@@ -1,7 +1,7 @@
 # Neovim options
 # Use :options to get the list of all options
 # Use :h <option> to load help for given <option>
-{ ... }:
+{ pkgs, ... }:
 
 {
   programs.nixvim.opts = {
@@ -146,5 +146,8 @@
 
     # Disable making a backup before overwriting a file
     writebackup = false;
+
+    # Default shell
+    shell = "${pkgs.nushell}/bin/nu";
   };
 }

@@ -4,7 +4,7 @@
 {
   programs.nixvim.plugins.lsp = {
     enable = true;
-    
+
     keymaps = {
       diagnostic = {
         "<leader>j" = "goto_next";
