@@ -1,7 +1,11 @@
+# A completion plugin for neovim coded in Lua.
+# homepage: https://github.com/hrsh7th/nvim-cmp/
+# nixvim doc: https://nix-community.github.io/nixvim/plugins/cmp/index.html
 { ... }:
 
 {
-  programs.nixvim.plugins = {
+  programs.nixvim = {
+    plugins = {
     cmp = {
       enable = true;
       settings = {
@@ -27,10 +31,6 @@
             name = "path"; # file system paths
             keywordLength = 3;
           }
-          {
-            name = "luasnip"; # snippets
-            keywordLength = 3;
-          }
         ];
 
         window = {
@@ -52,44 +52,34 @@
       };
     };
 
+    # nvim-cmp source for buffer words
+    # homepage: https://github.com/hrsh7th/cmp-buffer/
+    # nixvim doc: https://nix-community.github.io/nixvim/plugins/cmp-buffer.html
     cmp-buffer.enable = true;
+
+    # nvim-cmp source for vim's cmp-cmd
+    # homepage: https://github.com/hrsh7th/cmp-cmdline/
+    # nixvim doc: https://nix-community.github.io/nixvim/plugins/cmp-cmdline.html
     cmp-cmdline.enable = false; # autocomplete for cmdline
+
+    # nvim-cmp source for emoji 
+    # homepage: https://github.com/hrsh7th/cmp-emoji/
+    # nixvim doc: https://nix-community.github.io/nixvim/plugins/cmp-emoji.html
     cmp-emoji.enable = true;
+
+    # nvim-cmp source for neovim builtin LSP client
+    # homepage: https://github.com/hrsh7th/cmp-nvim-lsp/
+    # nixvim doc: https://nix-community.github.io/nixvim/plugins/cmp-nvim-lsp.html
     cmp-nvim-lsp.enable = true; # lsp
+
+    # nvim-cmp source for path
+    # homepage: https://github.com/hrsh7th/cmp-path/
+    # nixvim doc: https://nix-community.github.io/nixvim/plugins/cmp-path.html
     cmp-path.enable = true; # file system paths
-    cmp_luasnip.enable = true; # snippets
+  };
 
-    extraConfigLua = ''
-          luasnip = require("luasnip")
-          kind_icons = {
-            Text = "󰊄",
-            Method = "",
-            Function = "󰡱",
-            Constructor = "",
-            Field = "",
-            Variable = "󱀍",
-            Class = "",
-            Interface = "",
-            Module = "󰕳",
-            Property = "",
-            Unit = "",
-            Value = "",
-            Enum = "",
-            Keyword = "",
-            Snippet = "",
-            Color = "",
-            File = "",
-            Reference = "",
-            Folder = "",
-            EnumMember = "",
-            Constant = "",
-            Struct = "",
-            Event = "",
-            Operator = "",
-            TypeParameter = "",
-          } 
-
-           local cmp = require'cmp'
+  extraConfigLua = ''
+       local cmp = require('cmp')
 
        -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
        cmp.setup.cmdline({'/', "?" }, {
@@ -98,7 +88,7 @@
          }
        })
 
-      -- Set configuration for specific filetype.
+        -- Set configuration for specific filetype.
        cmp.setup.filetype('gitcommit', {
          sources = cmp.config.sources({
            { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
@@ -112,14 +102,15 @@
          sources = cmp.config.sources({
            { name = 'path' }
          }, {
-           { name = 'cmdline' }
-         }),
-    --      formatting = {
-    --       format = function(_, vim_item)
-    --         vim_item.kind = cmdIcons[vim_item.kind] or "FOO"
-    --       return vim_item
-    --      end
+         { name = 'cmdline' }
+       }),
+    -- formatting = {
+    --   format = function(_, vim_item)
+    --     vim_item.kind = cmdIcons[vim_item.kind] or "FOO"
+    --     return vim_item
+    --   end
     -- }
-       })  '';
+    })
+    '';
   };
 }
