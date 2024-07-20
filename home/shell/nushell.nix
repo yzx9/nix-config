@@ -23,27 +23,5 @@
     '';
   };
 
-  # auto-completion for nushell
-  programs.carapace = {
-    enable = true;
-    enableNushellIntegration = true;
-  };
-
-  # prompt
-  programs.starship = {
-    enable = true;
-
-    enableBashIntegration = true;
-    enableZshIntegration = true;
-    enableNushellIntegration = true;
-
-    settings = {
-      character = {
-        success_symbol = "[›](bold green)";
-        error_symbol = "[›](bold red)";
-      };
-    };
-  };
-
   #   home.shellAliases = {};
 }
