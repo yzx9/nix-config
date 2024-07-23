@@ -1,16 +1,5 @@
 { pkgs, lib, ... }:
 
-let
-  logseq = pkgs.callPackage ./custom-apps/logseq.nix { };
-  macism = pkgs.callPackage ./custom-apps/macism.nix { };
-  vaa3d-x = pkgs.callPackage ./custom-apps/vaa3d-x.nix { };
-  clj2nix = pkgs.callPackage (pkgs.fetchFromGitHub {
-    owner = "hlolli";
-    repo = "clj2nix";
-    rev = "b9a28d4a920d5d680439b1b0d18a1b2c56d52b04";
-    sha256 = "0d8xlja62igwg757lab9ablz1nji8cp9p9x3j0ihqvp1y48w2as3";
-  }) {};
-in
 {
   # Allow unfree packages
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "Xcode.app" ];
@@ -59,17 +48,7 @@ in
       neofetch
       just
       gopass
-
-      # GUI apps
-      gopass-jsonapi # you have to run `gopass-jsonapi configure` mannually, because I dont know how to do it automatically
-      inkscape # SVG design
-      dbeaver-bin # SQL client
-      yarr
-    ])
-    ++ [ vaa3d-x logseq ]
-    ++ lib.optionals pkgs.stdenv.isDarwin [
-      macism # IME mode detect
-    ];
+    ]);
 
   programs.direnv = {
     enable = true;

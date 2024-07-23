@@ -1,5 +1,8 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
+let
+  pinentry = config.gui.enable;
+in
 {
   programs.gpg = {
     enable = true;
@@ -9,11 +12,7 @@
     };
   };
 
-  home.packages = lib.optionals pkgs.stdenv.isDarwin (
-    with pkgs; [
-      pinentry_mac
-    ]
-  );
+  home.packages = lib.optionals (pinentry && pkgs.stdenv.isDarwin) [ pkgs.pinentry_mac ];
 
   home.file.".gnupg/gpg-agent.conf".text = ''
     default-cache-ttl 60480000
@@ -22,7 +21,7 @@
     enable-ssh-support
     default-cache-ttl-ssh 60480000
     max-cache-ttl-ssh 60480000
-  '' + lib.optionalString pkgs.stdenv.isDarwin ''
+  '' + lib.optionalString (pinentry && pkgs.stdenv.isDarwin) ''
     pinentry-program ${lib.getBin pkgs.pinentry_mac}/bin/pinentry-mac
   '';
 }

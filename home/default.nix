@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./gui
     ./neovim
     ./shell
     ./apps.nix
