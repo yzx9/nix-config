@@ -68,7 +68,7 @@
         inherit system specialArgs;
         modules = [
           ./modules/nix-core.nix
-          ./modules/system-drawin.nix
+          ./modules/system-darwin.nix
           ./modules/apps.nix
           ./modules/homebrew.nix
           ./modules/host-users.nix

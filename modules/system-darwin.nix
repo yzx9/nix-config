@@ -7,7 +7,7 @@
 #
 ###################################################################################
 
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   system = {
@@ -36,5 +36,12 @@
   # https://gpgtools.tenderapp.com/kb/gpg-mail-faq/gpg-mail-hidden-settings#disable-option-to-store-password-in-macos-keychain
   system.defaults.CustomUserPreferences = {
     "org.gpgtools.common".DisableKeychain = true;
+  };
+
+  # https://github.com/LnL7/nix-darwin/blob/master/modules/programs/gnupg.nix
+  # try `pkill gpg-agent` if you have issues(such as `no pinentry`)
+  programs.gnupg.agent = lib.mkIf pkgs.stdenv.isDarwin {
+    enable = true;
+    enableSSHSupport = true;
   };
 }

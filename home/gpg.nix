@@ -14,6 +14,7 @@ in
 
   home.packages = lib.optionals (pinentry && pkgs.stdenv.isDarwin) [ pkgs.pinentry_mac ];
 
+  # services.gpg-agent is broken in darwin, see: https://github.com/nix-community/home-manager/issues/3864
   home.file.".gnupg/gpg-agent.conf".text = ''
     default-cache-ttl 60480000
     max-cache-ttl 60480000
