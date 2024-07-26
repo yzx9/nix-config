@@ -42,6 +42,7 @@
       cargo
       rustc
       nixpkgs-review
+      nixfmt-rfc-style
 
       # misc
       age

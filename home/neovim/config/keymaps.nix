@@ -1,7 +1,6 @@
 { ... }:
 
 {
-
   programs.nixvim.keymaps = [
     # Improved terminal navigation
     # https://github.com/AstroNvim/AstroNvim/blob/v4.7.7/lua/astronvim/plugins/_astrocore_mappings.lua#L121-L124

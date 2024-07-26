@@ -1,7 +1,7 @@
 # Neovim options
 # Use :options to get the list of all options
 # Use :h <option> to load help for given <option>
-{ pkgs, ... }:
+{ ... }:
 
 {
   programs.nixvim.opts = {
@@ -17,7 +17,11 @@
     cmdheight = 0;
 
     # Insert mode completion options
-    completeopt = [ "menu" "menuone" "noselect" ];
+    completeopt = [
+      "menu"
+      "menuone"
+      "noselect"
+    ];
 
     # Raise a dialog asking if you wish to save the current file(s)
     confirm = true;
@@ -37,7 +41,9 @@
     expandtab = true;
 
     # Disable `~` on nonexistent lines
-    fillchars = { eob = " "; };
+    fillchars = {
+      eob = " ";
+    };
 
     # Enable fold with all code unfolded
     foldcolumn = "1";
@@ -148,6 +154,6 @@
     writebackup = false;
 
     # Default shell
-    shell = "${pkgs.nushell}/bin/nu";
+    #shell = "${pkgs.nushell}/bin/nu";
   };
 }

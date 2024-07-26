@@ -3,17 +3,20 @@
 {
   imports = [
     ./autopairs.nix
+    ./btw.nix
     ./bufferline.nix
     ./cmp.nix
     ./comment.nix
+    ./conform.nix
     ./dap.nix
+    ./fidget.nix
     ./gitsigns.nix
     ./illuminate.nix
+    ./lazygit.nix
     ./lsp.nix
-    ./lsp-format.nix
+    ./lspsage.nix
     ./lualine.nix
     ./neo-tree.nix
-    ./none-ls.nix
     ./telescope.nix
     ./todo-comments.nix
     ./toggleterm.nix

@@ -142,11 +142,6 @@ in
           key = "<leader>fw";
           fn = "grep_string";
         }
-        {
-          desc = "Search references";
-          key = "gr";
-          fn = "lsp_references";
-        }
       ];
   };
 }
