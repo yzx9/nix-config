@@ -72,9 +72,9 @@ in
       # design
       "blender"
       "krita"
+      "inkscape"
       # "preform"
       # "ideamaker"
-      # "inkscape"
 
       # ldap
       "apache-directory-studio"

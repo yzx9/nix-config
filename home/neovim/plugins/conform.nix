@@ -12,15 +12,56 @@
     };
     notifyOnError = true;
     formattersByFt = {
-      html = [ [ "prettierd" "prettier" ] ];
-      css = [ [ "prettierd" "prettier" ] ];
-      javascript = [ [ "prettierd" "prettier" ] ];
-      typescript = [ [ "prettierd" "prettier" ] ];
-      python = [ "isort" "black" ];
-      lua = [ "stylua" ];
+      html = [
+        [
+          "prettierd"
+          "prettier"
+        ]
+      ];
+      css = [
+        [
+          "prettierd"
+          "prettier"
+        ]
+      ];
+      javascript = [
+        [
+          "prettierd"
+          "prettier"
+        ]
+      ];
+      typescript = [
+        [
+          "prettierd"
+          "prettier"
+        ]
+      ];
+      vue = [
+        [
+          "prettierd"
+          "prettier"
+        ]
+      ];
+      markdown = [
+        [
+          "prettierd"
+          "prettier"
+        ]
+      ];
+      python = [
+        "isort"
+        "black"
+      ];
+      rust = [ "rustfmt" ];
       nix = [ "nixfmt" ];
-      markdown = [ [ "prettierd" "prettier" ] ];
-      yaml = [ "yamllint" "yamlfmt" ];
+      go = [
+        "goimports"
+        "gofmt"
+      ];
+      yaml = [
+        "yamllint"
+        "yamlfmt"
+      ];
     };
   };
 }
