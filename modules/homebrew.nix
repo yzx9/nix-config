@@ -42,7 +42,7 @@ in
     taps = [ ];
 
     # `brew install`
-    brews = [ "firefoxpwa" ];
+    brews = [ ];
 
     # `brew install --cask`
     casks = [
@@ -53,6 +53,7 @@ in
       "logitech-options"
       "sfm"
       "firefox"
+      "google-chrome"
       "microsoft-edge"
       "vmware-fusion"
       "steam"
