@@ -15,6 +15,7 @@
     # '')
 
     # shell tools
+    ncurses
     bat
     wget
     curl

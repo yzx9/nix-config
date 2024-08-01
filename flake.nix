@@ -48,44 +48,76 @@
       home-manager,
       ...
     }:
-    let
-      username = "yzx9";
-      useremail = "yuan.zx@outlook.com";
-      system = "aarch64-darwin";
-
-      hostname = "${username}-mbp";
-      specialArgs = inputs // {
-        inherit
-          inputs
-          username
-          useremail
-          hostname
-          ;
-      };
-    in
     {
-      darwinConfigurations."${hostname}" = darwin.lib.darwinSystem {
-        inherit system specialArgs;
-        modules = [
-          ./modules/nix-core.nix
-          ./modules/system-darwin.nix
-          ./modules/apps.nix
-          ./modules/homebrew.nix
-          ./modules/host-users.nix
+      darwinConfigurations.yzx9-mbp =
 
-          # home manager
-          home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = false;
-            home-manager.useUserPackages = false;
-            home-manager.extraSpecialArgs = specialArgs;
-            home-manager.users.${username} = import ./home;
-            # home-manager.sharedModules = [ nur.hmModules.nur ];
-          }
-        ];
-      };
+        let
+          username = "yzx9";
+          useremail = "yuan.zx@outlook.com";
+          system = "aarch64-darwin";
+
+          hostname = "${username}-mbp";
+          specialArgs = inputs // {
+            inherit
+              inputs
+              username
+              useremail
+              hostname
+              ;
+          };
+        in
+        darwin.lib.darwinSystem {
+          inherit system specialArgs;
+          modules = [
+            ./modules/nix-core.nix
+            ./modules/system-darwin.nix
+            ./modules/apps.nix
+            ./modules/homebrew.nix
+            ./modules/host-users.nix
+
+            # home manager
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = false;
+              home-manager.useUserPackages = false;
+              home-manager.extraSpecialArgs = specialArgs;
+              home-manager.users.${username} = import ./home;
+              # home-manager.sharedModules = [ nur.hmModules.nur ];
+            }
+          ];
+        };
+
+      homeConfigurations.yzx =
+
+        let
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+
+          username = "yzx";
+          useremail = "yuan.zx@outlook.com";
+          hostname = "lab-gpuserver";
+          specialArgs = {
+            inherit
+              inputs
+              username
+              useremail
+              hostname
+              ;
+          };
+        in
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+
+          # Specify your home configuration modules here, for example,
+          # the path to your home.nix.
+          modules = [ ./home ];
+
+          # Optionally use extraSpecialArgs
+          # to pass through arguments to home.nix
+          extraSpecialArgs = specialArgs;
+        };
 
       # nix code formatter
-      formatter.${system} = nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
+      formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-rfc-style;
     };
 }

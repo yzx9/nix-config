@@ -27,8 +27,6 @@ in
       ])
       # customized apps
       ++ [
-        logseq
-        vaa3d-x
       ]
       # darwin will install these apps using homebrew
       ++ lib.optionals (!pkgs.stdenv.isDarwin) (
@@ -39,7 +37,9 @@ in
       )
       # darwin only
       ++ lib.optionals pkgs.stdenv.isDarwin [
+        vaa3d-x
         macism # IME mode detect
+        logseq
       ];
   };
 }
