@@ -1,8 +1,5 @@
 # just is a command runner, Justfile is very similar to Makefile, but simpler.
 
-# use nushell for shell commands
-set shell := ["nu", "-c"]
-
 default:
   @just --list
 
@@ -35,7 +32,7 @@ repl:
 
 # remove all generations older than 7 days
 clean:
-  sudo nix profile wipe-history --profile /nix/var/nix/profiles/system  --older-than 7d
+  sudo nix profile wipe-history --profile /nix/var/nix/profiles/system --older-than 7d
 
 # Garbage collect all unused nix store entries
 gc:
@@ -80,7 +77,7 @@ rebuild-dev:
 [macos]
 proxy mode="auto_switch":
   sudo python3 scripts/darwin_proxy.py {{mode}} http://127.0.0.1:10087
-  sleep 1sec
+  sleep 1
 
 
 ############################################################################
@@ -94,4 +91,4 @@ fmt:
   nix fmt
 
 path:
-   $env.PATH | split row ":"
+  echo $PATH | tr ':' '\n'
