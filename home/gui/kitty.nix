@@ -17,5 +17,7 @@ in
         background_opacity 0.75
       '';
     };
+
+    home.shellAliases.s = "kitten ssh";
   };
 }
