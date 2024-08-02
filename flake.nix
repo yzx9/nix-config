@@ -52,50 +52,45 @@
     let
       inherit (nixpkgs) lib;
 
+      username = "yzx9";
+      useremail = "yuan.zx@outlook.com";
       hosts = {
         yzx9-mbp = {
+          inherit username useremail;
           system = "aarch64-darwin";
-          username = "yzx9";
         };
         cvcd-gpu0 = {
+          inherit useremail;
           system = "x86_64-linux";
           username = "yzx";
         };
       };
-      useremail = "yuan.zx@outlook.com";
-      systems = lib.unique lib.attrValues (lib.mapAttrs (name: value: value.system) hosts);
+      systems = lib.unique lib.attrValues lib.mapAttrs (name: value: value.system) hosts;
 
       forEachHost =
         f:
         lib.mapAttrs (
           hostname: host:
+          let
+            specialArgs = {
+              inherit inputs hostname;
+              inherit (host) username useremail;
+            };
+          in
           f {
-            inherit hostname useremail;
-            inherit (host) system username;
+            inherit hostname specialArgs;
+            inherit (host) system;
             pkgs = nixpkgs.legacyPackages.${host.system};
+            hmSpecialArgs = builtins.removeAttrs specialArgs [ "hostname" ];
           }
         ) hosts;
       forEachSystem = f: lib.genAttrs systems (system: f { pkgs = nixpkgs.legacyPackages.${system}; });
     in
     {
       darwinConfigurations = forEachHost (
-        {
-          hostname,
-          system,
-          username,
-          useremail,
-          ...
-        }:
-        let
-          hmSpecialArgs = {
-            inherit inputs username useremail;
-          };
-          specialArgs = hmSpecialArgs // {
-            inherit hostname;
-          };
-        in
+        args:
         darwin.lib.darwinSystem {
-          inherit system specialArgs;
+          inherit (args) system specialArgs;
           modules = [
             ./modules/nix-core.nix
             ./modules/system-darwin.nix
@@ -108,7 +103,7 @@
             {
               home-manager.useGlobalPkgs = false;
               home-manager.useUserPackages = false;
-              home-manager.extraSpecialArgs = hmSpecialArgs;
+              home-manager.extraSpecialArgs = args.hmSpecialArgs;
               home-manager.users.${username} = import ./home;
               # home-manager.sharedModules = [ nur.hmModules.nur ];
             }
@@ -117,18 +112,7 @@
       );
 
       homeConfigurations = forEachHost (
-        {
-          username,
-          useremail,
-          pkgs,
-          ...
-        }:
-
-        let
-          hmSpecialArgs = {
-            inherit inputs username useremail;
-          };
-        in
+        { pkgs, hmSpecialArgs, ... }:
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
 
@@ -143,6 +127,6 @@
       );
 
       # nix code formatter
-      formatter = forEachSystem ({ pkgs, ... }: pkgs.nixfmt-rfc-style);
+      formsdfatter = forEachSystem ({ pkgs, ... }: pkgs.nixfmt-rfc-style);
     };
 }
