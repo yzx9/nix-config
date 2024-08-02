@@ -72,10 +72,10 @@
           f {
             inherit hostname useremail;
             inherit (host) system username;
-            pkgs = import nixpkgs { inherit (host) system; };
+            pkgs = nixpkgs.legacyPackages.${host.system};
           }
         ) hosts;
-      forEachSystem = f: lib.genAttrs systems (system: f { pkgs = import nixpkgs { inherit system; }; });
+      forEachSystem = f: lib.genAttrs systems (system: f { pkgs = nixpkgs.legacyPackages.${system}; });
     in
     {
       darwinConfigurations = forEachHost (
