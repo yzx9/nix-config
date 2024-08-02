@@ -53,8 +53,8 @@ gitgc:
 ############################################################################
 
 [linux]
-hm-rebuild:
-  home-manager switch --flake .
+hm-rebuild hostname:
+  home-manager switch --flake .#{{hostname}}
 
 
 ############################################################################

@@ -48,22 +48,50 @@
       home-manager,
       ...
     }:
-    {
-      darwinConfigurations.yzx9-mbp =
 
-        let
-          username = "yzx9";
-          useremail = "yuan.zx@outlook.com";
+    let
+      inherit (nixpkgs) lib;
+
+      hosts = {
+        yzx9-mbp = {
           system = "aarch64-darwin";
+          username = "yzx9";
+        };
+        cvcd-gpu0 = {
+          system = "x86_64-linux";
+          username = "yzx";
+        };
+      };
+      useremail = "yuan.zx@outlook.com";
+      systems = lib.unique lib.attrValues (lib.mapAttrs (name: value: value.system) hosts);
 
-          hostname = "${username}-mbp";
-          specialArgs = inputs // {
-            inherit
-              inputs
-              username
-              useremail
-              hostname
-              ;
+      forEachHost =
+        f:
+        lib.mapAttrs (
+          hostname: host:
+          f {
+            inherit hostname useremail;
+            inherit (host) system username;
+            pkgs = import nixpkgs { inherit (host) system; };
+          }
+        ) hosts;
+      forEachSystem = f: lib.genAttrs systems (system: f { pkgs = import nixpkgs { inherit system; }; });
+    in
+    {
+      darwinConfigurations = forEachHost (
+        {
+          hostname,
+          system,
+          username,
+          useremail,
+          ...
+        }:
+        let
+          hmSpecialArgs = {
+            inherit inputs username useremail;
+          };
+          specialArgs = hmSpecialArgs // {
+            inherit hostname;
           };
         in
         darwin.lib.darwinSystem {
@@ -80,28 +108,25 @@
             {
               home-manager.useGlobalPkgs = false;
               home-manager.useUserPackages = false;
-              home-manager.extraSpecialArgs = specialArgs;
+              home-manager.extraSpecialArgs = hmSpecialArgs;
               home-manager.users.${username} = import ./home;
               # home-manager.sharedModules = [ nur.hmModules.nur ];
             }
           ];
-        };
+        }
+      );
 
-      homeConfigurations.yzx =
+      homeConfigurations = forEachHost (
+        {
+          username,
+          useremail,
+          pkgs,
+          ...
+        }:
 
         let
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-
-          username = "yzx";
-          useremail = "yuan.zx@outlook.com";
-          hostname = "lab-gpuserver";
-          specialArgs = {
-            inherit
-              inputs
-              username
-              useremail
-              hostname
-              ;
+          hmSpecialArgs = {
+            inherit inputs username useremail;
           };
         in
         home-manager.lib.homeManagerConfiguration {
@@ -113,11 +138,11 @@
 
           # Optionally use extraSpecialArgs
           # to pass through arguments to home.nix
-          extraSpecialArgs = specialArgs;
-        };
+          extraSpecialArgs = hmSpecialArgs;
+        }
+      );
 
       # nix code formatter
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
-      formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-rfc-style;
+      formatter = forEachSystem ({ pkgs, ... }: pkgs.nixfmt-rfc-style);
     };
 }
