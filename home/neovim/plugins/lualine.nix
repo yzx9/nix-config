@@ -8,7 +8,11 @@
     enable = true;
     globalstatus = true;
     disabledFiletypes = {
-      statusline = [ "dashboard" "alpha" "starter" ];
+      statusline = [
+        "dashboard"
+        "alpha"
+        "starter"
+      ];
     };
     theme = {
       normal = {
@@ -78,12 +82,7 @@
           separator.left = "";
         }
       ];
-      lualine_z = [
-        {
-          name = "location";
-        }
-      ];
+      lualine_z = [ { name = "location"; } ];
     };
   };
 }
-

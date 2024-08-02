@@ -59,7 +59,11 @@
     # https://github.com/AstroNvim/AstroNvim/blob/v4.7.7/lua/astronvim/plugins/_astrocore_autocmds.lua#L49-L70
     {
       desc = "Save view with mkview for real files";
-      event = [ "BufWinLeave" "BufWritePost" "WinLeave" ];
+      event = [
+        "BufWinLeave"
+        "BufWritePost"
+        "WinLeave"
+      ];
       group = "autoview";
 
       callback.__raw = ''
@@ -92,7 +96,11 @@
     # https://github.com/AstroNvim/AstroNvim/blob/v4.7.7/lua/astronvim/plugins/_astrocore_autocmds.lua#L118-L122
     {
       desc = "Check if buffers changed on editor focus";
-      event = [ "FocusGained" "TermClose" "TermLeave" ];
+      event = [
+        "FocusGained"
+        "TermClose"
+        "TermLeave"
+      ];
       group = "checktime";
       command = "checktime";
     }

@@ -26,8 +26,7 @@ in
         yarr
       ])
       # customized apps
-      ++ [
-      ]
+      ++ [ ]
       # darwin will install these apps using homebrew
       ++ lib.optionals (!pkgs.stdenv.isDarwin) (
         with pkgs;

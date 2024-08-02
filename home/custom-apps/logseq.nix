@@ -30,7 +30,7 @@ stdenv.mkDerivation (
     hash = selectSystem {
       x86_64-linux = "sha256-cJcjUoZSpD87jy4GGIxMinZW4gxRZfcGO0GdGUGXI6g=";
       aarch64-linux = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-      x86_64-darwin =  "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+      x86_64-darwin = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
       aarch64-darwin = "sha256-ZOwLa4GKsqRJv9Cq5ElFeKwtJRoFdeXOJOeJmUUd9M0=";
     };
   in
@@ -59,9 +59,7 @@ stdenv.mkDerivation (
       if (!stdenv.isDarwin) then
         (
           let
-            appimageContents = appimageTools.extract {
-              inherit pname src version;
-            };
+            appimageContents = appimageTools.extract { inherit pname src version; };
           in
           ''
             runHook preInstall
@@ -98,12 +96,12 @@ stdenv.mkDerivation (
         '';
 
     postFixup = lib.optionalString (!stdenv.isDarwin) ''
-        # set the env "LOCAL_GIT_DIRECTORY" for dugite so that we can use the git in nixpkgs
-        makeWrapper ${lib.getBin electron} $out/bin/${pname} \
-          --set "LOCAL_GIT_DIRECTORY" ${git} \
-          --add-flags $out/share/${pname}/resources/app \
-          --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations}}"
-      '';
+      # set the env "LOCAL_GIT_DIRECTORY" for dugite so that we can use the git in nixpkgs
+      makeWrapper ${lib.getBin electron} $out/bin/${pname} \
+        --set "LOCAL_GIT_DIRECTORY" ${git} \
+        --add-flags $out/share/${pname}/resources/app \
+        --add-flags "\''${NIXOS_OZONE_WL:+\''${WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations}}"
+    '';
 
     passthru.updateScript = nix-update-script { };
 

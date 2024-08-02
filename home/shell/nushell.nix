@@ -1,4 +1,6 @@
-{...}: {  programs.nushell = {
+{ ... }:
+{
+  programs.nushell = {
     enable = true;
     extraConfig = ''
       let carapace_completer = {|spans|
