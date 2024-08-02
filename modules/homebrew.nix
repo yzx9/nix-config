@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ config, lib, ... }:
 
 let
   # Homebrew Mirror
@@ -45,41 +45,45 @@ in
     brews = [ ];
 
     # `brew install --cask`
-    casks = [
-      # system
-      "middleclick"
-      "snipaste"
-      "maccy"
-      "logitech-options"
-      "sfm"
-      "firefox"
-      "google-chrome"
-      "microsoft-edge"
-      "vmware-fusion"
-      "steam"
-      "raspberry-pi-imager"
-      "canon-ufrii-driver"
+    casks =
+      [
+        "docker" # nixpkgs docker is breaked, see: https://github.com/LnL7/nix-darwin/issues/112
+      ]
+      ++ lib.optionals config.gui.enable [
+        # system
+        "middleclick"
+        "snipaste"
+        "maccy"
+        "logitech-options"
+        "sfm"
+        "firefox"
+        "google-chrome"
+        "microsoft-edge"
+        "vmware-fusion"
+        "steam"
+        "raspberry-pi-imager"
+        "canon-ufrii-driver"
+        "manico"
 
-      # dev
-      "docker" # nixpkgs docker is breaked, see: https://github.com/LnL7/nix-darwin/issues/112
-      "visual-studio-code"
+        # dev
+        "visual-studio-code"
 
-      # science
-      "zotero"
-      # "master-pdf-editor"
-      "eudic"
-      "fiji"
+        # science
+        "zotero"
+        # "master-pdf-editor"
+        "eudic"
+        "fiji"
 
-      # design
-      "blender"
-      "krita"
-      "inkscape"
-      # "preform"
-      # "ideamaker"
+        # design
+        "blender"
+        "krita"
+        "inkscape"
+        # "preform"
+        # "ideamaker"
 
-      # ldap
-      "apache-directory-studio"
-      "oracle-jdk" # required by apache-directory-studio
-    ];
+        # ldap
+        "apache-directory-studio"
+        "oracle-jdk" # required by apache-directory-studio
+      ];
   };
 }

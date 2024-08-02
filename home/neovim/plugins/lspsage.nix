@@ -93,7 +93,7 @@ in
     keymaps = [
       {
         mode = "n";
-        key = "gd";
+        key = "fd";
         action = "<cmd>Lspsaga finder def<CR>";
         options = {
           desc = "Goto Definition";
@@ -101,19 +101,19 @@ in
         };
       }
 
-      # {
-      #   mode = "n";
-      #   key = "gD";
-      #   action = "<cmd>Lspsaga show_line_diagnostics<CR>";
-      #   options = {
-      #     desc = "Goto Declaration";
-      #     silent = true;
-      #   };
-      # }
+      {
+        mode = "n";
+        key = "gD";
+        action = "<cmd>Lspsaga show_line_diagnostics<CR>";
+        options = {
+          desc = "Goto Declaration";
+          silent = true;
+        };
+      }
 
       {
         mode = "n";
-        key = "gr";
+        key = "fr";
         action = "<cmd>Lspsaga finder ref<CR>";
         options = {
           desc = "Goto References";
@@ -123,7 +123,7 @@ in
 
       {
         mode = "n";
-        key = "gI";
+        key = "fI";
         action = "<cmd>Lspsaga finder imp<CR>";
         options = {
           desc = "Goto Implementation";
@@ -133,7 +133,7 @@ in
 
       {
         mode = "n";
-        key = "gT";
+        key = "fT";
         action = "<cmd>Lspsaga peek_type_definition<CR>";
         options = {
           desc = "Type Definition";
@@ -153,7 +153,7 @@ in
 
       {
         mode = "n";
-        key = "<leader>cw";
+        key = "<leader>lo";
         action = "<cmd>Lspsaga outline<CR>";
         options = {
           desc = "Outline";
@@ -163,7 +163,7 @@ in
 
       {
         mode = "n";
-        key = "<leader>cr";
+        key = "<leader>lr";
         action = "<cmd>Lspsaga rename<CR>";
         options = {
           desc = "Rename";
@@ -173,7 +173,7 @@ in
 
       {
         mode = "n";
-        key = "<leader>ca";
+        key = "<leader>la";
         action = "<cmd>Lspsaga code_action<CR>";
         options = {
           desc = "Code Action";
@@ -183,7 +183,7 @@ in
 
       {
         mode = "n";
-        key = "<leader>cd";
+        key = "<leader>ld";
         action = "<cmd>Lspsaga show_line_diagnostics<CR>";
         options = {
           desc = "Line Diagnostics";

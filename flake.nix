@@ -1,5 +1,5 @@
 {
-  description = "Nix for macOS configuration";
+  description = "yzx9's nix configuration";
 
   ## the nixConfig here only affects the flake itself, not the system configuration!
   ##
@@ -65,13 +65,13 @@
           username = "yzx";
         };
       };
-      systems = lib.unique lib.attrValues lib.mapAttrs (name: value: value.system) hosts;
 
-      forEachHost =
-        f:
-        lib.mapAttrs (
-          hostname: host:
+      genConfigurations =
+        hostnames: f:
+        lib.genAttrs hostnames (
+          hostname:
           let
+            host = hosts.${hostname};
             specialArgs = {
               inherit inputs hostname;
               inherit (host) username useremail;
@@ -80,18 +80,23 @@
           f {
             inherit hostname specialArgs;
             inherit (host) system;
+
             pkgs = nixpkgs.legacyPackages.${host.system};
             hmSpecialArgs = builtins.removeAttrs specialArgs [ "hostname" ];
+            modules = [ ./hosts/${hostname}.nix ];
           }
-        ) hosts;
+        );
+
+      systems = lib.unique lib.attrValues lib.mapAttrs (name: value: value.system) hosts;
       forEachSystem = f: lib.genAttrs systems (system: f { pkgs = nixpkgs.legacyPackages.${system}; });
     in
     {
-      darwinConfigurations = forEachHost (
+      darwinConfigurations = genConfigurations [ "yzx9-mbp" ] (
         args:
         darwin.lib.darwinSystem {
           inherit (args) system specialArgs;
-          modules = [
+          modules = args.modules ++ [
+            ./options.nix
             ./modules/nix-core.nix
             ./modules/system-darwin.nix
             ./modules/apps.nix
@@ -105,24 +110,27 @@
               home-manager.useUserPackages = false;
               home-manager.extraSpecialArgs = args.hmSpecialArgs;
               home-manager.users.${username} = import ./home;
-              # home-manager.sharedModules = [ nur.hmModules.nur ];
+              home-manager.sharedModules = [ ./options.nix ] ++ args.modules;
             }
           ];
         }
       );
 
-      homeConfigurations = forEachHost (
-        { pkgs, hmSpecialArgs, ... }:
+      homeConfigurations = genConfigurations [ "cvcd-gpu0" ] (
+        args:
         home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
+          inherit (args) pkgs;
 
           # Specify your home configuration modules here, for example,
           # the path to your home.nix.
-          modules = [ ./home ];
+          modules = [
+            ./home
+            ./options.nix
+          ] ++ args.modules;
 
           # Optionally use extraSpecialArgs
           # to pass through arguments to home.nix
-          extraSpecialArgs = hmSpecialArgs;
+          extraSpecialArgs = args.hmSpecialArgs;
         }
       );
 
