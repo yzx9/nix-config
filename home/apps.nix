@@ -6,38 +6,50 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = with pkgs; [
-    # You can also create simple shell scripts directly inside your
-    # configuration. For example, this adds a command 'my-hello' to your
-    # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
+  home.packages =
+    (with pkgs; [
+      # You can also create simple shell scripts directly inside your
+      # configuration. For example, this adds a command 'my-hello' to your
+      # environment:
+      # (pkgs.writeShellScriptBin "my-hello" ''
+      #   echo "Hello, ${config.home.username}!"
+      # '')
 
-    # shell tools
-    ncurses
-    bat
-    wget
-    curl
-    unzip
-    yazi
-    tree
+      # system
+      util-linux
+      dosfstools # fat filesystem
+      e2fsprogs # ext filesystem
 
-    # networking tools
-    # iputils
-    mtr # a network diagnostic tool
-    iperf3 # the ultimate speed test tool
-    dnsutils # `dig` + `nslookup`
-    ldns # replacement of `dig`, it provide the command `drill`
-    socat # replacement of openbsd-netcat
-    nmap # a utility for network discovery and security auditing
-    ipcalc # it is a calculator for the IPv4/v6 addresses
+      # shell tools
+      ncurses
+      bat
+      wget
+      curl
+      unzip
+      tree
 
-    # misc
-    age
-    neofetch
-    just
-    gopass
-    ffmpeg
-  ];
+      # networking tools
+      # iputils
+      mtr # a network diagnostic tool
+      iperf3 # the ultimate speed test tool
+      dnsutils # `dig` + `nslookup`
+      ldns # replacement of `dig`, it provide the command `drill`
+      socat # replacement of openbsd-netcat
+      nmap # a utility for network discovery and security auditing
+      ipcalc # it is a calculator for the IPv4/v6 addresses
+
+      # misc
+      age
+      neofetch
+      just
+      gopass
+      ffmpeg
+    ])
+    ++ lib.optionals pkgs.stdenv.isDarwin (with pkgs; [ stats ]);
+
+  programs.yazi = {
+    enable = true;
+    enableBashIntegration = true;
+    enableZshIntegration = true;
+  };
 }
