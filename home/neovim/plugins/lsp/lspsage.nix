@@ -103,7 +103,7 @@ in
 
       {
         mode = "n";
-        key = "gD";
+        key = "fD";
         action = "<cmd>Lspsaga show_line_diagnostics<CR>";
         options = {
           desc = "Goto Declaration";

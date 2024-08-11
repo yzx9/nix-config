@@ -16,7 +16,7 @@
   DefaultFile = "󰈙";
   Diagnostic = "󰒡";
   DiagnosticError = "";
-  DiagnosticHint = "💡"; # 󰌵
+  DiagnosticHint = "󰌵"; # 💡
   DiagnosticInfo = "󰋼";
   DiagnosticWarn = "";
   Ellipsis = "…";

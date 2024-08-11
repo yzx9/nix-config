@@ -3,6 +3,9 @@
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/lualine/index.html
 { ... }:
 
+let
+  icons = import ../../icons.nix;
+in
 {
   programs.nixvim.plugins.lualine = {
     enable = true;
@@ -44,7 +47,7 @@
       lualine_b = [
         {
           name = "branch";
-          icon = "";
+          icon = icons.GitBranch; # 
         }
         "diff"
       ];
@@ -53,10 +56,10 @@
           name = "diagnostic";
           extraConfig = {
             symbols = {
-              error = " ";
-              warn = " ";
-              info = " ";
-              hint = "󰝶 ";
+              error = icons.DiagnosticError; # " "
+              warn = icons.DiagnosticWarn; # " "
+              info = icons.DiagnosticInfo; # " "
+              hint = icons.DiagnosticHint; # "󰝶 "
             };
           };
         }
@@ -74,7 +77,7 @@
           name = "filename";
           extraConfig = {
             symbols = {
-              modified = "";
+              modified = icons.FileModified; # " "
               readonly = "";
               unnamed = "";
             };

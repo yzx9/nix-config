@@ -1,4 +1,4 @@
-# Autopairs for neovim written in lua 
+# Autopairs for neovim written in lua
 # Homepage: https://github.com/windwp/nvim-autopairs
 { pkgs, ... }:
 

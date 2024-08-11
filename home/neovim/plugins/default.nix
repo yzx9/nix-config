@@ -12,17 +12,21 @@
     ./lsp/ts-context-commentstring.nix
     ./ui/btw.nix
     ./ui/bufferline.nix
+    ./ui/dressing.nix
+    ./ui/gitsigns.nix
+    ./ui/indent-blankline.nix
     ./ui/lualine.nix
     ./ui/neo-tree.nix
+    ./ui/nvim-highlight-colors.nix
+    ./ui/nvim-ufo.nix
+    ./ui/todo-comments.nix
     ./ui/which-key.nix
-    ./autopairs.nix
-    ./cmp.nix
-    ./fidget.nix
-    ./gitsigns.nix
-    ./illuminate.nix
-    ./lazygit.nix
-    ./telescope.nix
-    ./todo-comments.nix
-    ./toggleterm.nix
+    ./ux/autopairs.nix
+    ./ux/cmp.nix
+    ./ux/fidget.nix
+    ./ux/illuminate.nix
+    ./ux/lazygit.nix
+    ./ux/telescope.nix
+    ./ux/toggleterm.nix
   ];
 }

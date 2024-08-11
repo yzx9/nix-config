@@ -40,14 +40,17 @@
     # Expand <Tab> to spaces
     expandtab = true;
 
-    # Disable `~` on nonexistent lines
     fillchars = {
-      eob = " ";
+      eob = " "; # Disable `~` on nonexistent lines
+      fold = " ";
+      foldopen = "";
+      foldsep = " ";
+      foldclose = "";
     };
 
     # Enable fold with all code unfolded
-    foldcolumn = "1";
-    foldenable = true;
+    foldcolumn = "0";
+    foldenable = true; # Using ufo provider need a large value, feel free to decrease the value
     foldlevel = 99;
     foldlevelstart = 99;
 
