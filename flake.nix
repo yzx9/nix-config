@@ -55,38 +55,55 @@
     let
       inherit (nixpkgs) lib;
 
-      username = "yzx9";
-      useremail = "yuan.zx@outlook.com";
-      hosts = {
-        yzx9-mbp = {
-          inherit username useremail;
-          system = "aarch64-darwin";
-        };
-        cvcd-gpu0 = {
-          inherit useremail;
-          system = "x86_64-linux";
-          username = "yzx";
+      toHostAttrs =
+        list:
+        lib.listToAttrs (
+          lib.forEach list (v: {
+            name = v.hostname;
+            value = v;
+          })
+        );
+
+      yzx9 = {
+        name = "yzx9";
+        nickname = "yzx9";
+        email = "yuan.zx@outlook.com";
+        gpg = {
+          key = "0xC2DD1916FE471BE2";
         };
       };
+
+      hosts = toHostAttrs [
+        {
+          hostname = "yzx9-mbp";
+          system = "aarch64-darwin";
+          user = yzx9;
+        }
+        {
+          hostname = "cvcd-gpu0";
+          system = "x86_64-linux";
+          user = yzx9 // {
+            name = "yzx";
+          };
+        }
+      ];
 
       genConfigurations =
         hostnames: f:
         lib.genAttrs hostnames (
           hostname:
           let
-            host = hosts.${hostname};
+            vars = hosts.${hostname};
             specialArgs = {
-              inherit inputs hostname;
-              inherit (host) username useremail;
+              inherit inputs vars;
             };
+            modules = [ ./hosts/${vars.hostname}.nix ];
           in
           f {
-            inherit hostname specialArgs;
-            inherit (host) system;
-
-            pkgs = nixpkgs.legacyPackages.${host.system};
-            hmSpecialArgs = builtins.removeAttrs specialArgs [ "hostname" ];
-            modules = [ ./hosts/${hostname}.nix ];
+            inherit vars specialArgs modules;
+            pkgs = nixpkgs.legacyPackages.${vars.system};
+            hmSpecialArgs = specialArgs;
+            hmModules = modules;
           }
         );
 
@@ -94,10 +111,12 @@
       forEachSystem = f: lib.genAttrs systems (system: f { pkgs = nixpkgs.legacyPackages.${system}; });
     in
     {
+      a = 1;
       darwinConfigurations = genConfigurations [ "yzx9-mbp" ] (
         args:
         darwin.lib.darwinSystem {
-          inherit (args) system specialArgs;
+          inherit (args) specialArgs;
+          system = args.vars.system;
           modules = args.modules ++ [
             ./options.nix
             ./modules/nix-core.nix
@@ -112,8 +131,8 @@
               home-manager.useGlobalPkgs = false;
               home-manager.useUserPackages = false;
               home-manager.extraSpecialArgs = args.hmSpecialArgs;
-              home-manager.users.${username} = import ./home;
-              home-manager.sharedModules = args.modules ++ [ ./options.nix ];
+              home-manager.users.${args.vars.user.name} = import ./home;
+              home-manager.sharedModules = args.hmModules ++ [ ./options.nix ];
             }
           ];
         }
@@ -124,15 +143,11 @@
         home-manager.lib.homeManagerConfiguration {
           inherit (args) pkgs;
 
-          # Specify your home configuration modules here, for example,
-          # the path to your home.nix.
-          modules = args.modules ++ [
+          modules = args.hmModules ++ [
             ./home
             ./options.nix
           ];
 
-          # Optionally use extraSpecialArgs
-          # to pass through arguments to home.nix
           extraSpecialArgs = args.hmSpecialArgs;
         }
       );

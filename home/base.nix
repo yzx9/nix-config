@@ -1,15 +1,18 @@
 {
+  vars,
   pkgs,
   lib,
-  username,
   ...
 }:
 
+let
+  username = vars.user.name;
+in
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home = {
-    username = username;
+    inherit username;
     homeDirectory = (
       lib.optionalString pkgs.stdenv.isLinux "/home/${username}"
       + lib.optionalString pkgs.stdenv.isDarwin "/Users/${username}"

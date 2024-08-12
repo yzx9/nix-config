@@ -1,9 +1,4 @@
-{
-  username,
-  useremail,
-  lib,
-  ...
-}:
+{ vars, lib, ... }:
 
 {
   # git
@@ -19,8 +14,8 @@
     enable = true;
     lfs.enable = true;
 
-    userName = username;
-    userEmail = useremail;
+    userName = vars.user.nickname;
+    userEmail = vars.user.email;
 
     # includes = [
     #   {
@@ -37,7 +32,7 @@
     };
 
     signing = {
-      key = "0xC2DD1916FE471BE2";
+      key = vars.user.gpg.key;
       signByDefault = true;
     };
 
