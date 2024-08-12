@@ -1,10 +1,7 @@
 # homepage: https://github.com/nvim-telescope/telescope.nvim
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/telescope/index.html
-{ pkgs, config, ... }:
+{ config, pkgs, ... }:
 
-let
-  inherit (config.nixvim) helpers;
-in
 {
   programs.nixvim = {
     plugins.telescope = {
@@ -73,10 +70,14 @@ in
             extension ? null,
             mode ? "n",
           }:
+
+          let
+            inherit (config.lib.nixvim) toLuaObject;
+          in
           {
             inherit key mode;
 
-            action.__raw = "function() TelescopeWithTheme('${fn}', ${helpers.toLuaObject args}, '${builtins.toString extension}') end";
+            action.__raw = "function() TelescopeWithTheme('${fn}', ${toLuaObject args}, '${builtins.toString extension}') end";
             options = {
               inherit desc;
             };

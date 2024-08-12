@@ -11,8 +11,14 @@ in
 
       keymaps = {
         diagnostic = {
-          "<leader>j" = "goto_next";
-          "<leader>k" = "goto_prev";
+          "<leader>j" = {
+            action = "goto_next";
+            desc = "Go to next diagnostic";
+          };
+          "<leader>k" = {
+            action = "goto_prev";
+            desc = "Go to prev diagnostic";
+          };
         };
 
         lspBuf = {

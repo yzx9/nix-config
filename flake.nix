@@ -31,7 +31,10 @@
 
     nixvim = {
       url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
     };
   };
 
@@ -110,7 +113,7 @@
               home-manager.useUserPackages = false;
               home-manager.extraSpecialArgs = args.hmSpecialArgs;
               home-manager.users.${username} = import ./home;
-              home-manager.sharedModules = [ ./options.nix ] ++ args.modules;
+              home-manager.sharedModules = args.modules ++ [ ./options.nix ];
             }
           ];
         }
@@ -123,10 +126,10 @@
 
           # Specify your home configuration modules here, for example,
           # the path to your home.nix.
-          modules = [
+          modules = args.modules ++ [
             ./home
             ./options.nix
-          ] ++ args.modules;
+          ];
 
           # Optionally use extraSpecialArgs
           # to pass through arguments to home.nix
