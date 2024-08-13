@@ -74,14 +74,9 @@ in
       '';
 
       servers = {
-        dockerls.enable = true;
-        docker-compose-language-service.enable = true;
-
         gopls.enable = true;
 
-        lua-ls.enable = true;
-
-        nginx-language-server.enable = true;
+        clangd.enable = true;
 
         nixd.enable = true;
 
@@ -120,6 +115,11 @@ in
 
         jsonls.enable = true;
         yamlls.enable = true;
+
+        # dockerls.enable = true;
+        # docker-compose-language-service.enable = true;
+        # lua-ls.enable = true;
+        # nginx-language-server.enable = true;
 
         typos-lsp = {
           enable = true;
