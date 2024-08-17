@@ -15,6 +15,7 @@ in
       #};
       extraConfig = ''
         background_opacity 0.75
+        macos_show_window_title_in window
       '';
     };
 

@@ -28,6 +28,13 @@ in
           "lazygit"
         ];
 
+        triggers = [
+          {
+            __unkeyed-1 = "<auto>";
+            mode = "nixsoc";
+          }
+        ];
+
         # Customize section names (prefixed mappings)
         spec = [
           {

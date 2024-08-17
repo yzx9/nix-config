@@ -23,6 +23,7 @@
     ./ui/which-key.nix
     ./ux/autopairs.nix
     ./ux/cmp.nix
+    ./ux/copilot.nix
     ./ux/fidget.nix
     ./ux/illuminate.nix
     ./ux/lazygit.nix
