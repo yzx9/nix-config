@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ vars, ... }:
+{ vars, pkgs, ... }:
 
 {
 
@@ -64,6 +64,25 @@
   networking.firewall.allowedUDPPorts = [ ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users =
+    let
+      username = vars.user.name;
+    in
+    {
+      ${username} = {
+        home = "/home/${username}";
+        description = username;
+        isNormalUser = true;
+        extraGroups = [
+          "networkmanager"
+          "wheel"
+        ];
+        # packages = with pkgs; [];
+      };
+    };
+  users.defaultUserShell = pkgs.zsh;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

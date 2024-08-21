@@ -4,7 +4,7 @@ let
   cfg = config.nvidia;
 in
 {
-  config = lib.optionalAttrs cfg.enable {
+  config = lib.mkIf cfg.enable {
     # Allow unfree packages
     nixpkgs.config.allowUnfreePredicate =
       pkg:

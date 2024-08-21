@@ -45,7 +45,6 @@
   # The `@` syntax here is used to alias the attribute set of the inputs's parameter, making it convenient to use inside the function.
   outputs =
     inputs@{
-      self,
       nixpkgs,
       darwin,
       home-manager,
@@ -93,7 +92,7 @@
         }
       ];
 
-      genConfigurations =
+      forHosts =
         hostnames: f:
         lib.genAttrs hostnames (
           hostname:
@@ -106,9 +105,17 @@
           f {
             inherit vars specialArgs;
             pkgs = nixpkgs.legacyPackages.${vars.system};
-            modules = [ ./options.nix ./hosts/${vars.hostname}/config.nix ./hosts/${vars.hostname}/host.nix ];
+            modules = [
+              ./options.nix
+              ./hosts/${vars.hostname}/config.nix
+              ./hosts/${vars.hostname}/host.nix
+            ];
             hmSpecialArgs = specialArgs;
-            hmModules = [ ./options.nix ./hosts/${vars.hostname}/config.nix ./hosts/${vars.hostname}/home.nix ];
+            hmModules = [
+              ./options.nix
+              ./hosts/${vars.hostname}/config.nix
+              ./hosts/${vars.hostname}/home.nix
+            ];
           }
         );
 
@@ -116,7 +123,7 @@
       forEachSystem = f: lib.genAttrs systems (system: f { pkgs = nixpkgs.legacyPackages.${system}; });
     in
     {
-      nixosConfigurations = genConfigurations [ "yzx9-ws" ] (
+      nixosConfigurations = forHosts [ "yzx9-ws" ] (
         args:
         nixpkgs.lib.nixosSystem {
           inherit (args) specialArgs;
@@ -125,7 +132,6 @@
             ./modules/nix-core.nix
             ./modules/system-linux.nix
             ./modules/apps.nix
-            ./modules/host-users.nix
 
             # home manager
             home-manager.nixosModules.home-manager
@@ -140,7 +146,7 @@
         }
       );
 
-      darwinConfigurations = genConfigurations [ "yzx9-mbp" ] (
+      darwinConfigurations = forHosts [ "yzx9-mbp" ] (
         args:
         darwin.lib.darwinSystem {
           inherit (args) specialArgs;
@@ -150,7 +156,6 @@
             ./modules/system-darwin.nix
             ./modules/apps.nix
             ./modules/homebrew.nix
-            ./modules/host-users.nix
 
             # home manager
             home-manager.darwinModules.home-manager
@@ -165,7 +170,7 @@
         }
       );
 
-      homeConfigurations = genConfigurations [ "cvcd-gpu0" ] (
+      homeConfigurations = forHosts [ "cvcd-gpu0" ] (
         args:
         home-manager.lib.homeManagerConfiguration {
           inherit (args) pkgs;

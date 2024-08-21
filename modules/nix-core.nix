@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  vars,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   nix.settings = {
@@ -15,10 +20,12 @@
     ];
     trusted-public-keys = [ "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" ];
     builders-use-substitutes = true;
+
+    trusted-users = [ vars.user.name ];
   };
 
   # Auto upgrade nix package and the daemon service.
-  # services.nix-daemon.enable = true;
+  services = lib.mkIf pkgs.stdenv.isDarwin { nix-daemon.enable = true; };
   nix.package = pkgs.nix;
 
   # do garbage collection weekly to keep disk usage low
@@ -30,7 +37,5 @@
   # Disable auto-optimise-store because of this issue:
   #   https://github.com/NixOS/nix/issues/7273
   # "error: cannot link '/nix/store/.tmp-link-xxxxx-xxxxx' to '/nix/store/.links/xxxx': File exists"
-  nix.settings = {
-    auto-optimise-store = false;
-  };
+  nix.settings.auto-optimise-store = false;
 }

@@ -53,4 +53,14 @@
     enable = true;
     enableSSHSupport = true;
   };
+
+  users.users =
+    let
+      username = vars.user.name;
+    in
+    {
+      ${username} = {
+        home = "/Users/${username}";
+      };
+    };
 }
