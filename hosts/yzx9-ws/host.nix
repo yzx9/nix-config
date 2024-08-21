@@ -4,6 +4,8 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+
+    ./nvidia.nix
   ];
 
   # Configure network proxy if necessary
