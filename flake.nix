@@ -80,6 +80,11 @@
           user = yzx9;
         }
         {
+          hostname = "yzx9-ws";
+          system = "x86_64-linux";
+          user = yzx9;
+        }
+        {
           hostname = "cvcd-gpu0";
           system = "x86_64-linux";
           user = yzx9 // {
@@ -97,13 +102,13 @@
             specialArgs = {
               inherit inputs vars;
             };
-            modules = [ ./hosts/${vars.hostname}.nix ];
           in
           f {
-            inherit vars specialArgs modules;
+            inherit vars specialArgs;
             pkgs = nixpkgs.legacyPackages.${vars.system};
+            modules = [ ./options.nix ./hosts/${vars.hostname}/config.nix ./hosts/${vars.hostname}/host.nix ];
             hmSpecialArgs = specialArgs;
-            hmModules = modules;
+            hmModules = [ ./options.nix ./hosts/${vars.hostname}/config.nix ./hosts/${vars.hostname}/home.nix ];
           }
         );
 
@@ -111,14 +116,36 @@
       forEachSystem = f: lib.genAttrs systems (system: f { pkgs = nixpkgs.legacyPackages.${system}; });
     in
     {
-      a = 1;
+      nixosConfigurations = genConfigurations [ "yzx9-ws" ] (
+        args:
+        nixpkgs.lib.nixosSystem {
+          inherit (args) specialArgs;
+          system = args.vars.system;
+          modules = args.modules ++ [
+            ./modules/nix-core.nix
+            ./modules/system-linux.nix
+            ./modules/apps.nix
+            ./modules/host-users.nix
+
+            # home manager
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = false;
+              home-manager.useUserPackages = false;
+              home-manager.extraSpecialArgs = args.hmSpecialArgs;
+              home-manager.users.${args.vars.user.name} = import ./home;
+              home-manager.sharedModules = args.hmModules;
+            }
+          ];
+        }
+      );
+
       darwinConfigurations = genConfigurations [ "yzx9-mbp" ] (
         args:
         darwin.lib.darwinSystem {
           inherit (args) specialArgs;
           system = args.vars.system;
           modules = args.modules ++ [
-            ./options.nix
             ./modules/nix-core.nix
             ./modules/system-darwin.nix
             ./modules/apps.nix
@@ -132,7 +159,7 @@
               home-manager.useUserPackages = false;
               home-manager.extraSpecialArgs = args.hmSpecialArgs;
               home-manager.users.${args.vars.user.name} = import ./home;
-              home-manager.sharedModules = args.hmModules ++ [ ./options.nix ];
+              home-manager.sharedModules = args.hmModules;
             }
           ];
         }

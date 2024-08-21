@@ -7,7 +7,12 @@
 #
 ###################################################################################
 
-{ pkgs, lib, ... }:
+{
+  vars,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   system = {
@@ -25,6 +30,10 @@
 
   # Add ability to used TouchID for sudo authentication
   security.pam.enableSudoTouchIdAuth = true;
+
+  networking.hostName = vars.hostname;
+  networking.computerName = vars.hostname;
+  system.defaults.smb.NetBIOSName = vars.hostname;
 
   # Create /etc/zshrc that loads the nix-darwin environment.
   # this is required if you want to use darwin's default shell - zsh

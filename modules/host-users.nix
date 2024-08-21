@@ -15,17 +15,23 @@ let
   username = vars.user.name;
 in
 {
-  networking.hostName = vars.hostname;
-  networking.computerName = vars.hostname;
-  system.defaults.smb.NetBIOSName = vars.hostname;
+  users.defaultUserShell = pkgs.zsh;
 
-  users.users.${username} = {
-    home = (
-      lib.optionalString pkgs.stdenv.isLinux "/home/${username}"
-      + lib.optionalString pkgs.stdenv.isDarwin "/Users/${username}"
-    );
-    description = username;
-  };
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.${username} =
+    {
+      description = username;
+    }
+    // lib.optionalAttrs pkgs.stdenv.isLinux {
+      home = "/home/${username}";
+      isNormalUser = true;
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+      ];
+      # packages = with pkgs; [];
+    }
+    // lib.optionalAttrs pkgs.stdenv.isDarwin { home = "/Users/${username}"; };
 
   nix.settings.trusted-users = [ username ];
 }

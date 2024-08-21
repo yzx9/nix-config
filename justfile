@@ -53,6 +53,14 @@ gitgc:
 ############################################################################
 
 [linux]
+rebuild:
+  sudo nixos-rebuild switch --flake .
+
+[linux]
+rebuild-dev:
+  sudo nixos-rebuild switch --show-trace --flake .
+
+[linux]
 hm-rebuild hostname = `hostname`:
   home-manager switch --flake .#{{hostname}}
 
