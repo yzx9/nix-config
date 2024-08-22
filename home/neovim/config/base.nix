@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
   programs.nixvim = {
@@ -17,11 +17,28 @@
     # Setup clipboard support
     clipboard = {
       # Use xsel as clipboard provider
-      providers.xsel.enable = true;
+      # providers.xsel.enable = true;
 
       # Sync system clipboard
-      register = if (pkgs.stdenv.isLinux) then "unnamedplus" else "unnamed";
+      register = "unnamedplus";
     };
+
+    extraConfigLua = ''
+      if (os.getenv('SSH_TTY') ~= nil)
+      then
+        vim.g.clipboard = {
+          name = 'OSC 52',
+          copy = {
+            ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+            ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+          },
+          paste = {
+            ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+            ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+          },
+        }
+      end
+    '';
   };
 
   home.shellAliases.v = "nvim";
