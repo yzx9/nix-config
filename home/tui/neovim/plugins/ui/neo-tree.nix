@@ -54,9 +54,10 @@ in
 
           # Copy various path format of currently focused item
           # https://github.com/AstroNvim/AstroNvim/blob/v4.7.7/lua/astronvim/plugins/neo-tree.lua#L136-L168
+          # modified to use vim.notify instead
           copy_selector.__raw = ''
             function(state)
-              local notify = require("astrocore").notify
+              local notify = vim.notify
               local node = state.tree:get_node()
               local filepath = node:get_id()
               local filename = node.name

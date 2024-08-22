@@ -1,7 +1,12 @@
-{ pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
-  cfg = cfg.gui;
+  cfg = config.gui;
 in
 {
   config = lib.mkIf cfg.enable {

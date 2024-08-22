@@ -29,14 +29,5 @@
 
       require("cmp").event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done { tex = false })
     '';
-
-    keymaps = [
-      {
-        mode = "n";
-        key = "<leader>ua";
-        action.__raw = "function() require('astrocore.toggles').autopairs() end";
-        options.desc = "Toggle autopairs";
-      }
-    ];
   };
 }

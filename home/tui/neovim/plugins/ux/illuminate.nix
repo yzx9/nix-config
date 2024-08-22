@@ -16,11 +16,6 @@
       ];
       largeFileOverrides.providers = [ "lsp" ];
       minCountToHighlight = 2;
-
-      extraOptions = {
-        largeFileCutoff.__raw = "vim.tbl_get(require 'astrocore', 'config', 'features', 'large_buf', 'lines')";
-        should_enable.__raw = "function(bufnr) return require('astrocore.buffer').is_valid(bufnr) end";
-      };
     };
 
     keymaps = [

@@ -1,3 +1,6 @@
+# Extensible UI for Neovim notifications and LSP progress messages.
+# homepage: https://github.com/j-hui/fidget.nvim
+# nixvim doc: https://nix-community.github.io/nixvim/plugins/fidget/index.html
 { ... }:
 
 {

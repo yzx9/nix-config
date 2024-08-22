@@ -20,7 +20,6 @@
     ./ui/nvim-highlight-colors.nix
     ./ui/nvim-ufo.nix
     ./ui/todo-comments.nix
-    ./ui/which-key.nix
     ./ux/autopairs.nix
     ./ux/cmp.nix
     ./ux/copilot.nix
@@ -29,5 +28,6 @@
     ./ux/lazygit.nix
     ./ux/telescope.nix
     ./ux/toggleterm.nix
+    ./ux/which-key.nix
   ];
 }
