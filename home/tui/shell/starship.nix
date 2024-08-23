@@ -7,7 +7,6 @@
 
     enableBashIntegration = true;
     enableZshIntegration = true;
-    enableNushellIntegration = true;
 
     settings = {
       character = {

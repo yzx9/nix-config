@@ -32,6 +32,5 @@
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
-    enableNushellIntegration = true;
   };
 }

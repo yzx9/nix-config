@@ -155,8 +155,5 @@
 
     # Disable making a backup before overwriting a file
     writebackup = false;
-
-    # Default shell
-    #shell = "${pkgs.nushell}/bin/nu";
   };
 }
