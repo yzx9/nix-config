@@ -132,6 +132,7 @@
             ./modules/nix-core.nix
             ./modules/system-linux.nix
             ./modules/apps.nix
+            ./modules/nvidia.nix
 
             # home manager
             home-manager.nixosModules.home-manager
