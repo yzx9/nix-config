@@ -8,9 +8,9 @@
 let
   cfg = config.gui;
 
-  logseq = pkgs.callPackage ../custom-apps/logseq.nix { };
-  macism = pkgs.callPackage ../custom-apps/macism.nix { };
-  vaa3d-x = pkgs.callPackage ../custom-apps/vaa3d-x.nix { };
+  logseq = pkgs.callPackage ./pkgs/logseq.nix { };
+  macism = pkgs.callPackage ./pkgs/macism.nix { };
+  vaa3d-x = pkgs.callPackage ./pkgs/vaa3d-x.nix { };
 in
 {
   config = lib.mkIf cfg.enable {
