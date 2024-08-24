@@ -51,19 +51,17 @@ in
       ]
       ++ lib.optionals config.gui.enable [
         # system
+        "canon-ufrii-driver"
         "middleclick"
         "snipaste"
         "maccy"
         "logitech-options"
-        "sfm"
         "firefox"
         "google-chrome"
         "microsoft-edge"
         "vmware-fusion"
+        "sfm"
         "steam"
-        "raspberry-pi-imager"
-        "canon-ufrii-driver"
-        "manico"
 
         # dev
         "visual-studio-code"
