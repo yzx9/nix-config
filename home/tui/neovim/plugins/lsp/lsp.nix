@@ -74,14 +74,20 @@ in
       '';
 
       servers = {
+        # go
         gopls.enable = true;
 
+        # c/cpp
         clangd.enable = true;
+        cmake.enable = true;
 
+        # nix
         nixd.enable = true;
 
+        # python
         pyright.enable = true;
 
+        # frontend
         html.enable = true;
         cssls.enable = true;
         # additional configuration for volar
