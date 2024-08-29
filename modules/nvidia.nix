@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   cfg = config.nvidia;
@@ -12,6 +17,29 @@ in
         "nvidia-x11"
         "nvidia-settings"
         "nvidia-persistenced"
+
+        "cuda-merged"
+        "cuda_cccl"
+        "cuda_cudart"
+        "cuda_cuobjdump"
+        "cuda_cupti"
+        "cuda_cuxxfilt"
+        "cuda_gdb"
+        "cuda_nvcc"
+        "cuda_nvdisasm"
+        "cuda_nvrtc"
+        "cuda_nvtx"
+        "cuda_nvprune"
+        "cuda_nvml_dev"
+        "cuda_profiler_api"
+        "cuda_sanitizer_api"
+        "libcublas"
+        "libcufft"
+        "libcurand"
+        "libcusolver"
+        "libcusparse"
+        "libnvjitlink"
+        "libnpp"
       ];
 
     # Enable graphics
@@ -50,5 +78,7 @@ in
       # Optionally, you may need to select the appropriate driver version for your specific GPU.
       package = cfg.package;
     };
+
+    #    environment.systemPackages = with pkgs; [ cudaPackages.cudatoolkit ];
   };
 }
