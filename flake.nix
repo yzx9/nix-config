@@ -129,10 +129,7 @@
           inherit (args) specialArgs;
           system = args.vars.system;
           modules = args.modules ++ [
-            ./modules/nix-core.nix
-            ./modules/system-linux.nix
-            ./modules/apps.nix
-            ./modules/nvidia.nix
+            ./modules/linux
 
             # home manager
             home-manager.nixosModules.home-manager
@@ -153,10 +150,7 @@
           inherit (args) specialArgs;
           system = args.vars.system;
           modules = args.modules ++ [
-            ./modules/nix-core.nix
-            ./modules/system-darwin.nix
-            ./modules/apps.nix
-            ./modules/homebrew.nix
+            ./modules/darwin
 
             # home manager
             home-manager.darwinModules.home-manager
@@ -186,6 +180,6 @@
       );
 
       # nix code formatter
-      formsdfatter = forEachSystem ({ pkgs, ... }: pkgs.nixfmt-rfc-style);
+      formatter = forEachSystem ({ pkgs, ... }: pkgs.nixfmt-rfc-style);
     };
 }
