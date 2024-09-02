@@ -11,10 +11,11 @@
         notify_on_error = true;
         formatters_by_ft =
           let
-            prettier = [
-              "prettierd"
-              "prettier"
-            ];
+            prettier = {
+              __unkeyed-1 = "prettierd";
+              __unkeyed-2 = "prettier";
+              stop_after_first = true;
+            };
 
             genPretiier = langs: lib.genAttrs langs (lang: [ prettier ]);
           in
@@ -41,6 +42,7 @@
               "yamllint"
               "yamlfmt"
             ];
+            sh = [ "shfmt" ];
           };
 
         format_on_save = ''

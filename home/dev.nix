@@ -27,6 +27,8 @@
 
     yamllint
     yamlfmt
+
+    shfmt
   ];
 
   programs.direnv = {
