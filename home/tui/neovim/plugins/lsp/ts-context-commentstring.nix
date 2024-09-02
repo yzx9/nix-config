@@ -4,7 +4,7 @@
 { ... }:
 
 {
-  programs.nixvim.plugins.ts-context-commentstring = {
+  plugins.ts-context-commentstring = {
     enable = true;
   };
 }

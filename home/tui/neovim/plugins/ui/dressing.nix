@@ -4,7 +4,7 @@
 { ... }:
 
 {
-  programs.nixvim.plugins.dressing = {
+  plugins.dressing = {
     enable = true;
 
     settings = {

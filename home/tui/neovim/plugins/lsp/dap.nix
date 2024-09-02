@@ -4,7 +4,7 @@ let
   icons = import ../../icons.nix;
 in
 {
-  programs.nixvim.plugins.dap = {
+  plugins.dap = {
     enable = true;
 
     signs = {

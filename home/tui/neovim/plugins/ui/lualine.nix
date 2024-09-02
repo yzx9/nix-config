@@ -7,7 +7,7 @@ let
   icons = import ../../icons.nix;
 in
 {
-  programs.nixvim.plugins.lualine = {
+  plugins.lualine = {
     enable = true;
     globalstatus = true;
     disabledFiletypes = {
