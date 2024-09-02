@@ -12,12 +12,10 @@ in
       enable = true;
 
       settings = {
-        delay = 200;
         expand = 1;
         notify = false;
-        preset = false;
+        preset = "classic";
 
-        # icons.group = "";
         win.border = "single";
 
         # Disable which-key when in some plugins
