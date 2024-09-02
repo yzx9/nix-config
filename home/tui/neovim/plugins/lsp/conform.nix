@@ -7,50 +7,52 @@
   programs.nixvim = {
     plugins.conform-nvim = {
       enable = true;
-      notifyOnError = true;
-      formattersByFt =
-        let
-          prettier = [
-            "prettierd"
-            "prettier"
-          ];
+      settings = {
+        notify_on_error = true;
+        formatters_by_ft =
+          let
+            prettier = [
+              "prettierd"
+              "prettier"
+            ];
 
-          genPretiier = langs: lib.genAttrs langs (lang: [ prettier ]);
-        in
-        genPretiier [
-          "html"
-          "css"
-          "javascript"
-          "typescript"
-          "vue"
-          "markdown"
-        ]
-        // {
-          python = [
-            "isort"
-            "black"
-          ];
-          rust = [ "rustfmt" ];
-          nix = [ "nixfmt" ];
-          go = [
-            "goimports"
-            "gofmt"
-          ];
-          yaml = [
-            "yamllint"
-            "yamlfmt"
-          ];
-        };
+            genPretiier = langs: lib.genAttrs langs (lang: [ prettier ]);
+          in
+          genPretiier [
+            "html"
+            "css"
+            "javascript"
+            "typescript"
+            "vue"
+            "markdown"
+          ]
+          // {
+            python = [
+              "isort"
+              "black"
+            ];
+            rust = [ "rustfmt" ];
+            nix = [ "nixfmt" ];
+            go = [
+              "goimports"
+              "gofmt"
+            ];
+            yaml = [
+              "yamllint"
+              "yamlfmt"
+            ];
+          };
 
-      formatOnSave = ''
-        function(bufnr)
-          -- Disable with a global or buffer-local variable
-          if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-            return
+        format_on_save = ''
+          function(bufnr)
+            -- Disable with a global or buffer-local variable
+            if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+              return
+            end
+            return { timeout_ms = 500, lsp_format = "fallback" }
           end
-          return { timeout_ms = 500, lsp_format = "fallback" }
-        end
-      '';
+        '';
+      };
     };
 
     extraConfigLua = ''
