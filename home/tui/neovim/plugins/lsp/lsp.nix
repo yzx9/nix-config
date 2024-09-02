@@ -74,6 +74,9 @@ in
       '';
 
       servers = {
+        # bash
+        bashls.enable = true;
+
         # go
         gopls.enable = true;
 
