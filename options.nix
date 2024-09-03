@@ -5,6 +5,14 @@
     enable = lib.mkEnableOption "GUI apps";
   };
 
+  options.tui = {
+    editor.lsp.enable = lib.mkOption {
+      description = "Enable LSP for the editor";
+      type = lib.types.bool;
+      default = true;
+    };
+  };
+
   options.nvidia = {
     enable = lib.mkEnableOption "NVIDIA driver";
     package = lib.mkOption {
