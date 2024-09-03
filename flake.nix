@@ -29,6 +29,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        darwin.follows = "darwin";
+        home-manager.follows = "home-manager";
+      };
+    };
+
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs = {
@@ -49,6 +58,7 @@
       nixpkgs,
       darwin,
       home-manager,
+      agenix,
       ...
     }:
 
@@ -107,13 +117,11 @@
             inherit vars specialArgs;
             pkgs = nixpkgs.legacyPackages.${vars.system};
             modules = [
-              ./options.nix
               ./hosts/${vars.hostname}/config.nix
               ./hosts/${vars.hostname}/host.nix
             ];
             hmSpecialArgs = specialArgs;
             hmModules = [
-              ./options.nix
               ./hosts/${vars.hostname}/config.nix
               ./hosts/${vars.hostname}/home.nix
             ];
@@ -131,16 +139,20 @@
           system = args.vars.system;
           modules = args.modules ++ [
             ./modules/linux
+            ./options.nix
 
-            # home manager
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = false;
               home-manager.useUserPackages = false;
               home-manager.extraSpecialArgs = args.hmSpecialArgs;
               home-manager.users.${args.vars.user.name} = import ./home;
-              home-manager.sharedModules = args.hmModules;
+              home-manager.sharedModules = args.hmModules ++ [
+                ./options.nix
+              ];
             }
+
+            agenix.nixosModules.default
           ];
         }
       );
@@ -152,15 +164,17 @@
           system = args.vars.system;
           modules = args.modules ++ [
             ./modules/darwin
+            ./options.nix
 
-            # home manager
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = false;
               home-manager.useUserPackages = false;
               home-manager.extraSpecialArgs = args.hmSpecialArgs;
               home-manager.users.${args.vars.user.name} = import ./home;
-              home-manager.sharedModules = args.hmModules;
+              home-manager.sharedModules = args.hmModules ++ [
+                ./options.nix
+              ];
             }
           ];
         }
@@ -175,7 +189,6 @@
             ./home
             ./options.nix
           ];
-
           extraSpecialArgs = args.hmSpecialArgs;
         }
       );
