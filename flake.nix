@@ -147,9 +147,7 @@
               home-manager.useUserPackages = false;
               home-manager.extraSpecialArgs = args.hmSpecialArgs;
               home-manager.users.${args.vars.user.name} = import ./home;
-              home-manager.sharedModules = args.hmModules ++ [
-                ./options.nix
-              ];
+              home-manager.sharedModules = args.hmModules ++ [ ./options.nix ];
             }
 
             agenix.nixosModules.default
@@ -172,10 +170,10 @@
               home-manager.useUserPackages = false;
               home-manager.extraSpecialArgs = args.hmSpecialArgs;
               home-manager.users.${args.vars.user.name} = import ./home;
-              home-manager.sharedModules = args.hmModules ++ [
-                ./options.nix
-              ];
+              home-manager.sharedModules = args.hmModules ++ [ ./options.nix ];
             }
+
+            agenix.darwinModules.default
           ];
         }
       );
