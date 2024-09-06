@@ -139,7 +139,6 @@
           system = args.vars.system;
           modules = args.modules ++ [
             ./modules/linux
-            ./options.nix
 
             home-manager.nixosModules.home-manager
             {
@@ -162,7 +161,6 @@
           system = args.vars.system;
           modules = args.modules ++ [
             ./modules/darwin
-            ./options.nix
 
             home-manager.darwinModules.home-manager
             {
@@ -185,7 +183,6 @@
 
           modules = args.hmModules ++ [
             ./home
-            ./options.nix
           ];
           extraSpecialArgs = args.hmSpecialArgs;
         }
