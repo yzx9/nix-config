@@ -1,4 +1,10 @@
-{ pkgs, lib, ... }:
+{
+  inputs,
+  vars,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   # Allow unfree packages
@@ -19,6 +25,9 @@
       util-linux
       dosfstools # fat filesystem
       e2fsprogs # ext filesystem
+
+      # nix related
+      inputs.agenix.packages.${vars.system}.default
 
       # shell tools
       ncurses

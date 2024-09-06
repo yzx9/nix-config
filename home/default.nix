@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../options.nix
     ./gui
     ./tui
     ./apps.nix
@@ -9,5 +10,6 @@
     ./dev.nix
     ./git.nix
     ./gpg.nix
+    ./ssh.nix
   ];
 }

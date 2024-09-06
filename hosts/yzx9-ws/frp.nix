@@ -5,6 +5,10 @@
     frp # Fast reverse proxy
   ];
 
+  age.secrets = {
+    frpc-yzx9-ws.file = ./secrets/frpc-yzx9-ws.toml.age;
+  };
+
   systemd.services.frpc = {
     # this service is "wanted by" (see systemd man pages, or other tutorials) the system 
     # level that allows multiple users to login and interact with the machine non-graphically 

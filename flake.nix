@@ -140,16 +140,18 @@
           modules = args.modules ++ [
             ./modules/linux
 
+            agenix.nixosModules.default
+
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = false;
               home-manager.useUserPackages = false;
               home-manager.extraSpecialArgs = args.hmSpecialArgs;
               home-manager.users.${args.vars.user.name} = import ./home;
-              home-manager.sharedModules = args.hmModules ++ [ ./options.nix ];
+              home-manager.sharedModules = args.hmModules ++ [
+                agenix.homeManagerModules.default
+              ];
             }
-
-            agenix.nixosModules.default
           ];
         }
       );
@@ -162,16 +164,18 @@
           modules = args.modules ++ [
             ./modules/darwin
 
+            agenix.darwinModules.default
+
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = false;
               home-manager.useUserPackages = false;
               home-manager.extraSpecialArgs = args.hmSpecialArgs;
               home-manager.users.${args.vars.user.name} = import ./home;
-              home-manager.sharedModules = args.hmModules ++ [ ./options.nix ];
+              home-manager.sharedModules = args.hmModules ++ [
+                agenix.homeManagerModules.default
+              ];
             }
-
-            agenix.darwinModules.default
           ];
         }
       );
@@ -182,6 +186,8 @@
           inherit (args) pkgs;
 
           modules = args.hmModules ++ [
+            agenix.homeManagerModules.default
+
             ./home
           ];
           extraSpecialArgs = args.hmSpecialArgs;
