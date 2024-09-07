@@ -21,4 +21,11 @@
       default = config.boot.kernelPackages.nvidiaPackages.stable;
     };
   };
+
+  options.docker = {
+    enable = lib.mkEnableOption "docker";
+    rootless = lib.mkEnableOption "rootless" // {
+      default = true;
+    };
+  };
 }

@@ -1,6 +1,6 @@
 { ... }:
 
 {
-  gui.enable = false;
   nvidia.enable = true;
+  docker.enable = true;
 }

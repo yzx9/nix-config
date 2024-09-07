@@ -45,43 +45,39 @@ in
     brews = [ ];
 
     # `brew install --cask`
-    casks =
-      [
-        "docker" # nixpkgs docker is breaked, see: https://github.com/LnL7/nix-darwin/issues/112
-      ]
-      ++ lib.optionals config.gui.enable [
-        # system
-        "canon-ufrii-driver"
-        "middleclick"
-        "snipaste"
-        "maccy"
-        "logitech-options"
-        "firefox"
-        "google-chrome"
-        "microsoft-edge"
-        "vmware-fusion"
-        "sfm"
-        "steam"
+    casks = lib.optionals config.gui.enable [
+      # system
+      "canon-ufrii-driver"
+      "middleclick"
+      "snipaste"
+      "maccy"
+      "logitech-options"
+      "firefox"
+      "google-chrome"
+      "microsoft-edge"
+      "vmware-fusion"
+      "sfm"
+      "steam"
 
-        # dev
-        "visual-studio-code"
+      # dev
+      "visual-studio-code"
 
-        # science
-        "zotero"
-        # "master-pdf-editor"
-        "eudic"
-        "fiji"
+      # science
+      "zotero"
+      # "master-pdf-editor"
+      "eudic"
+      "fiji"
 
-        # design
-        "blender"
-        "krita"
-        "inkscape"
-        # "preform"
-        # "ideamaker"
+      # design
+      "blender"
+      "krita"
+      "inkscape"
+      # "preform"
+      # "ideamaker"
 
-        # ldap
-        "apache-directory-studio"
-        "oracle-jdk" # required by apache-directory-studio
-      ];
+      # ldap
+      "apache-directory-studio"
+      "oracle-jdk" # required by apache-directory-studio
+    ];
   };
 }
