@@ -78,9 +78,6 @@
         name = "yzx9";
         nickname = "yzx9";
         email = "yuan.zx@outlook.com";
-        gpg = {
-          key = "0xC2DD1916FE471BE2";
-        };
       };
 
       hosts = toHostAttrs [
