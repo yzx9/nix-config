@@ -10,9 +10,8 @@ let
   ];
 in
 {
-  "frpc-yzx9-ws.toml.age".publicKeys = users ++ [
-    system_yzx9-ws
-  ];
+  "frpc_yzx9-ws.toml.age".publicKeys = users ++ [ system_yzx9-ws ];
 
-  "ssh-config-yzx9-mbp.age".publicKeys = users ++ systems;
+  "id-github_yzx9-mbp.age".publicKeys = users ++ [ system_yzx9-mbp ];
+  "ssh-config_yzx9-mbp.age".publicKeys = users ++ [ system_yzx9-mbp ];
 }
