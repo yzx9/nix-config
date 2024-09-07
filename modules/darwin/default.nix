@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../common
+    ../shared
     ./homebrew.nix
     ./system.nix
   ];

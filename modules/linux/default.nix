@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../common
+    ../shared
     ./nvidia.nix
     ./system.nix
   ];
