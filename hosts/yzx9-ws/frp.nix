@@ -5,7 +5,7 @@
     frp # Fast reverse proxy
   ];
 
-  age.secrets.frpc_yzx9-ws.file = ./secrets/frpc_yzx9-ws.toml.age;
+  age.secrets.frpc_yzx9-ws.file = ../../secrets/frpc_yzx9-ws.toml.age;
 
   systemd.services.frpc = {
     # this service is "wanted by" (see systemd man pages, or other tutorials) the system 
