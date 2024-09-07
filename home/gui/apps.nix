@@ -8,7 +8,6 @@
 let
   cfg = config.gui;
 
-  logseq = pkgs.callPackage ./pkgs/logseq.nix { };
   macism = pkgs.callPackage ./pkgs/macism.nix { };
   vaa3d-x = pkgs.callPackage ./pkgs/vaa3d-x.nix { };
 in
@@ -38,7 +37,6 @@ in
       ++ lib.optionals pkgs.stdenv.isDarwin [
         vaa3d-x
         macism # IME mode detect
-        logseq
       ];
   };
 }
