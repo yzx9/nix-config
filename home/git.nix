@@ -15,8 +15,8 @@
     enable = true;
     lfs.enable = true;
 
-    userName = vars.user.nickname;
-    userEmail = vars.user.email;
+    userName = vars.user.git.name;
+    userEmail = vars.user.git.email;
 
     # includes = [
     #   {

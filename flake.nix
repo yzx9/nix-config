@@ -76,8 +76,10 @@
 
       yzx9 = {
         name = "yzx9";
-        nickname = "yzx9";
-        email = "yuan.zx@outlook.com";
+        git = {
+          name = "yzx9";
+          email = "git@yzx9.xyz";
+        };
       };
 
       hosts = toHostAttrs [
