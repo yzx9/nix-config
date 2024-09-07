@@ -1,7 +1,6 @@
 { vars, lib, ... }:
 
 {
-  # git
   # `programs.git` will generate the config file: ~/.config/git/config
   # to make git use this config file, `~/.gitconfig` should not exist!
   #
@@ -9,6 +8,8 @@
   home.activation.removeExistingGitconfig = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
     rm -f ~/.gitconfig
   '';
+
+  home.file.".ssh/id_git.pub".source = ../secrets/id-git.pub;
 
   programs.git = {
     enable = true;
@@ -29,11 +30,14 @@
       init.defaultBranch = "main";
       push.autoSetupRemote = true;
       pull.rebase = true;
+
+      # use ssh key for git, available only on mbp, and forwarded via ssh-agent
+      gpg.format = "ssh";
     };
 
     signing = {
-      key = vars.user.gpg.key;
       signByDefault = true;
+      key = "~/.ssh/id_git.pub";
     };
 
     # delta = {
@@ -49,7 +53,7 @@
       co = "checkout";
       st = "status";
       ls = "log --pretty=format:\"%C(yellow)%h%Cred%d\\\\ %Creset%s%Cblue\\\\ [%cn]\" --decorate";
-      # ll = "log --pretty=format:\"%C(yellow)%h%Cred%d\\\\ %Creset%s%Cblue\\\\ [%cn]\" --decorate --numstat";
+      ll = "log --pretty=format:\"%C(yellow)%h%Cred%d\\\\ %Creset%s%Cblue\\\\ [%cn]\" --decorate --numstat";
       # cm = "commit -m";
       # ca = "commit -am";
       # dc = "diff --cached";
