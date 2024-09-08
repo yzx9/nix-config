@@ -1,16 +1,25 @@
-{ config, lib, ... }:
+{
+  config,
+  vars,
+  lib,
+  ...
+}:
 
 let
   cfg = config.docker;
 in
 {
-  config.virtualisation.docker = lib.mkIf cfg.enable {
-    enable = true;
-
-    # non-rootless was not implemented yet
-    rootless = lib.mkIf cfg.rootless {
+  config = lib.mkIf cfg.enable {
+    virtualisation.docker = {
       enable = true;
-      setSocketVariable = true;
+
+      rootless = lib.mkIf cfg.rootless {
+        enable = true;
+        setSocketVariable = true;
+      };
     };
+
+    # WARN: Beware that the docker group membership is effectively equivalent to being root!
+    users.extraGroups.docker.members = lib.mkIf (!cfg.rootless) [ vars.user.name ];
   };
 }
