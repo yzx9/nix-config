@@ -21,4 +21,5 @@ in
 
   # yzx9-ws only
   "frpc_yzx9-ws.toml.age".publicKeys = users ++ [ system_yzx9-ws ];
+  "xray_yzx9-ws.json.age".publicKeys = users ++ [ system_yzx9-ws ];
 }
