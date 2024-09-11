@@ -25,6 +25,10 @@
   # Make `nix repl '<nixpkgs>'` use the same nixpkgs as the one used by this flake.
   environment.etc."nix/inputs/nixpkgs".source = "${inputs.nixpkgs}";
 
+  # TODO: remove in next bump
+  # https://github.com/NixOS/nix/issues/9574
+  nix.settings.nix-path = lib.mkForce "nixpkgs=/etc/nix/inputs/nixpkgs";
+
   nix.settings = {
     # substituers that will be considered before the official ones (https://cache.nixos.org)
     substituters = [
