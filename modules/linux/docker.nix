@@ -21,5 +21,7 @@ in
 
     # WARN: Beware that the docker group membership is effectively equivalent to being root!
     users.extraGroups.docker.members = lib.mkIf (!cfg.rootless) [ vars.user.name ];
+
+    hardware.nvidia-container-toolkit.enable = config.nvidia.enable;
   };
 }
