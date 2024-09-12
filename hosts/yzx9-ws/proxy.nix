@@ -14,4 +14,6 @@
     enable = true;
     settingsFile = config.age.secrets."xray_yzx9-ws.json".path;
   };
+
+  networking.firewall.allowedTCPPorts = [ 12345 ];
 }
