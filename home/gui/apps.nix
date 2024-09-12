@@ -8,7 +8,6 @@
 let
   cfg = config.gui;
 
-  macism = pkgs.callPackage ./pkgs/macism.nix { };
   vaa3d-x = pkgs.callPackage ./pkgs/vaa3d-x.nix { };
 in
 {
@@ -36,7 +35,6 @@ in
       # darwin only
       ++ lib.optionals pkgs.stdenv.isDarwin [
         vaa3d-x
-        macism # IME mode detect
       ];
   };
 }
