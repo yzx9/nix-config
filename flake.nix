@@ -127,7 +127,7 @@
           }
         );
 
-      systems = lib.unique lib.attrValues lib.mapAttrs (name: value: value.system) hosts;
+      systems = lib.unique (lib.attrValues (lib.mapAttrs (name: value: value.system) hosts));
       forEachSystem = f: lib.genAttrs systems (system: f { pkgs = nixpkgs.legacyPackages.${system}; });
     in
     {
@@ -194,6 +194,6 @@
       );
 
       # nix code formatter
-      formatter = forEachSystem ({ pkgs, ... }: pkgs.nixfmt-rfc-style);
+      formatter = forEachSystem ({ pkgs }: pkgs.nixfmt-rfc-style);
     };
 }

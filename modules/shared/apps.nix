@@ -14,12 +14,7 @@
 #
 ##########################################################################
 
-{
-  inputs,
-  vars,
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 
 {
   # List packages installed in system profile. To search, run:
