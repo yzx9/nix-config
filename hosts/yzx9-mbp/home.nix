@@ -20,7 +20,7 @@ in
 
     ssh-config_yzx9-mbp = {
       file = ../../secrets/ssh-config_yzx9-mbp.age;
-      path = "${ssh}config-agenix";
+      path = "${ssh}config-agenix_yzx-mbp";
     };
   };
 
