@@ -22,6 +22,7 @@ in
     # WARN: Beware that the docker group membership is effectively equivalent to being root!
     users.extraGroups.docker.members = lib.mkIf (!cfg.rootless) [ vars.user.name ];
 
+    # use `docker run` with `--device nvidia.com/gpu=all`` and not `--gpus all`
     hardware.nvidia-container-toolkit.enable = config.nvidia.enable;
   };
 }
