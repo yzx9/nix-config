@@ -11,6 +11,8 @@ let
   ];
 in
 {
+  "ssh-config.age".publicKeys = admins ++ systems;
+
   # yzx9-mbp only
   "id-git_yzx9-mbp.age".publicKeys = admins ++ [ system_yzx9-mbp ];
   "id-github_yzx9-mbp.age".publicKeys = admins ++ [ system_yzx9-mbp ];

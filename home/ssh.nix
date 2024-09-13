@@ -1,9 +1,24 @@
-{ ... }:
+{ config, lib, ... }:
 
+let
+  ssh = "${config.home.homeDirectory}/.ssh/";
+  toSshPath = path: lib.removePrefix ssh path;
+in
 {
+  age.secrets = {
+    ssh-config = {
+      file = ../secrets/ssh-config.age;
+      path = "${ssh}config-agenix";
+    };
+  };
+
   programs.ssh = {
     enable = true;
     addKeysToAgent = "yes";
+
+    includes = [
+      (toSshPath config.age.secrets.ssh-config.path)
+    ];
 
     matchBlocks = {
       "github.com" = {
