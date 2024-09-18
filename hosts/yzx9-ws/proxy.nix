@@ -7,7 +7,7 @@
 
   age.secrets."xray_yzx9-ws.json" = {
     file = ../../secrets/xray_yzx9-ws.json.age;
-    owner = "xray";
+    mode = "444"; # workaround with systemd dynamic user
   };
 
   services.xray = {
