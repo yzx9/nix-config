@@ -22,7 +22,6 @@ in
   # yzx9-mbp only
   "id-git_yzx9-mbp.age".publicKeys = yzx9-mbp;
   "id-github_yzx9-mbp.age".publicKeys = yzx9-mbp;
-  "ssh-config_yzx9-mbp.age".publicKeys = yzx9-mbp;
 
   # yzx9-ws only
   "frpc_yzx9-ws.toml.age".publicKeys = yzx9-ws;
