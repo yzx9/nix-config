@@ -27,6 +27,11 @@
   environment.systemPackages = with pkgs; [
     git # Required by nix
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+
+    # system
+    util-linux
+    dosfstools # fat filesystem
+    e2fsprogs # ext filesystem
   ];
 
   programs.zsh.enable = true;

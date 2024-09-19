@@ -12,19 +12,15 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages =
-    (with pkgs; [
+  home.packages = (
+    with pkgs;
+    [
       # You can also create simple shell scripts directly inside your
       # configuration. For example, this adds a command 'my-hello' to your
       # environment:
       # (pkgs.writeShellScriptBin "my-hello" ''
       #   echo "Hello, ${config.home.username}!"
       # '')
-
-      # system
-      util-linux
-      dosfstools # fat filesystem
-      e2fsprogs # ext filesystem
 
       # nix related
       inputs.agenix.packages.${vars.system}.default
@@ -49,16 +45,9 @@
 
       # misc
       age
-      neofetch
       just
       gopass
       ffmpeg
-    ])
-    ++ lib.optionals pkgs.stdenv.isDarwin (with pkgs; [ stats ]);
-
-  programs.yazi = {
-    enable = true;
-    enableBashIntegration = true;
-    enableZshIntegration = true;
-  };
+    ]
+  );
 }

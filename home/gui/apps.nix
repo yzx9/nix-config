@@ -33,8 +33,9 @@ in
         ]
       )
       # darwin only
-      ++ lib.optionals pkgs.stdenv.isDarwin [
+      ++ lib.optionals pkgs.stdenv.isDarwin ([
+        pkgs.stats
         vaa3d-x
-      ];
+      ]);
   };
 }
