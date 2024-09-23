@@ -83,6 +83,13 @@ in
       clangd.enable = true;
       cmake.enable = true;
 
+      # rust
+      rust-analyzer = {
+        enable = true;
+        installCargo = true;
+        installRustc = true;
+      };
+
       # nix
       nixd.enable = true;
 
@@ -92,6 +99,7 @@ in
       # frontend
       html.enable = true;
       cssls.enable = true;
+      tailwindcss.enable = true;
       # additional configuration for volar
       # https://github.com/vuejs/language-tools?tab=readme-ov-file#hybrid-mode-configuration-requires-vuelanguage-server-version-200
       tsserver = {
