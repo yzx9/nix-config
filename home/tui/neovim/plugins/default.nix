@@ -20,6 +20,7 @@ let
       ui/nvim-highlight-colors.nix
       ui/nvim-ufo.nix
       ui/todo-comments.nix
+      ui/web-devicon.nix
       ux/autopairs.nix
       ux/cmp.nix
       ux/copilot.nix

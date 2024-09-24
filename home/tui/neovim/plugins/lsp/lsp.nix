@@ -102,31 +102,12 @@ in
       tailwindcss.enable = true;
       # additional configuration for volar
       # https://github.com/vuejs/language-tools?tab=readme-ov-file#hybrid-mode-configuration-requires-vuelanguage-server-version-200
-      tsserver = {
-        enable = true;
-        filetypes = [
-          "typescript"
-          "javascript"
-          "javascriptreact"
-          "typescriptreact"
-          "vue"
-        ];
-        extraOptions = {
-          init_options = {
-            plugins = [
-              {
-                name = "@vue/typescript-plugin";
-                location = "${lib.getBin pkgs.vue-language-server}/lib/node_modules/@vue/language-server";
-                languages = [ "vue" ];
-              }
-            ];
-          };
-        };
-      };
+      ts-ls.enable = true;
       #eslint.enable = true;
       volar = {
         enable = true;
         package = pkgs.vue-language-server;
+        tslsIntegration = true;
       };
 
       jsonls.enable = true;
