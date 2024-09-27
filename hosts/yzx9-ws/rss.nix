@@ -41,10 +41,15 @@ in
     passwordFile = config.age.secrets."rss-pwd".path;
   };
 
-  # services.nginx.virtualHosts.${vhost}.forceSSL = true;
+  services.nginx.virtualHosts.${vhost} = {
+    listen = [
+      {
+        addr = "127.0.0.1";
+        port = 4080;
+      }
+    ];
+    # forceSSL = true;
+  };
 
-  networking.firewall.allowedTCPPorts = [
-    80
-    443
-  ];
+  #networking.firewall.allowedTCPPorts = [ port ];
 }
