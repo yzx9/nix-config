@@ -2,7 +2,7 @@
 
 Personal nix-config.
 
-Current state: darwin and standalone home-manager.
+Current state: nixos, darwin and standalone home-manager.
 
 ## Development
 
