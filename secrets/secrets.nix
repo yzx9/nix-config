@@ -18,6 +18,7 @@ let
 in
 {
   "ssh-config.age".publicKeys = users;
+  "rss-pwd.age".publicKeys = users ++ systems;
 
   # yzx9-mbp only
   "id-git_yzx9-mbp.age".publicKeys = yzx9-mbp;

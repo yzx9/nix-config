@@ -7,5 +7,6 @@
 
     ./frp.nix
     ./proxy.nix
+    ./rss.nix
   ];
 }
