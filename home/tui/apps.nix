@@ -3,6 +3,7 @@
 {
   home.packages = with pkgs; [
     neofetch
+    btop
   ];
 
   programs.yazi = {
