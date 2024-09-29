@@ -13,7 +13,7 @@ in
     settings = {
       expand = 1;
       notify = false;
-      preset = "classic";
+      preset = "modern";
 
       win.border = "single";
 
