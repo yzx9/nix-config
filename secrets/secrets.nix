@@ -17,6 +17,8 @@ let
   yzx9-ws = [ user_yzx9-ws ] ++ [ system_yzx9-ws ];
 in
 {
+  "id-lab.age".publicKeys = users;
+  "id-lab.pub.age".publicKeys = users;
   "ssh-config.age".publicKeys = users;
   "rss-pwd.age".publicKeys = users ++ systems;
 

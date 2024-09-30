@@ -6,6 +6,18 @@ let
 in
 {
   age.secrets = {
+    id-lab = {
+      file = ../secrets/id-lab.age;
+      path = "${ssh}id_lab";
+      mode = "400";
+    };
+
+    "id-lab.pub" = {
+      file = ../secrets/id-lab.pub.age;
+      path = "${ssh}id_lab.pub";
+      mode = "400";
+    };
+
     ssh-config = {
       file = ../secrets/ssh-config.age;
       path = "${ssh}config-agenix";
