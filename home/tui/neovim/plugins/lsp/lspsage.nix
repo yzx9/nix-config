@@ -92,7 +92,7 @@ in
   keymaps = [
     {
       mode = "n";
-      key = "fd";
+      key = "gd";
       action = "<cmd>Lspsaga finder def<CR>";
       options = {
         desc = "Goto Definition";
@@ -102,7 +102,7 @@ in
 
     {
       mode = "n";
-      key = "fD";
+      key = "gD";
       action = "<cmd>Lspsaga show_line_diagnostics<CR>";
       options = {
         desc = "Goto Declaration";
@@ -112,7 +112,7 @@ in
 
     {
       mode = "n";
-      key = "fr";
+      key = "gr";
       action = "<cmd>Lspsaga finder ref<CR>";
       options = {
         desc = "Goto References";
@@ -122,7 +122,7 @@ in
 
     {
       mode = "n";
-      key = "fI";
+      key = "gi";
       action = "<cmd>Lspsaga finder imp<CR>";
       options = {
         desc = "Goto Implementation";
@@ -132,7 +132,7 @@ in
 
     {
       mode = "n";
-      key = "fT";
+      key = "gt";
       action = "<cmd>Lspsaga peek_type_definition<CR>";
       options = {
         desc = "Type Definition";

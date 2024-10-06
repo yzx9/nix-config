@@ -1,5 +1,5 @@
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/lsp/index.html
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
 let
   icons = import ../../icons.nix;
@@ -21,23 +21,23 @@ in
       };
 
       lspBuf = {
-        gd = {
-          action = "definition";
-          desc = "Go to definition";
-        };
-        gD = {
-          action = "references";
-          desc = "Go to references";
-        };
-        gi = {
-          action = "implementation";
-          desc = "Go to implementation";
-        };
-        gt = {
-          action = "type_definition";
-          desc = "Go to type definition";
-        };
-        ## following line was replaced by lspsaga
+        ## following shortcut was replaced by lspsaga
+        # gd = {
+        #   action = "definition";
+        #   desc = "Go to definition";
+        # };
+        # gD = {
+        #   action = "references";
+        #   desc = "Go to references";
+        # };
+        # gi = {
+        #   action = "implementation";
+        #   desc = "Go to implementation";
+        # };
+        # gt = {
+        #   action = "type_definition";
+        #   desc = "Go to type definition";
+        # };
         # "<leader>la" = {
         #   action = "code_action";
         #   desc = "LSP code action";
