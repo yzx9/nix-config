@@ -191,7 +191,20 @@
         }
       );
 
-      # nix code formatter
+      # nix develop
+      devShells = forEachSystem (
+        { pkgs }:
+        {
+          default = pkgs.mkShell {
+            buildInputs = [ pkgs.just ];
+          };
+        }
+      );
+
+      # nix flake init -t yzx9#<template_name>
+      templates = import ./templates;
+
+      # nix fmt: nix code formatter
       formatter = forEachSystem ({ pkgs }: pkgs.nixfmt-rfc-style);
     };
 }

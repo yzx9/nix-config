@@ -25,6 +25,13 @@
   # Make `nix repl '<nixpkgs>'` use the same nixpkgs as the one used by this flake.
   environment.etc."nix/inputs/nixpkgs".source = "${inputs.nixpkgs}";
 
+  # Add this flake to the NIX_PATH, so that `nix repl '<this-flake>'` works.
+  nix.registry.yzx9.to = {
+    type = "path";
+    path = "${../../.}";
+  };
+
+  # Nix
   nix.settings = {
     # substituers that will be considered before the official ones (https://cache.nixos.org)
     substituters = [
