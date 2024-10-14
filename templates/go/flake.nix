@@ -27,7 +27,8 @@
       nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
     in
     {
-      # Provide some binary packages for selected system types.
+      # nix build .#<package_name>
+      # nix run .#<package_name>
       packages = forAllSystems (
         system:
         let
@@ -100,7 +101,7 @@
         }
       );
 
-      # Add dependencies that are only needed for development
+      # nix develop .
       devShells = forAllSystems (
         system:
         let
