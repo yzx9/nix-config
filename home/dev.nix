@@ -22,9 +22,6 @@
     nixpkgs-review
     nixfmt-rfc-style
 
-    go
-    gotools
-
     yamllint
     yamlfmt
 
