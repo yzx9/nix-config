@@ -93,6 +93,9 @@ in
       # nix
       nixd.enable = true;
 
+      # java
+      jdt-language-server.enable = true;
+
       # python
       pyright.enable = true;
 
