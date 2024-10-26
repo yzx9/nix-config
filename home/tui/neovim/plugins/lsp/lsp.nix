@@ -84,7 +84,7 @@ in
       cmake.enable = true;
 
       # rust
-      rust-analyzer = {
+      rust_analyzer = {
         enable = true;
         installCargo = true;
         installRustc = true;
@@ -94,7 +94,7 @@ in
       nixd.enable = true;
 
       # java
-      jdt-language-server.enable = true;
+      jdtls.enable = true;
 
       # python
       pyright.enable = true;
@@ -105,7 +105,7 @@ in
       tailwindcss.enable = true;
       # additional configuration for volar
       # https://github.com/vuejs/language-tools?tab=readme-ov-file#hybrid-mode-configuration-requires-vuelanguage-server-version-200
-      ts-ls.enable = true;
+      ts_ls.enable = true;
       #eslint.enable = true;
       volar = {
         enable = true;
@@ -121,7 +121,7 @@ in
       # lua-ls.enable = true;
       # nginx-language-server.enable = true;
 
-      typos-lsp = {
+      typos_lsp = {
         enable = true;
         extraOptions.init_options.diagnosticSeverity = "Hint";
       };

@@ -22,7 +22,7 @@ in
       cascadia-code # Cascadia Code NF added since 2404.23
 
       noto-fonts
-      noto-fonts-cjk
+      noto-fonts-cjk-sans
       noto-fonts-emoji
     ];
   };
