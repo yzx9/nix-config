@@ -7,12 +7,7 @@
 #
 ###################################################################################
 
-{
-  vars,
-  pkgs,
-  lib,
-  ...
-}:
+{ vars, pkgs, ... }:
 
 {
   system = {
@@ -51,7 +46,7 @@
 
   # https://github.com/LnL7/nix-darwin/blob/master/modules/programs/gnupg.nix
   # try `pkill gpg-agent` if you have issues(such as `no pinentry`)
-  programs.gnupg.agent = lib.mkIf pkgs.stdenv.isDarwin {
+  programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
   };

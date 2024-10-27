@@ -26,16 +26,16 @@ in
       # customized apps
       ++ [ ]
       # darwin will install these apps using homebrew
-      ++ lib.optionals (!pkgs.stdenv.isDarwin) (
+      ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux (
         with pkgs;
         [
           inkscape # SVG design
         ]
       )
       # darwin only
-      ++ lib.optionals pkgs.stdenv.isDarwin ([
+      ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
         pkgs.stats
         vaa3d-x
-      ]);
+      ];
   };
 }
