@@ -84,7 +84,7 @@ rebuild-dev:
 
 [macos]
 proxy mode="auto_switch":
-  sudo python3 scripts/darwin_proxy.py {{mode}} http://127.0.0.1:10087
+  sudo python3 scripts/darwin_proxy.py {{mode}} http://127.0.0.1:12345
   sleep 1
 
 
