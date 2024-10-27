@@ -49,5 +49,8 @@
       gopass
       ffmpeg
     ]
+    ++ lib.optionals pkgs.stdenv.isLinux [
+      parted
+    ]
   );
 }
