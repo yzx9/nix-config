@@ -75,7 +75,7 @@
       yzx9 = {
         name = "yzx9";
         git = {
-          name = "yzx9";
+          name = "Zexin Yuan";
           email = "git@yzx9.xyz";
         };
       };
