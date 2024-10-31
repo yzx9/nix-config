@@ -54,7 +54,6 @@ in
       "logitech-options"
       "firefox"
       "google-chrome"
-      "microsoft-edge"
       "vmware-fusion"
       "sfm"
       "steam"
@@ -72,12 +71,6 @@ in
       "blender"
       "krita"
       "inkscape"
-      # "preform"
-      # "ideamaker"
-
-      # ldap
-      "apache-directory-studio"
-      "oracle-jdk" # required by apache-directory-studio
     ];
   };
 }
