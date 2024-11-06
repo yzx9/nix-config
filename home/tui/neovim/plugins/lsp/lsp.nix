@@ -103,19 +103,15 @@ in
       html.enable = true;
       cssls.enable = true;
       tailwindcss.enable = true;
-      # additional configuration for volar
-      # https://github.com/vuejs/language-tools?tab=readme-ov-file#hybrid-mode-configuration-requires-vuelanguage-server-version-200
       ts_ls.enable = true;
       #eslint.enable = true;
       volar = {
         enable = true;
-        package = pkgs.vue-language-server;
         tslsIntegration = true;
       };
 
-      jsonls.enable = true;
-      yamlls.enable = true;
-
+      # jsonls.enable = true;
+      # yamlls.enable = true;
       # dockerls.enable = true;
       # docker-compose-language-service.enable = true;
       # lua-ls.enable = true;
