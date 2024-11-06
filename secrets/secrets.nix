@@ -21,6 +21,7 @@ in
   "id-lab.pub.age".publicKeys = users;
   "ssh-config.age".publicKeys = users;
   "rss-pwd.age".publicKeys = users ++ systems;
+  "xray.json.age".publicKeys = users ++ systems;
 
   # yzx9-mbp only
   "id-git_yzx9-mbp.age".publicKeys = yzx9-mbp;
@@ -28,5 +29,4 @@ in
 
   # yzx9-ws only
   "frpc_yzx9-ws.toml.age".publicKeys = yzx9-ws;
-  "xray_yzx9-ws.json.age".publicKeys = yzx9-ws;
 }

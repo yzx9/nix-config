@@ -6,7 +6,6 @@
     ./hardware-configuration.nix
 
     ./frp.nix
-    ./proxy.nix
     ./rss.nix
     ./xorg.nix
   ];

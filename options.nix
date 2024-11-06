@@ -1,6 +1,8 @@
 { config, lib, ... }:
 
 {
+  options.proxy.enable = lib.mkEnableOption "proxy";
+
   options.gui = {
     enable = lib.mkEnableOption "GUI apps";
   };
