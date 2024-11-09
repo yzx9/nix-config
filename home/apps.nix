@@ -53,4 +53,6 @@
       parted
     ]
   );
+
+  home.shellAliases.j = "just";
 }
