@@ -23,6 +23,8 @@ in
         ];
         RunAtLoad = true;
         KeepAlive = true;
+        StandardOutPath = "/tmp/xray.out";
+        StandardErrorPath = "/tmp/xray.err";
       };
     };
   };
