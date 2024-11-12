@@ -125,6 +125,8 @@ in
       };
 
       window = {
+        position = "float";
+
         # Keymaps for filter popup window in fuzzy finder mode (ie. "/")
         fuzzy_finder_mappings = {
           "<C-J>" = "move_cursor_down";
@@ -148,6 +150,7 @@ in
         };
       };
     };
+
     defaultComponentConfigs = {
       gitStatus.symbols = {
         added = icons.GitAdd;
@@ -168,6 +171,9 @@ in
 
       # Open neotree "fullscreen" when opening a directory
       hijackNetrwBehavior = "open_current";
+
+      # Empty folders will be grouped together
+      groupEmptyDirs = true;
     };
 
     # Sources tabs
