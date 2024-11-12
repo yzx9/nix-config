@@ -156,4 +156,15 @@
     # Disable making a backup before overwriting a file
     writebackup = false;
   };
+
+  programs.nixvim.autoGroups.wrap_ft.clear = true;
+  programs.nixvim.autoCmd = [
+    {
+      desc = "Enable wrap based on file type";
+      event = "BufEnter";
+      pattern = "*.md";
+      group = "wrap_ft";
+      command = "setlocal wrap";
+    }
+  ];
 }
