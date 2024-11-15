@@ -26,10 +26,10 @@ class DarwinProxyManager:
 
     def __init__(self, proxy: str) -> None:
         self.proxy = proxy
-        self.nix_deamon_plist = Path(
+        self.nix_daemon_plist = Path(
             "/Library/LaunchDaemons/org.nixos.nix-daemon.plist"
         )
-        self.plist = plistlib.loads(self.nix_deamon_plist.read_bytes())
+        self.plist = plistlib.loads(self.nix_daemon_plist.read_bytes())
 
     def set_proxy(self):
         # set http/https proxy
@@ -62,15 +62,15 @@ class DarwinProxyManager:
             self.set_proxy()
 
     def _update_plist(self):
-        os.chmod(self.nix_deamon_plist, 0o644)
-        self.nix_deamon_plist.write_bytes(plistlib.dumps(self.plist))
-        os.chmod(self.nix_deamon_plist, 0o444)
+        os.chmod(self.nix_daemon_plist, 0o644)
+        self.nix_daemon_plist.write_bytes(plistlib.dumps(self.plist))
+        os.chmod(self.nix_daemon_plist, 0o444)
 
     def _reload_daemon(self):
         # reload the plist
         for cmd in (
-            f"launchctl unload {self.nix_deamon_plist}",
-            f"launchctl load {self.nix_deamon_plist}",
+            f"launchctl unload {self.nix_daemon_plist}",
+            f"launchctl load {self.nix_daemon_plist}",
         ):
             print(cmd)
             subprocess.run(shlex.split(cmd), capture_output=False)
