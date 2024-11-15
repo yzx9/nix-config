@@ -16,9 +16,9 @@
             stop_after_first = true;
           };
 
-          genPretiier = langs: lib.genAttrs langs (lang: [ prettier ]);
+          genPrettier = langs: lib.genAttrs langs (lang: [ prettier ]);
         in
-        genPretiier [
+        genPrettier [
           "html"
           "css"
           "javascript"
