@@ -14,10 +14,12 @@
     # this is the "node" in the systemd dependency graph that will run the service
     wantedBy = [ "multi-user.target" ];
 
+    wants = [ "network-online.target" ];
+
     # systemd service unit declarations involve specifying dependencies and order of execution
     # of systemd nodes; here we are saying that we want our service to start after the network has 
     # set up (as our IRC client needs to relay over the network)
-    after = [ "network.target" ];
+    after = [ "network-online.target" ];
 
     description = "frp client";
 
