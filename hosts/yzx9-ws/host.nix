@@ -6,6 +6,7 @@
     ./hardware-configuration.nix
 
     ./frp.nix
+    ./kanboard.nix
     ./rss.nix
     ./xorg.nix
   ];
