@@ -1,15 +1,14 @@
-{ pkgs, ... }:
+{ self, vars, ... }:
 
 let
-  pkg = pkgs.callPackage ./kanboard/package.nix { };
   vhost = "kanboard";
 in
 {
-  imports = [ ./kanboard/option.nix ];
+  imports = [ ../../packages/kanboard/option.nix ];
 
   services.kanboard = {
     enable = true;
-    package = pkg;
+    package = self.packages.${vars.system}.kanboard;
     virtualHost = vhost;
   };
 

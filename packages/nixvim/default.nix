@@ -22,7 +22,7 @@ let
 
       # You can use `extraSpecialArgs` to pass additional arguments to your module files
       extraSpecialArgs = {
-        minimize = false;
+        inherit minimize;
       };
     };
 in
