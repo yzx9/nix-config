@@ -144,7 +144,7 @@
           inherit (args) specialArgs;
           system = args.vars.system;
           modules = args.modules ++ [
-            ./modules/linux
+            ./modules/nixos
 
             agenix.nixosModules.default
 
@@ -168,7 +168,7 @@
           inherit (args) specialArgs;
           system = args.vars.system;
           modules = args.modules ++ [
-            ./modules/darwin
+            ./modules/nix-darwin
 
             agenix.darwinModules.default
 
@@ -202,13 +202,7 @@
 
       # nix run .#<command>
       packages = forEachSystem (
-        { system, pkgs, ... }:
-        let
-          args = inputs // {
-            inherit system pkgs;
-          };
-        in
-        import ./packages args
+        { system, pkgs, ... }: import ./packages (inputs // { inherit system pkgs; })
       );
 
       # nix develop

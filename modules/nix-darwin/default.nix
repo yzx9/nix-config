@@ -2,9 +2,10 @@
 
 {
   imports = [
-    ../shared
+    ../_shared
     ./docker.nix
-    ./nvidia.nix
+    ./homebrew.nix
+    ./nix-core.nix
     ./proxy.nix
     ./system.nix
   ];
