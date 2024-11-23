@@ -53,6 +53,7 @@
   # The `@` syntax here is used to alias the attribute set of the inputs's parameter, making it convenient to use inside the function.
   outputs =
     inputs@{
+      self,
       nixpkgs,
       darwin,
       home-manager,
@@ -107,7 +108,7 @@
           let
             vars = hosts.${hostname};
             specialArgs = {
-              inherit inputs vars;
+              inherit self inputs vars;
             };
           in
           f {
@@ -188,6 +189,19 @@
             ./home
           ];
           extraSpecialArgs = args.hmSpecialArgs;
+        }
+      );
+
+      # nix run .#<command>
+      packages = forEachSystem (
+        { pkgs }:
+        let
+          args = inputs // {
+            pkgs = pkgs;
+          };
+        in
+        {
+          default = import ./packages args;
         }
       );
 

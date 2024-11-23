@@ -1,4 +1,6 @@
 {
+  self,
+  vars,
   config,
   pkgs,
   lib,
@@ -7,8 +9,6 @@
 
 let
   cfg = config.gui;
-
-  vaa3d-x = pkgs.callPackage ./pkgs/vaa3d-x.nix { };
 in
 {
   config = lib.mkIf cfg.enable {
@@ -33,7 +33,7 @@ in
       # darwin only
       ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
         pkgs.stats
-        vaa3d-x
+        self.packages.${vars.system}.default.vaa3d-x
       ];
   };
 }
