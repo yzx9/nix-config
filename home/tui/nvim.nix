@@ -15,9 +15,9 @@ lib.mkIf cfg.enable {
       let
         pkg =
           if cfg.minimize then
-            self.packages.${vars.system}.nixvim
+            self.packages.${vars.system}.nixvim-mini
           else
-            self.packages.${vars.system}.nixvim-mini;
+            self.packages.${vars.system}.nixvim;
       in
       pkg.extend {
         # Set 'vi' and 'vim' aliases to nixvim

@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 let
-  mkEnabledOption = name: (lib.mkEnableOption name) // { enable = true; };
+  mkEnabledOption = name: (lib.mkEnableOption name) // { default = true; };
 in
 {
   options.proxy.enable = lib.mkEnableOption "proxy";
@@ -12,7 +12,7 @@ in
 
   options.tui = {
     editor.nvim = {
-      enable = mkEnabledOption "neovim";
+      enable = mkEnabledOption "nvim";
       minimize = lib.mkEnableOption "minimize, without LSP";
     };
   };
