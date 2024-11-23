@@ -2,8 +2,10 @@
 
 {
   home.packages = with pkgs; [
-    neofetch
+    bat
+    tree
     btop
+    neofetch
   ];
 
   programs.yazi = {

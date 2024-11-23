@@ -27,11 +27,9 @@
 
       # shell tools
       ncurses
-      bat
       wget
       curl
       unzip
-      tree
 
       # networking tools
       # iputils
