@@ -2,7 +2,7 @@
 { ... }:
 
 {
-  programs.nixvim.autoGroups = {
+  autoGroups = {
     auto_quit.clear = true;
     autoview.clear = true;
     bufferline.clear = true;
@@ -18,7 +18,7 @@
     unlist_quickfix.clear = true;
   };
 
-  programs.nixvim.autoCmd = [
+  autoCmd = [
     # auto_quit
     # https://github.com/AstroNvim/AstroNvim/blob/v4.7.7/lua/astronvim/plugins/_astrocore_autocmds.lua#L18-L46
     {

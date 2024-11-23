@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  programs.nixvim.colorschemes = {
+  colorschemes = {
     # Soothing pastel theme for (Neo)vim
     # homepage: https://github.com/catppuccin/nvim
     # nixvim doc: https://nix-community.github.io/nixvim/colorschemes/catppuccin/index.html

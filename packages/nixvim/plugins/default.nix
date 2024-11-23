@@ -1,13 +1,11 @@
 {
-  config,
   pkgs,
   lib,
+  minimize ? false,
   ...
-}@args:
+}:
 
 let
-  cfg = config.tui.editor;
-
   files =
     [
       ui/btw.nix
@@ -31,7 +29,7 @@ let
       ux/toggleterm.nix
       ux/which-key.nix
     ]
-    ++ lib.optionals cfg.lsp.enable [
+    ++ lib.optionals (!minimize) [
       lsp/comment.nix
       lsp/conform.nix
       lsp/dap.nix
@@ -41,15 +39,9 @@ let
       lsp/ts-autotag.nix
       lsp/ts-context-commentstring.nix
     ];
+
+  args = {
+    inherit pkgs lib;
+  };
 in
-{
-  programs.nixvim = lib.mkMerge (
-    map (
-      file:
-      let
-        plugin = import file args;
-      in
-      plugin
-    ) files
-  );
-}
+lib.mkMerge (map (file: (import file args)) files)

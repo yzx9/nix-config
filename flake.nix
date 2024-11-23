@@ -127,7 +127,15 @@
         );
 
       systems = lib.unique (lib.attrValues (lib.mapAttrs (name: value: value.system) hosts));
-      forEachSystem = f: lib.genAttrs systems (system: f { pkgs = nixpkgs.legacyPackages.${system}; });
+      forEachSystem =
+        f:
+        lib.genAttrs systems (
+          system:
+          f {
+            inherit system;
+            pkgs = nixpkgs.legacyPackages.${system};
+          }
+        );
     in
     {
       nixosConfigurations = forHosts [ "yzx9-ws" ] (
@@ -194,20 +202,18 @@
 
       # nix run .#<command>
       packages = forEachSystem (
-        { pkgs }:
+        { system, pkgs, ... }:
         let
           args = inputs // {
-            pkgs = pkgs;
+            inherit system pkgs;
           };
         in
-        {
-          default = import ./packages args;
-        }
+        import ./packages args
       );
 
       # nix develop
       devShells = forEachSystem (
-        { pkgs }:
+        { pkgs, ... }:
         {
           default = pkgs.mkShell {
             buildInputs = [ pkgs.just ];
@@ -219,6 +225,6 @@
       templates = import ./templates;
 
       # nix fmt: nix code formatter
-      formatter = forEachSystem ({ pkgs }: pkgs.nixfmt-rfc-style);
+      formatter = forEachSystem ({ pkgs, ... }: pkgs.nixfmt-rfc-style);
     };
 }

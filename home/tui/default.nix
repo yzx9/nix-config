@@ -2,8 +2,8 @@
 
 {
   imports = [
-    ./neovim
     ./shell
     ./apps.nix
+    ./nvim.nix
   ];
 }

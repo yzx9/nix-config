@@ -1,7 +1,7 @@
 { ... }:
 
 {
-  programs.nixvim.extraConfigLuaPre = ''
+  extraConfigLuaPre = ''
     rndname = function()
       local left = {
         "admiring",

@@ -1,6 +1,6 @@
 # homepage: https://github.com/nvim-telescope/telescope.nvim
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/telescope/index.html
-{ config, pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   plugins.telescope = {
@@ -71,7 +71,7 @@
         }:
 
         let
-          inherit (config.lib.nixvim) toLuaObject;
+          inherit (lib.nixvim) toLuaObject;
         in
         {
           inherit key mode;

@@ -1,5 +1,8 @@
 { config, lib, ... }:
 
+let
+  mkEnabledOption = name: (lib.mkEnableOption name) // { enable = true; };
+in
 {
   options.proxy.enable = lib.mkEnableOption "proxy";
 
@@ -8,10 +11,9 @@
   };
 
   options.tui = {
-    editor.lsp.enable = lib.mkOption {
-      description = "Enable LSP for the editor";
-      type = lib.types.bool;
-      default = true;
+    editor.nvim = {
+      enable = mkEnabledOption "neovim";
+      minimize = lib.mkEnableOption "minimize, without LSP";
     };
   };
 
@@ -26,8 +28,6 @@
 
   options.docker = {
     enable = lib.mkEnableOption "docker";
-    rootless = lib.mkEnableOption "rootless" // {
-      default = true;
-    };
+    rootless = mkEnabledOption "rootless";
   };
 }

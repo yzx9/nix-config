@@ -4,7 +4,7 @@
 { ... }:
 
 {
-  programs.nixvim.opts = {
+  opts = {
     # Don't stop backspace at insert
     backspace.__raw = ''
       vim.list_extend(vim.opt.backspace:get(), { "nostop" })
@@ -157,8 +157,8 @@
     writebackup = false;
   };
 
-  programs.nixvim.autoGroups.wrap_ft.clear = true;
-  programs.nixvim.autoCmd = [
+  autoGroups.wrap_ft.clear = true;
+  autoCmd = [
     {
       desc = "Enable wrap based on file type";
       event = "BufEnter";

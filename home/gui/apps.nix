@@ -32,8 +32,8 @@ in
       ]
       # darwin only
       ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
+        self.packages.${vars.system}.vaa3d-x
         pkgs.stats
-        self.packages.${vars.system}.default.vaa3d-x
       ];
   };
 }
