@@ -1,11 +1,12 @@
 {
   system,
-  pkgs,
+  nixpkgs,
   nixvim,
   ...
 }:
 
 let
+  pkgs = nixpkgs.legacyPackages.${system};
   nixvim' = nixvim.legacyPackages.${system};
   mkNixvim =
     { minimize }:

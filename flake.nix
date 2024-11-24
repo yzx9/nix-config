@@ -52,162 +52,32 @@
   # However, `self` is an exception, this special parameter points to the `outputs` itself (self-reference)
   # The `@` syntax here is used to alias the attribute set of the inputs's parameter, making it convenient to use inside the function.
   outputs =
-    inputs@{
-      self,
-      nixpkgs,
-      darwin,
-      home-manager,
-      agenix,
-      ...
-    }:
+    inputs@{ nixpkgs, ... }:
 
     let
       inherit (nixpkgs) lib;
 
-      toHostAttrs =
-        list:
-        lib.listToAttrs (
-          lib.forEach list (v: {
-            name = v.hostname;
-            value = v;
-          })
-        );
+      hosts = import ./hosts inputs;
 
-      yzx9 = {
-        name = "yzx9";
-        git = {
-          name = "Zexin Yuan";
-          email = "git@yzx9.xyz";
-        };
-      };
-
-      hosts = toHostAttrs [
-        {
-          hostname = "yzx9-mbp";
-          system = "aarch64-darwin";
-          user = yzx9;
-        }
-        {
-          hostname = "yzx9-ws";
-          system = "x86_64-linux";
-          user = yzx9;
-        }
-        {
-          hostname = "cvcd-gpu0";
-          system = "x86_64-linux";
-          user = yzx9 // {
-            name = "yzx";
-          };
-        }
+      systems = [
+        "aarch64-darwin"
+        "x86_64-linux"
       ];
-
-      forHosts =
-        hostnames: f:
-        lib.genAttrs hostnames (
-          hostname:
-          let
-            vars = hosts.${hostname};
-            specialArgs = {
-              inherit self inputs vars;
-            };
-          in
-          f {
-            inherit vars specialArgs;
-            pkgs = nixpkgs.legacyPackages.${vars.system};
-            modules = [
-              ./hosts/${vars.hostname}/config.nix
-              ./hosts/${vars.hostname}/host.nix
-            ];
-            hmSpecialArgs = specialArgs;
-            hmModules = [
-              ./hosts/${vars.hostname}/config.nix
-              ./hosts/${vars.hostname}/home.nix
-            ];
-          }
-        );
-
-      systems = lib.unique (lib.attrValues (lib.mapAttrs (name: value: value.system) hosts));
-      forEachSystem =
-        f:
-        lib.genAttrs systems (
-          system:
-          f {
-            inherit system;
-            pkgs = nixpkgs.legacyPackages.${system};
-          }
-        );
+      forEachSystem = f: lib.genAttrs systems (system: f system);
     in
     {
-      nixosConfigurations = forHosts [ "yzx9-ws" ] (
-        args:
-        nixpkgs.lib.nixosSystem {
-          inherit (args) specialArgs;
-          system = args.vars.system;
-          modules = args.modules ++ [
-            ./modules/nixos
-
-            agenix.nixosModules.default
-
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = false;
-              home-manager.useUserPackages = false;
-              home-manager.extraSpecialArgs = args.hmSpecialArgs;
-              home-manager.users.${args.vars.user.name} = import ./home;
-              home-manager.sharedModules = args.hmModules ++ [
-                agenix.homeManagerModules.default
-              ];
-            }
-          ];
-        }
-      );
-
-      darwinConfigurations = forHosts [ "yzx9-mbp" ] (
-        args:
-        darwin.lib.darwinSystem {
-          inherit (args) specialArgs;
-          system = args.vars.system;
-          modules = args.modules ++ [
-            ./modules/nix-darwin
-
-            agenix.darwinModules.default
-
-            home-manager.darwinModules.home-manager
-            {
-              home-manager.useGlobalPkgs = false;
-              home-manager.useUserPackages = false;
-              home-manager.extraSpecialArgs = args.hmSpecialArgs;
-              home-manager.users.${args.vars.user.name} = import ./home;
-              home-manager.sharedModules = args.hmModules ++ [
-                agenix.homeManagerModules.default
-              ];
-            }
-          ];
-        }
-      );
-
-      homeConfigurations = forHosts [ "cvcd-gpu0" ] (
-        args:
-        home-manager.lib.homeManagerConfiguration {
-          inherit (args) pkgs;
-
-          modules = args.hmModules ++ [
-            agenix.homeManagerModules.default
-
-            ./home
-          ];
-          extraSpecialArgs = args.hmSpecialArgs;
-        }
-      );
+      inherit (hosts) nixosConfigurations darwinConfigurations homeManagerModules;
 
       # nix run .#<command>
-      packages = forEachSystem (
-        { system, pkgs, ... }: import ./packages (inputs // { inherit system pkgs; })
-      );
+      packages = forEachSystem (system: import ./packages (inputs // { inherit system; }));
 
       # nix develop
       devShells = forEachSystem (
-        { pkgs, ... }:
+        system:
+
+        let
+          pkgs = pkgs.legacyPackages.${system};
+        in
         {
           default = pkgs.mkShell {
             buildInputs = [ pkgs.just ];
@@ -216,9 +86,9 @@
       );
 
       # nix flake init -t yzx9#<template_name>
-      templates = import ./templates;
+      templates = import ./templates { };
 
       # nix fmt: nix code formatter
-      formatter = forEachSystem ({ pkgs, ... }: pkgs.nixfmt-rfc-style);
+      formatter = forEachSystem ({ system, ... }: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
     };
 }
