@@ -21,7 +21,6 @@ in
       (with pkgs; [
         gopass-jsonapi # you have to run `gopass-jsonapi configure` manually, because I dont know how to do it automatically
         dbeaver-bin # SQL client
-        yarr
         logseq
       ])
       # customized apps
