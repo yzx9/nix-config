@@ -55,15 +55,15 @@
     inputs@{ nixpkgs, ... }:
 
     let
-      inherit (nixpkgs) lib;
-
       hosts = import ./hosts inputs;
 
       systems = [
-        "aarch64-darwin"
         "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
       ];
-      forEachSystem = f: lib.genAttrs systems (system: f system);
+      forEachSystem = f: nixpkgs.lib.genAttrs systems (system: f system);
     in
     {
       inherit (hosts) nixosConfigurations darwinConfigurations homeManagerModules;
