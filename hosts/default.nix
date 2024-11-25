@@ -30,16 +30,19 @@ let
   hosts = toHostAttrs [
     {
       hostname = "yzx9-mbp";
+      type = "nix-darwin";
       system = "aarch64-darwin";
       user = yzx9;
     }
     {
       hostname = "yzx9-ws";
+      type = "nixos";
       system = "x86_64-linux";
       user = yzx9;
     }
     {
       hostname = "cvcd-gpu0";
+      type = "home-manager";
       system = "x86_64-linux";
       user = yzx9 // {
         name = "yzx";
@@ -48,11 +51,11 @@ let
   ];
 
   forHosts =
-    hostnames: f:
-    lib.genAttrs hostnames (
-      hostname:
+    type: f:
+
+    lib.mapAttrs (
+      hostname: vars:
       let
-        vars = hosts.${hostname};
         specialArgs = {
           inherit self inputs vars;
         };
@@ -61,16 +64,16 @@ let
         inherit vars specialArgs;
         pkgs = nixpkgs.legacyPackages.${vars.system};
         modules = [
-          ./${vars.hostname}/config.nix
-          ./${vars.hostname}/host.nix
+          ./${hostname}/config.nix
+          ./${hostname}/host.nix
         ];
         hmSpecialArgs = specialArgs;
         hmModules = [
-          ./${vars.hostname}/config.nix
-          ./${vars.hostname}/home.nix
+          ./${hostname}/config.nix
+          ./${hostname}/home.nix
         ];
       }
-    );
+    ) (lib.filterAttrs (k: v: v.type == type) hosts);
 
   mkHMConfiguration = args: {
     home-manager.useGlobalPkgs = false;
@@ -83,11 +86,11 @@ let
   };
 in
 {
-  nixosConfigurations = forHosts [ "yzx9-ws" ] (
+  nixosConfigurations = forHosts "nixos" (
     args:
     nixpkgs.lib.nixosSystem {
       inherit (args) specialArgs;
-      system = args.vars.system;
+      inherit (args.vars) system;
       modules = args.modules ++ [
         ../modules/nixos
 
@@ -99,11 +102,11 @@ in
     }
   );
 
-  darwinConfigurations = forHosts [ "yzx9-mbp" ] (
+  darwinConfigurations = forHosts "nix-darwin" (
     args:
     darwin.lib.darwinSystem {
       inherit (args) specialArgs;
-      system = args.vars.system;
+      inherit (args.vars) system;
       modules = args.modules ++ [
         ../modules/nix-darwin
 
@@ -115,7 +118,7 @@ in
     }
   );
 
-  homeConfigurations = forHosts [ "cvcd-gpu0" ] (
+  homeConfigurations = forHosts "home-manager" (
     args:
     home-manager.lib.homeManagerConfiguration {
       inherit (args) pkgs;
