@@ -7,6 +7,11 @@
       # Query the mirror of USTC first, and then the official cache.
       "https://mirrors.ustc.edu.cn/nix-channels/store"
       "https://cache.nixos.org"
+      "https://nix-community.cachix.org"
+    ];
+
+    extra-trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
   };
 
@@ -18,6 +23,11 @@
 
     darwin = {
       url = "github:lnl7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    raspberry-pi-nix = {
+      url = "github:nix-community/raspberry-pi-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

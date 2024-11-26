@@ -1,9 +1,9 @@
 {
   self,
   nixpkgs,
+  darwin,
   agenix,
   home-manager,
-  darwin,
   ...
 }@inputs:
 
@@ -41,6 +41,12 @@ let
       user = yzx9;
     }
     {
+      hostname = "yzx9-rpi5";
+      type = "nixos";
+      system = "aarch64-linux";
+      user = yzx9;
+    }
+    {
       hostname = "cvcd-gpu0";
       type = "home-manager";
       system = "x86_64-linux";
@@ -56,6 +62,7 @@ let
     lib.mapAttrs (
       hostname: vars:
       let
+        commonModules = [ ./${hostname}/config.nix ];
         specialArgs = {
           inherit self inputs vars;
         };
@@ -63,26 +70,18 @@ let
       f {
         inherit vars specialArgs;
         pkgs = nixpkgs.legacyPackages.${vars.system};
-        modules = [
-          ./${hostname}/config.nix
-          ./${hostname}/host.nix
-        ];
+        modules = commonModules ++ [ ./${hostname}/host.nix ];
         hmSpecialArgs = specialArgs;
-        hmModules = [
-          ./${hostname}/config.nix
-          ./${hostname}/home.nix
-        ];
+        hmModules = commonModules ++ [ ./${hostname}/home.nix ];
       }
     ) (lib.filterAttrs (k: v: v.type == type) hosts);
 
   mkHMConfiguration = args: {
     home-manager.useGlobalPkgs = false;
-    home-manager.useUserPackages = false;
+    home-manager.useUserPackages = true;
     home-manager.extraSpecialArgs = args.hmSpecialArgs;
     home-manager.users.${args.vars.user.name} = import ../home;
-    home-manager.sharedModules = args.hmModules ++ [
-      agenix.homeManagerModules.default
-    ];
+    home-manager.sharedModules = args.hmModules ++ [ agenix.homeManagerModules.default ];
   };
 in
 {

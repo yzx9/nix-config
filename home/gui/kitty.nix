@@ -10,7 +10,7 @@ let
 in
 {
   config =
-    lib.mkIf cfg.enable {
+    (lib.mkIf cfg.enable {
       programs.kitty = {
         enable = true;
         font = {
@@ -26,7 +26,7 @@ in
       };
 
       home.shellAliases.s = "kitten ssh";
-    }
+    })
     // {
       home.packages = [ pkgs.kitty.terminfo ];
     };

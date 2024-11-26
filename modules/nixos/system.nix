@@ -2,19 +2,25 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ vars, pkgs, ... }:
+{
+  vars,
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.enable = lib.mkDefault true;
+  boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
 
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.networkmanager.enable = true;
   networking.hostName = vars.hostname;
+  networking.networkmanager.enable = lib.mkDefault true;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Set your time zone.
@@ -64,7 +70,7 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define a user account.
   users.users =
     let
       username = vars.user.name;
@@ -74,10 +80,10 @@
         home = "/home/${username}";
         description = username;
         isNormalUser = true;
+        initialPassword = "a1b2c3d4"; # Don't forget to set a password with ‘passwd’.
         extraGroups = [
-          "networkmanager"
           "wheel"
-        ];
+        ] ++ lib.optionals config.networking.networkmanager.enable [ "networkmanager" ];
         # packages = with pkgs; [];
       };
     };
