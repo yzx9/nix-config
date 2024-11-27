@@ -10,15 +10,6 @@
 let
   inherit (nixpkgs) lib;
 
-  toHostAttrs =
-    list:
-    lib.listToAttrs (
-      lib.forEach list (v: {
-        name = v.hostname;
-        value = v;
-      })
-    );
-
   yzx9 = {
     name = "yzx9";
     git = {
@@ -27,34 +18,32 @@ let
     };
   };
 
-  hosts = toHostAttrs [
-    {
-      hostname = "yzx9-mbp";
+  toVars = attrs: lib.mapAttrs (k: v: v // { hostname = k; }) attrs;
+  hosts = toVars {
+    "yzx9-mbp" = {
       type = "nix-darwin";
       system = "aarch64-darwin";
       user = yzx9;
-    }
-    {
-      hostname = "yzx9-ws";
+    };
+    "yzx9-ws" = {
       type = "nixos";
       system = "x86_64-linux";
       user = yzx9;
-    }
-    {
+    };
+    "yzx9-rpi5" = {
       hostname = "yzx9-rpi5";
       type = "nixos";
       system = "aarch64-linux";
       user = yzx9;
-    }
-    {
-      hostname = "cvcd-gpu0";
+    };
+    "cvcd-gpu0" = {
       type = "home-manager";
       system = "x86_64-linux";
       user = yzx9 // {
         name = "yzx";
       };
-    }
-  ];
+    };
+  };
 
   forHosts =
     type: f:
