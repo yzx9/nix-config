@@ -17,9 +17,16 @@ let
     system_yzx9-rpi5
   ];
 
-  yzx9-mbp = [ user_yzx9-mbp ] ++ [ system_yzx9-mbp ];
-  yzx9-ws = [ user_yzx9-ws ] ++ [ system_yzx9-ws ];
-  yzx9-rpi5 = [ user_yzx9-rpi5 ] ++ [ system_yzx9-rpi5 ];
+  yzx9-root = [ user_yzx9-mbp ];
+  yzx9-mbp = yzx9-root ++ [ system_yzx9-mbp ];
+  yzx9-ws = yzx9-root ++ [
+    system_yzx9-ws
+    user_yzx9-ws
+  ];
+  yzx9-rpi5 = yzx9-root ++ [
+    system_yzx9-rpi5
+    user_yzx9-rpi5
+  ];
 in
 {
   "id-lab.age".publicKeys = users;
