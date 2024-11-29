@@ -67,7 +67,7 @@ let
 
   mkHMConfiguration = args: {
     home-manager.useGlobalPkgs = false;
-    home-manager.useUserPackages = true;
+    home-manager.useUserPackages = false;
     home-manager.extraSpecialArgs = args.hmSpecialArgs;
     home-manager.users.${args.vars.user.name} = import ../home;
     home-manager.sharedModules = args.hmModules ++ [ agenix.homeManagerModules.default ];
