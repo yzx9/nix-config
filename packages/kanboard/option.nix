@@ -8,32 +8,32 @@
 let
   cfg = config.services.kanboard;
 
-  toStringAttrs = attrs: lib.attrsets.mapAttrs (k: v: toString v) attrs;
+  toStringAttrs = lib.mapAttrs (lib.const toString);
 in
 {
   meta.maintainers = with lib.maintainers; [ yzx9 ];
 
-  options.services.kanboard = with lib; {
-    enable = mkEnableOption "Kanboard";
+  options.services.kanboard = {
+    enable = lib.mkEnableOption "Kanboard";
 
-    package = mkPackageOption pkgs "kanboard" { };
+    package = lib.mkPackageOption pkgs "kanboard" { };
 
-    dataDir = mkOption {
-      type = types.str;
+    dataDir = lib.mkOption {
+      type = lib.types.str;
       default = "/var/lib/kanboard";
       description = "Default data folder for Kanboard.";
       example = "/mnt/kanboard";
     };
 
-    user = mkOption {
-      type = types.str;
+    user = lib.mkOption {
+      type = lib.types.str;
       default = "kanboard";
       description = "User under which Kanboard runs.";
     };
 
-    settings = mkOption {
+    settings = lib.mkOption {
       type =
-        with types;
+        with lib.types;
         attrsOf (oneOf [
           str
           int
@@ -49,10 +49,28 @@ in
     };
 
     # Nginx
-    virtualHost = mkOption {
+    domain = lib.mkOption {
       type = lib.types.str;
+      description = "FQDN for the Kanboard instance.";
+      example = "kanboard.example.org";
+    };
+    nginx = lib.mkOption {
+      type = lib.types.anything; # lib.types.nullOr (
+      #   lib.types.submodule (import ../web-servers/nginx/vhost-options.nix { inherit config lib; })
+      #);
+      default = null;
       description = ''
-        FQDN for the kanboard instance.
+        With this option, you can customize an NGINX virtual host which already
+        has sensible defaults for Kanboard. Set to `{ }` if you do not need any
+        customization for the virtual host. If enabled, then by default, the
+        {option}`serverName` is `''${domain}`. If this is set to null (the
+        default), no NGINX virtual host will be configured.
+      '';
+      example = lib.literalExpression ''
+        {
+          enableACME = true;
+          forceHttps = true;
+        }
       '';
     };
 
@@ -64,6 +82,7 @@ in
           str
           bool
         ]);
+
       default = {
         "pm" = "dynamic";
         "php_admin_value[error_log]" = "stderr";
@@ -97,41 +116,42 @@ in
 
       inherit (cfg.phpfpm) settings;
 
-      phpEnv = {
-        DATA_DIR = cfg.dataDir;
-      } // toStringAttrs cfg.settings;
+      phpEnv = lib.mkMerge [
+        { DATA_DIR = cfg.dataDir; }
+        (toStringAttrs cfg.settings)
+      ];
     };
 
-    services.nginx = {
-      enable = true;
-      virtualHosts."${cfg.virtualHost}" = {
-        root = "${cfg.package}/share/kanboard";
-        locations."/".extraConfig = ''
-          rewrite ^ /index.php;
-        '';
-
-        locations."~ \\.php$".extraConfig = ''
-          fastcgi_split_path_info ^(.+\.php)(/.+)$;
-          fastcgi_pass unix:${config.services.phpfpm.pools.kanboard.socket};
-          include ${config.services.nginx.package}/conf/fastcgi.conf;
-          include ${config.services.nginx.package}/conf/fastcgi_params;
-        '';
-
-        locations."~ \\.(js|css|ttf|woff2?|png|jpe?g|svg)$".extraConfig = ''
-          add_header Cache-Control "public, max-age=15778463";
-          add_header X-Content-Type-Options nosniff;
-          add_header X-XSS-Protection "1; mode=block";
-          add_header X-Robots-Tag none;
-          add_header X-Download-Options noopen;
-          add_header X-Permitted-Cross-Domain-Policies none;
-          add_header Referrer-Policy no-referrer;
-          access_log off;
-        '';
-
-        extraConfig = ''
-          try_files $uri /index.php;
-        '';
-      };
+    services.nginx = lib.mkIf (cfg.nginx != null) {
+      enable = lib.mkDefault true;
+      virtualHosts."${cfg.domain}" = lib.mkMerge [
+        {
+          root = "${cfg.package}/share/kanboard";
+          locations."/".extraConfig = ''
+            rewrite ^ /index.php;
+          '';
+          locations."~ \\.php$".extraConfig = ''
+            fastcgi_split_path_info ^(.+\.php)(/.+)$;
+            fastcgi_pass unix:${config.services.phpfpm.pools.kanboard.socket};
+            include ${config.services.nginx.package}/conf/fastcgi.conf;
+            include ${config.services.nginx.package}/conf/fastcgi_params;
+          '';
+          locations."~ \\.(js|css|ttf|woff2?|png|jpe?g|svg)$".extraConfig = ''
+            add_header Cache-Control "public, max-age=15778463";
+            add_header X-Content-Type-Options nosniff;
+            add_header X-XSS-Protection "1; mode=block";
+            add_header X-Robots-Tag none;
+            add_header X-Download-Options noopen;
+            add_header X-Permitted-Cross-Domain-Policies none;
+            add_header Referrer-Policy no-referrer;
+            access_log off;
+          '';
+          extraConfig = ''
+            try_files $uri /index.php;
+          '';
+        }
+        cfg.nginx
+      ];
     };
   };
 }
