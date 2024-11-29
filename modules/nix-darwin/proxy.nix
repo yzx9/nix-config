@@ -10,7 +10,10 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    age.secrets."xray.json".file = ../../secrets/xray.json.age;
+    age.secrets."xray.json" = {
+      file = ../../secrets/xray.json.age;
+      mode = "444"; # workaround with launchd agents
+    };
 
     environment.systemPackages = [ pkgs.xray ];
 
