@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   lib,
   ...
 }:
@@ -11,7 +12,7 @@ in
   options.services.frpc = {
     enable = lib.mkEnableOption "frpc";
 
-    package = lib.mkPackageOption "frp";
+    package = lib.mkPackageOption pkgs "frp" { };
 
     configFile = lib.mkOption {
       type = lib.types.string;
