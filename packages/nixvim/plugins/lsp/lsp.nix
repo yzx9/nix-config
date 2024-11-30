@@ -86,8 +86,13 @@ in
       # rust
       rust_analyzer = {
         enable = true;
-        installCargo = true;
-        installRustc = true;
+
+        # Since rust_analyzer is version-sensitive of rustc, we do not install it here
+        package = null;
+
+        # It will be installed separately
+        installCargo = false;
+        installRustc = false;
       };
 
       # nix

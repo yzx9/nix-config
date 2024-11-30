@@ -46,6 +46,7 @@
               toolchain.rustfmt
               fenix'.targets.${target}.latest.rust-std
             ])
+            rust-analyzer
             pkg-config
             openssl
             wasm-pack

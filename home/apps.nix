@@ -46,11 +46,20 @@
       just
       gopass
       ffmpeg
+
+      # dev
+      python312
+      nixpkgs-review
     ]
     ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
       parted
     ]
   );
+
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+  };
 
   home.shellAliases.j = "just";
 }
