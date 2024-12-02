@@ -5,6 +5,7 @@ let
   toSshPath = path: lib.removePrefix ssh path;
 in
 {
+  # ssh
   age.secrets = {
     id-git = {
       file = ../../secrets/id-git_yzx9-mbp.age;

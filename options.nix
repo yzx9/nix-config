@@ -4,17 +4,17 @@ let
   mkEnabledOption = name: (lib.mkEnableOption name) // { default = true; };
 in
 {
-  options.proxy.enable = lib.mkEnableOption "proxy";
+  options.purpose = {
+    daily = lib.mkEnableOption "for daily use";
+    development = lib.mkEnableOption "for development use";
+  };
 
   options.gui = {
     enable = lib.mkEnableOption "GUI apps";
   };
 
-  options.tui = {
-    editor.nvim = {
-      enable = mkEnabledOption "nvim";
-      minimize = lib.mkEnableOption "minimize, without LSP";
-    };
+  options.proxy = {
+    enable = lib.mkEnableOption "proxy";
   };
 
   options.nvidia = {

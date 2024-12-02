@@ -7,7 +7,6 @@
 }:
 
 let
-  cfg = config.tui.editor.nvim;
   pkgs = self.packages.${vars.system};
   extend =
     pkg:
@@ -17,10 +16,10 @@ let
       vimAlias = true;
     };
 in
-lib.mkIf cfg.enable {
+{
   home.packages =
-    lib.optionals cfg.minimize [ (extend pkgs.nixvim-mini) ]
-    ++ lib.optionals (!cfg.minimize) ([ (extend pkgs.nixvim) ] ++ pkgs.nixvim-formatters);
+    lib.optionals (!config.purpose.development) [ (extend pkgs.nixvim-mini) ]
+    ++ lib.optionals config.purpose.development ([ (extend pkgs.nixvim) ] ++ pkgs.nixvim-formatters);
 
   # Set default editor
   home.sessionVariables = {

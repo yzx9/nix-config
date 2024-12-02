@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   vars,
   pkgs,
@@ -26,11 +27,18 @@
       inputs.agenix.packages.${vars.system}.default
 
       # shell tools
-      ncurses
       wget
       curl
       unzip
 
+      # misc
+      age
+      just
+    ]
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
+      parted
+    ]
+    ++ lib.optionals config.purpose.daily [
       # networking tools
       # iputils
       mtr # a network diagnostic tool
@@ -41,18 +49,13 @@
       nmap # a utility for network discovery and security auditing
       ipcalc # it is a calculator for the IPv4/v6 addresses
 
-      # misc
-      age
-      just
+      # msic
       gopass
       ffmpeg
-
-      # dev
+    ]
+    ++ lib.optionals config.purpose.development [
       python312
       nixpkgs-review
-    ]
-    ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
-      parted
     ]
   );
 
