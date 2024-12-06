@@ -8,10 +8,10 @@
 }:
 
 let
-  cfg = config.gui;
+  purpose = config.purpose;
 in
 {
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf purpose.gui {
     # Allow unfree packages
     # nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ ];
 

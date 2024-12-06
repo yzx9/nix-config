@@ -45,7 +45,7 @@ in
     brews = [ ];
 
     # `brew install --cask`
-    casks = lib.optionals config.gui.enable [
+    casks = lib.optionals config.purpose.gui [
       # system
       "canon-ufrii-driver"
       "middleclick"

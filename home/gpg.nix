@@ -6,7 +6,7 @@
 }:
 
 let
-  pinentry = config.gui.enable;
+  pinentry = config.purpose.gui;
 in
 {
   programs.gpg = {

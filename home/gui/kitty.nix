@@ -6,11 +6,11 @@
 }:
 
 let
-  cfg = config.gui;
+  purpose = config.purpose;
 in
 {
   config =
-    (lib.mkIf cfg.enable {
+    (lib.mkIf purpose.gui {
       programs.kitty = {
         enable = true;
         font = {

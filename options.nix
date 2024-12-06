@@ -7,10 +7,7 @@ in
   options.purpose = {
     daily = lib.mkEnableOption "for daily use";
     development = lib.mkEnableOption "for development use";
-  };
-
-  options.gui = {
-    enable = lib.mkEnableOption "GUI apps";
+    gui = lib.mkEnableOption "for GUI use";
   };
 
   options.proxy = {
