@@ -15,7 +15,7 @@ in
     package = lib.mkPackageOption pkgs "frp" { };
 
     configFile = lib.mkOption {
-      type = lib.types.string;
+      type = lib.types.str;
       description = "frpc config";
     };
   };
