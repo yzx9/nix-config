@@ -50,6 +50,7 @@
       ipcalc # it is a calculator for the IPv4/v6 addresses
 
       # msic
+      hledger
       gopass
       ffmpeg
     ]
@@ -59,7 +60,7 @@
     ]
   );
 
-  programs.direnv = {
+  programs.direnv = lib.mkIf config.purpose.development {
     enable = true;
     enableZshIntegration = true;
   };
