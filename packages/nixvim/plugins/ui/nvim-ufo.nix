@@ -7,11 +7,25 @@
   plugins.nvim-ufo = {
     enable = true;
 
-    settings.preview.mappings = {
-      scrollB = "<c-b>";
-      scrollD = "<c-d>";
-      scrollF = "<c-f>";
-      scrollU = "<c-u>";
+    settings = {
+      privider_selector = ''
+        function(bufnr, filetype, buftype)
+          local ftMap = {
+            vim = "indent",
+            python = {"indent"},
+            git = ""
+          }
+
+         return ftMap[filetype] or { "treesitter", "indent" }
+        end
+      '';
+
+      preview.mappings = {
+        scrollB = "<c-b>";
+        scrollD = "<c-d>";
+        scrollF = "<c-f>";
+        scrollU = "<c-u>";
+      };
     };
   };
 
