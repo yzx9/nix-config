@@ -45,32 +45,48 @@ in
     brews = [ ];
 
     # `brew install --cask`
-    casks = lib.optionals config.purpose.gui [
-      # system
-      "canon-ufrii-driver"
-      "middleclick"
-      "snipaste"
-      "maccy"
-      "logitech-options"
-      "firefox"
-      "google-chrome"
-      "vmware-fusion"
-      "sfm"
-      "steam"
+    casks =
+      lib.optionals (config.purpose.gui) [
+        # mouse
+        "logitech-options"
+        "middleclick"
 
-      # dev
-      "visual-studio-code"
+        # clipboard
+        "maccy"
 
-      # science
-      "zotero"
-      # "master-pdf-editor"
-      "eudic"
-      "fiji"
+        # screen snipaste
+        "snipaste"
 
-      # design
-      "blender"
-      "krita"
-      "inkscape"
-    ];
+        # browser
+        "firefox"
+        "google-chrome"
+      ]
+      ++ lib.optionals config.purpose.daily [
+        "canon-ufrii-driver"
+      ]
+      ++ lib.optionals (config.purpose.daily && config.purpose.gui) [
+        # science
+        "zotero"
+        # "master-pdf-editor"
+        "eudic"
+        "fiji"
+
+        # design
+        "blender"
+        "krita"
+        "inkscape"
+
+        # game
+        "steam"
+
+        # keyboard
+        "vial"
+      ]
+      ++ lib.optionals (config.purpose.development && config.purpose.gui) [
+        "visual-studio-code"
+
+        # virtual machine
+        "vmware-fusion"
+      ];
   };
 }
