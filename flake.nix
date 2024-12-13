@@ -76,7 +76,7 @@
       forEachSystem = f: nixpkgs.lib.genAttrs systems (system: f system);
     in
     {
-      inherit (hosts) nixosConfigurations darwinConfigurations homeManagerModules;
+      inherit (hosts) nixosConfigurations darwinConfigurations homeConfigurations;
 
       # nix run .#<command>
       packages = forEachSystem (system: import ./packages (inputs // { inherit system; }));
