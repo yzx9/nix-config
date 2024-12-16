@@ -9,7 +9,6 @@
   home.packages =
     (with pkgs; [
       ncurses
-      bat
       tree
       btop
       neofetch
