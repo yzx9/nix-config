@@ -4,6 +4,8 @@
   imports = [
     ./rpi5.nix
     ./frpc.nix
+    ./rss.nix
+    ./kanboard.nix
   ];
 
   # networking
