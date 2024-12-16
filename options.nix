@@ -6,7 +6,6 @@ in
 {
   options.purpose = {
     daily = lib.mkEnableOption "for daily use";
-    development = lib.mkEnableOption "for development use";
     gui = lib.mkEnableOption "for GUI use";
   };
 

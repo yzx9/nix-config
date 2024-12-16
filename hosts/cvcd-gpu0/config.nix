@@ -2,6 +2,6 @@
 
 {
   purpose = {
-    development = true;
+    daily = true;
   };
 }

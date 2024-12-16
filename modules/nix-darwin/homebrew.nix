@@ -28,7 +28,7 @@ in
     '';
 
   # To make this work, homebrew need to be installed manually, see https://brew.sh
-  # 
+  #
   # The apps installed by homebrew are not managed by nix, and not reproducible!
   # But on macOS, homebrew has a much larger selection of apps than nixpkgs, especially for GUI apps!
   homebrew = {
@@ -81,8 +81,8 @@ in
 
         # keyboard
         "vial"
-      ]
-      ++ lib.optionals (config.purpose.development && config.purpose.gui) [
+
+        # editor
         "visual-studio-code"
 
         # virtual machine

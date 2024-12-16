@@ -49,18 +49,18 @@
       nmap # a utility for network discovery and security auditing
       ipcalc # it is a calculator for the IPv4/v6 addresses
 
+      # dev
+      python312
+      nixpkgs-review
+
       # msic
       hledger
       gopass
       ffmpeg
     ]
-    ++ lib.optionals config.purpose.development [
-      python312
-      nixpkgs-review
-    ]
   );
 
-  programs.direnv = lib.mkIf config.purpose.development {
+  programs.direnv = lib.mkIf config.purpose.daily {
     enable = true;
     enableZshIntegration = true;
   };

@@ -18,8 +18,8 @@ let
 in
 {
   home.packages =
-    lib.optionals (!config.purpose.development) [ (extend pkgs.nixvim-mini) ]
-    ++ lib.optionals config.purpose.development ([ (extend pkgs.nixvim) ] ++ pkgs.nixvim-formatters);
+    lib.optionals (!config.purpose.daily) [ (extend pkgs.nixvim-mini) ]
+    ++ lib.optionals config.purpose.daily ([ (extend pkgs.nixvim) ] ++ pkgs.nixvim-formatters);
 
   # Set default editor
   home.sessionVariables = {

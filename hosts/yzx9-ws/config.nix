@@ -2,7 +2,7 @@
 
 {
   purpose = {
-    development = true;
+    daily = true;
   };
 
   proxy.enable = true;

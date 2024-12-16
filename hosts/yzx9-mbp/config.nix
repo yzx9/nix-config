@@ -3,7 +3,6 @@
 {
   purpose = {
     daily = true;
-    development = true;
     gui = true;
   };
 
