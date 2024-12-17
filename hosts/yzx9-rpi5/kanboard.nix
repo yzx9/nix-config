@@ -1,12 +1,8 @@
 { self, vars, ... }:
 
 {
-  imports = [ ../../packages/kanboard/option.nix ];
-
   services.kanboard = {
     enable = true;
-    package = self.packages.${vars.system}.kanboard;
-
     domain = "kanboard";
     nginx = {
       listen = [
