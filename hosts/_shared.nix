@@ -8,20 +8,27 @@
 }@inputs:
 
 let
+  inherit (nixpkgs) lib;
+
   mkArgs =
     cfg:
 
     let
       inherit (cfg) vars;
-      commonModules = [ ./${vars.hostname}/config.nix ];
       specialArgs = { inherit self inputs; };
     in
     {
       inherit vars specialArgs;
       pkgs = nixpkgs.legacyPackages.${vars.system};
-      modules = commonModules ++ [ ./${vars.hostname}/host.nix ];
+      modules = [
+        cfg
+        (ifPathExists ./${vars.hostname}/host.nix)
+      ];
       hmSpecialArgs = specialArgs;
-      hmModules = commonModules ++ [ ./${vars.hostname}/home.nix ];
+      hmModules = [
+        cfg
+        (ifPathExists ./${vars.hostname}/home.nix)
+      ];
     };
 
   mkHMConfiguration = args: {
@@ -31,6 +38,8 @@ let
     home-manager.users.${args.vars.user.name} = import ../home;
     home-manager.sharedModules = args.hmModules ++ [ agenix.homeManagerModules.default ];
   };
+
+  ifPathExists = f: lib.optionalString (lib.pathExists f) f;
 in
 {
   mkNixosConfiguration =

@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ./rpi5.nix
+    ./hardware-configuration.nix
     ./frpc.nix
     ./rss.nix
     ./kanboard.nix
