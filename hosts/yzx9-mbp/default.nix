@@ -1,7 +1,7 @@
 inputs:
 
 let
-  inherit (import ../_shared.nix inputs) mkDarwinConfiguration;
+  inherit (import ../_lib.nix inputs) mkDarwinConfiguration;
   dict = import ../_dict.nix;
 in
 mkDarwinConfiguration {

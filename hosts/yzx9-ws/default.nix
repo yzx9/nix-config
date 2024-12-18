@@ -1,7 +1,7 @@
 inputs:
 
 let
-  inherit (import ../_shared.nix inputs) mkNixosConfiguration;
+  inherit (import ../_lib.nix inputs) mkNixosConfiguration;
   dict = import ../_dict.nix.nix;
 in
 mkNixosConfiguration {
