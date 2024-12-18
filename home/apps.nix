@@ -32,7 +32,6 @@
       unzip
 
       # misc
-      age
       just
     ]
     ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
@@ -54,8 +53,7 @@
       nixpkgs-review
 
       # msic
-      hledger
-      gopass
+      age
       ffmpeg
     ]
   );

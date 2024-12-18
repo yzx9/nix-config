@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   ssh = "${config.home.homeDirectory}/.ssh/";
@@ -25,4 +30,9 @@ in
   programs.ssh = {
     matchBlocks."github.com".identityFile = (toSshPath config.age.secrets.id-github.path);
   };
+
+  home.packages = with pkgs; [
+    hledger
+    gopass
+  ];
 }
