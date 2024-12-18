@@ -4,6 +4,45 @@ let
   mkEnabledOption = name: (lib.mkEnableOption name) // { default = true; };
 in
 {
+  options.vars = {
+    type = lib.mkOption {
+      type = lib.types.enum [
+        "nixos"
+        "nix-darwin"
+        "home-manager"
+      ];
+      description = "The type of configuration to generate";
+    };
+    hostname = lib.mkOption {
+      type = lib.types.string;
+      description = "The hostname of the machine";
+    };
+    system = lib.mkOption {
+      type = lib.types.enum [
+        "x86_64-linux"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
+      description = "The system of the machine";
+    };
+    user = {
+      name = lib.mkOption {
+        type = lib.types.string;
+        description = "The name of the user";
+      };
+      git = {
+        name = lib.mkOption {
+          type = lib.types.string;
+          description = "The name of the user";
+        };
+        email = lib.mkOption {
+          type = lib.types.string;
+          description = "The email of the user";
+        };
+      };
+    };
+  };
+
   options.purpose = {
     daily = lib.mkEnableOption "for daily use";
     gui = lib.mkEnableOption "for GUI use";

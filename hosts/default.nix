@@ -10,60 +10,39 @@
 let
   inherit (nixpkgs) lib;
 
-  yzx9 = {
-    name = "yzx9";
-    git = {
-      name = "Zexin Yuan";
-      email = "git@yzx9.xyz";
-    };
-  };
-
-  toVars = attrs: lib.mapAttrs (k: v: v // { hostname = k; }) attrs;
-  hosts = toVars {
-    "yzx9-mbp" = {
-      type = "nix-darwin";
-      system = "aarch64-darwin";
-      user = yzx9;
-    };
-    "yzx9-ws" = {
-      type = "nixos";
-      system = "x86_64-linux";
-      user = yzx9;
-    };
-    "yzx9-rpi5" = {
-      hostname = "yzx9-rpi5";
-      type = "nixos";
-      system = "aarch64-linux";
-      user = yzx9;
-    };
-    "cvcd-gpu0" = {
-      type = "home-manager";
-      system = "x86_64-linux";
-      user = yzx9 // {
-        name = "yzx";
-      };
-    };
-  };
+  hosts = [
+    (import ./cvcd-gpu0/config.nix)
+    (import ./yzx9-mbp/config.nix)
+    (import ./yzx9-rpi5/config.nix)
+    (import ./yzx9-ws/config.nix)
+  ];
 
   forHosts =
     type: f:
+    lib.listToAttrs (
+      lib.map (cfg: {
+        name = cfg.vars.hostname;
+        value = f cfg;
+      }) (lib.filter (cfg: cfg.vars.type == type) hosts)
+    );
 
-    lib.mapAttrs (
-      hostname: vars:
-      let
-        commonModules = [ ./${hostname}/config.nix ];
-        specialArgs = {
-          inherit self inputs vars;
-        };
-      in
-      f {
-        inherit vars specialArgs;
-        pkgs = nixpkgs.legacyPackages.${vars.system};
-        modules = commonModules ++ [ ./${hostname}/host.nix ];
-        hmSpecialArgs = specialArgs;
-        hmModules = commonModules ++ [ ./${hostname}/home.nix ];
-      }
-    ) (lib.filterAttrs (k: v: v.type == type) hosts);
+  mkArgs =
+    cfg:
+
+    let
+      inherit (cfg) vars;
+      commonModules = [ ./${vars.hostname}/config.nix ];
+      specialArgs = {
+        inherit self inputs vars;
+      };
+    in
+    {
+      inherit vars specialArgs;
+      pkgs = nixpkgs.legacyPackages.${vars.system};
+      modules = commonModules ++ [ ./${vars.hostname}/host.nix ];
+      hmSpecialArgs = specialArgs;
+      hmModules = commonModules ++ [ ./${vars.hostname}/home.nix ];
+    };
 
   mkHMConfiguration = args: {
     home-manager.useGlobalPkgs = false;
@@ -75,7 +54,11 @@ let
 in
 {
   nixosConfigurations = forHosts "nixos" (
-    args:
+    cfg:
+
+    let
+      args = mkArgs cfg;
+    in
     nixpkgs.lib.nixosSystem {
       inherit (args) specialArgs;
       inherit (args.vars) system;
@@ -91,7 +74,11 @@ in
   );
 
   darwinConfigurations = forHosts "nix-darwin" (
-    args:
+    cfg:
+
+    let
+      args = mkArgs cfg;
+    in
     darwin.lib.darwinSystem {
       inherit (args) specialArgs;
       inherit (args.vars) system;
@@ -107,7 +94,11 @@ in
   );
 
   homeConfigurations = forHosts "home-manager" (
-    args:
+    cfg:
+
+    let
+      args = mkArgs cfg;
+    in
     home-manager.lib.homeManagerConfiguration {
       inherit (args) pkgs;
 
