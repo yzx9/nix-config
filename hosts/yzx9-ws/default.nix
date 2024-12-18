@@ -2,14 +2,14 @@ inputs:
 
 let
   inherit (import ../_lib.nix inputs) mkNixosConfiguration;
-  dict = import ../_dict.nix.nix;
+  inherit (import ../_shared.nix) user_yzx9;
 in
 mkNixosConfiguration {
   vars = {
     hostname = "yzx9-ws";
     type = "nixos";
     system = "x86_64-linux";
-    user = dict.user_yzx9;
+    user = user_yzx9;
   };
 
   purpose = {

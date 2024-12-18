@@ -2,14 +2,14 @@ inputs:
 
 let
   inherit (import ../_lib.nix inputs) mkDarwinConfiguration;
-  dict = import ../_dict.nix;
+  inherit (import ../_shared.nix) user_yzx9;
 in
 mkDarwinConfiguration {
   vars = {
     hostname = "yzx9-mbp";
     type = "nix-darwin";
     system = "aarch64-darwin";
-    user = dict.user_yzx9;
+    user = user_yzx9;
   };
 
   purpose = {
