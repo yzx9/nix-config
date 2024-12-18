@@ -20,15 +20,9 @@ let
     {
       inherit vars specialArgs;
       pkgs = nixpkgs.legacyPackages.${vars.system};
-      modules = [
-        cfg
-        (ifPathExists ./${vars.hostname}/host.nix)
-      ];
+      modules = [ cfg ] ++ (ifPathExists ./${vars.hostname}/host.nix);
       hmSpecialArgs = specialArgs;
-      hmModules = [
-        cfg
-        (ifPathExists ./${vars.hostname}/home.nix)
-      ];
+      hmModules = [ cfg ] ++ (ifPathExists ./${vars.hostname}/home.nix);
     };
 
   mkHMConfiguration = args: {
@@ -39,7 +33,7 @@ let
     home-manager.sharedModules = args.hmModules ++ [ agenix.homeManagerModules.default ];
   };
 
-  ifPathExists = f: lib.optionalString (lib.pathExists f) f;
+  ifPathExists = f: lib.optional (lib.pathExists f) f;
 in
 {
   mkNixosConfiguration =
