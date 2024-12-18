@@ -1,12 +1,12 @@
 let
-  shared = import ../_shared.nix;
+  dict = import ../_dict.nix;
 in
 {
   vars = {
     hostname = "yzx9-mbp";
     type = "nix-darwin";
     system = "aarch64-darwin";
-    user = shared.user_yzx9;
+    user = dict.user_yzx9;
   };
 
   purpose = {
