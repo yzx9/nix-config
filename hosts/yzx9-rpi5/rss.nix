@@ -1,11 +1,11 @@
 {
   config,
   pkgs,
-  vars,
   ...
 }:
 
 let
+  inherit (config) vars;
   url = "10.3.1.125";
   vhost = "freshrss";
 in

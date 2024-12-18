@@ -1,11 +1,12 @@
 {
-  vars,
+  config,
   pkgs,
   lib,
   ...
 }:
 
 let
+  inherit (config) vars;
   username = vars.user.name;
 in
 {

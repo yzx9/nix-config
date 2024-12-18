@@ -1,4 +1,4 @@
-{ self, vars, ... }:
+{ ... }:
 
 {
   services.kanboard = {

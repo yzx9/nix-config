@@ -7,8 +7,11 @@
 #
 ###################################################################################
 
-{ vars, pkgs, ... }:
+{ config, pkgs, ... }:
 
+let
+  inherit (config) vars;
+in
 {
   system = {
     stateVersion = 5;

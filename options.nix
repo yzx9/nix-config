@@ -14,7 +14,7 @@ in
       description = "The type of configuration to generate";
     };
     hostname = lib.mkOption {
-      type = lib.types.string;
+      type = lib.types.str;
       description = "The hostname of the machine";
     };
     system = lib.mkOption {
@@ -27,16 +27,16 @@ in
     };
     user = {
       name = lib.mkOption {
-        type = lib.types.string;
+        type = lib.types.str;
         description = "The name of the user";
       };
       git = {
         name = lib.mkOption {
-          type = lib.types.string;
+          type = lib.types.str;
           description = "The name of the user";
         };
         email = lib.mkOption {
-          type = lib.types.string;
+          type = lib.types.str;
           description = "The email of the user";
         };
       };

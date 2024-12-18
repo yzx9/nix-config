@@ -1,11 +1,7 @@
-{
-  config,
-  vars,
-  lib,
-  ...
-}:
+{ config, lib, ... }:
 
 let
+  inherit (config) vars;
   cfg = config.docker;
 in
 {

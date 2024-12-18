@@ -32,9 +32,7 @@ let
     let
       inherit (cfg) vars;
       commonModules = [ ./${vars.hostname}/config.nix ];
-      specialArgs = {
-        inherit self inputs vars;
-      };
+      specialArgs = { inherit self inputs; };
     in
     {
       inherit vars specialArgs;

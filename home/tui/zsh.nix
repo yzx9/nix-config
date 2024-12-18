@@ -1,10 +1,13 @@
 {
-  vars,
+  config,
   pkgs,
   lib,
   ...
 }:
 
+let
+  inherit (config) vars;
+in
 {
   programs.zsh = {
     enable = true;

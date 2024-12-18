@@ -1,6 +1,5 @@
 {
   self,
-  vars,
   config,
   pkgs,
   lib,
@@ -8,7 +7,7 @@
 }:
 
 let
-  purpose = config.purpose;
+  inherit (config) vars purpose;
 in
 {
   config = lib.mkIf purpose.gui {

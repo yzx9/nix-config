@@ -1,12 +1,14 @@
 {
   config,
   inputs,
-  vars,
   pkgs,
   lib,
   ...
 }:
 
+let
+  inherit (config) vars;
+in
 {
   # Allow unfree packages
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ ];

@@ -1,11 +1,14 @@
 {
+  config,
   inputs,
-  vars,
   pkgs,
   lib,
   ...
 }:
 
+let
+  inherit (config) vars;
+in
 {
   # Flake
   # enable flakes globally

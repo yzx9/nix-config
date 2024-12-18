@@ -3,13 +3,15 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 {
-  vars,
   config,
   pkgs,
   lib,
   ...
 }:
 
+let
+  inherit (config) vars;
+in
 {
   # Bootloader.
   boot.loader.systemd-boot.enable = lib.mkDefault true;

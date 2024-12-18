@@ -1,13 +1,12 @@
 {
   self,
-  vars,
   config,
   lib,
   ...
 }:
 
 let
-  pkgs = self.packages.${vars.system};
+  pkgs = self.packages.${config.vars.system};
   extend =
     pkg:
     pkg.extend {
