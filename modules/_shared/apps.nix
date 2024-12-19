@@ -14,7 +14,11 @@
 #
 ##########################################################################
 
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   # List packages installed in system profile. To search, run:
@@ -24,15 +28,23 @@
   # But on macOS, it's less stable than homebrew.
   #
   # Related Discussion: https://discourse.nixos.org/t/darwin-again/29331
-  environment.systemPackages = with pkgs; [
-    git # Required by nix
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+  environment.systemPackages =
+    (with pkgs; [
+      git # Required by nix
+      vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
 
-    # system
-    util-linux
-    dosfstools # fat filesystem
-    e2fsprogs # ext filesystem
-  ];
+      # system
+      util-linux
+      dosfstools # fat filesystem
+      e2fsprogs # ext filesystem
+    ])
+    ++ lib.optionals pkgs.stdenvNoCC.hostPlatform.isDarwin (
+      with pkgs;
+      [
+        # key remapping
+        karabiner-elements
+      ]
+    );
 
   programs.zsh.enable = true;
 
