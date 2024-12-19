@@ -13,6 +13,10 @@ let
       # Set 'vi' and 'vim' aliases to nixvim
       viAlias = true;
       vimAlias = true;
+
+      extraConfigLuaPre = lib.mkIf config.proxy.enable ''
+        vim.g.copilot_proxy = "http://127.0.0.1:10087"
+      '';
     };
 in
 {
