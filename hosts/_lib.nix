@@ -15,8 +15,8 @@ let
   mkHmModules = cfg: [ cfg ] ++ (ifPathExists ./${cfg.vars.hostname}/home.nix);
 
   mkHMConfiguration = cfg: {
-    home-manager.useGlobalPkgs = false;
-    home-manager.useUserPackages = false;
+    home-manager.useGlobalPkgs = true;
+    home-manager.useUserPackages = true;
     home-manager.extraSpecialArgs = specialArgs;
     home-manager.users.${cfg.vars.user.name} = import ../home;
     home-manager.sharedModules = (mkHmModules cfg) ++ [ agenix.homeManagerModules.default ];
