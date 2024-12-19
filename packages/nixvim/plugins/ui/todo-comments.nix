@@ -1,5 +1,6 @@
-{ ... }:
-
+# Highlight, list and search todo comments in your projects
+# homepage: https://github.com/folke/todo-comments.nvim
+# nixvim doc: https://nix-community.github.io/nixvim/plugins/todo-comments/index.html
 {
   plugins.todo-comments = {
     enable = true;

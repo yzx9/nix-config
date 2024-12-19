@@ -2,8 +2,6 @@
 # the word under the cursor using either LSP, Tree-sitter, or regex matching.
 # homepage: https://github.com/RRethy/vim-illuminate
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/illuminate/index.html
-{ ... }:
-
 {
   plugins.illuminate = {
     enable = true;

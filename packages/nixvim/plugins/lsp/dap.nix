@@ -1,5 +1,3 @@
-{ ... }:
-
 let
   icons = import ../../icons.nix;
 in

@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   keymaps = [
     # Improved terminal navigation

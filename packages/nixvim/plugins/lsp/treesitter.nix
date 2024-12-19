@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   plugins.treesitter = {
     enable = true;

@@ -1,8 +1,6 @@
 # Neovim options
 # Use :options to get the list of all options
 # Use :h <option> to load help for given <option>
-{ ... }:
-
 {
   opts = {
     # Don't stop backspace at insert

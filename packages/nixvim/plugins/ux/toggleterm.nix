@@ -1,8 +1,6 @@
 # A neovim lua plugin to help easily manage multiple terminal windows
 # Homepage: https://github.com/akinsho/toggleterm.nvim
 # Nixvim doc: https://nix-community.github.io/nixvim/plugins/toggleterm/index.html
-{ ... }:
-
 {
   plugins.toggleterm = {
     enable = true;

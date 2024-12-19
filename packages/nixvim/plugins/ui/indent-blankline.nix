@@ -1,10 +1,7 @@
 # Indent guides for Neovim
 # homepage: https://github.com/lukas-reineke/indent-blankline.nvim
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/indent-blankline/index.html
-{ ... }:
-
 {
-
   # https://github.com/AstroNvim/AstroNvim/blob/v4.7.7/lua/astronvim/plugins/indent-blankline.lua#L15-L41
   plugins.indent-blankline = {
     enable = true;

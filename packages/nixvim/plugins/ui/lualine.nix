@@ -1,8 +1,6 @@
 # A blazing fast and easy to configure neovim statusline plugin written in pure lua.
 # homepage: https://github.com/nvim-lualine/lualine.nvim
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/lualine/index.html
-{ ... }:
-
 let
   icons = import ../../icons.nix;
 in

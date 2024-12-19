@@ -1,8 +1,6 @@
 # simple terminal UI for git commands
 # homepage: https://github.com/jesseduffield/lazygit
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/lazygit/index.html
-{ ... }:
-
 {
   plugins.lazygit = {
     enable = true;

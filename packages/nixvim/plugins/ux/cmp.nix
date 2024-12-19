@@ -1,8 +1,6 @@
 # A completion plugin for neovim coded in Lua.
 # homepage: https://github.com/hrsh7th/nvim-cmp/
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/cmp/index.html
-{ ... }:
-
 {
   plugins = {
     cmp = {
@@ -74,7 +72,7 @@
     # nixvim doc: https://nix-community.github.io/nixvim/plugins/cmp-cmdline.html
     cmp-cmdline.enable = false; # autocomplete for cmdline
 
-    # nvim-cmp source for emoji 
+    # nvim-cmp source for emoji
     # homepage: https://github.com/hrsh7th/cmp-emoji/
     # nixvim doc: https://nix-community.github.io/nixvim/plugins/cmp-emoji.html
     cmp-emoji.enable = true;

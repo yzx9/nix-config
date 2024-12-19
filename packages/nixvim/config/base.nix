@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   luaLoader.enable = true;
 

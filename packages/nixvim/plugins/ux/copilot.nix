@@ -1,9 +1,11 @@
-{ ... }:
-
 {
   plugins = {
     # Fully featured & enhanced replacement for copilot.vim complete with API
     # for interacting with Github Copilot
+    #
+    # NOTE: Once copilot is running, run :Copilot auth to start the authentication
+    # process
+    #
     # homepage: https://github.com/zbirenbaum/copilot.lua
     # nixvim doc: https://nix-community.github.io/nixvim/plugins/copilot-lua/index.html
     copilot-lua = {

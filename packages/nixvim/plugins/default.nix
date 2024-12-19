@@ -1,12 +1,11 @@
 {
-  pkgs,
   lib,
   minimize ? false,
   ...
 }:
 
-let
-  files =
+{
+  imports =
     [
       ui/btw.nix
       ui/bufferline.nix
@@ -19,6 +18,7 @@ let
       ui/nvim-ufo.nix
       ui/todo-comments.nix
       ui/web-devicon.nix
+
       ux/autopairs.nix
       ux/cmp.nix
       ux/copilot.nix
@@ -39,9 +39,4 @@ let
       lsp/ts-autotag.nix
       lsp/ts-context-commentstring.nix
     ];
-
-  args = {
-    inherit pkgs lib;
-  };
-in
-lib.mkMerge (map (file: (import file args)) files)
+}

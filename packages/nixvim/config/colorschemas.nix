@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   colorschemes = {
     # Soothing pastel theme for (Neo)vim

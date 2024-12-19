@@ -2,8 +2,6 @@
 # location in a file.
 # homepage: https://github.com/JoosepAlviste/nvim-ts-context-commentstring
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/ts-context-commentstring.html
-{ ... }:
-
 {
   plugins.ts-context-commentstring = {
     enable = true;
