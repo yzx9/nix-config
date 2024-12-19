@@ -1,8 +1,6 @@
 # A snazzy bufferline for Neovim
 # homepage: https://github.com/akinsho/bufferline.nvim
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/bufferline/index.html
-{ ... }:
-
 {
   plugins.bufferline = {
     enable = true;

@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   services.kanboard = {
     enable = true;

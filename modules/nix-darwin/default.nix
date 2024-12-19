@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   imports = [
     ../_shared

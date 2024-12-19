@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   extraConfigLuaPre = ''
     rndname = function()

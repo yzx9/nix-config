@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   # multi-shell multi-command argument completer
   programs.carapace = {

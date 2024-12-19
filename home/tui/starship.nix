@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   # prompt
   programs.starship = {

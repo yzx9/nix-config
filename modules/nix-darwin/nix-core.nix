@@ -1,5 +1,3 @@
-{ ... }:
-
 {
   # Disable auto-optimise-store because of this issue:
   #   https://github.com/NixOS/nix/issues/7273
