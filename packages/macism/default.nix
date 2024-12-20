@@ -3,7 +3,6 @@
   stdenv,
   fetchurl,
   unzip,
-  darwin,
   swift,
 }:
 
@@ -21,12 +20,6 @@ stdenv.mkDerivation (finalAttrs: {
   nativeBuildInputs = [
     swift
     unzip
-  ];
-
-  buildInputs = with darwin.apple_sdk.frameworks; [
-    Carbon
-    Cocoa
-    Foundation
   ];
 
   buildPhase = ''
