@@ -1,9 +1,8 @@
 # Create key bindings that stick. WhichKey is a lua plugin for Neovim 0.5 that displays a popup with possible keybindings of the command you started typing.
 # homepage: https://github.com/folke/which-key.nvim
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/which-key/index.html
-let
-  icons = import ../../icons.nix;
-in
+{ icons, ... }:
+
 {
   plugins.which-key = {
     enable = true;

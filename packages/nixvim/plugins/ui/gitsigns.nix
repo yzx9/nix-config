@@ -1,9 +1,8 @@
 # Git integration for buffers
 # homepage: https://github.com/lewis6991/gitsigns.nvim
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/gitsigns/index.html
-let
-  icons = import ../../icons.nix;
-in
+{ icons, ... }:
+
 {
   plugins.gitsigns = {
     enable = true;

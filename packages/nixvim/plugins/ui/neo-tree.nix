@@ -1,9 +1,8 @@
 # Neovim plugin to manage the file system and other tree like structures.
 # homepage: https://github.com/nvim-neo-tree/neo-tree.nvim
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/neo-tree/index.html
-let
-  icons = import ../../icons.nix;
-in
+{ icons, ... }:
+
 {
   plugins.neo-tree = {
     enable = true;

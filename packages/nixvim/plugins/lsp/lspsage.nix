@@ -1,9 +1,8 @@
 # improve neovim lsp experience
 # homepage: https://github.com/nvimdev/lspsaga.nvim
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/lspsaga/index.html
-let
-  icons = import ../../icons.nix;
-in
+{ icons, ... }:
+
 {
   plugins.lspsaga = {
     enable = true;

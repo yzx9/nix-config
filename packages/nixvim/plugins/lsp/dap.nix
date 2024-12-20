@@ -1,6 +1,5 @@
-let
-  icons = import ../../icons.nix;
-in
+{ icons, ... }:
+
 {
   plugins.dap = {
     enable = true;

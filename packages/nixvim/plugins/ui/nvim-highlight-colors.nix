@@ -1,10 +1,7 @@
 # Highlight colors for neovim
 # homepage: https://github.com/brenoprata10/nvim-highlight-colors
-{ pkgs, ... }:
+{ pkgs, icons, ... }:
 
-let
-  icons = import ../../icons.nix;
-in
 {
   extraPlugins = [ pkgs.vimPlugins.nvim-highlight-colors ];
 

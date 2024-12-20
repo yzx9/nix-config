@@ -8,6 +8,7 @@
 let
   pkgs = nixpkgs.legacyPackages.${system};
   nixvim' = nixvim.legacyPackages.${system};
+  icons = import ./icons.nix;
   mkNixvim =
     { minimize }:
     nixvim'.makeNixvimWithModule {
@@ -23,7 +24,7 @@ let
 
       # You can use `extraSpecialArgs` to pass additional arguments to your module files
       extraSpecialArgs = {
-        inherit minimize;
+        inherit minimize icons;
       };
     };
 in

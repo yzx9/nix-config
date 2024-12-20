@@ -1,7 +1,6 @@
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/lsp/index.html
-let
-  icons = import ../../icons.nix;
-in
+{ icons, ... }:
+
 {
   plugins.lsp = {
     enable = true;
