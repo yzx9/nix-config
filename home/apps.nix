@@ -51,7 +51,7 @@ in
       ipcalc # it is a calculator for the IPv4/v6 addresses
 
       # dev
-      python312
+      python313
       nixpkgs-review
 
       # msic
