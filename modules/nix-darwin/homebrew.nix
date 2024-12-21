@@ -46,22 +46,7 @@ in
 
     # `brew install --cask`
     casks =
-      lib.optionals (config.purpose.gui) [
-        # mouse
-        "logitech-options"
-        "middleclick"
-
-        # clipboard
-        "maccy"
-
-        # screen snipaste
-        "snipaste"
-
-        # browser
-        "firefox"
-        "google-chrome"
-      ]
-      ++ lib.optionals config.purpose.daily [
+      lib.optionals config.purpose.daily [
         "canon-ufrii-driver"
       ]
       ++ lib.optionals (config.purpose.daily && config.purpose.gui) [
@@ -79,11 +64,21 @@ in
         # game
         "steam"
 
-        # keyboard
+        # mouse & keyboard
+        "logitech-options"
+        "middleclick"
+        "maccy" # clipboard
         "vial"
+
+        # screen shot
+        "snipaste"
 
         # editor
         "visual-studio-code"
+
+        # browser
+        "firefox"
+        "google-chrome"
 
         # virtual machine
         "vmware-fusion"
