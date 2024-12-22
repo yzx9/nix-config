@@ -8,8 +8,8 @@
 let
   # TODO: change to config
   btop =
-    lib.optional config.nvidia.enable pkgs.btop
-    ++ lib.optional (!config.nvidia.enable) (pkgs.btop.override { cudatSupport = true; });
+    lib.optional config.nvidia.enable (pkgs.btop.override { cudaSupport = true; })
+    ++ lib.optional (!config.nvidia.enable) pkgs.btop;
 in
 {
   home.packages =
