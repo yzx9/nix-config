@@ -32,9 +32,10 @@
     ++ lib.optionals (!minimize) [
       lsp/comment.nix
       lsp/conform.nix
-      lsp/dap.nix
+      # lsp/dap.nix # need more exploration
       lsp/lsp.nix
       lsp/lspsage.nix
+      # lsp/neotest.nix # need more exploration
       lsp/treesitter.nix
       lsp/ts-autotag.nix
       lsp/ts-context-commentstring.nix
