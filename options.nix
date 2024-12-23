@@ -56,6 +56,7 @@ in
 
   options.proxy = {
     enable = lib.mkEnableOption "proxy";
+    public = lib.mkEnableOption "public proxy";
   };
 
   options.nvidia = {

@@ -19,6 +19,8 @@ in
       settingsFile = config.age.secrets."xray.json".path;
     };
 
-    networking.firewall.allowedTCPPorts = [ 12345 ];
+    networking.firewall = lib.mkIf cfg.public {
+      allowedTCPPorts = [ 12345 ];
+    };
   };
 }

@@ -12,5 +12,8 @@ mkNixosConfiguration {
     user = user_yzx9;
   };
 
-  proxy.enable = true;
+  proxy = {
+    enable = true;
+    public = true;
+  };
 }
