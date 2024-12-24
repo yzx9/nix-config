@@ -10,8 +10,8 @@ Test custom app: `nix-build -E 'with import <nixpkgs> {}; callPackage paht/to/pa
 
 ## Adding a host
 
-1. Add the host to `hosts/{HOST_NAME}/default.nix`, configurate `home.nix` and `host.nix` if needed
-2. Initialize the host keys, add public key to secrets, and re-encrypt secrets
-3. Add the configurate to `hosts/default.nix`
-4. Deploy the configuration to your host
-   - If you are add new host with standalone home-manager, `nix develop` might be helpful
+1. Add the host configuration to `hosts/{HOST_NAME}/default.nix`. Modify `home.nix` and `host.nix` as needed.
+2. Generate the host keys, add the public key to your secrets, and re-encrypt the secrets.
+3. Add the new host configuration to `hosts/default.nix`.
+4. Deploy the configuration to your host.
+   - If you're adding a new host with a standalone Home Manager setup, using `nix develop` might be helpful.
