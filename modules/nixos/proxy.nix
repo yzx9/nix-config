@@ -20,7 +20,7 @@ in
     };
 
     networking.firewall = lib.mkIf cfg.public {
-      allowedTCPPorts = [ 12345 ];
+      allowedTCPPorts = [ 12345 12346 ];
     };
   };
 }
