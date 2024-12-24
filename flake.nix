@@ -63,7 +63,7 @@
   # However, `self` is an exception, this special parameter points to the `outputs` itself (self-reference)
   # The `@` syntax here is used to alias the attribute set of the inputs's parameter, making it convenient to use inside the function.
   outputs =
-    inputs@{ nixpkgs, ... }:
+    inputs@{ nixpkgs, home-manager, ... }:
 
     let
       hosts = import ./hosts inputs;
@@ -87,11 +87,14 @@
         system:
 
         let
-          pkgs = pkgs.legacyPackages.${system};
+          pkgs = nixpkgs.legacyPackages.${system};
         in
         {
           default = pkgs.mkShell {
-            buildInputs = [ pkgs.just ];
+            buildInputs = [
+              pkgs.just
+              home-manager.packages.${system}.default
+            ];
           };
         }
       );
