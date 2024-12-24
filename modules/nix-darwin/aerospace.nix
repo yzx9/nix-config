@@ -2,12 +2,13 @@
 
 let
   cfg = config.purpose;
+  rollRight = i: lib.elemAt ((lib.range 1 9) ++ [ 0 ]) i;
   mapNumToLetter = i: lib.substring i 1 "qwertasdfg";
   genNumKeyBindings =
     key: value:
     lib.mkMerge (
       lib.map (i: {
-        "${key (builtins.toString i)}" = value (builtins.toString (i + 1)); # 1-based
+        "${key (builtins.toString (rollRight i))}" = value (builtins.toString (i + 1)); # 1-based
         "${key (mapNumToLetter i)}" = value (builtins.toString (i + 1)); # 1-based
       }) (lib.range 0 9)
     );
