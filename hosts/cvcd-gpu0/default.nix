@@ -1,8 +1,8 @@
 inputs:
 
 let
-  inherit (import ../_lib.nix inputs) mkHomeConfiguration;
-  inherit (import ../_shared.nix) user_yzx9;
+  inherit (import ../_shared/lib.nix inputs) mkHomeConfiguration;
+  inherit (import ../_shared/user.nix) user_yzx9;
 in
 mkHomeConfiguration {
   vars = {
