@@ -43,12 +43,12 @@ in
       key = "~/.ssh/id_git.pub";
     };
 
-    # delta = {
-    #   enable = true;
-    #   options = {
-    #     features = "side-by-side";
-    #   };
-    # };
+    delta = lib.mkIf config.purpose.daily {
+      enable = true;
+      options = {
+        features = "side-by-side";
+      };
+    };
 
     aliases = {
       # common aliases
