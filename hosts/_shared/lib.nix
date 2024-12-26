@@ -11,14 +11,14 @@ let
   inherit (nixpkgs) lib;
 
   specialArgs = { inherit self inputs; };
-  mkModules = cfg: [ cfg ] ++ (ifPathExists ./${cfg.vars.hostname}/host.nix);
-  mkHmModules = cfg: [ cfg ] ++ (ifPathExists ./${cfg.vars.hostname}/home.nix);
+  mkModules = cfg: [ cfg ] ++ (ifPathExists ../${cfg.vars.hostname}/host.nix);
+  mkHmModules = cfg: [ cfg ] ++ (ifPathExists ../${cfg.vars.hostname}/home.nix);
 
   mkHMConfiguration = cfg: {
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
     home-manager.extraSpecialArgs = specialArgs;
-    home-manager.users.${cfg.vars.user.name} = import ../home;
+    home-manager.users.${cfg.vars.user.name} = import ../../home;
     home-manager.sharedModules = (mkHmModules cfg) ++ [ agenix.homeManagerModules.default ];
   };
 
@@ -31,7 +31,7 @@ in
       inherit (cfg.vars) system;
 
       modules = (mkModules cfg) ++ [
-        ../modules/nixos
+        ../../modules/nixos
 
         agenix.nixosModules.default
 
@@ -47,7 +47,7 @@ in
       inherit (cfg.vars) system;
 
       modules = (mkModules cfg) ++ [
-        ../modules/nix-darwin
+        ../../modules/nix-darwin
 
         agenix.darwinModules.default
 
@@ -62,7 +62,7 @@ in
       pkgs = nixpkgs.legacyPackages.${cfg.vars.system};
 
       modules = (mkHmModules cfg) ++ [
-        ../home
+        ../../home
 
         agenix.homeManagerModules.default
       ];
