@@ -16,13 +16,14 @@ in
         font = {
           name = "FiraCode Nerd Font";
         };
-        extraConfig = ''
-          background_opacity 0.75
-          macos_show_window_title_in window
+        settings = {
+          hide_window_decorations = if pkgs.stdenvNoCC.hostPlatform.isDarwin then "titlebar-only" else "yes";
+          window_margin_width = if pkgs.stdenvNoCC.hostPlatform.isDarwin then 5 else 0;
+          background_opacity = 0.75;
 
           # Note that disabling the read confirmation is this akes a security risk
-          clipboard_control write-clipboard write-primary read-clipboard read-primary
-        '';
+          clipboard_control = "write-clipboard write-primary read-clipboard read-primary";
+        };
       };
 
       home.shellAliases.s = "kitten ssh";
