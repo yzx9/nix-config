@@ -11,31 +11,10 @@
       enable = true;
     };
 
-    ui = {
-      border = "rounded"; # One of none, single, double, rounded, solid, shadow
-      codeAction = "${icons.DiagnosticHint}"; # Can be any symbol you want 💡
-    };
-
-    hover = {
-      openCmd = "!floorp"; # Choose your browser
-      openLink = "gx";
-    };
-
-    diagnostic = {
-      borderFollow = true;
-      diagnosticOnlyCurrent = false;
-      showCodeAction = true;
-    };
-
-    symbolInWinbar = {
-      enable = true; # Breadcrumbs
-    };
-
     codeAction = {
-      extendGitSigns = false;
       showServerName = true;
+      extendGitSigns = true;
       onlyInCursor = true;
-      numShortcut = true;
       keys = {
         exec = "<CR>";
         quit = [
@@ -45,18 +24,41 @@
       };
     };
 
-    lightbulb = {
-      enable = false;
-      sign = false;
-      virtualText = true;
+    ui = {
+      border = "rounded"; # One of none, single, double, rounded, solid, shadow
+      codeAction = "${icons.DiagnosticHint}"; # Can be any symbol you want 💡
+    };
+
+    finder = {
+      keys = {
+        quit = [
+          "<Esc>"
+          "q"
+        ];
+      };
+    };
+
+    hover = {
+      openCmd = "!firefox"; # Choose your browser
     };
 
     implement = {
       enable = false;
     };
 
+    lightbulb = {
+      enable = false;
+      sign = false;
+      virtualText = true;
+    };
+
+    outline = {
+      closeAfterJump = true;
+    };
+
     rename = {
       autoSave = false;
+      inSelect = false;
       keys = {
         exec = "<CR>";
         quit = [
@@ -67,17 +69,8 @@
       };
     };
 
-    outline = {
-      autoClose = true;
-      autoPreview = true;
-      closeAfterJump = true;
-      layout = "normal"; # normal or float
-      winPosition = "right"; # left or right
-      keys = {
-        jump = "e";
-        quit = "q";
-        toggleOrJump = "o";
-      };
+    symbolInWinbar = {
+      enable = true; # Breadcrumbs
     };
 
     scrollPreview = {
