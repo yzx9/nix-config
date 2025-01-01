@@ -6,7 +6,7 @@
 
 let
   inherit (config) vars;
-  url = "10.3.1.125";
+  baseUrl = "10.1.1.1";
   vhost = "freshrss";
 in
 {
@@ -18,24 +18,26 @@ in
 
   services.freshrss = {
     enable = true;
-    package = pkgs.freshrss.overrideAttrs (old: {
+    package = pkgs.freshrss.overrideAttrs (previousAttrs: {
       overrideConfigCustom = pkgs.writeText "config.custom.php" ''
         <?php
-        return array(
-          'curl_options' => array(
+
+        return [
+          'curl_options' => [
             # Options to use a proxy for retrieving feeds.
-            CURLOPT_PROXY => 'http://127.0.0.1:12345',
-          ),
-        );
+            CURLOPT_PROXYTYPE => CURLPROXY_HTTP,
+            CURLOPT_PROXY => '127.0.0.1',
+            CURLOPT_PROXYPORT => 12345,
+          ]
+        ];
       '';
 
-      installPhase = ''
-        ${old.installPhase}
-        cp $overrideConfigCustom $out/config.custom.php
+      postInstall = (previousAttrs.postInstall or "") + ''
+        cp $overrideConfigCustom $out/data/config.custom.php
       '';
     });
-    baseUrl = "http://${url}";
     virtualHost = vhost;
+    baseUrl = baseUrl;
 
     defaultUser = vars.user.name;
     passwordFile = config.age.secrets."rss-pwd".path;
