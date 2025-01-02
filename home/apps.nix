@@ -29,6 +29,9 @@ in
       inputs.agenix.packages.${vars.system}.default
 
       # shell tools
+      # NOTE: may override some of the darwin built-in tools
+      coreutils
+      gnutar
       wget
       curl
       unzip
