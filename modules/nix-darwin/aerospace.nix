@@ -130,6 +130,8 @@ in
             # See: https://nikitabobko.github.io/AeroSpace/commands#resize
             alt-shift-minus = "resize smart -50";
             alt-shift-equal = "resize smart +50";
+            alt-shift-y = "resize smart -50";
+            alt-shift-u = "resize smart +50";
 
             # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
             alt-tab = "workspace-back-and-forth";
@@ -204,13 +206,56 @@ in
         };
 
         workspace-to-monitor-force-assignment = {
-          "1" = 1;
+          "1" = "built-in";
           "2" = [
-            3
-            "main"
+            "3"
+            "built-in"
           ];
+          "3" = "main";
         };
+        on-window-detected = [
+          {
+            "if".app-id = "com.tencent.xinWeChat";
+            "if".window-title-regex-substring = "^((?!WeChat \(Chats\)).)*$";
+            run = [
+              "layout floating"
+              "move-node-to-workspace 1"
+            ];
+          }
+          {
+            "if".app-id = "com.microsoft.Outlook";
+            "if".window-title-regex-substring = "Reminder";
+            run = [
+              "layout floating"
+              "move-node-to-workspace 1"
+            ];
+          }
+          {
+            "if".app-id = "com.Snipaste";
+            run = "layout floating";
+          }
+          {
+            "if".app-id = "net.kovidgoyal.kitty";
+            run = "move-node-to-workspace 2";
+          }
+          {
+            "if".app-id = "org.mozilla.firefox";
+            run = "move-node-to-workspace 3";
+          }
+        ];
       };
     };
+
+    # Enable "Group windows by application"
+    # https://nikitabobko.github.io/AeroSpace/guide#a-note-on-mission-control
+    system.defaults.dock.expose-group-apps = true;
+
+    # Disable "Displays have separate Spaces"
+    # https://nikitabobko.github.io/AeroSpace/guide#a-note-on-displays-have-separate-spaces
+    system.defaults.spaces.spans-displays = true;
+
+    # Disable windows opening animations
+    # https://nikitabobko.github.io/AeroSpace/goodies#disable-open-animations
+    system.defaults.NSGlobalDomain.NSAutomaticWindowAnimationsEnabled = false;
   };
 }
