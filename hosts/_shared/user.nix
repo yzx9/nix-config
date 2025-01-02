@@ -1,9 +1,17 @@
+let
+  git = {
+    name = "Zexin Yuan";
+    email = "git@yzx9.xyz";
+  };
+in
 {
   user_yzx9 = {
+    inherit git;
     name = "yzx9";
-    git = {
-      name = "Zexin Yuan";
-      email = "git@yzx9.xyz";
-    };
+  };
+
+  user_yzx = {
+    inherit git;
+    name = "yzx";
   };
 }

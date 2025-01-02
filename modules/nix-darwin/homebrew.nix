@@ -50,6 +50,9 @@ in
       "maccy" # clipboard
       "snipaste" # screen shot
       "visual-studio-code" # editor
+      "wechat" # chat
+      "eudic" # dictionary
+      "canon-ufrii-driver" # printer
 
       # browser
       "firefox"
