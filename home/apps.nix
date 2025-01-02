@@ -1,14 +1,10 @@
 {
   config,
-  inputs,
   pkgs,
   lib,
   ...
 }:
 
-let
-  inherit (config) vars;
-in
 {
   # Allow unfree packages
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ ];
@@ -24,9 +20,6 @@ in
       # (pkgs.writeShellScriptBin "my-hello" ''
       #   echo "Hello, ${config.home.username}!"
       # '')
-
-      # nix related
-      inputs.agenix.packages.${vars.system}.default
 
       # shell tools
       # NOTE: may override some of the darwin built-in tools

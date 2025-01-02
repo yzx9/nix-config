@@ -94,6 +94,7 @@
             buildInputs = [
               pkgs.just
               home-manager.packages.${system}.default
+              inputs.agenix.packages.${system}.default
             ];
           };
         }
