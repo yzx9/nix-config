@@ -45,43 +45,15 @@ in
     brews = [ ];
 
     # `brew install --cask`
-    casks =
-      lib.optionals config.purpose.daily [
-        "canon-ufrii-driver"
-      ]
-      ++ lib.optionals (config.purpose.daily && config.purpose.gui) [
-        # science
-        "zotero"
-        # "master-pdf-editor"
-        "eudic"
-        "fiji"
+    casks = lib.optionals (config.purpose.daily && config.purpose.gui) [
+      "middleclick" # mouse
+      "maccy" # clipboard
+      "snipaste" # screen shot
+      "visual-studio-code" # editor
 
-        # design
-        "blender"
-        "krita"
-        "inkscape"
-
-        # game
-        "steam"
-
-        # mouse & keyboard
-        "logitech-options"
-        "middleclick"
-        "maccy" # clipboard
-        "vial"
-
-        # screen shot
-        "snipaste"
-
-        # editor
-        "visual-studio-code"
-
-        # browser
-        "firefox"
-        "google-chrome"
-
-        # virtual machine
-        "vmware-fusion"
-      ];
+      # browser
+      "firefox"
+      "google-chrome"
+    ];
   };
 }
