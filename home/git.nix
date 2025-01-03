@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 let
-  inherit (config) vars;
+  inherit (config.vars.user) git;
 in
 {
   # `programs.git` will generate the config file: ~/.config/git/config
@@ -18,8 +18,8 @@ in
     enable = true;
     lfs.enable = true;
 
-    userName = vars.user.git.name;
-    userEmail = vars.user.git.email;
+    userName = git.name;
+    userEmail = git.email;
 
     # includes = [
     #   {
@@ -65,6 +65,18 @@ in
       # aliases for submodule
       update = "submodule update --init --recursive";
       foreach = "submodule foreach";
+    };
+  };
+
+  programs.gh = lib.mkIf config.purpose.daily {
+    enable = true;
+    settings = {
+      git_protocol = "ssh";
+
+      aliases = {
+        co = "pr checkout";
+        pv = "pr view";
+      };
     };
   };
 }
