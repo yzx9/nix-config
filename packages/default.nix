@@ -7,6 +7,7 @@ let
 in
 {
   inherit (nixvim) nixvim nixvim-mini nixvim-formatters;
+  git-conventional-commits = pkgs.callPackage ./git-conventional-commits { };
   macism = pkgs.callPackage ./macism { };
   vaa3d-x = pkgs.callPackage ./vaa3d-x { };
 }
