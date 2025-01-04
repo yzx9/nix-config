@@ -100,6 +100,7 @@
 
       # python
       pyright.enable = true;
+      ruff.enable = true;
 
       # frontend
       html.enable = true;

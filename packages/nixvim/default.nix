@@ -35,9 +35,6 @@ in
   nixvim-formatters = with pkgs; [
     prettierd
 
-    isort
-    black
-
     rustfmt
 
     nixfmt-rfc-style
