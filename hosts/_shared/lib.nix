@@ -1,7 +1,7 @@
 {
   self,
   nixpkgs,
-  darwin,
+  nix-darwin,
   agenix,
   home-manager,
   ...
@@ -42,7 +42,7 @@ in
   };
 
   mkDarwinConfiguration = cfg: {
-    darwinConfigurations."${cfg.vars.hostname}" = darwin.lib.darwinSystem {
+    darwinConfigurations."${cfg.vars.hostname}" = nix-darwin.lib.darwinSystem {
       inherit specialArgs;
       inherit (cfg.vars) system;
 

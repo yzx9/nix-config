@@ -22,7 +22,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     # nur.url = "github:nix-community/NUR";
 
-    darwin = {
+    nix-darwin = {
       url = "github:lnl7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -42,7 +42,7 @@
       url = "github:ryantm/agenix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        darwin.follows = "darwin";
+        darwin.follows = "nix-darwin";
         home-manager.follows = "home-manager";
       };
     };
@@ -51,7 +51,7 @@
       url = "github:nix-community/nixvim";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        nix-darwin.follows = "darwin";
+        nix-darwin.follows = "nix-darwin";
         home-manager.follows = "home-manager";
       };
     };
