@@ -2,7 +2,6 @@
   lib,
   buildNpmPackage,
   fetchFromGitHub,
-  nodejs,
   nix-update-script,
 }:
 
@@ -28,10 +27,10 @@ buildNpmPackage {
     runHook preInstall
 
     mkdir -p $out/{bin,share/${pname}}
-    cp -r ./* $out/share/${pname}
+    cp cli.js git-conventional-commits.default.yaml commit-msg.sh $out/share/${pname}
+    cp -r lib/ node_modules/ $out/share/${pname}
+    ln -s $out/share/${pname}/cli.js $out/bin/${pname}
 
-    makeWrapper "${lib.getExe nodejs}" "$out/bin/${pname}" \
-      --add-flags "$out/share/${pname}/cli.js"
     runHook postInstall
   '';
 
