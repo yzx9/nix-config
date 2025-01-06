@@ -14,7 +14,7 @@ let
     );
 in
 {
-  config = lib.mkIf (cfg.daily && cfg.gui) {
+  config = lib.mkIf cfg.gui {
     services.aerospace = {
       enable = true;
 
@@ -213,15 +213,21 @@ in
           ];
           "3" = "main";
         };
+
         on-window-detected = [
           {
+            # This rule will be triggered and prevent the following one
             "if".app-id = "com.tencent.xinWeChat";
-            "if".window-title-regex-substring = "^((?!WeChat \(Chats\)).)*$";
-            run = [
-              "layout floating"
-              "move-node-to-workspace 1"
-            ];
+            "if".window-title-regex-substring = "WeChat"; # WeChat (Chats)
+            run = "move-node-to-workspace 1";
           }
+          {
+            "if".app-id = "com.tencent.xinWeChat";
+            # following line is commented out because it doesn't work
+            # "if".window-title-regex-substring = "^((?!WeChat \(Chats\)).)*$";
+            run = "layout floating";
+          }
+
           {
             "if".app-id = "com.microsoft.Outlook";
             "if".window-title-regex-substring = "Reminder";
