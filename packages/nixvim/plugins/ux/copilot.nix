@@ -10,8 +10,10 @@
     # nixvim doc: https://nix-community.github.io/nixvim/plugins/copilot-lua/index.html
     copilot-lua = {
       enable = true;
-      suggestion.enabled = false;
-      panel.enabled = false;
+      settings = {
+        suggestion.enabled = false;
+        panel.enabled = false;
+      };
     };
 
     # Lua plugin to turn github copilot into a cmp source
