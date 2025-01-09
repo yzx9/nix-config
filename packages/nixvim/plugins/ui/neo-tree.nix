@@ -173,33 +173,33 @@
       groupEmptyDirs = true;
     };
 
-    # Sources tabs
-    sourceSelector = {
-      # Label position
-      contentLayout.__raw = "'center'";
-
-      # No tabs separator
-      separator = "";
-
-      # Show tabs on winbar
-      winbar = true;
-
-      # Sources to show and their labels
-      sources = [
-        {
-          displayName = "${icons.FolderClosed} Files";
-          source = "filesystem";
-        }
-        {
-          displayName = "${icons.DefaultFile} Bufs";
-          source = "buffers";
-        }
-        {
-          displayName = "${icons.Git} Git";
-          source = "git_status";
-        }
-      ];
-    };
+    ## Sources tabs
+    # sourceSelector = {
+    #   # Label position
+    #   contentLayout.__raw = "'center'";
+    #
+    #   # No tabs separator
+    #   separator = "";
+    #
+    #   # Show tabs on winbar
+    #   winbar = true;
+    #
+    #   # Sources to show and their labels
+    #   sources = [
+    #     {
+    #       displayName = "${icons.FolderClosed} Files";
+    #       source = "filesystem";
+    #     }
+    #     {
+    #       displayName = "${icons.DefaultFile} Bufs";
+    #       source = "buffers";
+    #     }
+    #     {
+    #       displayName = "${icons.Git} Git";
+    #       source = "git_status";
+    #     }
+    #   ];
+    # };
   };
 
   # Enable catppuccin colors
@@ -224,24 +224,24 @@
     in
     [
       # https://github.com/AstroNvim/AstroNvim/blob/v4.7.7/lua/astronvim/plugins/neo-tree.lua#L21-L37
-      {
-        desc = "Open explorer on startup with directory";
-        event = "BufEnter";
-        group = "neotree";
-
-        callback.__raw = ''
-          function()
-            if package.loaded["neo-tree"] then
-              return true
-            else
-              local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
-              if stats and stats.type == "directory" then
-                return true
-              end
-            end
-          end
-        '';
-      }
+      # {
+      #   desc = "Open explorer on startup with directory";
+      #   event = "BufEnter";
+      #   group = "neotree";
+      #
+      #   callback.__raw = ''
+      #     function()
+      #       if package.loaded["neo-tree"] then
+      #         return true
+      #       else
+      #         local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
+      #         if stats and stats.type == "directory" then
+      #           return true
+      #         end
+      #       end
+      #     end
+      #   '';
+      # }
       # https://github.com/AstroNvim/AstroNvim/blob/v4.7.7/lua/astronvim/plugins/neo-tree.lua#L25-L35
       {
         desc = "Refresh explorer sources when closing lazygit";

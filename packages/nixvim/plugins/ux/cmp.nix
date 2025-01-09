@@ -1,15 +1,18 @@
 # A completion plugin for neovim coded in Lua.
 # homepage: https://github.com/hrsh7th/nvim-cmp/
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/cmp/index.html
+
+{ minimize, lib, ... }:
+
 {
   plugins = {
     cmp = {
       enable = true;
       settings = {
         autoEnableSources = true;
-        experimental = {
-          ghost_text = true;
-        };
+        # experimental = {
+        #   ghost_text = true;
+        # };
         performance = {
           debounce = 60;
           fetchingTimeout = 200;
@@ -40,19 +43,15 @@
         ];
 
         window = {
-          completion = {
-            border = "solid";
-          };
-          documentation = {
-            border = "solid";
-          };
+          completion.border = "solid";
+          documentation.border = "solid";
         };
 
         mapping = {
           "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
           "<C-j>" = "cmp.mapping.select_next_item()";
           "<C-k>" = "cmp.mapping.select_prev_item()";
-          "<C-e>" = "cmp.mapping.abort()";
+          "<C-q>" = "cmp.mapping.abort()";
           "<C-b>" = "cmp.mapping.scroll_docs(-4)";
           "<C-f>" = "cmp.mapping.scroll_docs(4)";
           "<C-Space>" = "cmp.mapping.complete()";
@@ -88,38 +87,49 @@
     cmp-path.enable = true; # file system paths
   };
 
-  extraConfigLua = ''
-    local cmp = require('cmp')
+  extraConfigLua =
+    ''
+      local cmp = require('cmp')
 
-    -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-    cmp.setup.cmdline({'/', "?" }, {
-      sources = {
-        { name = 'buffer' }
-      }
-    })
-
-     -- Set configuration for specific filetype.
-    cmp.setup.filetype('gitcommit', {
-      sources = cmp.config.sources({
-        { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
-      }, {
-        { name = 'buffer' },
+      -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+      cmp.setup.cmdline({'/', "?" }, {
+        sources = {
+          { name = 'buffer' }
+        }
       })
-    })
 
-    -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-    cmp.setup.cmdline(':', {
-      sources = cmp.config.sources({
-        { name = 'path' }
-      }, {
-      { name = 'cmdline' }
-    }),
-    -- formatting = {
-    --   format = function(_, vim_item)
-    --     vim_item.kind = cmdIcons[vim_item.kind] or "FOO"
-    --     return vim_item
-    --   end
-    -- }
-    })
-  '';
+       -- Set configuration for specific filetype.
+      cmp.setup.filetype('gitcommit', {
+        sources = cmp.config.sources({
+          { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
+        }, {
+          { name = 'buffer' },
+        })
+      })
+
+      -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+      cmp.setup.cmdline(':', {
+        sources = cmp.config.sources({
+          { name = 'path' }
+        }, {
+        { name = 'cmdline' }
+      }),
+      -- formatting = {
+      --   format = function(_, vim_item)
+      --     vim_item.kind = cmdIcons[vim_item.kind] or "FOO"
+      --     return vim_item
+      --   end
+      -- }
+      })
+    ''
+    + lib.optionalString (!minimize) ''
+      -- Set up lspconfig.
+      local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+      -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+      -- NOTE: To simplify configuration, we only add some conflicted LSP here.
+      require('lspconfig')['pyright'].setup {
+        capabilities = capabilities
+      }
+    '';
 }

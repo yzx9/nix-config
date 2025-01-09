@@ -9,7 +9,7 @@
 
     settings = {
       # Show line blame with custom text
-      current_line_blame = true;
+      current_line_blame = false;
       current_line_blame_formatter = " <author>, <author_time:%R> – <summary>";
       current_line_blame_formatter_nc = " Uncommitted";
       current_line_blame_opts.ignore_whitespace = true;
@@ -29,4 +29,7 @@
   # Enable catppuccin colors
   # https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/groups/integrations/gitsigns.lua
   colorschemes.catppuccin.settings.integrations.gitsigns = true;
+
+  # Enable lspsaga code action integrations
+  plugins.lspsaga.codeAction.extendGitSigns = true;
 }

@@ -13,6 +13,7 @@
           "dashboard"
           "alpha"
           "starter"
+          "Starter"
         ];
       };
       theme = {
@@ -40,8 +41,6 @@
             icon = icons.GitBranch; # 
           }
           "diff"
-        ];
-        lualine_c = [
           {
             __unkeyed-1 = "diagnostic";
             symbols = {
@@ -52,13 +51,7 @@
             };
           }
         ];
-        lualine_x = [
-          {
-            __unkeyed-1 = "filetype";
-            icon_only = true;
-          }
-        ];
-        lualine_y = [
+        lualine_c = [
           {
             __unkeyed-1 = "filename";
             symbols = {
@@ -69,6 +62,15 @@
             separator.left = "";
           }
         ];
+        lualine_x = [
+          "encoding"
+          "fileformat"
+          {
+            __unkeyed-1 = "filetype";
+            icon_only = true;
+          }
+        ];
+        lualine_y = [ "progress" ];
         lualine_z = [ "location" ];
       };
     };

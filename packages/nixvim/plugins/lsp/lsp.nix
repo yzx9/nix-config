@@ -50,7 +50,9 @@
       vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
 
       vim.diagnostic.config({
-        virtual_text = true,
+        virtual_text = {
+          severity = { min = vim.diagnostic.severity.WARN }
+        },
         signs = true,
         underline = true,
         update_in_insert = true,

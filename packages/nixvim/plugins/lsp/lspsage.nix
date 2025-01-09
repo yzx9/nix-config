@@ -13,7 +13,6 @@
 
     codeAction = {
       showServerName = true;
-      extendGitSigns = true;
       onlyInCursor = true;
       keys = {
         exec = "<CR>";
@@ -47,9 +46,9 @@
     };
 
     lightbulb = {
-      enable = false;
-      sign = false;
-      virtualText = true;
+      enable = true;
+      sign = true;
+      virtualText = false;
     };
 
     outline = {
@@ -69,8 +68,9 @@
       };
     };
 
+    # Breadcrumbs
     symbolInWinbar = {
-      enable = true; # Breadcrumbs
+      enable = true;
     };
 
     scrollPreview = {
