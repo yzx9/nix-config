@@ -1,5 +1,6 @@
 {
   imports = [
+    ./aider.nix
     ./apps.nix
     ./bat.nix
     ./bash.nix
