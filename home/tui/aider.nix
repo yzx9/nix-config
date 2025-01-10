@@ -10,21 +10,11 @@ let
   configFile = ".aider.conf.yml";
   placeholder = "@DEEPSEEK_API_KEY@";
 in
-{
-  home.packages = [ pkgs.aider-chat ];
-
-  home.file.${configFile}.text = toYAML {
-    #############
-    # Main model:
-
-    # Specify the model to use for the main chat
-    model = "deepseek/deepseek-chat";
-
-    ########################
-    # API Keys and settings:
-
-    api-key = "deepseek=${placeholder}";
-  };
+lib.mkIf config.purpose.daily {
+  home.packages = [
+    pkgs.aider-chat
+    pkgs.ruff
+  ];
 
   age.secrets."deepseek-api-key".file = ../../secrets/deepseek-api-key.age;
 
@@ -44,5 +34,40 @@ in
           verboseEcho "Warning: Secret file $secretFile does not exist. Skipping placeholder replacement."
       fi
     '';
+  };
+
+  home.file.${configFile}.text = toYAML {
+    #############
+    # Main model:
+
+    # Specify the model to use for the main chat
+    model = "deepseek/deepseek-chat";
+
+    ########################
+    # API Keys and settings:
+
+    ## Set an API key for a provider (eg: --api-key provider=<key> sets PROVIDER_API_KEY=<key>)
+    #api-key: xxx
+    ## Specify multiple values like this:
+    api-key = "deepseek=${placeholder}";
+
+    ###############
+    # Git settings:
+
+    # Attribute aider code changes in the git author name (default: True)
+    attribute-author = false;
+
+    # Attribute aider commits in the git committer name (default: True)
+    attribute-committer = false;
+
+    ########################
+    # Fixing and committing:
+
+    ## Specify lint commands to run for different languages, eg: "python: flake8 --select=..." (can be used multiple times)
+    #lint-cmd: xxx
+    # Specify multiple values like this:
+    lint-cmd = [
+      "python: ruff check --fix"
+    ];
   };
 }
