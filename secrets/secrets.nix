@@ -28,7 +28,7 @@ in
   "id-lab.age".publicKeys = users;
   "id-lab.pub.age".publicKeys = users;
   "ssh-config.age".publicKeys = users;
-  "aider.conf.yml.age".publicKeys = users;
+  "deepseek-api-key.age".publicKeys = users;
   "rss-pwd.age".publicKeys = users ++ systems;
   "xray.json.age".publicKeys = users ++ systems;
 
