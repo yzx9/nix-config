@@ -29,7 +29,5 @@ in
     EDITOR = "nvim";
   };
 
-  home.shellAliases = {
-    v = "nvim";
-  };
+  home.shellAliases.v = "nvim";
 }

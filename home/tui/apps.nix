@@ -33,4 +33,6 @@ in
     enableBashIntegration = true;
     enableZshIntegration = true;
   };
+
+  home.shellAliases.y = "yazi";
 }
