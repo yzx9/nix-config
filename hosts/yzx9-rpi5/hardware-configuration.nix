@@ -4,8 +4,6 @@ let
   inherit (inputs) raspberry-pi-nix;
 in
 {
-  # nix build .#nixosConfigurations.pi5.config.system.build.sdImage
-  # zstdcat result/sd-image/nixos-sd-image-23.11.20230703.ea4c80b-aarch64-linux.img.zst | sudo dd of=/dev/mmcblk0 bs=100M
   imports = [
     raspberry-pi-nix.nixosModules.raspberry-pi
 

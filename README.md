@@ -8,7 +8,7 @@ Current state: nixos, darwin and standalone home-manager.
 
 Build custom package:
 
-```path
+```sh
 nix build .#PACKAGE
 ```
 
@@ -20,13 +20,29 @@ nix build .#PACKAGE
 4. Deploy the configuration to your host.
    - If you're adding a new host with a standalone Home Manager setup, using `nix develop` might be helpful.
 
+### Raspberry Pi: Build and Flash an SD Card Image
+
+We use [raspberry-pi-nix](https://github.com/nix-community/raspberry-pi-nix) for
+Raspberry Pi setup. Make sure to check the documentation first.
+
+Building an image and flashing it to an SD card is an effective way to set up your
+Raspberry Pi:
+
+```sh
+nix build '.#nixosConfigurations.rpi-example.config.system.build.sdImage'
+zstdcat result/sd-image/nixos-sd-image-23.11.20230703.ea4c80b-aarch64-linux.img.zst \
+    | sudo dd of=/dev/mmcblk0 bs=100M
+```
+
+This method creates and deploys a ready-to-use NixOS image to your SD card.
+
 ## Known issues
 
 ### Home Manager + Agenix
 
 Each time when you add/edit/delete home secrets, you will have to run the following script manually:
 
-```
+```sh
 systemctl --user start agenix.service
 ```
 
