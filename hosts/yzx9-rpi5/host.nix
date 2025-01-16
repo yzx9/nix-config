@@ -26,7 +26,7 @@
       interface = "end0";
     };
 
-    nameservers = [ "10.6.31.1" ];
+    nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
     # wireless = {
     #   # Enables wireless support via wpa_supplicant.
