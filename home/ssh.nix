@@ -40,18 +40,14 @@ in
         hostname = "github.com";
         user = "git";
         proxyCommand = proxyCommand;
-        extraOptions = {
-          TCPKeepAlive = "yes";
-        };
+        extraOptions.TCPKeepAlive = "yes";
       };
 
       "ssh.github.com" = {
         hostname = "ssh.github.com";
         port = 443;
         user = "git";
-        extraOptions = {
-          TCPKeepAlive = "yes";
-        };
+        extraOptions.TCPKeepAlive = "yes";
       };
     };
   };
