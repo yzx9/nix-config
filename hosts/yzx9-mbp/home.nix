@@ -33,5 +33,9 @@ in
 
   home.packages = with pkgs; [
     gopass
+
+    # you have to run `gopass-jsonapi configure` manually, because I dont know how to
+    # do it automatically
+    gopass-jsonapi
   ];
 }

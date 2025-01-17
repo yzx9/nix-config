@@ -16,14 +16,12 @@ in
 
     # The home.packages option allows you to install Nix packages into your
     # environment.
-    home.packages =
-      (with pkgs; [
-        gopass-jsonapi # you have to run `gopass-jsonapi configure` manually, because I dont know how to do it automatically
-        dbeaver-bin # SQL client
-        logseq
-      ])
-      # customized apps
-      ++ [ ]
+    home.packages = [
+        pkgs.dbeaver-bin # SQL client
+      ]
+      ++ lib.optionals (with pkgs.stdenv.hostPlatform; !(isLinux && isAarch64)) [
+        pkgs.logseq
+      ]
       # darwin will install these apps using homebrew
       ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
         pkgs.inkscape # SVG design
