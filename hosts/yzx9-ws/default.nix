@@ -16,7 +16,7 @@ mkNixosConfiguration {
     daily = true;
   };
 
-  proxy.enable = true;
+  proxy.selfHost.enable = true;
   nvidia.enable = true;
   docker = {
     enable = true;

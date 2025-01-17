@@ -9,7 +9,7 @@ let
   cfg = config.proxy;
 in
 {
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.selfHost.enable {
     age.secrets."xray.json" = {
       file = ../../secrets/xray.json.age;
       mode = "444"; # workaround with launchd agents

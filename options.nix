@@ -55,8 +55,20 @@ in
   };
 
   options.proxy = {
-    enable = lib.mkEnableOption "proxy";
-    public = lib.mkEnableOption "public proxy";
+    selfHost = {
+      enable = lib.mkEnableOption "proxy";
+      public = lib.mkEnableOption "public proxy";
+    };
+
+    httpProxy = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = if config.proxy.selfHost.enable then "http://127.0.0.1:12345/" else null;
+    };
+
+    sockProxy = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = if config.proxy.selfHost.enable then "127.0.0.1:10086" else null;
+    };
   };
 
   options.nvidia = {

@@ -14,8 +14,8 @@ let
       viAlias = true;
       vimAlias = true;
 
-      extraConfigLuaPre = lib.mkIf config.proxy.enable ''
-        vim.g.copilot_proxy = "http://127.0.0.1:10087"
+      extraConfigLuaPre = lib.mkIf (!(builtins.isNull config.proxy.httpProxy)) ''
+        vim.g.copilot_proxy = "${config.proxy.httpProxy}"
       '';
     };
 in

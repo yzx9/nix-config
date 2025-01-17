@@ -82,7 +82,7 @@ in
         home = "/home/${username}";
         description = username;
         isNormalUser = true;
-        initialPassword = "a1b2c3d4"; # Don't forget to set a password with ‘passwd’.
+        initialPassword = "a1b2c3d4"; # NOTE: Don't forget to set a password with ‘passwd’.
         extraGroups = [
           "wheel"
         ] ++ lib.optionals config.networking.networkmanager.enable [ "networkmanager" ];

@@ -3,6 +3,9 @@
 let
   ssh = "${config.home.homeDirectory}/.ssh/";
   toSshPath = path: lib.removePrefix ssh path;
+
+  needProxyCommand = !(builtins.isNull config.proxy.sockProxy);
+  proxyCommand = lib.mkIf needProxyCommand "nc -v -x ${config.proxy.sockProxy} %h %p";
 in
 {
   age.secrets = {
@@ -36,7 +39,7 @@ in
       "github.com" = {
         hostname = "github.com";
         user = "git";
-        proxyCommand = lib.mkIf config.proxy.enable "nc -v -x 127.0.0.1:10086 %h %p";
+        proxyCommand = proxyCommand;
         extraOptions = {
           TCPKeepAlive = "yes";
         };
