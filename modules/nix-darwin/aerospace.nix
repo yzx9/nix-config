@@ -237,7 +237,7 @@ in
             ];
           }
           {
-            "if".app-id = "com.Snipaste";
+            "if".window-title-regex-substring = "Reminder";
             run = "layout floating";
           }
           {
