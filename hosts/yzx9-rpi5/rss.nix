@@ -27,14 +27,16 @@ in
             # Options to use a proxy for retrieving feeds.
             CURLOPT_PROXYTYPE => CURLPROXY_HTTP,
             CURLOPT_PROXY => '127.0.0.1',
-            CURLOPT_PROXYPORT => 12345,
+            CURLOPT_PROXYPORT => ${builtins.toString config.proxy.httpProxyPublicPort},
           ]
         ];
       '';
 
-      postInstall = (previousAttrs.postInstall or "") + ''
-        cp $overrideConfigCustom $out/data/config.custom.php
-      '';
+      postInstall =
+        (previousAttrs.postInstall or "")
+        + ''
+          cp $overrideConfigCustom $out/data/config.custom.php
+        '';
     });
     virtualHost = vhost;
     baseUrl = baseUrl;

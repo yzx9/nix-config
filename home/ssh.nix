@@ -4,8 +4,8 @@ let
   ssh = "${config.home.homeDirectory}/.ssh/";
   toSshPath = path: lib.removePrefix ssh path;
 
-  needProxyCommand = !(builtins.isNull config.proxy.sockProxy);
-  proxyCommand = lib.mkIf needProxyCommand "nc -v -x ${config.proxy.sockProxy} %h %p";
+  needProxyCommand = !(builtins.isNull config.proxy.socksProxy);
+  proxyCommand = lib.mkIf needProxyCommand "nc -v -x ${config.proxy.socksProxy} %h %p";
 in
 {
   age.secrets = {
