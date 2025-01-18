@@ -58,7 +58,7 @@ rebuild:
 
 [linux]
 rebuild-dev:
-  sudo nixos-rebuild switch --show-trace --flake .
+  sudo nixos-rebuild switch --show-trace --verbose --flake .
 
 [linux]
 hm-rebuild hostname = `hostname`:
@@ -80,7 +80,7 @@ rebuild: rebuild-noproxy (proxy "set")
 
 [macos]
 rebuild-dev:
-  darwin-rebuild switch --show-trace --flake .
+  darwin-rebuild switch --show-trace --verbose --flake .
 
 [macos]
 proxy mode="auto_switch":
