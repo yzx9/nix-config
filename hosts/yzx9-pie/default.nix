@@ -12,6 +12,8 @@ mkNixosConfiguration {
     user = user_yzx9;
   };
 
+  purpose.gui = true;
+
   proxy.selfHost = {
     enable = true;
     public = true;
