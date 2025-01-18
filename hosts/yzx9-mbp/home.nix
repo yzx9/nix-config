@@ -13,13 +13,13 @@ in
   # ssh
   age.secrets = {
     id-git = {
-      file = ../../secrets/id-git_yzx9-mbp.age;
+      file = ../../secrets/id-git_root.age;
       path = "${ssh}id_git";
       mode = "400";
     };
 
     id-github = {
-      file = ../../secrets/id-github_yzx9-mbp.age;
+      file = ../../secrets/id-github_root.age;
       path = "${ssh}id_github";
       mode = "400";
     };

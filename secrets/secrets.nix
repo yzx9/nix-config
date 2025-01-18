@@ -22,7 +22,6 @@ let
   ];
 
   yzx9-root = [ user_yzx9-mbp ];
-  yzx9-mbp = yzx9-root ++ [ system_yzx9-mbp ];
   yzx9-rpi5 = yzx9-root ++ [
     system_yzx9-rpi5
     user_yzx9-rpi5
@@ -36,9 +35,9 @@ in
   "rss-pwd.age".publicKeys = users ++ systems;
   "xray.json.age".publicKeys = users ++ systems;
 
-  # yzx9-mbp only
-  "id-git_yzx9-mbp.age".publicKeys = yzx9-mbp;
-  "id-github_yzx9-mbp.age".publicKeys = yzx9-mbp;
+  # root only
+  "id-git_root.age".publicKeys = yzx9-root;
+  "id-github_root.age".publicKeys = yzx9-root;
 
   # yzx9-rpi5 only
   "frpc_yzx9-rpi5.toml.age".publicKeys = yzx9-rpi5;
