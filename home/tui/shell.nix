@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ config, pkgs, ... }:
 
 let
   inherit (config) vars;
@@ -16,8 +11,10 @@ in
 
     enableCompletion = true;
     completionInit =
-      lib.optionalString (vars.type != "home-manager") "autoload -U compinit && compinit"
-      + lib.optionalString (vars.type == "home-manager") "autoload -U compinit && compinit -u";
+      if vars.type != "home-manager" then
+        "autoload -U compinit && compinit"
+      else
+        "autoload -U compinit && compinit -u";
 
     autosuggestion.enable = true;
 

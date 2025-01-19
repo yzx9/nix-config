@@ -11,6 +11,7 @@
 
 let
   inherit (config) vars;
+  username = vars.user.name;
 in
 {
   # Bootloader.
@@ -73,22 +74,18 @@ in
   # networking.firewall.enable = false;
 
   # Define a user account.
-  users.users =
-    let
-      username = vars.user.name;
-    in
-    {
-      ${username} = {
-        home = "/home/${username}";
-        description = username;
-        isNormalUser = true;
-        initialPassword = "a1b2c3d4"; # NOTE: Don't forget to set a password with ‘passwd’.
-        extraGroups = [
-          "wheel"
-        ] ++ lib.optionals config.networking.networkmanager.enable [ "networkmanager" ];
-        # packages = with pkgs; [];
-      };
+  users.users = {
+    ${username} = {
+      home = "/home/${username}";
+      description = username;
+      isNormalUser = true;
+      initialPassword = "a1b2c3d4"; # NOTE: Don't forget to set a password with ‘passwd’.
+      extraGroups = [
+        "wheel"
+      ] ++ lib.optionals config.networking.networkmanager.enable [ "networkmanager" ];
+      # packages = with pkgs; [];
     };
+  };
   users.defaultUserShell = pkgs.zsh;
 
   # This value determines the NixOS release from which the default

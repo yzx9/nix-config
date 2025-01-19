@@ -11,9 +11,12 @@
 
 let
   inherit (config) vars;
+  username = vars.user.name;
 in
 {
   system = {
+    # Used for backwards compatibility, please read the changelog before changing.
+    # $ darwin-rebuild changelog
     stateVersion = 5;
 
     # activationScripts are executed every time you boot the system or run `nixos-rebuild` / `darwin-rebuild`.
@@ -53,17 +56,12 @@ in
     enableSSHSupport = true;
   };
 
-  users.users =
-    let
-      username = vars.user.name;
-    in
-    {
-      ${username} = {
-        home = "/Users/${username}";
-      };
+  users.users = {
+    ${username} = {
+      home = "/Users/${username}";
     };
+  };
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
-
 }

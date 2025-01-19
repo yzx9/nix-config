@@ -15,8 +15,8 @@ in
   home = {
     inherit username;
     homeDirectory = (
-      lib.optionalString pkgs.stdenv.hostPlatform.isLinux "/home/${username}"
-      + lib.optionalString pkgs.stdenv.hostPlatform.isDarwin "/Users/${username}"
+      lib.optionalString pkgs.stdenvNoCC.hostPlatform.isLinux "/home/${username}"
+      + lib.optionalString pkgs.stdenvNoCC.hostPlatform.isDarwin "/Users/${username}"
     );
 
     # This value determines the Home Manager release that your configuration is

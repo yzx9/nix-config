@@ -16,7 +16,7 @@ in
 
   programs.git = {
     enable = true;
-    lfs.enable = true;
+    lfs.enable = config.purpose.daily;
 
     userName = git.name;
     userEmail = git.email;

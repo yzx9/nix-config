@@ -35,7 +35,7 @@
       curl
       unzip
     ])
-    ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux (
+    ++ lib.optionals pkgs.stdenvNoCC.hostPlatform.isLinux (
       with pkgs;
       [
         parted
