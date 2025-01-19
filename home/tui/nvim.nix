@@ -1,27 +1,16 @@
-{
-  self,
-  config,
-  lib,
-  ...
-}:
+{ self, config, ... }:
 
 {
-  home.packages =
-    let
-      pkgs = self.packages.${config.vars.system};
-      pkg = if config.purpose.daily then pkgs.nixvim else pkgs.nixvim-mini;
-    in
-    [
-      (pkg.extend {
-        # Set 'vi' and 'vim' aliases to nixvim
-        viAlias = true;
-        vimAlias = true;
+  home.packages = [
+    (self.packages.${config.vars.system}.nixvim.extend {
+      # Set 'vi' and 'vim' aliases to nixvim
+      viAlias = true;
+      vimAlias = true;
 
-        extraConfigLuaPre = lib.mkIf (!(builtins.isNull config.proxy.httpProxy)) ''
-          vim.g.copilot_proxy = "${config.proxy.httpProxy}"
-        '';
-      })
-    ];
+      lsp.enable = config.purpose.daily; # disable lsp to minimize size by default
+      httpProxy = config.proxy.httpProxy;
+    })
+  ];
 
   # Set default editor
   home.sessionVariables.EDITOR = "nvim";

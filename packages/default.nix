@@ -1,13 +1,22 @@
-{ system, nixpkgs, ... }@inputs:
+{
+  system,
+  nixpkgs,
+  nixvim,
+  ...
+}:
 
 let
   pkgs = nixpkgs.legacyPackages.${system};
-
-  nixvim = import ./nixvim inputs;
 in
 {
-  inherit (nixvim) nixvim nixvim-mini;
   git-conventional-commits = pkgs.callPackage ./git-conventional-commits { };
+
   macism = pkgs.callPackage ./macism { };
+
+  nixvim = import ./nixvim {
+    inherit pkgs;
+    nixvim = nixvim.legacyPackages.${system};
+  };
+
   vaa3d-x = pkgs.callPackage ./vaa3d-x { };
 }

@@ -1,9 +1,14 @@
 # Lightweight yet powerful formatter plugin for Neovim
 # homepage: https://github.com/stevearc/conform.nvim
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/conform-nvim/index.html
-{ pkgs, lib, ... }:
-
 {
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+
+lib.mkIf config.lsp.enable {
   plugins.conform-nvim = {
     enable = true;
     settings = {

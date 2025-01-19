@@ -1,3 +1,5 @@
+{ config, lib, ... }:
+
 {
   plugins = {
     # Fully featured & enhanced replacement for copilot.vim complete with API
@@ -23,4 +25,8 @@
 
     cmp.settings.sources = [ { name = "copilot"; } ];
   };
+
+  extraConfigLuaPre = lib.optionalString (!(builtins.isNull config.httpProxy)) ''
+    vim.g.copilot_proxy = "${config.httpProxy}"
+  '';
 }

@@ -2,7 +2,7 @@
 # homepage: https://github.com/hrsh7th/nvim-cmp/
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/cmp/index.html
 
-{ minimize, lib, ... }:
+{ config, lib, ... }:
 
 {
   plugins = {
@@ -122,7 +122,7 @@
       -- }
       })
     ''
-    + lib.optionalString (!minimize) ''
+    + lib.optionalString config.lsp.enable ''
       -- Set up lspconfig.
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
 

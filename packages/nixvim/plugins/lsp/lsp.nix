@@ -1,7 +1,12 @@
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/lsp/index.html
-{ icons, ... }:
-
 {
+  config,
+  lib,
+  icons,
+  ...
+}:
+
+lib.mkIf config.lsp.enable {
   plugins.lsp = {
     enable = true;
 

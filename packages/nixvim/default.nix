@@ -1,34 +1,37 @@
 {
-  system,
-  nixpkgs,
+  pkgs,
   nixvim,
   ...
 }:
 
 let
-  pkgs = nixpkgs.legacyPackages.${system};
-  nixvim' = nixvim.legacyPackages.${system};
-  icons = import ./icons.nix;
-  mkNixvim =
-    { minimize }:
-    nixvim'.makeNixvimWithModule {
-      inherit pkgs;
-
-      module = {
-        imports = [
-          ./config
-          ./plugins
-          ./utils.nix
-        ];
-      };
-
-      # You can use `extraSpecialArgs` to pass additional arguments to your module files
-      extraSpecialArgs = {
-        inherit minimize icons;
-      };
-    };
+  inherit (pkgs) lib;
 in
-{
-  nixvim = mkNixvim { minimize = false; };
-  nixvim-mini = mkNixvim { minimize = true; };
+nixvim.makeNixvimWithModule {
+  inherit pkgs;
+
+  module = {
+    imports = [
+      {
+        options = {
+          httpProxy = lib.mkOption {
+            type = with lib.types; nullOr str;
+            default = null;
+            description = "httpProxy";
+          };
+
+          lsp.enable = lib.mkEnableOption "Enable LSP";
+        };
+      }
+
+      ./config
+      ./plugins
+      ./utils.nix
+    ];
+  };
+
+  # You can use `extraSpecialArgs` to pass additional arguments to your module files
+  extraSpecialArgs = {
+    icons = import ./icons.nix;
+  };
 }

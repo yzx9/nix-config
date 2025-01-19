@@ -1,6 +1,11 @@
-{ icons, ... }:
-
 {
+  config,
+  lib,
+  icons,
+  ...
+}:
+
+lib.mkIf config.proxy.enable {
   plugins.dap = {
     enable = true;
 
