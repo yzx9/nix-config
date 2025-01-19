@@ -31,17 +31,4 @@ in
 {
   nixvim = mkNixvim { minimize = false; };
   nixvim-mini = mkNixvim { minimize = true; };
-
-  nixvim-formatters = with pkgs; [
-    prettierd
-
-    rustfmt
-
-    nixfmt-rfc-style
-
-    yamllint
-    yamlfmt
-
-    shfmt
-  ];
 }

@@ -1,7 +1,7 @@
 # Lightweight yet powerful formatter plugin for Neovim
 # homepage: https://github.com/stevearc/conform.nvim
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/conform-nvim/index.html
-{ lib, ... }:
+{ pkgs, lib, ... }:
 
 {
   plugins.conform-nvim = {
@@ -10,13 +10,13 @@
       notify_on_error = true;
       formatters_by_ft =
         let
-          prettier = {
-            __unkeyed-1 = "prettierd";
-            __unkeyed-2 = "prettier";
-            stop_after_first = true;
-          };
-
-          genPrettier = langs: lib.genAttrs langs (lang: prettier);
+          genPrettier =
+            langs:
+            lib.genAttrs langs (lang: {
+              __unkeyed-1 = "prettierd";
+              __unkeyed-2 = "prettier";
+              stop_after_first = true;
+            });
         in
         genPrettier [
           "html"
@@ -47,6 +47,20 @@
           ];
           sh = [ "shfmt" ];
         };
+
+      formatters = {
+        prettierd.command = lib.getExe pkgs.prettierd;
+        ruff_fix.command = lib.getExe pkgs.ruff;
+        ruff_format.command = lib.getExe pkgs.ruff;
+        ruff_organize_imports.command = lib.getExe pkgs.ruff;
+        # rustfmt.command = lib.getExe pkgs.rustfmt;
+        # goimports.command = "${pkgs.gotools}/bin/goimports";
+        # gofmt.command = lib.getExe pkgs.go;
+        nixfmt.command = lib.getExe pkgs.nixfmt-rfc-style;
+        yamlfmt.command = lib.getExe pkgs.yamlfmt;
+        yamllint.command = lib.getExe pkgs.yamllint;
+        shfmt.command = lib.getExe pkgs.shfmt;
+      };
 
       format_on_save = ''
         function(bufnr)
