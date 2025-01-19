@@ -50,13 +50,13 @@ in
   };
 
   options.purpose = {
-    daily = lib.mkEnableOption "for daily use";
-    gui = lib.mkEnableOption "for GUI use";
+    daily = lib.mkEnableOption "for daily use, including coding, will install many applications";
+    gui = lib.mkEnableOption "for GUI use, will install GUI-specific applications";
   };
 
   options.proxy = {
     selfHost = {
-      enable = lib.mkEnableOption "proxy";
+      enable = lib.mkEnableOption "self-hosted proxy";
 
       socksProxyPort = lib.mkOption {
         type = lib.types.int;
