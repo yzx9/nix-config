@@ -21,7 +21,6 @@ lib.mkIf config.purpose.daily {
           echo "Warning: Secret file $secretFile does not exist, no api_key injected."
       fi
 
-      echo $DEEPSEEK_API_KEY
       ${lib.getExe pkgs.aider-chat}
     '')
   ];
