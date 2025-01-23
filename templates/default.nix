@@ -8,4 +8,9 @@
     path = ./rust-wasm;
     description = "Rust & WASM development template";
   };
+
+  python = {
+    path = ./python;
+    description = "Python development template";
+  };
 }
