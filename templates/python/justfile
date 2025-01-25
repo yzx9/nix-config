@@ -1,5 +1,7 @@
 # just is a command runner, Justfile is very similar to Makefile, but simpler.
 
+project_name := "my_project"
+
 default:
   @just --list
 
@@ -12,4 +14,19 @@ test-cov:
     pytest \
       --doctest-modules \
       --junitxml=junit/test-results.xml \
-      --cov=MY_PROJECT --cov-report=xml --cov-report=html
+      --cov=$project_name --cov-report=xml --cov-report=html
+
+clean:
+  rm -rf `find . -name __pycache__`
+  find . -type f -name '*.py[co]'  -delete
+  find . -type f -name '*~'  -delete
+  find . -type f -name '.*~'  -delete
+  find . -type f -name '@*'  -delete
+  find . -type f -name '#*#'  -delete
+  find . -type f -name '*.orig'  -delete
+  find . -type f -name '*.rej'  -delete
+  rm -f .coverage
+  rm -rf coverage
+  rm -rf build
+  rm -rf htmlcov
+  rm -rf dist
