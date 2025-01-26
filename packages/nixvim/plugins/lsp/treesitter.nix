@@ -5,7 +5,11 @@ lib.mkIf config.lsp.enable {
     enable = true;
 
     settings = {
-      highlight.enable = true;
+      highlight = {
+        enable = true;
+        # TODO
+        additional_vim_regex_highlighting = false;
+      };
     };
   };
 }

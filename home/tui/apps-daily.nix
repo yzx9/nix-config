@@ -34,16 +34,11 @@ lib.mkIf config.purpose.daily {
     # msic
     age
     ffmpeg
+    ouch # compressing and decompressing
   ];
 
   programs.direnv = {
     enable = true;
-    enableZshIntegration = true;
-  };
-
-  programs.yazi = {
-    enable = true;
-    enableBashIntegration = true;
     enableZshIntegration = true;
   };
 

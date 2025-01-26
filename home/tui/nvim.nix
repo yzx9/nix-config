@@ -7,8 +7,9 @@
       viAlias = true;
       vimAlias = true;
 
-      lsp.enable = config.purpose.daily; # disable lsp to minimize size by default
       httpProxy = config.proxy.httpProxy;
+      lsp.enable = config.purpose.daily; # disable lsp to minimize size by default
+      yazi.package = null; # use global yazi package which includes plugins
     })
   ];
 

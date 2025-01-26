@@ -23,7 +23,7 @@
   Ellipsis = "…";
   Environment = " ";
   FileNew = " ";
-  FileModified = " ";
+  FileModified = "󰅙"; # 
   FileReadOnly = " ";
   FoldClosed = "";
   FoldOpened = "";

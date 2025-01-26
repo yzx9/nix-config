@@ -6,5 +6,6 @@
     ./bat.nix
     ./nvim.nix
     ./shell.nix
+    ./yazi.nix
   ];
 }

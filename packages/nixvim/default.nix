@@ -14,13 +14,17 @@ nixvim.makeNixvimWithModule {
     imports = [
       {
         options = {
+          lsp.enable = lib.mkEnableOption "Enable LSP";
+
           httpProxy = lib.mkOption {
             type = with lib.types; nullOr str;
             default = null;
             description = "httpProxy";
           };
 
-          lsp.enable = lib.mkEnableOption "Enable LSP";
+          yazi.package = lib.mkPackageOption pkgs "yazi" {
+            nullable = true;
+          };
         };
       }
 
