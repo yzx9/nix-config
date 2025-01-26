@@ -24,7 +24,7 @@ nixvim.makeNixvimWithModule {
 
           yazi.package = lib.mkPackageOption pkgs "yazi" {
             nullable = true;
-            description = ''
+            extraDescription = ''
               Yazi will automatically apply your configuration if you are using the
               default configuration directory (~/.config/yazi). This is the default
               behavior of home-manager for `program.yazi`.
@@ -38,8 +38,43 @@ nixvim.makeNixvimWithModule {
       }
 
       ./config
-      ./plugins
       ./utils.nix
+
+      # Plugins provide additional features
+      plugins-extra/autopairs.nix
+      plugins-extra/cmp.nix
+      plugins-extra/copilot.nix
+      plugins-extra/fidget.nix
+      plugins-extra/illuminate.nix
+      # plugins-extra/neo-tree.nix # use yazi instead
+      plugins-extra/lazygit.nix
+      plugins-extra/telescope.nix
+      plugins-extra/toggleterm.nix
+      plugins-extra/which-key.nix
+      plugins-extra/yazi.nix
+
+      # Plugins provide LSP features, can be disabled by `lsp.enable = false;`
+      plugins-lsp/comment.nix
+      plugins-lsp/conform.nix
+      # plugins-lsp/dap.nix # need more exploration
+      plugins-lsp/lsp.nix
+      plugins-lsp/lspsage.nix
+      # plugins-lsp/neotest.nix # need more exploration
+      plugins-lsp/treesitter.nix
+      plugins-lsp/ts-autotag.nix
+      plugins-lsp/ts-context-commentstring.nix
+
+      # Plugins enhance UI
+      plugins-ui/btw.nix
+      plugins-ui/bufferline.nix
+      plugins-ui/dressing.nix
+      plugins-ui/gitsigns.nix
+      plugins-ui/indent-blankline.nix
+      plugins-ui/lualine.nix
+      plugins-ui/nvim-highlight-colors.nix
+      plugins-ui/nvim-ufo.nix
+      plugins-ui/todo-comments.nix
+      plugins-ui/web-devicon.nix
     ];
   };
 
