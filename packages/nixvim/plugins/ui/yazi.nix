@@ -9,8 +9,6 @@
     yaziPackage = config.yazi.package;
   };
 
-  # TODO: enable git integration
-
   keymaps = [
     {
       mode = "n";
