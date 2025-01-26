@@ -42,6 +42,5 @@ lib.mkIf config.purpose.daily {
     enableZshIntegration = true;
   };
 
-  home.shellAliases.y = "yazi";
   home.shellAliases.j = "just";
 }
