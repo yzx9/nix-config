@@ -1,4 +1,6 @@
 {
+  imports = [ ./linux-builder.nix ];
+
   homebrew = {
     casks = [
       # science
@@ -19,6 +21,4 @@
       "bambu-studio" # 3d ptinter
     ];
   };
-
-  nix.linux-builder.enable = true;
 }
