@@ -27,7 +27,7 @@ in
             # Options to use a proxy for retrieving feeds.
             CURLOPT_PROXYTYPE => CURLPROXY_HTTP,
             CURLOPT_PROXY => '127.0.0.1',
-            CURLOPT_PROXYPORT => ${builtins.toString config.proxy.httpProxyPublicPort},
+            CURLOPT_PROXYPORT => ${builtins.toString config.proxy.selfHost.httpProxyPublicPort},
           ]
         ];
       '';
