@@ -8,6 +8,7 @@
 
 let
   inherit (config) vars purpose;
+  inherit (pkgs.stdenvNoCC.hostPlatform) isLinux isDarwin isAarch64;
 in
 {
   config = lib.mkIf purpose.gui {
@@ -16,21 +17,22 @@ in
 
     # The home.packages option allows you to install Nix packages into your
     # environment.
-    home.packages =
+    home.packages = lib.optionals purpose.daily (
       [
         pkgs.dbeaver-bin # SQL client
       ]
-      ++ lib.optionals (with pkgs.stdenvNoCC.hostPlatform; !(isLinux && isAarch64)) [
-        pkgs.logseq
+      ++ lib.optionals (!(isLinux && isAarch64)) [
+        pkgs.logseq # broken in aarch64-linux
       ]
-      # darwin will install these apps using homebrew
-      ++ lib.optionals pkgs.stdenvNoCC.hostPlatform.isLinux [
-        pkgs.inkscape # SVG design
+      # linux only
+      ++ lib.optionals isLinux [
+        pkgs.inkscape # SVG design, install using homebrew in darwin
       ]
       # darwin only
-      ++ lib.optionals pkgs.stdenvNoCC.hostPlatform.isDarwin [
+      ++ lib.optionals isDarwin [
         self.packages.${vars.system}.vaa3d-x
         pkgs.stats
-      ];
+      ]
+    );
   };
 }
