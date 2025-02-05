@@ -5,7 +5,7 @@
   ...
 }:
 
-lib.mkIf config.proxy.enable {
+lib.mkIf config.lsp.enable {
   plugins.dap = {
     enable = true;
 

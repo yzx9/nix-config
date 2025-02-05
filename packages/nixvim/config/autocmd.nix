@@ -1,6 +1,7 @@
 # https://github.com/AstroNvim/AstroNvim/blob/v4.7.7/lua/astronvim/plugins/_astrocore_autocmds.lua
 {
   autoGroups = {
+    wrap_ft.clear = true;
     auto_quit.clear = true;
     autoview.clear = true;
     bufferline.clear = true;
@@ -14,9 +15,19 @@
     q_close_windows.clear = true;
     terminal_settings.clear = true;
     unlist_quickfix.clear = true;
+
   };
 
   autoCmd = [
+    # wrap_ft
+    {
+      desc = "Enable wrap based on file type";
+      event = "BufEnter";
+      pattern = "*.md";
+      group = "wrap_ft";
+      command = "setlocal wrap";
+    }
+
     # auto_quit
     # https://github.com/AstroNvim/AstroNvim/blob/v4.7.7/lua/astronvim/plugins/_astrocore_autocmds.lua#L18-L46
     {

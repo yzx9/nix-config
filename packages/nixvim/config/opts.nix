@@ -154,15 +154,4 @@
     # Disable making a backup before overwriting a file
     writebackup = false;
   };
-
-  autoGroups.wrap_ft.clear = true;
-  autoCmd = [
-    {
-      desc = "Enable wrap based on file type";
-      event = "BufEnter";
-      pattern = "*.md";
-      group = "wrap_ft";
-      command = "setlocal wrap";
-    }
-  ];
 }
