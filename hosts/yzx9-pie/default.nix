@@ -14,8 +14,5 @@ mkNixosConfiguration {
 
   purpose.gui = true;
 
-  proxy.selfHost = {
-    enable = true;
-    public = true;
-  };
+  proxy.selfHost.enable = true;
 }
