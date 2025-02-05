@@ -15,12 +15,12 @@ test:
 
 # update all the flake inputs
 up:
-  nix flake update
+  nix flake update --commit-lock-file
 
 # Update specific input
 # Usage: just upp nixpkgs
 upp input:
-  nix flake update {{input}}
+  nix flake update {{input}} --commit-lock-file
 
 # List all generations of the system profile
 history:
@@ -86,6 +86,16 @@ rebuild-dev:
 proxy mode="auto_switch":
   sudo python3 scripts/darwin_proxy.py {{mode}} http://127.0.0.1:12345
   sleep 1
+
+# Remote deployments with linux-builder: https://nixcademy.com/posts/macos-linux-builder/
+[macos]
+deploy hostname:
+  nixos-rebuild switch \
+    --fast \
+    --target-host {{hostname}} \
+    --flake .#{{hostname}} \
+    --use-remote-sudo \
+    --use-substitutes
 
 
 ############################################################################
