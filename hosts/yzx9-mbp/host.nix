@@ -19,4 +19,6 @@
       "bambu-studio" # 3d ptinter
     ];
   };
+
+  nix.linux-builder.enable = true;
 }
