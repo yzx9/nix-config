@@ -9,7 +9,10 @@
   networking = {
     networkmanager.enable = lib.mkForce false; # we have to disable it since webgitkit cache-missing
 
-    nameservers = [ "1.1.1.1" "8.8.8.8" ];
+    nameservers = [
+      "1.1.1.1"
+      "8.8.8.8"
+    ];
 
     wireless = {
       # Enables wireless support via wpa_supplicant.
@@ -22,9 +25,9 @@
     };
   };
 
-  # services.xserver = {
-  #   enable = true;
-  #   displayManager.gdm.enable = true;
-  #   desktopManager.gnome.enable = true;
-  # };
+  services.xserver = {
+    enable = true;
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
+  };
 }
