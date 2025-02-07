@@ -21,7 +21,8 @@ in
   # https://nixos-and-flakes.thiscute.world/best-practices/nix-path-and-flake-registry
 
   # make `nix run nixpkgs#nixpkgs` use the same nixpkgs as the one used by this flake.
-  nix.registry.nixpkgs.flake = inputs.nixpkgs;
+  nix.registry.nixpkgs.flake = inputs.nixpkgs; # For flake commands
+  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ]; # For legacy commands
   nix.channel.enable = false; # remove nix-channel related tools & configs, we use flakes instead.
 
   # but NIX_PATH is still used by many useful tools, so we set it to the same value as the one used by this flake.
