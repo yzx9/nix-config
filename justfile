@@ -13,12 +13,11 @@ default:
 test:
   nix eval .#evalTests --show-trace --print-build-logs --verbose
 
-# update all the flake inputs
+# Update all the flake inputs
 up:
   nix flake update --commit-lock-file
 
-# Update specific input
-# Usage: just upp nixpkgs
+# Update specific input, usage: just upp nixpkgs
 upp input:
   nix flake update {{input}} --commit-lock-file
 
