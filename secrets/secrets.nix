@@ -31,9 +31,10 @@ in
   "id-lab.age".publicKeys = users;
   "id-lab.pub.age".publicKeys = users;
   "ssh-config.age".publicKeys = users;
-  "deepseek-api-key.age".publicKeys = users;
   "rss-pwd.age".publicKeys = users ++ systems;
   "xray.json.age".publicKeys = users ++ systems;
+  "api-key-deepseek.age".publicKeys = users;
+  "api-key-gemini.age".publicKeys = users;
 
   # root only
   "id-git_root.age".publicKeys = yzx9-root;

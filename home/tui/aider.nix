@@ -6,6 +6,9 @@
 }:
 
 let
+  hasProxy = !(builtins.isNull config.proxy.httpProxy);
+  useGemini = hasProxy;
+
   toYAML = lib.generators.toYAML { };
   configFile = ".aider.conf.yml";
 in
@@ -14,25 +17,36 @@ lib.mkIf config.purpose.daily {
     # API Keys and settings
     # NOTE: inject api_key in runtime due to the limitation of agnix
     (pkgs.writeShellScriptBin "aider" ''
-      secretFile="${config.age.secrets.deepseek-api-key.path}"
-      if [ -f "$secretFile" ]; then
-          export DEEPSEEK_API_KEY="$(cat $secretFile)"
-      else
-          echo "Warning: Secret file $secretFile does not exist, no api_key injected."
-      fi
+      declare -A secrets=(
+        ["DEEPSEEK_API_KEY"]="${config.age.secrets.api-key-deepseek.path}"
+        ["GEMINI_API_KEY"]="${config.age.secrets.api-key-gemini.path}"
+      )
 
-      ${lib.getExe pkgs.aider-chat}
+      for envVar in "''${!secrets[@]}"; do
+        secretFile="''${secrets[$envVar]}"
+
+        if [ -f "$secretFile" ]; then
+          export "$envVar"="$(cat "$secretFile")"
+        else
+          echo "Warning: Secret file $secretFile does not exist, no api_key injected for $envVar."
+        fi
+      done
+
+      ${lib.optionalString hasProxy "export HTTPS_PROXY=${config.proxy.httpProxy}"}
+
+      ${lib.getExe pkgs.aider-chat} $@
     '')
-  ];
+  ] ++ lib.optional useGemini pkgs.python311Packages.google-generativeai;
 
-  age.secrets."deepseek-api-key".file = ../../secrets/deepseek-api-key.age;
+  age.secrets."api-key-deepseek".file = ../../secrets/api-key-deepseek.age;
+  age.secrets."api-key-gemini".file = ../../secrets/api-key-gemini.age;
 
   home.file.${configFile}.text = toYAML {
     #############
     # Main model:
 
     # Specify the model to use for the main chat
-    model = "deepseek/deepseek-chat";
+    model = if useGemini then "gemini/gemini-2.0-flash" else "deepseek/deepseek-chat";
 
     ###############
     # Git settings:
