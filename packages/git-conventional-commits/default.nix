@@ -6,16 +6,16 @@
 }:
 
 let
-  pname = "git-conventional-commits";
   version = "2.6.7";
 in
 buildNpmPackage {
-  inherit pname version;
+  pname = "git-conventional-commits";
+  inherit version;
 
   src = fetchFromGitHub {
     owner = "qoomon";
-    repo = pname;
-    rev = "v${version}";
+    repo = "git-conventional-commits";
+    tag = "v${version}";
     hash = "sha256-A5J5h6TrjPmMDQCTAn6TKTA71uu5Qe/Si32cx57vdmM=";
   };
 
@@ -23,24 +23,14 @@ buildNpmPackage {
 
   dontNpmBuild = true;
 
-  installPhase = ''
-    runHook preInstall
-
-    mkdir -p $out/{bin,share/${pname}}
-    cp cli.js git-conventional-commits.default.yaml commit-msg.sh $out/share/${pname}
-    cp -r lib/ node_modules/ $out/share/${pname}
-    ln -s $out/share/${pname}/cli.js $out/bin/${pname}
-
-    runHook postInstall
-  '';
-
   passthru.updateScript = nix-update-script { };
 
-  meta = with lib; {
+  meta = {
     homepage = "https://github.com/qoomon/git-conventional-commits";
-    description = "Git Conventional Commits Util to generate Semantic Version and Markdown Change Log and Validate Commit Message";
-    license = licenses.gpl3;
-    maintainers = with maintainers; [ yzx9 ];
-    mainProgram = pname;
+    description = "Generate semantic version, markdown changelogs, and validate commit messages";
+    changelog = "https://github.com/qoomon/git-conventional-commits/blob/master/CHANGELOG.md";
+    license = lib.licenses.gpl3;
+    maintainers = with lib.maintainers; [ yzx9 ];
+    mainProgram = "git-conventional-commits";
   };
 }
