@@ -17,6 +17,9 @@ mkDarwinConfiguration {
     gui = true;
   };
 
-  proxy.selfHost.enable = true;
+  proxy.selfHost = {
+    enable = true;
+    public = true;
+  };
   docker.enable = true;
 }

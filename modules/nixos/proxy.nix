@@ -21,7 +21,7 @@ lib.mkMerge [
       settingsFile = config.age.secrets."xray.json".path;
     };
 
-    networking.firewall.allowedTCPPorts = [
+    networking.firewall.allowedTCPPorts = lib.optionals cfg.selfHost.public [
       config.proxy.selfHost.httpProxyPublicPort
     ];
   })

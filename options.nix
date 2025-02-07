@@ -57,6 +57,7 @@ in
   options.proxy = {
     selfHost = {
       enable = lib.mkEnableOption "self-hosted proxy";
+      public = lib.mkEnableOption "public proxy";
 
       socksProxyPort = lib.mkOption {
         type = lib.types.int;
