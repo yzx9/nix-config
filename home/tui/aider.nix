@@ -10,7 +10,6 @@ let
   useGemini = hasProxy;
 
   toYAML = lib.generators.toYAML { };
-  configFile = ".aider.conf.yml";
 in
 lib.mkIf config.purpose.daily {
   home.packages = [
@@ -36,12 +35,12 @@ lib.mkIf config.purpose.daily {
 
       ${lib.getExe pkgs.aider-chat} $@
     '')
-  ] ++ lib.optional useGemini pkgs.python311Packages.google-generativeai;
+  ];
 
   age.secrets."api-key-deepseek".file = ../../secrets/api-key-deepseek.age;
   age.secrets."api-key-gemini".file = ../../secrets/api-key-gemini.age;
 
-  home.file.${configFile}.text = toYAML {
+  home.file.".aider.conf.yml".text = toYAML {
     #############
     # Main model:
 
