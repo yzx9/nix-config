@@ -61,7 +61,10 @@ lib.mkIf config.lsp.enable {
         signs = true,
         underline = true,
         update_in_insert = true,
-        severity_sort = false,
+        -- severity_sort = false,
+
+        -- workaround with https://github.com/nvimdev/lspsaga.nvim/issues/1520
+        severity_sort = true,
       })
 
       local signs = {
