@@ -18,9 +18,8 @@
       "microsoft-word"
       "microsoft-excel"
       "microsoft-powerpoint"
-      # I wish to use these in homebrew, but the migration is not easy
-      # "microsoft-outlook"
-      # "onedrive"
+      "microsoft-outlook" # email
+      "onedrive" # cloud storage
 
       # misc
       "logitech-options" # mouse
