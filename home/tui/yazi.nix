@@ -4,8 +4,8 @@ let
   yazi-plugins = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
     repo = "plugins";
-    rev = "8ed253716c60f3279518ce34c74ca053530039d8";
-    hash = "sha256-xY2yVCLLcXRyFfnmyP6h5Fw+4kwOZhEOCWVZrRwXnTA=";
+    rev = "beb586aed0d41e6fdec5bba7816337fdad905a33";
+    hash = "sha256-enIt79UvQnKJalBtzSEdUkjNHjNJuKUWC4L6QFb3Ou4=";
   };
 in
 {
