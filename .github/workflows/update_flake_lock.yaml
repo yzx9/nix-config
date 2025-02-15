@@ -21,7 +21,6 @@ jobs:
         uses: DeterminateSystems/update-flake-lock@v22
         with:
           token: ${{ secrets.GH_TOKEN_FOR_UPDATE }}
-          pr-reviewers: yzx9
           pr-title: "chore: bump flake.lock"
           commit-msg: "chore: bump flake.lock"
       - name: Auto merge PR
