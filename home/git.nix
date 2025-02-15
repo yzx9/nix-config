@@ -33,14 +33,12 @@ in
       init.defaultBranch = "main";
       push.autoSetupRemote = true;
       pull.rebase = true;
-
-      # use ssh key for git, available only on mbp, and forwarded via ssh-agent
-      gpg.format = "ssh";
     };
 
     signing = {
       signByDefault = true;
       key = "~/.ssh/id_git.pub";
+      format = "ssh";
     };
 
     delta = lib.mkIf config.purpose.daily {

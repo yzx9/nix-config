@@ -42,6 +42,10 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
+  preFixup = ''
+    rm $out/Applications/Vaa3D-x.app/Contents/MacOS/libtiff.dylib
+  '';
+
   meta = with lib; {
     homepage = "www.vaa3d.org";
     description = "Open source 3D/4D/5D image visualization and analysis software for bioimage analysis.";

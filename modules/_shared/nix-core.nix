@@ -10,6 +10,8 @@ let
   inherit (config) vars;
 in
 {
+  nix.enable = true;
+
   # Flake
   # enable flakes globally
   nix.settings.experimental-features = [
