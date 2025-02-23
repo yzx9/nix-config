@@ -7,7 +7,12 @@
 
 let
   hasProxy = !(builtins.isNull config.proxy.httpProxy);
-  useGemini = hasProxy;
+
+  # Configured:
+  #  - deepseek/deepseek-chat
+  #  - gemini/gemini-2.0-flash
+  #  - openai/deepseek-ai/DeepSeek-V3
+  model = "gemini/gemini-2.0-flash";
 
   toYAML = lib.generators.toYAML { };
 in
@@ -19,6 +24,8 @@ lib.mkIf config.purpose.daily {
       declare -A secrets=(
         ["DEEPSEEK_API_KEY"]="${config.age.secrets.api-key-deepseek.path}"
         ["GEMINI_API_KEY"]="${config.age.secrets.api-key-gemini.path}"
+        ["OPENAI_API_KEY"]="${config.age.secrets.api-key-siliconflow.path}" # siliconflow, openai compatible
+        ["OPENROUTER_API_KEY"]="${config.age.secrets.api-key-openrouter.path}"
       )
 
       for envVar in "''${!secrets[@]}"; do
@@ -31,6 +38,8 @@ lib.mkIf config.purpose.daily {
         fi
       done
 
+      export OPENAI_API_BASE="https://api.siliconflow.cn/v1"
+
       ${lib.optionalString hasProxy "export HTTPS_PROXY=${config.proxy.httpProxy}"}
 
       ${lib.getExe pkgs.aider-chat} $@
@@ -39,13 +48,15 @@ lib.mkIf config.purpose.daily {
 
   age.secrets."api-key-deepseek".file = ../../secrets/api-key-deepseek.age;
   age.secrets."api-key-gemini".file = ../../secrets/api-key-gemini.age;
+  age.secrets."api-key-openrouter".file = ../../secrets/api-key-openrouter.age;
+  age.secrets."api-key-siliconflow".file = ../../secrets/api-key-siliconflow.age;
 
   home.file.".aider.conf.yml".text = toYAML {
     #############
     # Main model:
 
     # Specify the model to use for the main chat
-    model = if useGemini then "gemini/gemini-2.0-flash" else "deepseek/deepseek-chat";
+    model = model;
 
     ###############
     # Git settings:

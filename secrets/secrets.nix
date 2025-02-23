@@ -35,6 +35,8 @@ in
   "xray.json.age".publicKeys = users ++ systems;
   "api-key-deepseek.age".publicKeys = users;
   "api-key-gemini.age".publicKeys = users;
+  "api-key-openrouter.age".publicKeys = users;
+  "api-key-siliconflow.age".publicKeys = users;
 
   # root only
   "id-git_root.age".publicKeys = yzx9-root;
