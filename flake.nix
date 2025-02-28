@@ -108,6 +108,6 @@
       templates = import ./templates;
 
       # nix fmt: nix code formatter
-      formatter = forEachSystem ({ system, ... }: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
+      formatter = forEachSystem (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
     };
 }
