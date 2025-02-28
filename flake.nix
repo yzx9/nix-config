@@ -33,7 +33,7 @@
       url = "github:nix-community/raspberry-pi-nix";
       # NOTE: dont override nixpkgs since it leads cache-missing
       # See also: https://github.com/nix-community/raspberry-pi-nix/issues/113#issuecomment-2624809306
-      #inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # home-manager, used for managing user configuration

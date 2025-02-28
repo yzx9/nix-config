@@ -215,12 +215,15 @@ in
         };
 
         on-window-detected = [
-          {
-            # This rule will be triggered and prevent the following one
-            "if".app-id = "com.tencent.xinWeChat";
-            "if".window-title-regex-substring = "WeChat"; # WeChat (Chats)
-            run = "move-node-to-workspace 1";
-          }
+          # Most windows of wechat need to be float, including picture preview, video
+          # call, etc. The only exception is the main window, howevery it's not easy to
+          # detect the main window, so we just float all windows of wechat.
+          # {
+          #   # This rule will be triggered and prevent the following one
+          #   "if".app-id = "com.tencent.xinWeChat";
+          #   "if".window-title-regex-substring = "WeChat"; # WeChat (Chats)
+          #   run = "move-node-to-workspace 1";
+          # }
           {
             "if".app-id = "com.tencent.xinWeChat";
             # following line is commented out because it doesn't work

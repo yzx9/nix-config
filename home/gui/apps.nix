@@ -10,7 +10,7 @@ let
   inherit (config) vars purpose;
   inherit (pkgs.stdenvNoCC.hostPlatform) isLinux isDarwin;
 in
-lib.mkIf purpose.gui {
+(lib.mkIf purpose.gui {
   # Allow unfree packages
   # nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ ];
 
@@ -28,4 +28,4 @@ lib.mkIf purpose.gui {
       ++ lib.optional isLinux pkgs.inkscape # SVG design, installed by homebrew in darwin
       ++ lib.optional isDarwin self.packages.${vars.system}.vaa3d-x # only support darwin now
     );
-}
+})
