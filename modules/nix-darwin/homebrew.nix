@@ -45,18 +45,45 @@ in
     brews = [ ];
 
     # `brew install --cask`
-    casks = lib.optionals (config.purpose.daily && config.purpose.gui) [
-      "middleclick" # mouse
-      "maccy" # clipboard
-      "snipaste" # screen shot
-      "visual-studio-code" # editor
-      "wechat" # chat
-      "eudic" # dictionary
-      "canon-ufrii-driver" # printer
+    casks =
+      lib.optionals (config.purpose.daily) [
+        "canon-ufrii-driver" # printer
+      ]
+      ++ lib.optionals config.purpose.gui [
+        "middleclick" # mouse
+        "maccy" # clipboard
+        "snipaste" # screen shot
+        "firefox" # browser
+      ]
+      ++ lib.optionals (config.purpose.daily && config.purpose.gui) [
+        # productivity
+        "eudic" # dictionary
+        "microsoft-word"
+        "microsoft-excel"
+        "microsoft-powerpoint"
+        "microsoft-outlook" # email
+        "onedrive" # cloud storage
+        "tencent-meeting" # video conference
+        "visual-studio-code" # editor
 
-      # browser
-      "firefox"
-      "google-chrome"
-    ];
+        # science
+        "fiji" # image viewer
+        # "master-pdf-editor"
+        "zotero"
+
+        # design
+        "krita" # 2D design
+        "blender" # 3D design
+        "inkscape" # SVG design
+        "bambu-studio" # 3D ptinter
+
+        # misc
+        "google-chrome" # browser
+        "logitech-options" # mouse
+        "steam" # game
+        "vmware-fusion" # virtual machine
+        "vial" # keyboard
+        "wechat" # chat
+      ];
   };
 }

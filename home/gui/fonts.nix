@@ -5,10 +5,7 @@
   ...
 }:
 
-let
-  inherit (config) purpose;
-in
-lib.mkIf purpose.gui {
+lib.mkIf config.purpose.gui {
   fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
