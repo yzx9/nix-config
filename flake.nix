@@ -67,7 +67,7 @@
   # However, `self` is an exception, this special parameter points to the `outputs` itself (self-reference)
   # The `@` syntax here is used to alias the attribute set of the inputs's parameter, making it convenient to use inside the function.
   outputs =
-    inputs@{ nixpkgs, home-manager, ... }:
+    { nixpkgs, home-manager, ... }@inputs:
 
     let
       hosts = import ./hosts inputs;
