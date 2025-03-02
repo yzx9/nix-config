@@ -1,7 +1,9 @@
 {
   imports = [
-    ../options.nix
+    ../modules/_shared/options.nix
+
     ./gui
+
     ./aider.nix
     ./apps.nix
     ./base.nix

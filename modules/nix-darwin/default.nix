@@ -1,6 +1,15 @@
+{ inputs, ... }:
+
 {
   imports = [
-    ../_shared
+    inputs.agenix.darwinModules.default
+    inputs.home-manager.darwinModules.home-manager
+
+    ../_shared/apps.nix
+    ../_shared/options.nix
+    ../_shared/nix-core.nix
+    ../_shared/overlays.nix
+
     ./aerospace.nix
     ./docker.nix
     ./homebrew.nix

@@ -33,9 +33,6 @@ in
       modules = (mkModules cfg) ++ [
         ../../modules/nixos
 
-        agenix.nixosModules.default
-
-        home-manager.nixosModules.home-manager
         (mkHMConfiguration cfg)
       ];
     };
@@ -49,9 +46,6 @@ in
       modules = (mkModules cfg) ++ [
         ../../modules/nix-darwin
 
-        agenix.darwinModules.default
-
-        home-manager.darwinModules.home-manager
         (mkHMConfiguration cfg)
       ];
     };
@@ -62,9 +56,7 @@ in
       pkgs = nixpkgs.legacyPackages.${cfg.vars.system};
 
       modules = (mkHmModules cfg) ++ [
-        ../../home
-
-        agenix.homeManagerModules.default
+        ../../modules/home-manager
       ];
 
       extraSpecialArgs = specialArgs;
