@@ -12,7 +12,8 @@ let
   #  - deepseek/deepseek-chat
   #  - gemini/gemini-2.0-flash
   #  - openai/deepseek-ai/DeepSeek-V3
-  model = "gemini/gemini-2.0-flash";
+  model = "deepseek/deepseek-chat";
+  weakModel = "gemini/gemini-2.0-flash";
 
   toYAML = lib.generators.toYAML { };
 in
@@ -57,6 +58,9 @@ lib.mkIf config.purpose.daily {
 
     # Specify the model to use for the main chat
     model = model;
+
+    # Specify the model to use for commit messages and chat history summarization (default depends on --model)
+    weak-model = weakModel;
 
     ###############
     # Git settings:
