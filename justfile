@@ -9,6 +9,10 @@ default:
 #
 ############################################################################
 
+# Check whether the flake evaluates and run its tests
+check:
+  nix flake check --all-systems
+
 # Run eval tests
 test:
   nix eval .#evalTests --show-trace --print-build-logs --verbose
