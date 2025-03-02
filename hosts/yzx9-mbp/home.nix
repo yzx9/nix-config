@@ -12,6 +12,12 @@ in
 {
   # ssh
   age.secrets = {
+    id-auth = {
+      file = ../../secrets/id-git_root.age;
+      path = "${ssh}id_auth";
+      mode = "400";
+    };
+
     id-git = {
       file = ../../secrets/id-git_root.age;
       path = "${ssh}id_git";

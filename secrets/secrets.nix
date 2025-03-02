@@ -39,6 +39,7 @@ in
   "api-key-siliconflow.age".publicKeys = users;
 
   # root only
+  "id-auth_root.age".publicKeys = yzx9-root;
   "id-git_root.age".publicKeys = yzx9-root;
   "id-github_root.age".publicKeys = yzx9-root;
 
