@@ -47,10 +47,10 @@ lib.mkIf config.purpose.daily {
     '')
   ];
 
-  age.secrets."api-key-deepseek".file = ../../secrets/api-key-deepseek.age;
-  age.secrets."api-key-gemini".file = ../../secrets/api-key-gemini.age;
-  age.secrets."api-key-openrouter".file = ../../secrets/api-key-openrouter.age;
-  age.secrets."api-key-siliconflow".file = ../../secrets/api-key-siliconflow.age;
+  age.secrets."api-key-deepseek".file = ../secrets/api-key-deepseek.age;
+  age.secrets."api-key-gemini".file = ../secrets/api-key-gemini.age;
+  age.secrets."api-key-openrouter".file = ../secrets/api-key-openrouter.age;
+  age.secrets."api-key-siliconflow".file = ../secrets/api-key-siliconflow.age;
 
   home.file.".aider.conf.yml".text = toYAML {
     #############
