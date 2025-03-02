@@ -6,19 +6,28 @@
   unzip,
 }:
 
-stdenvNoCC.mkDerivation (finalAttrs: {
-  pname = "vaa3d-x";
+let
   version = "1.1.4";
+in
+stdenvNoCC.mkDerivation {
+  pname = "vaa3d-x";
+  inherit version;
 
   src =
     let
       inherit (stdenvNoCC.hostPlatform) system;
       selectSystem = attrs: attrs.${system} or (throw "Unsupported system: ${system}");
-      suffix = selectSystem { aarch64-darwin = "Mac.zip"; };
-      hash = selectSystem { aarch64-darwin = "sha256-dj30AO+3PZ2Txwd7t8m5gQkWz/TY5hpjyfmgHnKR020="; };
+      suffix = selectSystem {
+        x86_64-darwin = "Mac.zip";
+        aarch64-darwin = "Mac.zip";
+      };
+      hash = selectSystem {
+        x86_64-darwin = "sha256-dj30AO+3PZ2Txwd7t8m5gQkWz/TY5hpjyfmgHnKR020=";
+        aarch64-darwin = "sha256-dj30AO+3PZ2Txwd7t8m5gQkWz/TY5hpjyfmgHnKR020=";
+      };
     in
     fetchurl {
-      url = "https://github.com/Vaa3D/release/releases/download/v${finalAttrs.version}/Vaa3D-x.${finalAttrs.version}_${suffix}";
+      url = "https://github.com/Vaa3D/release/releases/download/v${version}/Vaa3D-x.${version}_${suffix}";
       inherit hash;
     };
 
@@ -46,13 +55,13 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     rm $out/Applications/Vaa3D-x.app/Contents/MacOS/libtiff.dylib
   '';
 
-  meta = with lib; {
+  meta = {
     homepage = "www.vaa3d.org";
     description = "Open source 3D/4D/5D image visualization and analysis software for bioimage analysis.";
-    sourceProvenance = with sourceTypes; [ binaryNativeCode ];
-    license = licenses.mit;
-    platforms = [ "aarch64-darwin" ];
-    maintainers = with maintainers; [ yzx9 ];
+    sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
+    license = lib.licenses.mit;
+    platforms = lib.platforms.darwin;
+    maintainers = with lib.maintainers; [ yzx9 ];
     mainProgram = "Vaa3D-x";
   };
-})
+}
