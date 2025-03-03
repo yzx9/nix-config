@@ -79,7 +79,7 @@ in
 
         # misc
         "google-chrome" # browser
-        "logitech-options" # mouse
+        "scroll-reverser" # mouse
         "steam" # game
         "vmware-fusion" # virtual machine
         "vial" # keyboard
