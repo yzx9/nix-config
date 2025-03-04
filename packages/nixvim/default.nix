@@ -46,7 +46,6 @@ nixvim.makeNixvimWithModule {
       plugins-extra/copilot.nix
       plugins-extra/fidget.nix
       plugins-extra/illuminate.nix
-      # plugins-extra/neo-tree.nix # use yazi instead
       plugins-extra/lazygit.nix
       plugins-extra/telescope.nix
       plugins-extra/toggleterm.nix
@@ -67,7 +66,6 @@ nixvim.makeNixvimWithModule {
       # Plugins enhance UI
       plugins-ui/btw.nix
       plugins-ui/bufferline.nix
-      plugins-ui/dressing.nix
       plugins-ui/gitsigns.nix
       plugins-ui/indent-blankline.nix
       plugins-ui/lualine.nix
