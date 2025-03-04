@@ -80,5 +80,11 @@ lib.mkIf config.purpose.daily {
     lint-cmd = [
       "python: ${lib.getExe pkgs.ruff} check --fix"
     ];
+
+    #################
+    # Other settings:
+
+    ## Use VI editing mode in the terminal (default: False)
+    vim = true;
   };
 }
