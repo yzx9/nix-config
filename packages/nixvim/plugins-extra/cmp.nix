@@ -1,6 +1,8 @@
 # A completion plugin for neovim coded in Lua.
 # homepage: https://github.com/hrsh7th/nvim-cmp/
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/cmp/index.html
+#
+# NOTE: cmp will stop work when recording macro `q@...q`
 
 { config, lib, ... }:
 
