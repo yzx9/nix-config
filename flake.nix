@@ -55,8 +55,6 @@
       url = "github:nix-community/nixvim";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        nix-darwin.follows = "nix-darwin";
-        home-manager.follows = "home-manager";
       };
     };
   };
