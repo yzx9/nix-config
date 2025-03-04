@@ -11,18 +11,22 @@
     cmp = {
       enable = true;
       settings = {
-        autoEnableSources = true;
+        autoEnableSources = false;
+
         # experimental = {
         #   ghost_text = true;
         # };
+
         performance = {
           debounce = 60;
           fetchingTimeout = 200;
           maxViewEntries = 30;
         };
+
         snippet = {
           expand = "luasnip";
         };
+
         formatting = {
           fields = [
             "kind"
@@ -30,6 +34,7 @@
             "menu"
           ];
         };
+
         sources = [
           { name = "nvim_lsp"; }
           { name = "emoji"; }
