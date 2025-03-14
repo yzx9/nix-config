@@ -31,6 +31,7 @@ in
     };
   };
 
+  home.file.".ssh/id_auth.pub".source = ../../secrets/id-auth.pub;
   home.file.".ssh/id_github.pub".source = ../../secrets/id-github.pub;
 
   programs.ssh = {
