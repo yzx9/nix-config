@@ -23,7 +23,6 @@ lib.mkIf purpose.gui {
     # daily only
     ++ lib.optionals purpose.daily [
       pkgs.dbeaver-bin # SQL client
-      pkgs.logseq # knowledge base
     ]
     ++ lib.optionals (purpose.daily && isDarwin) [
       self.packages.${vars.system}.vaa3d-x # only support darwin now

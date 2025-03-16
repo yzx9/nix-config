@@ -65,6 +65,7 @@ in
         "onedrive" # cloud storage
         "tencent-meeting" # video conference
         "visual-studio-code" # editor
+        "logseq" # knowledge base
 
         # science
         "fiji" # image viewer
