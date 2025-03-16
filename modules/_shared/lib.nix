@@ -32,7 +32,7 @@ in
     nixosConfigurations."${cfg.config.vars.hostname}" = nixpkgs.lib.nixosSystem {
       inherit specialArgs;
       inherit (cfg.config.vars) system;
-      modules = (mkModules cfg) ++ [ ../../modules/nixos ];
+      modules = (mkModules cfg) ++ [ ../nixos ];
     };
   };
 
@@ -40,14 +40,14 @@ in
     darwinConfigurations."${cfg.config.vars.hostname}" = nix-darwin.lib.darwinSystem {
       inherit specialArgs;
       inherit (cfg.config.vars) system;
-      modules = (mkModules cfg) ++ [ ../../modules/nix-darwin ];
+      modules = (mkModules cfg) ++ [ ../nix-darwin ];
     };
   };
 
   mkHomeConfiguration = cfg: {
     homeConfigurations."${cfg.config.vars.hostname}" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.${cfg.config.vars.system};
-      modules = (mkHmModules cfg) ++ [ ../../modules/home-manager ];
+      modules = (mkHmModules cfg) ++ [ ../home-manager ];
       extraSpecialArgs = specialArgs;
     };
   };
