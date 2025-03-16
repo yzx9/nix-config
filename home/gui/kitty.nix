@@ -25,7 +25,8 @@ lib.mkIf config.purpose.gui {
       enableZshIntegration = true;
     };
 
-    settings = {
+    # only configure kitty in daily used host
+    settings = lib.mkIf config.purpose.daily {
       hide_window_decorations = if pkgs.stdenvNoCC.hostPlatform.isDarwin then "titlebar-only" else "yes";
       window_margin_width = 5;
       background_opacity = 0.75;
