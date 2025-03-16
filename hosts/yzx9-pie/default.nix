@@ -5,14 +5,24 @@ let
   inherit (import ../_shared/user.nix) user_yzx9;
 in
 mkNixosConfiguration {
-  vars = {
-    hostname = "yzx9-pie";
-    type = "nixos";
-    system = "aarch64-linux";
-    user = user_yzx9;
+  config = {
+    vars = {
+      hostname = "yzx9-pie";
+      type = "nixos";
+      system = "aarch64-linux";
+      user = user_yzx9;
+    };
+
+    purpose.gui = true;
+
+    proxy.selfHost.enable = true;
   };
 
-  purpose.gui = true;
-
-  proxy.selfHost.enable = true;
+  host = {
+    imports = [
+      ./hardware-configuration.nix
+      ./gnome.nix
+      ./networking.nix
+    ];
+  };
 }

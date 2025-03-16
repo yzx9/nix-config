@@ -1,10 +1,6 @@
 { pkgs, lib, ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-  ];
-
   # networking
   networking = {
     networkmanager.enable = lib.mkForce false;

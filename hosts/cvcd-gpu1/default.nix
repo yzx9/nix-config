@@ -5,14 +5,16 @@ let
   inherit (import ../_shared/user.nix) user_yzx;
 in
 mkHomeConfiguration {
-  vars = {
-    hostname = "cvcd-gpu1";
-    type = "home-manager";
-    system = "x86_64-linux";
-    user = user_yzx;
-  };
+  config = {
+    vars = {
+      hostname = "cvcd-gpu1";
+      type = "home-manager";
+      system = "x86_64-linux";
+      user = user_yzx;
+    };
 
-  purpose = {
-    daily = true;
+    purpose = {
+      daily = true;
+    };
   };
 }

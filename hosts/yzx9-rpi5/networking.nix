@@ -1,13 +1,6 @@
 { lib, ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-    ./frpc.nix
-    ./rss.nix
-    ./kanboard.nix
-  ];
-
   # networking
   networking = {
     networkmanager.enable = lib.mkForce false; # we have to disable it since webgitkit cache-missing

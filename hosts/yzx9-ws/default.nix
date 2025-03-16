@@ -5,21 +5,32 @@ let
   inherit (import ../_shared/user.nix) user_yzx9;
 in
 mkNixosConfiguration {
-  vars = {
-    hostname = "yzx9-ws";
-    type = "nixos";
-    system = "x86_64-linux";
-    user = user_yzx9;
+  config = {
+    vars = {
+      hostname = "yzx9-ws";
+      type = "nixos";
+      system = "x86_64-linux";
+      user = user_yzx9;
+    };
+
+    purpose = {
+      daily = true;
+    };
+
+    proxy.selfHost.enable = true;
+    nvidia.enable = true;
+    docker = {
+      enable = true;
+      rootless = false;
+    };
   };
 
-  purpose = {
-    daily = true;
-  };
+  host = {
+    imports = [
+      # Include the results of the hardware scan.
+      ./hardware-configuration.nix
 
-  proxy.selfHost.enable = true;
-  nvidia.enable = true;
-  docker = {
-    enable = true;
-    rootless = false;
+      ./xorg.nix
+    ];
   };
 }
