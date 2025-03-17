@@ -16,6 +16,10 @@ in
 
   raspberry-pi-nix.board = "bcm2712";
 
+  # Disable rpi libcamera fork to avoid rebuild webkitgtk
+  # https://github.com/nix-community/raspberry-pi-nix/issues/48#issuecomment-2369426119
+  raspberry-pi-nix.libcamera-overlay.enable = false;
+
   hardware.raspberry-pi.config = {
     all = {
       base-dt-params = {
