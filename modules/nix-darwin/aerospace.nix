@@ -219,14 +219,10 @@ in
           # call, etc. The only exception is the main window, howevery it's not easy to
           # detect the main window, so we just float all windows of wechat.
           {
-            # This rule will be triggered and prevent the following one
             "if".app-id = "com.tencent.xinWeChat";
-            "if".window-title-regex-substring = "WeChat"; # WeChat (Chats)
-            check-further-callbacks = false;
-            run = "move-node-to-workspace 1";
-          }
-          {
-            "if".app-id = "com.tencent.xinWeChat";
+            # # Wechat set window title after creating the window, so the following line
+            # # doesn't work.
+            # "if".window-title-regex-substring = "WeChat"; # WeChat (Chats)
             run = "layout floating";
           }
 
@@ -242,10 +238,12 @@ in
             "if".window-title-regex-substring = "Reminder";
             run = "layout floating";
           }
+
           {
             "if".app-id = "net.kovidgoyal.kitty";
             run = "move-node-to-workspace 2";
           }
+
           {
             "if".app-id = "org.mozilla.firefox";
             run = "move-node-to-workspace 3";
