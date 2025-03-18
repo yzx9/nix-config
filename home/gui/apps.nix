@@ -8,7 +8,7 @@
 
 let
   inherit (config) vars purpose;
-  inherit (pkgs.stdenvNoCC.hostPlatform) isLinux isDarwin;
+  inherit (pkgs.stdenvNoCC.hostPlatform) isDarwin;
 in
 lib.mkIf purpose.gui {
   # Allow unfree packages
@@ -21,14 +21,12 @@ lib.mkIf purpose.gui {
       pkgs.stats # macOS system monitor in your menu bar
     ]
     # daily only
-    ++ lib.optionals purpose.daily [
-      pkgs.dbeaver-bin # SQL client
-    ]
-    ++ lib.optionals (purpose.daily && isDarwin) [
-      self.packages.${vars.system}.vaa3d-x # only support darwin now
-    ];
-
-  programs.firefox = lib.mkIf isLinux {
-    enable = true; # browser, installed using homebrew in darwin
-  };
+    ++ lib.optionals purpose.daily (
+      [
+        pkgs.dbeaver-bin # SQL client
+      ]
+      ++ lib.optionals isDarwin [
+        self.packages.${vars.system}.vaa3d-x # only support darwin now
+      ]
+    );
 }
