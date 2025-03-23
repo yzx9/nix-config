@@ -9,8 +9,8 @@
             ++ prev.lib.optional prev.stdenvNoCC.targetPlatform.isDarwin (
               prev.fetchpatch {
                 name = "fix-sme-darwin.patch";
-                url = "https://github.com/utmapp/UTM/raw/acbf2ba8cd91f382a5e163c49459406af0b462b7/patches/qemu-9.1.0-utm.patch";
-                hash = "sha256-S7DJSFD7EAzNxyQvePAo5ZZyanFrwQqQ6f2/hJkTJGA=";
+                url = "https://gitlab.com/qemu-project/qemu/-/commit/fd207677a83087454b8afef31651985a1df0d2dd.patch";
+                hash = "sha256-VgY2Z+PaHGt7fIEsUPrGbk/TF5bQk5QjvlJAmJb8Eiw=";
               }
             );
         }
