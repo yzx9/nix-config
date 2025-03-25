@@ -1,5 +1,9 @@
+{ inputs, ... }:
+
 {
   nixpkgs.overlays = [
+    inputs.nur.overlays.default
+
     (final: prev: {
       # workaround with NixOS/nixpkgs#375907
       qemu = prev.qemu.overrideAttrs (

@@ -46,16 +46,18 @@ in
 
     # `brew install --cask`
     casks =
-      lib.optionals (config.purpose.daily) [
+      let
+        inherit (config.purpose) daily gui;
+      in
+      lib.optionals daily [
         "canon-ufrii-driver" # printer
       ]
-      ++ lib.optionals config.purpose.gui [
+      ++ lib.optionals gui [
         "middleclick" # mouse
         "maccy" # clipboard
         "snipaste" # screen shot
-        "firefox" # browser
       ]
-      ++ lib.optionals (config.purpose.daily && config.purpose.gui) [
+      ++ lib.optionals (daily && gui) [
         # productivity
         "eudic" # dictionary
         "microsoft-word"
