@@ -12,7 +12,7 @@ let
 in
 {
   # Set variables for you to manually install homebrew packages.
-  environment.variables = homebrew_mirror_env;
+  # environment.variables = homebrew_mirror_env;
 
   # Set environment variables for nix-darwin before run `brew bundle`.
   system.activationScripts.homebrew.text =
