@@ -4,6 +4,8 @@
   nixpkgs.overlays = [
     inputs.nur.overlays.default
 
+    inputs.nixpkgs-firefox-darwin.overlay
+
     (final: prev: {
       # workaround with NixOS/nixpkgs#375907
       qemu = prev.qemu.overrideAttrs (
