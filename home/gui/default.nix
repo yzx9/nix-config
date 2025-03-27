@@ -1,7 +1,7 @@
 {
   imports = [
     ./apps.nix
-    ./browser.nix
+    ./firefox.nix
     ./fonts.nix
     ./kitty.nix
   ];

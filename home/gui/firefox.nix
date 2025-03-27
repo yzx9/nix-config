@@ -53,6 +53,8 @@ lib.mkIf config.purpose.gui {
         "browser.topsites.contile.enabled" = false;
         "browser.urlbar.showSearchSuggestionsFirst" = false;
         "browser.urlbar.suggest.searches" = false;
+        # AI chat bot
+        "browser.ml.chat.enabled" = false;
         "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
         "browser.newtabpage.activity-stream.feeds.snippets" = false;
         "browser.newtabpage.activity-stream.section.highlights.includeBookmarks" = false;
@@ -100,20 +102,20 @@ lib.mkIf config.purpose.gui {
         force = true;
 
         packages =
-          [
-            (pkgs.fetchFirefoxAddon {
-              name = "zeroomega";
-              url = "https://addons.mozilla.org/firefox/downloads/file/4442919/zeroomega-3.3.23.xpi";
-              hash = "sha256-DpYUoJmVVgVEUT+lm3ppYAfMdl7qCCeZ35QFBGYuNPs=";
-            })
-          ]
-          ++ (with pkgs.nur.repos.rycee.firefox-addons; [
+          (with pkgs.nur.repos.rycee.firefox-addons; [
             gopass-bridge
-            switchyomega
+            # switchyomega
             privacy-badger
             vue-js-devtools
             zotero-connector
-          ]);
+          ])
+          ++ lib.singleton (
+            pkgs.fetchFirefoxAddon {
+              name = "zeroomega";
+              url = "https://addons.mozilla.org/firefox/downloads/file/4442919/zeroomega-3.3.23.xpi";
+              hash = "sha256-DpYUoJmVVgVEUT+lm3ppYAfMdl7qCCeZ35QFBGYuNPs=";
+            }
+          );
       };
 
       # Whether to force replace the existing containers configuration. This
