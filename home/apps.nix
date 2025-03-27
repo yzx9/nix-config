@@ -64,6 +64,7 @@ lib.mkMerge [
       # dev
       python313
       just # command runner
+      gitmoji-cli
 
       # msic
       age
@@ -79,5 +80,16 @@ lib.mkMerge [
     };
 
     home.shellAliases.j = "just";
+
+    # # gitmoji-cli
+    # # invalid due to the carloscuesta/gitmoji-cli#1412
+    # home.file.".gitmojirc.json".text = lib.strings.toJSON {
+    #   "autoAdd" = false;
+    #   "emojiFormat" = "emoji";
+    #   "scopePrompt" = true;
+    #   "messagePrompt" = true;
+    #   "capitalizeTitle" = true;
+    #   "gitmojisUrl" = "https://gitmoji.dev/api/gitmojis";
+    # };
   })
 ]
