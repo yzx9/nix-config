@@ -24,9 +24,7 @@ lib.mkMerge [
         pkgs.ncurses
         pkgs.tree
         pkgs.neofetch
-
-        # TODO: change to config
-        (if config.nvidia.enable then (pkgs.btop.override { cudaSupport = true; }) else pkgs.btop)
+        pkgs.btop
 
         # shell tools
         # NOTE: may override some of the darwin built-in tools
