@@ -6,13 +6,15 @@
 }:
 
 let
+  cfg = config.programs.firefox;
+
   genAttrsWithFixValue = value: values: lib.genAttrs values (_: value);
 in
-lib.mkIf config.purpose.gui {
+{
   # https://nix-community.github.io/home-manager/options.xhtml#opt-programs.firefox.enable
   # https://hugosum.com/blog/customizing-firefox-with-nix-and-home-manager#installing-firefox-with-home-manager
   programs.firefox = {
-    enable = true;
+    enable = config.purpose.gui;
     package = if pkgs.stdenvNoCC.hostPlatform.isDarwin then pkgs.firefox-bin else pkgs.firefox;
 
     # https://releases.mozilla.org/pub/firefox/releases/${version}/linux-x86_64/xpi/
@@ -135,7 +137,7 @@ lib.mkIf config.purpose.gui {
     };
   };
 
-  xdg = lib.mkIf pkgs.stdenvNoCC.hostPlatform.isLinux {
+  xdg = lib.mkIf (cfg.enable && pkgs.stdenvNoCC.hostPlatform.isLinux) {
     mimeApps = {
       enable = true;
       defaultApplications = genAttrsWithFixValue "firefox.desktop" [

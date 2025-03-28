@@ -12,31 +12,26 @@ lib.mkMerge [
 
     # The home.packages option allows you to install Nix packages into your
     # environment.
-    home.packages =
-      [
-        # You can also create simple shell scripts directly inside your
-        # configuration. For example, this adds a command 'my-hello' to your
-        # environment:
-        # (pkgs.writeShellScriptBin "my-hello" ''
-        #   echo "Hello, ${config.home.username}!"
-        # '')
+    home.packages = with pkgs; [
+      # You can also create simple shell scripts directly inside your
+      # configuration. For example, this adds a command 'my-hello' to your
+      # environment:
+      # (pkgs.writeShellScriptBin "my-hello" ''
+      #   echo "Hello, ${config.home.username}!"
+      # '')
 
-        pkgs.ncurses
-        pkgs.tree
-        pkgs.neofetch
-        pkgs.btop
+      ncurses
+      tree
+      btop
 
-        # shell tools
-        # NOTE: may override some of the darwin built-in tools
-        pkgs.coreutils
-        pkgs.gnutar
-        pkgs.wget
-        pkgs.curl
-        pkgs.unzip
-      ]
-      ++ lib.optionals pkgs.stdenvNoCC.hostPlatform.isLinux [
-        pkgs.parted
-      ];
+      # shell tools
+      # NOTE: may override some of the darwin built-in tools
+      coreutils
+      gnutar
+      wget
+      curl
+      unzip
+    ];
   }
 
   (lib.mkIf config.purpose.daily {
@@ -57,6 +52,7 @@ lib.mkMerge [
       ipcalc # it is a calculator for the IPv4/v6 addresses
 
       # fantastic
+      neofetch
       asciiquarium
       cmatrix
       sl
@@ -68,7 +64,6 @@ lib.mkMerge [
 
       # msic
       age
-      ffmpeg
       ouch # compressing and decompressing
     ];
 
