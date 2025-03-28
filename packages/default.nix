@@ -9,8 +9,6 @@ let
   pkgs = nixpkgs.legacyPackages.${system};
 
   all_platforms = {
-    git-conventional-commits = pkgs.callPackage ./git-conventional-commits { };
-
     nixvim = import ./nixvim {
       inherit pkgs;
       nixvim = nixvim.legacyPackages.${system};

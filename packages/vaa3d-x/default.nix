@@ -8,28 +8,26 @@
 
 let
   version = "1.1.4";
+
+  inherit (stdenvNoCC.hostPlatform) system;
+  selectSystem = attrs: attrs.${system} or (throw "Unsupported system: ${system}");
+  suffix = selectSystem {
+    x86_64-darwin = "Mac.zip";
+    aarch64-darwin = "Mac.zip";
+  };
+  hash = selectSystem {
+    x86_64-darwin = "sha256-dj30AO+3PZ2Txwd7t8m5gQkWz/TY5hpjyfmgHnKR020=";
+    aarch64-darwin = "sha256-dj30AO+3PZ2Txwd7t8m5gQkWz/TY5hpjyfmgHnKR020=";
+  };
 in
 stdenvNoCC.mkDerivation {
   pname = "vaa3d-x";
   inherit version;
 
-  src =
-    let
-      inherit (stdenvNoCC.hostPlatform) system;
-      selectSystem = attrs: attrs.${system} or (throw "Unsupported system: ${system}");
-      suffix = selectSystem {
-        x86_64-darwin = "Mac.zip";
-        aarch64-darwin = "Mac.zip";
-      };
-      hash = selectSystem {
-        x86_64-darwin = "sha256-dj30AO+3PZ2Txwd7t8m5gQkWz/TY5hpjyfmgHnKR020=";
-        aarch64-darwin = "sha256-dj30AO+3PZ2Txwd7t8m5gQkWz/TY5hpjyfmgHnKR020=";
-      };
-    in
-    fetchurl {
-      url = "https://github.com/Vaa3D/release/releases/download/v${version}/Vaa3D-x.${version}_${suffix}";
-      inherit hash;
-    };
+  src = fetchurl {
+    url = "https://github.com/Vaa3D/release/releases/download/v${version}/Vaa3D-x.${version}_${suffix}";
+    inherit hash;
+  };
 
   sourceRoot = "vaa3dx231101/Vaa3D-x.app";
 
