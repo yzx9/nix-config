@@ -1,5 +1,4 @@
 {
-  self,
   nixpkgs,
   nix-darwin,
   agenix,
@@ -8,12 +7,14 @@
 }@inputs:
 
 let
-  specialArgs = { inherit self inputs; };
+  specialArgs = { inherit inputs; };
+
   mkModules = cfg: [
     cfg.config
     (cfg.host or { })
     (mkHMConfiguration cfg)
   ];
+
   mkHmModules = cfg: [
     cfg.config
     (cfg.home or { })

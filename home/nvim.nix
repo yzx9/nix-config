@@ -1,8 +1,8 @@
-{ self, config, ... }:
+{ config, inputs, ... }:
 
 {
   home.packages = [
-    (self.packages.${config.vars.system}.nixvim.extend {
+    (inputs.self.packages.${config.vars.system}.nixvim.extend {
       # Set 'vi' and 'vim' aliases to nixvim
       viAlias = true;
       vimAlias = true;

@@ -1,6 +1,6 @@
 {
-  self,
   config,
+  inputs,
   pkgs,
   lib,
   ...
@@ -26,7 +26,7 @@ lib.mkIf purpose.gui {
         pkgs.dbeaver-bin # SQL client
       ]
       ++ lib.optionals isDarwin [
-        self.packages.${vars.system}.vaa3d-x # only support darwin now
+        inputs.self.packages.${vars.system}.vaa3d-x # only support darwin now
       ]
     );
 }
