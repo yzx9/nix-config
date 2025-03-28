@@ -22,13 +22,14 @@
   # Each item in `inputs` will be passed as a parameter to the `outputs` function after being pulled and built.
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-darwin = {
-      url = "github:lnl7/nix-darwin";
+      url = "github:nix-darwin/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -46,12 +47,13 @@
       # inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # home-manager, used for managing user configuration
+    # Manage a user environment using Nix
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # age-encrypted secrets for NixOS and Home manager
     agenix = {
       url = "github:ryantm/agenix";
       inputs = {
@@ -61,6 +63,7 @@
       };
     };
 
+    # Configure Neovim with Nix!
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs = {

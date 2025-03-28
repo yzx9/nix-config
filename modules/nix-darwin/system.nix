@@ -49,7 +49,7 @@ in
     "org.gpgtools.common".DisableKeychain = true;
   };
 
-  # https://github.com/LnL7/nix-darwin/blob/master/modules/programs/gnupg.nix
+  # https://github.com/nix-darwin/nix-darwin/blob/master/modules/programs/gnupg.nix
   # try `pkill gpg-agent` if you have issues(such as `no pinentry`)
   programs.gnupg.agent = {
     enable = true;

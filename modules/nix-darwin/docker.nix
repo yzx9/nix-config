@@ -5,7 +5,7 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    # nixpkgs docker is breaked, see: https://github.com/LnL7/nix-darwin/issues/112
+    # nixpkgs docker is breaked, see: https://github.com/nix-darwin/nix-darwin/issues/112
     homebrew.casks = [ "docker" ];
   };
 }
