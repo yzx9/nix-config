@@ -1,5 +1,3 @@
-{ pkgs, ... }:
-
 {
   # You can see the resulting builder-strings of this NixOS-configuration with "cat /etc/nix/machines".
   # These builder-strings are used by the Nix terminal tool, e.g.
@@ -10,7 +8,7 @@
       # The details of the connection (user, port, url etc.)
       # are taken from your "~/.ssh/config" file.
       hostName = "yzx9-ws";
-      # sshUser = "yzx9";
+      # sshUser = "";
       # sshKey = "/etc/nix/builder_ed25519";
       # publicHostKey = "";
 
@@ -76,8 +74,4 @@
       };
     };
   };
-
-  environment.systemPackages = [
-    pkgs.nixos-rebuild # remote deploy
-  ];
 }
