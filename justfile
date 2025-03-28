@@ -93,12 +93,13 @@ proxy mode="auto_switch":
 # Remote deployments with linux-builder: https://nixcademy.com/posts/macos-linux-builder/
 [macos]
 deploy hostname:
-  nix run nixpkgs#nixos-rebuild switch \
-    --fast \
-    --target-host {{hostname}} \
-    --flake .#{{hostname}} \
-    --use-remote-sudo \
-    --use-substitutes
+  nix run nixpkgs#nixos-rebuild -- \
+    switch \
+      --fast \
+      --target-host {{hostname}} \
+      --flake .#{{hostname}} \
+      --use-remote-sudo \
+      --use-substitutes
 
 
 ############################################################################
