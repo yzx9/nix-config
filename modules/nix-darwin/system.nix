@@ -3,7 +3,7 @@
 #  macOS's System configuration
 #
 #  All the configuration options are documented here:
-#    https://daiderd.com/nix-darwin/manual/index.html#sec-options
+#    https://nix-darwin.github.io/nix-darwin/manual/index.html#sec-options
 #
 ###################################################################################
 
