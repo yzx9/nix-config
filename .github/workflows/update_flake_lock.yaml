@@ -1,4 +1,7 @@
 name: update-flake-lock
+permissions:
+  contents: write # to push the branch for the PR
+  pull-requests: write # to open the PR
 on:
   workflow_dispatch:
   schedule:
@@ -9,21 +12,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GH_TOKEN_FOR_UPDATE }}
       - name: Install Nix
-        uses: cachix/install-nix-action@v27
-        with:
-          extra_nix_config: |
-            access-tokens = github.com=${{ secrets.GH_TOKEN_FOR_UPDATE }}
+        uses: cachix/install-nix-action@v31
       - name: Update flake.lock
-        id: update
-        uses: DeterminateSystems/update-flake-lock@v22
+        uses: DeterminateSystems/update-flake-lock@v24
         with:
-          token: ${{ secrets.GH_TOKEN_FOR_UPDATE }}
           pr-title: "chore: bump flake.lock"
           commit-msg: "chore: bump flake.lock"
-      - name: Auto merge PR
-        run: "gh pr merge --auto --merge ${{ steps.update.outputs.pull-request-number }}"
-        env:
-          GH_TOKEN: ${{ github.token }}
