@@ -15,7 +15,8 @@ in
   # https://hugosum.com/blog/customizing-firefox-with-nix-and-home-manager#installing-firefox-with-home-manager
   programs.firefox = {
     enable = config.purpose.gui;
-    package = if pkgs.stdenvNoCC.hostPlatform.isDarwin then pkgs.firefox-bin else pkgs.firefox;
+    # workaround with nixpkgs#394029
+    package = if pkgs.stdenvNoCC.hostPlatform.isDarwin then pkgs.firefox-unwrapped else pkgs.firefox;
 
     # https://releases.mozilla.org/pub/firefox/releases/${version}/linux-x86_64/xpi/
     languagePacks = [

@@ -342,7 +342,6 @@
         "home-manager": "home-manager",
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-firefox-darwin": "nixpkgs-firefox-darwin",
         "nixvim": "nixvim",
         "nur": "nur",
         "raspberry-pi-nix": "raspberry-pi-nix"

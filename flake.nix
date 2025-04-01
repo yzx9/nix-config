@@ -33,11 +33,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixpkgs-firefox-darwin = {
-      url = "github:bandithedoge/nixpkgs-firefox-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     raspberry-pi-nix = {
       url = "github:nix-community/raspberry-pi-nix";
 
