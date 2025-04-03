@@ -2,7 +2,7 @@ inputs:
 
 let
   inherit (import ../../modules/_shared/lib.nix inputs) mkNixosConfiguration;
-  inherit (import ../_shared.nix) user_yzx9;
+  inherit (import ../_shared.nix) user_yzx9 networking_lab;
 in
 mkNixosConfiguration {
   config = {
@@ -32,5 +32,7 @@ mkNixosConfiguration {
 
       ./xorg.nix
     ];
+
+    networking = networking_lab;
   };
 }

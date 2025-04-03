@@ -23,7 +23,7 @@ in
 
   # Enable networking
   networking.hostName = vars.hostname;
-  networking.networkmanager.enable = lib.mkDefault true;
+  networking.networkmanager.enable = config.purpose.gui; # For GUI host
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Set your time zone.

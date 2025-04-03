@@ -1,10 +1,5 @@
-{ lib, ... }:
-
 {
-  # networking
   networking = {
-    networkmanager.enable = lib.mkForce false; # we have to disable it since webgitkit cache-missing
-
     interfaces.end0 = {
       ipv4.addresses = [
         {
