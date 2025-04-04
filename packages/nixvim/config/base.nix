@@ -13,6 +13,8 @@
     register = "unnamedplus";
   };
 
+  performance.byteCompileLua.enable = true;
+
   extraConfigLua = ''
     if (os.getenv('SSH_TTY') ~= nil)
     then
