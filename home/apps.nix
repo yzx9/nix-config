@@ -65,6 +65,7 @@ lib.mkMerge [
       # msic
       age
       ouch # compressing and decompressing
+      # logseq # knowledge base, reinit but still dont work, not sure why
     ];
 
     programs.direnv = {
