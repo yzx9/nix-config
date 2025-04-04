@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   pkgs,
   lib,
   ...
@@ -9,14 +10,28 @@ let
   cfg = config.programs.firefox;
 
   genAttrsWithFixValue = value: values: lib.genAttrs values (_: value);
+
+  nixpkgs-patched = pkgs.applyPatches {
+    name = "nixpkgs-patched-395916";
+    src = inputs.nixpkgs;
+    patches = [
+      (pkgs.fetchpatch {
+        url = "https://github.com/NixOS/nixpkgs/commit/a2e886428b4a52bd908a3eccd5c4a6f48993dccf.patch";
+        hash = "sha256-gc4G7FQgD1svT1nVigAkPq+b9LKGWSJsSbf8RH+Wm5k=";
+      })
+    ];
+  };
+
+  pkgs-patched = import nixpkgs-patched { inherit (pkgs.stdenvNoCC.hostPlatform) system; };
 in
 {
   # https://nix-community.github.io/home-manager/options.xhtml#opt-programs.firefox.enable
   # https://hugosum.com/blog/customizing-firefox-with-nix-and-home-manager#installing-firefox-with-home-manager
   programs.firefox = {
     enable = config.purpose.gui;
+
     # workaround with nixpkgs#394029
-    package = if pkgs.stdenvNoCC.hostPlatform.isDarwin then pkgs.firefox-unwrapped else pkgs.firefox;
+    package = if pkgs.stdenvNoCC.hostPlatform.isDarwin then pkgs-patched.firefox else pkgs.firefox;
 
     # https://releases.mozilla.org/pub/firefox/releases/${version}/linux-x86_64/xpi/
     languagePacks = [
