@@ -41,8 +41,8 @@ in
       format = "ssh";
     };
 
-    delta = lib.mkIf config.purpose.daily {
-      enable = true;
+    delta = {
+      enable = config.purpose.daily;
       options = {
         features = "side-by-side";
       };
@@ -66,8 +66,8 @@ in
     };
   };
 
-  programs.gh = lib.mkIf config.purpose.daily {
-    enable = true;
+  programs.gh = {
+    enable = config.purpose.daily;
     settings = {
       git_protocol = "ssh";
 

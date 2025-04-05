@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   yazi-plugins = pkgs.fetchFromGitHub {
@@ -9,35 +14,39 @@ let
   };
 in
 {
-  programs.yazi = {
-    enable = true;
-    enableBashIntegration = true;
-    enableZshIntegration = true;
+  programs.yazi = lib.mkMerge [
+    {
+      enable = true;
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+    }
 
-    plugins = {
-      git = "${yazi-plugins}/git.yazi";
-    };
+    (lib.mkIf config.purpose.daily {
+      plugins = {
+        git = "${yazi-plugins}/git.yazi";
+      };
 
-    initLua = ''
-      require("git"):setup()
-    '';
+      initLua = ''
+        require("git"):setup()
+      '';
 
-    settings = {
-      plugin.prepend_fetchers = [
-        {
-          id = "git";
-          name = "*";
-          run = "git";
-        }
+      settings = {
+        plugin.prepend_fetchers = [
+          {
+            id = "git";
+            name = "*";
+            run = "git";
+          }
 
-        {
-          id = "git";
-          name = "*/";
-          run = "git";
-        }
-      ];
-    };
-  };
+          {
+            id = "git";
+            name = "*/";
+            run = "git";
+          }
+        ];
+      };
+    })
+  ];
 
   home.shellAliases.y = "yazi";
 }
