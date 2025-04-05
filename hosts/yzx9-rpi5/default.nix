@@ -13,7 +13,10 @@ mkNixosConfiguration {
       user = user_yzx9;
     };
 
-    proxy.selfHost.enable = true;
+    proxy.selfHost = {
+      enable = true;
+      public = true;
+    };
   };
 
   host = {
