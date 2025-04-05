@@ -1,23 +1,12 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
-let
-  inherit (config) vars;
-in
 {
   programs.bash.enable = true;
 
   programs.zsh = {
     enable = true;
-
     enableCompletion = true;
-    completionInit =
-      if vars.type != "home-manager" then
-        "autoload -U compinit && compinit"
-      else
-        "autoload -U compinit && compinit -u";
-
     autosuggestion.enable = true;
-
     syntaxHighlighting.enable = true;
 
     plugins = [
