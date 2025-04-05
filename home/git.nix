@@ -33,6 +33,7 @@ in
       init.defaultBranch = "main";
       push.autoSetupRemote = true;
       pull.rebase = true;
+      submodule.fetchJobs = 4;
     };
 
     signing = {
