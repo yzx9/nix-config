@@ -207,11 +207,11 @@ in
 
         workspace-to-monitor-force-assignment = {
           "1" = "built-in";
-          "2" = [
+          "2" = "main";
+          "3" = [
             "3"
             "built-in"
           ];
-          "3" = "main";
         };
 
         on-window-detected = [
