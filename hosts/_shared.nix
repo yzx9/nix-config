@@ -8,6 +8,7 @@ in
   user_yzx9 = {
     inherit git;
     name = "yzx9";
+    trusted = true;
   };
 
   user_yzx = {
