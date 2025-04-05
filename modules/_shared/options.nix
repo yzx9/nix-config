@@ -35,8 +35,6 @@ in
         description = "The name of the user";
       };
 
-      trusted = lib.mkEnableOption "Trusted user";
-
       git = {
         name = lib.mkOption {
           type = lib.types.str;

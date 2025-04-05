@@ -29,6 +29,12 @@ in
       path = "${ssh}id_github";
       mode = "400";
     };
+
+    id-lab = {
+      file = ../../secrets/id-lab.age;
+      path = "${ssh}id_lab";
+      mode = "400";
+    };
   };
 
   home.file.".ssh/id_auth.pub".source = ../../secrets/id-auth.pub;
