@@ -11,11 +11,21 @@ let
   # Configured:
   #  - deepseek/deepseek-chat
   #  - gemini/gemini-2.0-flash
-  #  - openai/deepseek-ai/DeepSeek-V3
-  model = "deepseek/deepseek-chat";
+  model = "gemini/gemini-2.5-pro-exp-03-25";
   weakModel = "gemini/gemini-2.0-flash";
 
   toYAML = lib.generators.toYAML { };
+
+  version = "0.81.1";
+  pkg = pkgs.aider-chat.overridePythonAttrs (old: {
+    inherit version;
+    src = pkgs.fetchFromGitHub {
+      owner = "Aider-AI";
+      repo = "aider";
+      tag = "v${version}";
+      hash = "sha256-TNSdsJBmF/9OCkFe1dZV0y7X2FSTjgp3YV4HGlA9GMc=";
+    };
+  });
 in
 lib.mkIf config.purpose.daily {
   home.packages = [
@@ -43,7 +53,7 @@ lib.mkIf config.purpose.daily {
 
       ${lib.optionalString hasProxy "export HTTPS_PROXY=${config.proxy.httpProxy}"}
 
-      ${lib.getExe pkgs.aider-chat} $@
+      ${lib.getExe pkg} $@
     '')
   ];
 
