@@ -58,15 +58,31 @@ systemctl --user start agenix.service
 
 This is [a bug with agenix](https://github.com/ryantm/agenix/issues/50#issuecomment-1712597733)
 
-### Proxy crashed in NixOS
+### Proxy
 
-Proxy was used but no longer available in NixOS
+- Setup proxy with systemd override (especially useful for non-nixos)
 
-```
-sudo mount -o remount,rw /nix/store
-# Look for the file and remove the lines:
-sudo systemstd cat nix-daemon
-sudo mount -o remount,ro /nix/store
-sudo systemctl stop nix-daemon.socket nix-daemon
-sudo systemctl start nix-daemon
-```
+  ```
+  # https://github.com/NixOS/nixpkgs/issues/27535#issuecomment-1178444327
+  # equals: sudo systemctl edit --runtime nix-daemon
+  sudo mkdir /run/systemd/system/nix-daemon.service.d/
+  cat << EOF >/run/systemd/system/nix-daemon.service.d/override.conf
+  [Service]
+  Environment="http_proxy=socks5h://localhost:7891"
+  Environment="https_proxy=socks5h://localhost:7891"
+  Environment="all_proxy=socks5h://localhost:7891"
+  EOF
+  sudo systemctl daemon-reload
+  sudo systemctl restart nix-daemon
+  ```
+
+- Proxy may be a problem when your proxy server stops to work...
+
+  ```
+  sudo mount -o remount,rw /nix/store
+  # Look for the file and remove the lines:
+  sudo systemstd cat nix-daemon
+  sudo mount -o remount,ro /nix/store
+  sudo systemctl stop nix-daemon.socket nix-daemon
+  sudo systemctl start nix-daemon
+  ```
