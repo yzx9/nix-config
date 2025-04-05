@@ -57,3 +57,16 @@ systemctl --user start agenix.service
 ```
 
 This is [a bug with agenix](https://github.com/ryantm/agenix/issues/50#issuecomment-1712597733)
+
+### Proxy crashed in NixOS
+
+Proxy was used but no longer available in NixOS
+
+```
+sudo mount -o remount,rw /nix/store
+# Look for the file and remove the lines:
+sudo systemstd cat nix-daemon
+sudo mount -o remount,ro /nix/store
+sudo systemctl stop nix-daemon.socket nix-daemon
+sudo systemctl start nix-daemon
+```
