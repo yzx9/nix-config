@@ -119,21 +119,14 @@ in
         # Whether to override all previous firefox settings.
         force = true;
 
-        packages =
-          (with pkgs.nur.repos.rycee.firefox-addons; [
-            gopass-bridge
-            # switchyomega
-            privacy-badger
-            vue-js-devtools
-            zotero-connector
-          ])
-          ++ lib.singleton (
-            pkgs.fetchFirefoxAddon {
-              name = "zeroomega";
-              url = "https://addons.mozilla.org/firefox/downloads/file/4442919/zeroomega-3.3.23.xpi";
-              hash = "sha256-DpYUoJmVVgVEUT+lm3ppYAfMdl7qCCeZ35QFBGYuNPs=";
-            }
-          );
+        # TODO: Permission Allow Lists
+        packages = with pkgs.nur.repos.rycee.firefox-addons; [
+          gopass-bridge
+          privacy-badger
+          vue-js-devtools
+          zeroomega
+          zotero-connector
+        ];
       };
 
       # Whether to force replace the existing containers configuration. This
