@@ -24,6 +24,7 @@ lib.mkIf purpose.gui {
     ++ lib.optionals purpose.daily (
       [
         pkgs.dbeaver-bin # SQL client
+        pkgs.logseq
       ]
       ++ lib.optionals isDarwin [
         inputs.self.packages.${vars.system}.vaa3d-x # only support darwin now
