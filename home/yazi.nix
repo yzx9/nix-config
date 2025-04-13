@@ -5,14 +5,6 @@
   ...
 }:
 
-let
-  yazi-plugins = pkgs.fetchFromGitHub {
-    owner = "yazi-rs";
-    repo = "plugins";
-    rev = "beb586aed0d41e6fdec5bba7816337fdad905a33";
-    hash = "sha256-enIt79UvQnKJalBtzSEdUkjNHjNJuKUWC4L6QFb3Ou4=";
-  };
-in
 {
   programs.yazi = lib.mkMerge [
     {
@@ -23,7 +15,7 @@ in
 
     (lib.mkIf config.purpose.daily {
       plugins = {
-        git = "${yazi-plugins}/git.yazi";
+        git = pkgs.yaziPlugins.git;
       };
 
       initLua = ''
