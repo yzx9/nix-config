@@ -18,13 +18,15 @@ lib.mkIf purpose.gui {
   # environment.
   home.packages =
     lib.optionals isDarwin [
-      pkgs.stats # macOS system monitor in your menu bar
+      pkgs.stats # system monitor in your menu bar
+      pkgs.maccy # clipboard manager
     ]
     # daily only
     ++ lib.optionals purpose.daily (
       [
+        pkgs.logseq # knowledge base
         pkgs.dbeaver-bin # SQL client
-        pkgs.logseq
+        pkgs.inkscape # SVG design
       ]
       ++ lib.optionals isDarwin [
         inputs.self.packages.${vars.system}.vaa3d-x # only support darwin now

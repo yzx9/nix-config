@@ -54,7 +54,6 @@ in
       ]
       ++ lib.optionals gui [
         "middleclick" # mouse
-        "maccy" # clipboard
         "snipaste" # screen shot
       ]
       ++ lib.optionals (daily && gui) [
@@ -67,7 +66,7 @@ in
         "onedrive" # cloud storage
         "tencent-meeting" # video conference
         "visual-studio-code" # editor
-        "logseq" # knowledge base
+        "logseq" # knowledge base # NOTE: nixpkgs's logseq not working, so we add a cask here
 
         # science
         "fiji" # image viewer
@@ -77,7 +76,6 @@ in
         # design
         "krita" # 2D design
         "blender" # 3D design
-        "inkscape" # SVG design
         "bambu-studio" # 3D ptinter
 
         # misc
