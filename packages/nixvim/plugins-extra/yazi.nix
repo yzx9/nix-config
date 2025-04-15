@@ -4,9 +4,11 @@
 { config, ... }:
 
 {
-  plugins.yazi = {
+  plugins.yazi.enable = true;
+
+  dependencies.yazi = {
     enable = true;
-    yaziPackage = config.yazi.package;
+    package = config.yazi.package;
   };
 
   keymaps = [
