@@ -68,11 +68,6 @@ in
         "visual-studio-code" # editor
         "logseq" # knowledge base # NOTE: nixpkgs's logseq not working, so we add a cask here
 
-        # science
-        "fiji" # image viewer
-        # "master-pdf-editor"
-        "zotero"
-
         # design
         "krita" # 2D design
         "blender" # 3D design
@@ -85,6 +80,8 @@ in
         "vmware-fusion" # virtual machine
         "vial" # keyboard
         "wechat" # chat
+        "fiji" # image viewer
+        # "master-pdf-editor"
       ];
   };
 }
