@@ -1,4 +1,28 @@
 {
+  # When first time building, you need to run
+  # > sudo launchctl stop org.nixos.nix-daemon
+  # > sudo launchctl start org.nixos.nix-daemon
+  age.secrets = {
+    id-auth = {
+      file = ../../secrets/id-git_root.age;
+      path = "/var/root/.ssh/id_auth";
+      owner = "root";
+      group = "wheel";
+      mode = "444";
+    };
+
+    ssh-config = {
+      file = ../../secrets/ssh-config.age;
+      path = "/var/root/.ssh/config";
+      owner = "root";
+      group = "wheel";
+      mode = "400";
+    };
+  };
+
+  # required, otherwise remote buildMachines above aren't used
+  nix.distributedBuilds = true;
+
   # You can see the resulting builder-strings of this NixOS-configuration with "cat /etc/nix/machines".
   # These builder-strings are used by the Nix terminal tool, e.g.
   # when calling "nix build ...".
@@ -42,10 +66,22 @@
       ];
       mandatoryFeatures = [ ];
     }
-  ];
 
-  # required, otherwise remote buildMachines above aren't used
-  nix.distributedBuilds = true;
+    {
+      hostName = "yzx9-rpi5";
+      systems = [ "aarch64-linux" ];
+      protocol = "ssh-ng";
+      maxJobs = 1;
+      speedFactor = 1;
+      supportedFeatures = [
+        "nixos-test"
+        "benchmark"
+        "big-parallel"
+        "kvm"
+      ];
+      mandatoryFeatures = [ ];
+    }
+  ];
 
   # # optional, useful when the builder has a faster internet connection than yours
   # nix.settings = {
@@ -56,9 +92,10 @@
   # try remote build: https://nixcademy.com/posts/macos-linux-builder/
   nix.linux-builder = {
     enable = true;
+    speedFactor = 8; # lager value to avoid use other builders
 
     # Wipe the builder's filesystem on every restart
-    # `du -h /var/lib/darwin-builder/nixos.qcow2`
+    # `du -h /var/lib/linux-builder/nixos.qcow2`
     ephemeral = true;
 
     # The defaults are 1 CPU core, 3GB RAM, and 20GB disk

@@ -12,6 +12,11 @@ let
 
   root = [ user_yzx9-mbp ];
 
+  yzx9-mbp = root ++ [
+    system_yzx9-mbp
+    user_yzx9-mbp
+  ];
+
   yzx9-rpi5 = root ++ [
     system_yzx9-rpi5
     user_yzx9-rpi5
@@ -38,12 +43,14 @@ in
   "ssh-config.age".publicKeys = all;
   "xray.json.age".publicKeys = all;
 
+  # yzx9-mbp only
+  "id-auth_root.age".publicKeys = yzx9-mbp;
+
   # yzx9-rpi5 only
   "frpc_yzx9-rpi5.toml.age".publicKeys = yzx9-rpi5;
   "rss-pwd.age".publicKeys = yzx9-rpi5;
 
   # root only
-  "id-auth_root.age".publicKeys = root;
   "id-git_root.age".publicKeys = root;
   "id-github_root.age".publicKeys = root;
   "id-lab.age".publicKeys = root;
