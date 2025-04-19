@@ -4,11 +4,11 @@
   # > sudo launchctl start org.nixos.nix-daemon
   age.secrets = {
     id-auth = {
-      file = ../../secrets/id-git_root.age;
+      file = ../../secrets/id-auth_root.age;
       path = "/var/root/.ssh/id_auth";
       owner = "root";
       group = "wheel";
-      mode = "444";
+      mode = "400";
     };
 
     ssh-config = {
