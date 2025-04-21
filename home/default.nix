@@ -11,6 +11,7 @@
     ./git.nix
     ./gpg.nix
     ./nvim.nix
+    ./pim.nix
     ./shell.nix
     ./ssh.nix
     ./yazi.nix

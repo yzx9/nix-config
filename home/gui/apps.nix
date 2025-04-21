@@ -24,6 +24,7 @@ lib.mkIf purpose.gui {
     # daily only
     ++ lib.optionals purpose.daily (
       [
+        pkgs.element-desktop
         pkgs.logseq # knowledge base
         pkgs.dbeaver-bin # SQL client
         pkgs.inkscape # SVG design
