@@ -8,6 +8,7 @@
 
 let
   enable = config.purpose.daily;
+  basePath = "${config.xdg.dataHome}/calendars";
 
   toPythonBool = value: if value == true then "True" else "False";
   toSimplePythonVar =
@@ -24,29 +25,40 @@ let
   toSimplePythonVars = attrs: lib.concatStringsSep "\n" (lib.mapAttrsToList toSimplePythonVar attrs);
 in
 {
-  # calendar
+  ####################
+  #     Calendar     #
+  ####################
+
   programs.khal = {
     inherit enable;
+
+    # https://khal.readthedocs.io/en/latest/configure.html#locale-timeformat
+    settings.default = {
+      default_calendar = "personal";
+    };
   };
 
   accounts.calendar = {
-    basePath = "${config.xdg.dataHome}/calendars";
+    inherit basePath;
 
     accounts.personal.khal = {
       inherit enable;
     };
   };
 
-  # Todo Management
+  #####################
+  #  Todo Management  #
+  #####################
+
   home.packages = lib.optionals enable (with pkgs; [ todoman ]);
 
+  # docs: https://todoman.readthedocs.io/en/stable/configure.html
   xdg.configFile."todoman/config.py".text = toSimplePythonVars {
-    path = "${config.xdg.dataHome}/calendars/*";
+    path = "${basePath}/*";
     date_format = "%Y-%m-%d";
     time_format = "%H:%M";
     default_list = "personal";
-    default_due = 48;
-    startable = true;
-    humanize = true;
+    default_priority = 8; # high: 1, medium: 5, low: 9, and 0 means no priority at all.
+    default_due = 72;
   };
 }
