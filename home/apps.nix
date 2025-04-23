@@ -40,6 +40,7 @@ lib.mkMerge [
     home.packages = with pkgs; [
       hydra-check # check hydra status
       nixpkgs-review
+      nix-output-monitor
 
       # networking tools
       # iputils
