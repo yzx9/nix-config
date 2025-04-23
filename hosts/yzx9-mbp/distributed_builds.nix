@@ -53,7 +53,7 @@
       protocol = "ssh-ng";
 
       # default is 1 but may keep the builder idle in between builds
-      maxJobs = 16;
+      maxJobs = 4;
 
       # how fast is the builder compared to your local machine
       speedFactor = 2;
@@ -67,20 +67,18 @@
       mandatoryFeatures = [ ];
     }
 
-    {
-      hostName = "yzx9-rpi5";
-      systems = [ "aarch64-linux" ];
-      protocol = "ssh-ng";
-      maxJobs = 1;
-      speedFactor = 1;
-      supportedFeatures = [
-        "nixos-test"
-        "benchmark"
-        "big-parallel"
-        "kvm"
-      ];
-      mandatoryFeatures = [ ];
-    }
+    # disabled as linux-builder got enabled
+    # {
+    #   hostName = "yzx9-rpi5";
+    #   systems = [ "aarch64-linux" ];
+    #   protocol = "ssh-ng";
+    #   supportedFeatures = [
+    #     "nixos-test"
+    #     "benchmark"
+    #     "big-parallel"
+    #     "kvm"
+    #   ];
+    # }
   ];
 
   # # optional, useful when the builder has a faster internet connection than yours
@@ -92,7 +90,6 @@
   # try remote build: https://nixcademy.com/posts/macos-linux-builder/
   nix.linux-builder = {
     enable = true;
-    speedFactor = 8; # lager value to avoid use other builders
 
     # Wipe the builder's filesystem on every restart
     # `du -h /var/lib/linux-builder/nixos.qcow2`
@@ -101,9 +98,11 @@
     # The defaults are 1 CPU core, 3GB RAM, and 20GB disk
     # Don't apply any config before the first build
     config = {
+      maxJobs = 4; # set to half of the number of CPU cores
+
       virtualisation = {
         darwin-builder = {
-          diskSize = 40 * 1024; # 40 GB
+          diskSize = 80 * 1024; # 80 GB
           memorySize = 32 * 1024; # 32 GB
         };
 
