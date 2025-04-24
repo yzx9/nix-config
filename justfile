@@ -56,15 +56,15 @@ gitgc:
 ############################################################################
 
 [linux]
-rebuild:
+switch:
   sudo nixos-rebuild switch --flake .
 
 [linux]
-rebuild-dev:
+switch-dev:
   sudo nixos-rebuild switch --show-trace --verbose --flake .
 
 [linux]
-hm-rebuild hostname = `hostname`:
+hm-switch hostname = `hostname`:
   home-manager switch --flake .#{{hostname}}
 
 
@@ -75,14 +75,14 @@ hm-rebuild hostname = `hostname`:
 ############################################################################
 
 [macos]
-rebuild-noproxy:
+switch-noproxy:
   darwin-rebuild switch --flake .
 
 [macos]
-rebuild: rebuild-noproxy (proxy "set")
+switch: switch-noproxy (proxy "set")
 
 [macos]
-rebuild-dev:
+switch-dev:
   darwin-rebuild switch --show-trace --verbose --flake .
 
 [macos]
