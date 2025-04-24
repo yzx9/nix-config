@@ -95,19 +95,17 @@
     # `du -h /var/lib/linux-builder/nixos.qcow2`
     ephemeral = true;
 
+    maxJobs = 4; # set to half of the number of CPU cores
+
     # The defaults are 1 CPU core, 3GB RAM, and 20GB disk
     # Don't apply any config before the first build
-    config = {
-      maxJobs = 4; # set to half of the number of CPU cores
-
-      virtualisation = {
-        darwin-builder = {
-          diskSize = 80 * 1024; # 80 GB
-          memorySize = 32 * 1024; # 32 GB
-        };
-
-        cores = 8;
+    config.virtualisation = {
+      darwin-builder = {
+        diskSize = 80 * 1024; # 80 GB
+        memorySize = 32 * 1024; # 32 GB
       };
+
+      cores = 8;
     };
   };
 }
