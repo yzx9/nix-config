@@ -86,3 +86,20 @@ This is [a bug with agenix](https://github.com/ryantm/agenix/issues/50#issuecomm
   sudo systemctl stop nix-daemon.socket nix-daemon
   sudo systemctl start nix-daemon
   ```
+
+### NVIDIA Driver
+
+After upgrading the NVIDIA driver, you may encounter:
+
+```sh
+nvidia-smi
+Failed to initialize NVML: Driver/library version mismatch
+```
+
+To fix it, you need to reload the driver. The easiest way is rebooting. If you can't reboot, follow these steps:
+
+1. Check which modules are loaded: `lsmod | grep nvidia` and find processes using NVIDIA: `lsof | grep nvidia`
+2. Stop services if needed (e.g., stop GNOME with `sudo systemctl isolate multi-user.target`)
+3. Unload modules: `sudo modprobe -r nvidia_uvm nvidia_drm nvidia_modeset nvidia`. If `modprobe -r` fails, check what is still using the modules and kill the processes manually.
+4. Reload module: `sudo modprobe nvidia`
+5. Test again: `nvidia-smi`. If problems persist, a full system reboot is recommended.
