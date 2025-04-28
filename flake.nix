@@ -5,8 +5,11 @@
   nixConfig = {
     # NOTE: don't forget to update `module/_shared/nix-core.nix`
     extra-substituters = [
-      # Query the mirror of USTC first, and then the official cache.
+      # Query the mirror first
+      "https://mirror.sjtu.edu.cn/nix-channels/store"
       "https://mirrors.ustc.edu.cn/nix-channels/store"
+      "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+
       "https://nix-community.cachix.org"
       # "https://cache.nixos.org"
     ];
