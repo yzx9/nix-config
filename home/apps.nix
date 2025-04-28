@@ -31,6 +31,7 @@ lib.mkMerge [
       wget
       curl
       unzip
+      lsof
     ];
   }
 
