@@ -15,6 +15,7 @@ mkNixosConfiguration {
 
     purpose = {
       daily = true;
+      dev.enable = true;
     };
 
     proxy.selfHost.enable = true;

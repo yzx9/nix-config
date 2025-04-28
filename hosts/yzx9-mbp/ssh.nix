@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ config, lib, ... }:
 
 let
   ssh = "${config.home.homeDirectory}/.ssh/";
@@ -43,12 +38,4 @@ in
   programs.ssh = {
     matchBlocks."github.com".identityFile = (toSshPath config.age.secrets.id-github.path);
   };
-
-  home.packages = with pkgs; [
-    gopass
-
-    # you have to run `gopass-jsonapi configure` manually, because I dont know how to
-    # do it automatically
-    gopass-jsonapi
-  ];
 }

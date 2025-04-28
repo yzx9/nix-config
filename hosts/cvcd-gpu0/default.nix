@@ -13,8 +13,6 @@ mkHomeConfiguration {
       user = user_yzx;
     };
 
-    purpose = {
-      daily = true;
-    };
+    purpose.dev.enable = true;
   };
 }

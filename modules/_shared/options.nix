@@ -52,6 +52,22 @@ in
   options.purpose = {
     daily = lib.mkEnableOption "for daily use, including coding, will install many applications";
     gui = lib.mkEnableOption "for GUI use, will install GUI-specific applications";
+
+    dev = {
+      enable = lib.mkEnableOption "for development, will install development-specific applications";
+
+      devops.enable = lib.mkOption {
+        type = lib.types.bool;
+        default = config.purpose.dev.enable;
+        description = "for DevOps, will install DevOps-specific applications";
+      };
+
+      nix.enable = lib.mkOption {
+        type = lib.types.bool;
+        default = config.purpose.dev.enable;
+        description = "for Nix development, will install Nix-specific applications";
+      };
+    };
   };
 
   options.proxy = {

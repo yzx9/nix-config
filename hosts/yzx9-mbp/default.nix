@@ -16,6 +16,7 @@ mkDarwinConfiguration {
     purpose = {
       daily = true;
       gui = true;
+      dev.enable = true;
     };
 
     proxy.selfHost = {
@@ -25,11 +26,11 @@ mkDarwinConfiguration {
     docker.enable = true;
   };
 
-  host = {
-    imports = [ ./distributed_builds.nix ];
-  };
+  host.imports = [
+    ./distributed_builds.nix
+  ];
 
-  home = {
-    imports = [ ./home.nix ];
-  };
+  home.imports = [
+    ./ssh.nix
+  ];
 }

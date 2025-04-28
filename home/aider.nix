@@ -16,7 +16,7 @@ let
 
   toYAML = lib.generators.toYAML { };
 in
-lib.mkIf config.purpose.daily {
+lib.mkIf config.purpose.dev.enable {
   home.packages = [
     # API Keys and settings
     # NOTE: inject api_key in runtime due to the limitation of agnix

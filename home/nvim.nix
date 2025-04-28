@@ -8,7 +8,7 @@
       vimAlias = true;
 
       httpProxy = config.proxy.httpProxy;
-      lsp.enable = config.purpose.daily; # disable lsp to minimize size by default
+      lsp.enable = config.purpose.dev.enable; # disable lsp to minimize size by default
     })
   ];
 

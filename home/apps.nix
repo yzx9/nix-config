@@ -35,39 +35,37 @@ lib.mkMerge [
     ];
   }
 
+  # Daily
   (lib.mkIf config.purpose.daily {
     # The home.packages option allows you to install Nix packages into your
     # environment.
+    home.packages =
+      with pkgs;
+      [
+        # fantastic
+        neofetch
+        asciiquarium
+        cmatrix
+        sl
+
+        # msic
+        age
+        ouch # compressing and decompressing
+        gopass
+      ]
+      ++ lib.optionals config.purpose.gui [
+        # you have to run `gopass-jsonapi configure` manually, because I dont know how to
+        # do it automatically
+        gopass-jsonapi # TODO: move to firefox.nix
+      ];
+  })
+
+  # Dev
+  (lib.mkIf config.purpose.dev.enable {
     home.packages = with pkgs; [
-      hydra-check # check hydra status
-      nixpkgs-review
-      nix-output-monitor
-
-      # networking tools
-      # iputils
-      mtr # a network diagnostic tool
-      iperf3 # the ultimate speed test tool
-      dnsutils # `dig` + `nslookup`
-      ldns # replacement of `dig`, it provide the command `drill`
-      socat # replacement of openbsd-netcat
-      nmap # a utility for network discovery and security auditing
-      ipcalc # it is a calculator for the IPv4/v6 addresses
-
-      # fantastic
-      neofetch
-      asciiquarium
-      cmatrix
-      sl
-
-      # dev
       python313
       just # command runner
       gitmoji-cli
-
-      # msic
-      age
-      ouch # compressing and decompressing
-      # logseq # knowledge base, reinit but still dont work, not sure why
     ];
 
     programs.direnv = {
@@ -88,5 +86,29 @@ lib.mkMerge [
       "capitalizeTitle" = true;
       "gitmojisUrl" = "https://gitmoji.dev/api/gitmojis";
     };
+  })
+
+  # DevOps
+  (lib.mkIf config.purpose.dev.devops.enable {
+    home.packages = with pkgs; [
+      # networking tools
+      # iputils
+      mtr # a network diagnostic tool
+      iperf3 # the ultimate speed test tool
+      dnsutils # `dig` + `nslookup`
+      ldns # replacement of `dig`, it provide the command `drill`
+      socat # replacement of openbsd-netcat
+      nmap # a utility for network discovery and security auditing
+      ipcalc # it is a calculator for the IPv4/v6 addresses
+    ];
+  })
+
+  # Dev - Nix
+  (lib.mkIf config.purpose.dev.nix.enable {
+    home.packages = with pkgs; [
+      hydra-check # check hydra status
+      nixpkgs-review
+      nix-output-monitor
+    ];
   })
 ]
