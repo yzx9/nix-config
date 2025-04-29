@@ -20,25 +20,21 @@ lib.mkMerge [
       #   echo "Hello, ${config.home.username}!"
       # '')
 
-      ncurses
-      tree
-      btop
-
       # shell tools
-      # NOTE: may override some of the darwin built-in tools
+      # NOTE: override some of the darwin built-in tools
       coreutils
-      gnutar
-      wget
       curl
+      gnutar
+      gnugrep
+      # more shell tools
       unzip
-      lsof
+      wget
+      tree
     ];
   }
 
   # Daily
   (lib.mkIf config.purpose.daily {
-    # The home.packages option allows you to install Nix packages into your
-    # environment.
     home.packages =
       with pkgs;
       [
@@ -100,6 +96,9 @@ lib.mkMerge [
       socat # replacement of openbsd-netcat
       nmap # a utility for network discovery and security auditing
       ipcalc # it is a calculator for the IPv4/v6 addresses
+
+      lsof
+      btop
     ];
   })
 
