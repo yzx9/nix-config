@@ -12,7 +12,7 @@ let
   #  - deepseek/deepseek-chat
   #  - gemini/gemini-2.0-flash
   model = "gemini/gemini-2.5-pro-exp-03-25";
-  weakModel = "gemini/gemini-2.0-flash";
+  weakModel = "gemini/gemini-2.5-flash-preview-04-17";
 
   toYAML = lib.generators.toYAML { };
 in
