@@ -61,6 +61,7 @@ lib.mkMerge [
     home.packages = with pkgs; [
       python313
       just # command runner
+      hyperfine # benchmarking tool
       gitmoji-cli
     ];
 
