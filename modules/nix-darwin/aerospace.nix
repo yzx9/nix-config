@@ -226,6 +226,15 @@ lib.mkIf cfg.gui {
         }
 
         {
+          "if".app-id = "com.azul.zulu.java";
+          "if".window-title-regex-substring = "ImageJ";
+          run = [
+            "layout floating"
+            "move-node-to-workspace 5"
+          ];
+        }
+
+        {
           "if".app-id = "com.microsoft.Outlook";
           "if".window-title-regex-substring = "Reminder";
           run = [
@@ -240,12 +249,12 @@ lib.mkIf cfg.gui {
 
         {
           "if".app-id = "net.kovidgoyal.kitty";
-          run = "move-node-to-workspace 2";
+          run = "move-node-to-workspace 3";
         }
 
         {
           "if".app-id = "org.mozilla.firefox";
-          run = "move-node-to-workspace 3";
+          run = "move-node-to-workspace 2";
         }
       ];
     };
