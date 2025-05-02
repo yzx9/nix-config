@@ -6,7 +6,6 @@
     # NOTE: don't forget to update `module/_shared/nix-core.nix`
     extra-substituters = [
       # Query the mirror first
-      "https://mirror.sjtu.edu.cn/nix-channels/store"
       "https://mirrors.ustc.edu.cn/nix-channels/store"
       "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
 
