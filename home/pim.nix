@@ -107,6 +107,6 @@ in
     default_list = "home";
     default_priority = 8; # high: 1, medium: 5, low: 9, and 0 means no priority at all.
     default_due = 24;
-    default_command = "list --startable --sort=due --due 48";
+    default_command = "list --startable --sort=priority,due --due 48";
   };
 }
