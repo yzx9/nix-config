@@ -66,7 +66,6 @@ in
         "onedrive" # cloud storage
         "tencent-meeting" # video conference
         "visual-studio-code" # editor
-        "logseq" # knowledge base # NOTE: nixpkgs's logseq not working, so we add a cask here
 
         # design
         "krita" # 2D design
