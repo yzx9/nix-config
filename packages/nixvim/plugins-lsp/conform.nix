@@ -24,33 +24,32 @@ lib.mkIf config.lsp.enable {
             });
         in
         genPrettier [
-          "html"
           "css"
+          "html"
           "javascript"
+          "json"
+          "markdown"
           "typescript"
           "vue"
-          "markdown"
         ]
         // {
-          python = [
-            # To fix auto-fixable lint errors.
-            "ruff_fix"
-            # To run the Ruff formatter.
-            "ruff_format"
-            # To organize the imports.
-            "ruff_organize_imports"
-          ];
-          rust = [ "rustfmt" ];
-          nix = [ "nixfmt" ];
           go = [
             "goimports"
             "gofmt"
           ];
-          yaml = [
-            "yamllint"
-            "yamlfmt"
+          nix = [ "nixfmt" ];
+          python = [
+            "ruff_fix" # To fix auto-fixable lint errors.
+            "ruff_format" # To run the Ruff formatter.
+            "ruff_organize_imports" # To organize the imports.
           ];
+          rust = [ "rustfmt" ];
           sh = [ "shfmt" ];
+          yaml = [
+            "prettierd"
+            "prettier"
+            "yamllint"
+          ];
         };
 
       formatters = {
@@ -62,7 +61,6 @@ lib.mkIf config.lsp.enable {
         # goimports.command = "${pkgs.gotools}/bin/goimports";
         # gofmt.command = lib.getExe pkgs.go;
         nixfmt.command = lib.getExe pkgs.nixfmt-rfc-style;
-        yamlfmt.command = lib.getExe pkgs.yamlfmt;
         yamllint.command = lib.getExe pkgs.yamllint;
         shfmt.command = lib.getExe pkgs.shfmt;
       };
