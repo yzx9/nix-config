@@ -11,7 +11,7 @@ let
   basePath = "${config.xdg.dataHome}/calendars";
 
   toPythonBool = value: if value == true then "True" else "False";
-  toSimplePythonVar =
+  toPythonVar =
     key: value:
     if lib.isBool value then
       "${key} = ${toPythonBool value}"
@@ -22,7 +22,7 @@ let
     else
       throw "Unsupported type for ${key}: ${lib.typeOf value}";
 
-  toSimplePythonVars = attrs: lib.concatStringsSep "\n" (lib.mapAttrsToList toSimplePythonVar attrs);
+  toPythonVars = attrs: (lib.concatStringsSep "\n" (lib.mapAttrsToList toPythonVar attrs)) + "\n";
 in
 {
   ####################
@@ -86,8 +86,8 @@ in
       src = pkgs.fetchFromGitHub {
         owner = "yzx9";
         repo = "todoman";
-        rev = "f9f63ca95bb8fce31a353e494f85cec7cf5ca4c9";
-        hash = "sha256-SxKBym8oj2ri6tBVyVB++Nf8emDW1//TsbNAfWHpi44=";
+        rev = "7ef0c073b5cabb8029a7793867e652d879d90123";
+        hash = "sha256-Fi9PmbxtoglG0lIWmwNd0q4UZaozgG2wnybNq0S21Go=";
       };
 
       disabledTests = [
@@ -99,7 +99,7 @@ in
   ];
 
   # docs: https://todoman.readthedocs.io/en/stable/configure.html
-  xdg.configFile."todoman/config.py".text = toSimplePythonVars {
+  xdg.configFile."todoman/config.py".text = toPythonVars {
     path = "${basePath}/*";
     date_format = "%Y-%m-%d";
     time_format = "%H:%M";
