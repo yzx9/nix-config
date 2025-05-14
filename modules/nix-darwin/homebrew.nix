@@ -69,7 +69,6 @@ in
 
         # design
         "krita" # 2D design
-        "blender" # 3D design
         "bambu-studio" # 3D ptinter
 
         # misc

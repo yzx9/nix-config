@@ -26,7 +26,6 @@ lib.mkIf purpose.gui {
       [
         pkgs.element-desktop
         pkgs.dbeaver-bin # SQL client
-        pkgs.inkscape # SVG design
         pkgs.zotero # reference manager, with two plugins: zotero-better-bibtex, zotmoov ({%w}/{%y})
 
         (pkgs.logseq.overrideAttrs (
@@ -36,6 +35,10 @@ lib.mkIf purpose.gui {
             ];
           }
         )) # knowledge base
+
+        # design
+        pkgs.blender # 3D design
+        pkgs.inkscape # SVG design
       ]
       ++ lib.optionals isDarwin [
         inputs.self.packages.${vars.system}.vaa3d-x # only support darwin now
