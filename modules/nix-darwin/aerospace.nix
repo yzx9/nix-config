@@ -211,6 +211,7 @@ lib.mkIf cfg.gui {
           "3"
           "built-in"
         ];
+        "6" = "built-in";
       };
 
       on-window-detected = [
