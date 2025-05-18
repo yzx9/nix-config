@@ -26,6 +26,7 @@ lib.mkMerge [
       curl
       gnutar
       gnugrep
+      gnused
       # more shell tools
       unzip
       wget
