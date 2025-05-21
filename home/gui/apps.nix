@@ -21,10 +21,8 @@ lib.mkIf purpose.gui {
       pkgs.stats # system monitor in your menu bar
       pkgs.maccy # clipboard manager
     ]
-    # daily only
     ++ lib.optionals purpose.daily (
       [
-        pkgs.element-desktop
         pkgs.dbeaver-bin # SQL client
         pkgs.zotero # reference manager, with two plugins: zotero-better-bibtex, zotmoov ({%w}/{%y})
 

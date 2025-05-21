@@ -46,9 +46,9 @@ lib.mkMerge [
         sl
 
         # msic
-        age
+        age # encryption tool
         ouch # compressing and decompressing
-        gopass
+        gopass # password manager
       ]
       ++ lib.optionals config.purpose.gui [
         # you have to run `gopass-jsonapi configure` manually, because I dont know how to
