@@ -31,6 +31,9 @@ lib.mkMerge [
       unzip
       wget
       tree
+
+      neofetch # print information about your system
+      ouch # compressing and decompressing
     ];
   }
 
@@ -40,14 +43,12 @@ lib.mkMerge [
       with pkgs;
       [
         # fantastic
-        neofetch
         asciiquarium
         cmatrix
         sl
 
         # msic
         age # encryption tool
-        ouch # compressing and decompressing
         gopass # password manager
       ]
       ++ lib.optionals config.purpose.gui [
