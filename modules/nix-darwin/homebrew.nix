@@ -70,6 +70,7 @@ in
         # design
         "krita" # 2D design
         "bambu-studio" # 3D ptinter
+        "freecad" # 3D design
 
         # misc
         "google-chrome" # browser
