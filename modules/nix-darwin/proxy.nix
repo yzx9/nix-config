@@ -7,6 +7,7 @@
 
 let
   cfg = config.proxy;
+  pkg = pkgs.xray;
 in
 lib.mkIf cfg.selfHost.enable {
   age.secrets."xray.json" = {
@@ -14,17 +15,19 @@ lib.mkIf cfg.selfHost.enable {
     mode = "444"; # workaround with launchd agents
   };
 
-  launchd.agents.xray = {
+  # run `launchctl kickstart -k system/org.nixos.xray`
+  launchd.daemons.xray = {
+    path = [ pkg ];
+
     serviceConfig = {
       ProgramArguments = [
-        "${pkgs.xray}/bin/xray"
+        "${pkg}/bin/xray"
         "--config"
         config.age.secrets."xray.json".path
       ];
       RunAtLoad = true;
       KeepAlive = true;
-      StandardOutPath = "/tmp/xray.out";
-      StandardErrorPath = "/tmp/xray.err";
+      # StandardOutPath = "/tmp/xray.out";
     };
   };
 }
