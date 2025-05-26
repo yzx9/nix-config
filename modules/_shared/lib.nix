@@ -25,7 +25,9 @@ let
     home-manager.useUserPackages = true;
     home-manager.extraSpecialArgs = specialArgs;
     home-manager.users.${cfg.config.vars.user.name} = import ../../home;
-    home-manager.sharedModules = (mkHmModules cfg) ++ [ agenix.homeManagerModules.default ];
+    home-manager.sharedModules = (mkHmModules cfg) ++ [
+      agenix.homeManagerModules.default
+    ];
   };
 in
 {
