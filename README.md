@@ -2,7 +2,7 @@
 
 Personal nix-config.
 
-Current state: nixos, darwin and standalone home-manager.
+Current state: nixos, nix-darwin and standalone home-manager.
 
 ## Development
 
@@ -48,7 +48,18 @@ To remove the uninstalled APPs icon from Launchpad:
     1.  right click on the running app's icon in Dock, select "Options" -> "Show in Finder" and delete it
 4.  hold down the Option key, a `x` button will appear on the icon, click it to remove the icon
 
-### Home Manager + Agenix
+### Agenix
+
+#### Debug activation on darwin
+
+```nix
+launchd.daemons.activate-agenix.serviceConfig = {
+  StandardOutPath = "/tmp/activate-agenix.out";
+  StandardErrorPath = "/tmp/activate-agenix.err";
+};
+```
+
+#### Home Manager
 
 Each time when you add/edit/delete home secrets, you will have to run the following script manually:
 
@@ -56,36 +67,36 @@ Each time when you add/edit/delete home secrets, you will have to run the follow
 systemctl --user start agenix.service
 ```
 
-This is [a bug with agenix](https://github.com/ryantm/agenix/issues/50#issuecomment-1712597733)
+This is [a bug with agenix](https://github.com/ryantm/agenix/issues/50#issuecomment-1712597733).
 
 ### Proxy
 
-- Setup proxy with systemd override (especially useful for non-nixos)
+#### Setup proxy with systemd override (especially useful for non-nixos)
 
-  ```
-  # https://github.com/NixOS/nixpkgs/issues/27535#issuecomment-1178444327
-  # equals: sudo systemctl edit --runtime nix-daemon
-  sudo mkdir /run/systemd/system/nix-daemon.service.d/
-  cat << EOF >/run/systemd/system/nix-daemon.service.d/override.conf
-  [Service]
-  Environment="http_proxy=socks5h://localhost:7891"
-  Environment="https_proxy=socks5h://localhost:7891"
-  Environment="all_proxy=socks5h://localhost:7891"
-  EOF
-  sudo systemctl daemon-reload
-  sudo systemctl restart nix-daemon
-  ```
+```sh
+# https://github.com/NixOS/nixpkgs/issues/27535#issuecomment-1178444327
+# equals: sudo systemctl edit --runtime nix-daemon
+sudo mkdir /run/systemd/system/nix-daemon.service.d/
+cat << EOF >/run/systemd/system/nix-daemon.service.d/override.conf
+[Service]
+Environment="http_proxy=socks5h://localhost:7891"
+Environment="https_proxy=socks5h://localhost:7891"
+Environment="all_proxy=socks5h://localhost:7891"
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart nix-daemon
+```
 
-- Proxy may be a problem when your proxy server stops to work...
+#### Proxy may be a problem when your proxy server stops to work...
 
-  ```
-  sudo mount -o remount,rw /nix/store
-  # Look for the file and remove the lines:
-  sudo systemstd cat nix-daemon
-  sudo mount -o remount,ro /nix/store
-  sudo systemctl stop nix-daemon.socket nix-daemon
-  sudo systemctl start nix-daemon
-  ```
+```sh
+sudo mount -o remount,rw /nix/store
+# Look for the file and remove the lines:
+sudo systemstd cat nix-daemon
+sudo mount -o remount,ro /nix/store
+sudo systemctl stop nix-daemon.socket nix-daemon
+sudo systemctl start nix-daemon
+```
 
 ### NVIDIA Driver
 
