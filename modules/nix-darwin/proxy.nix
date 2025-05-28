@@ -10,10 +10,7 @@ let
   pkg = pkgs.xray;
 in
 lib.mkIf cfg.selfHost.enable {
-  age.secrets."xray.json" = {
-    file = ../../secrets/xray.json.age;
-    mode = "444"; # workaround with launchd agents
-  };
+  age.secrets."xray.json".file = ../../secrets/xray.json.age;
 
   # run `launchctl kickstart -k system/org.nixos.xray`
   launchd.daemons.xray = {
@@ -27,7 +24,7 @@ lib.mkIf cfg.selfHost.enable {
       ];
       RunAtLoad = true;
       KeepAlive = true;
-      # StandardOutPath = "/tmp/xray.out";
+      # StandardOutPath = "/var/lib/xray.out";
     };
   };
 }
