@@ -54,8 +54,8 @@ To remove the uninstalled APPs icon from Launchpad:
 
 ```nix
 launchd.daemons.activate-agenix.serviceConfig = {
-  StandardOutPath = "/tmp/activate-agenix.out";
-  StandardErrorPath = "/tmp/activate-agenix.err";
+  StandardOutPath = "/var/log/activate-agenix.out";
+  StandardErrorPath = "/var/log/activate-agenix.err";
 };
 ```
 
