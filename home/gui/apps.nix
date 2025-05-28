@@ -36,7 +36,7 @@ lib.mkIf purpose.gui {
 
         # design
         pkgs.blender # 3D design
-        pkgs.openscad # 3D parametric design
+        # pkgs.openscad # 3D parametric design, broken on darwin
         pkgs.inkscape # SVG design
       ]
       ++ lib.optionals isDarwin [

@@ -10,12 +10,14 @@
       "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
 
       "https://nix-community.cachix.org"
+      "https://nixos-raspberrypi.cachix.org"
       # "https://cache.nixos.org"
     ];
 
     # NOTE: don't forget to update `module/_shared/nix-core.nix`
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI="
       # "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
     ];
   };
@@ -35,14 +37,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    raspberry-pi-nix = {
-      url = "github:nix-community/raspberry-pi-nix";
-
-      # NOTE: dont override nixpkgs since it leads cache-missing
-      # See also: https://github.com/nix-community/raspberry-pi-nix/issues/113#issuecomment-2624809306
-      #
-      # inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # NOTE: dont override nixpkgs since it leads cache-missing
+    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi";
 
     # Manage a user environment using Nix
     home-manager = {

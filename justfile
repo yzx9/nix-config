@@ -76,14 +76,14 @@ hm-switch hostname = `hostname`:
 
 [macos]
 switch-noproxy:
-  darwin-rebuild switch --flake .
+  sudo darwin-rebuild switch --flake .
 
 [macos]
 switch: switch-noproxy (proxy "set")
 
 [macos]
 switch-dev:
-  darwin-rebuild switch --show-trace --verbose --flake .
+  sudo darwin-rebuild switch --show-trace --verbose --flake .
 
 [macos]
 proxy mode="auto_switch":
