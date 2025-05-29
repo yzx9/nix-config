@@ -27,7 +27,7 @@ mkDarwinConfiguration {
   };
 
   host.imports = [
-    ./distributed_builds.nix
+    ./distributed-builds.nix
   ];
 
   home.imports = [

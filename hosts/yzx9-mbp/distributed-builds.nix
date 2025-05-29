@@ -64,45 +64,54 @@
       mandatoryFeatures = [ ];
     }
 
-    # disabled as linux-builder got enabled
+    # disabled as prefer to use the QEMU emulator
     # {
     #   hostName = "yzx9-rpi5";
     #   systems = [ "aarch64-linux" ];
     #   protocol = "ssh-ng";
-    #   supportedFeatures = [
-    #     "nixos-test"
-    #     "benchmark"
-    #     "big-parallel"
-    #     "kvm"
-    #   ];
+    #   supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
     # }
   ];
 
   # # optional, useful when the builder has a faster internet connection than yours
-  # nix.settings = {
-  #   builders-use-substitutes = true;
+  # nix.settings.builders-use-substitutes = true;
+
+  # disabled as builder always hangs
+  #
+  # # Darwin Linux Builder
+  # # try remote build: https://nixcademy.com/posts/macos-linux-builder/
+  # nix.linux-builder = {
+  #   enable = true;
+  #
+  #   # Wipe the builder's filesystem on every restart
+  #   # `du -h /var/lib/linux-builder/nixos.qcow2`
+  #   ephemeral = true;
+  #
+  #   # The defaults are 1 CPU core, 3GB RAM, and 20GB disk
+  #   # Don't apply any config before the first build
+  #   config.virtualisation = {
+  #     darwin-builder = {
+  #       diskSize = 80 * 1024; # 80 GB
+  #       memorySize = 32 * 1024; # 32 GB
+  #     };
+  #
+  #     cores = 6;
+  #   };
   # };
-
-  # Darwin Linux Builder
-  # try remote build: https://nixcademy.com/posts/macos-linux-builder/
-  nix.linux-builder = {
-    enable = true;
-
-    # Wipe the builder's filesystem on every restart
-    # `du -h /var/lib/linux-builder/nixos.qcow2`
-    ephemeral = true;
-
-    maxJobs = 4; # set to half of the number of CPU cores
-
-    # The defaults are 1 CPU core, 3GB RAM, and 20GB disk
-    # Don't apply any config before the first build
-    config.virtualisation = {
-      darwin-builder = {
-        diskSize = 80 * 1024; # 80 GB
-        memorySize = 32 * 1024; # 32 GB
-      };
-
-      cores = 8;
-    };
-  };
+  #
+  # # only allow the specific identity file to be used
+  # environment.etc."ssh/ssh_config.d/100-linux-builder.conf".text = lib.mkForce ''
+  #   Host linux-builder
+  #     User builder
+  #     Hostname localhost
+  #     HostKeyAlias linux-builder
+  #     Port 31022
+  #     IdentityFile /etc/nix/builder_ed25519
+  #     IdentitiesOnly yes
+  # '';
+  #
+  # launchd.daemons.linux-builder.serviceConfig = {
+  #   StandardOutPath = "/var/log/linux-builder.out";
+  #   StandardErrorPath = "/var/log/linux-builder.err";
+  # };
 }
