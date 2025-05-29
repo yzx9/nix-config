@@ -11,8 +11,8 @@ let
   # Configured:
   #  - deepseek/deepseek-chat
   #  - gemini/gemini-2.0-flash
-  model = "gemini/gemini-2.5-pro-preview-05-06";
-  weakModel = "gemini/gemini-2.5-flash-preview-04-17";
+  model = "gemini/gemini-2.5-flash-preview-05-20";
+  # weakModel = "gemini/gemini-2.5-flash-preview-05-20";
 
   toYAML = lib.generators.toYAML { };
 in
@@ -59,7 +59,7 @@ lib.mkIf config.purpose.dev.enable {
     model = model;
 
     # Specify the model to use for commit messages and chat history summarization (default depends on --model)
-    weak-model = weakModel;
+    # weak-model = weakModel;
 
     ###############
     # Git settings:
