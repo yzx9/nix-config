@@ -46,7 +46,10 @@
       # If your builder supports multiple architectures
       # (e.g. search for "binfmt" for emulation),
       # you can list them all, e.g. replace with
-      systems = [ "x86_64-linux" ];
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux" # QEMU emulation
+      ];
       # system = "x86_64-linux";
 
       # Nix custom ssh-variant that avoids lots of "trusted-users" settings pain

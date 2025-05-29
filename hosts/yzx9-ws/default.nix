@@ -35,5 +35,8 @@ mkNixosConfiguration {
     ];
 
     networking = networking_lab;
+
+    # enable binfmt QEMU
+    boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   };
 }
