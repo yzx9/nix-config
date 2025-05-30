@@ -98,8 +98,7 @@ deploy hostname:
       --fast \
       --target-host {{hostname}} \
       --flake .#{{hostname}} \
-      --use-remote-sudo \
-      --use-substitutes
+      --use-remote-sudo
 
 
 ############################################################################
