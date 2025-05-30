@@ -1,5 +1,6 @@
 {
   nixpkgs,
+  nixos-raspberrypi,
   nix-darwin,
   agenix,
   home-manager,
@@ -33,16 +34,34 @@ in
 {
   mkNixosConfiguration = cfg: {
     nixosConfigurations."${cfg.config.vars.hostname}" = nixpkgs.lib.nixosSystem {
-      inherit specialArgs;
       inherit (cfg.config.vars) system;
+      inherit specialArgs;
       modules = (mkModules cfg) ++ [ ../nixos ];
+    };
+  };
+
+  mkNixosRpiConfiguration = cfg: {
+    nixosConfigurations."${cfg.config.vars.hostname}" = nixos-raspberrypi.lib.nixosSystem {
+      inherit (cfg.config.vars) system;
+      modules = (mkModules cfg) ++ [
+        ../nixos
+
+        {
+          # Rpi use custom bootloader
+          boot.loader.systemd-boot.enable = false;
+          boot.loader.efi.canTouchEfiVariables = false;
+        }
+      ];
+      specialArgs = specialArgs // {
+        inherit (specialArgs) nixos-raspberrypi;
+      };
     };
   };
 
   mkDarwinConfiguration = cfg: {
     darwinConfigurations."${cfg.config.vars.hostname}" = nix-darwin.lib.darwinSystem {
-      inherit specialArgs;
       inherit (cfg.config.vars) system;
+      inherit specialArgs;
       modules = (mkModules cfg) ++ [ ../nix-darwin ];
     };
   };

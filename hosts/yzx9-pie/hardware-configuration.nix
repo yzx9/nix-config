@@ -1,43 +1,41 @@
-{ inputs, lib, ... }:
+{ config, inputs, ... }:
 
 let
-  inherit (inputs) raspberry-pi-nix;
+  inherit (inputs) nixos-raspberrypi;
 in
 {
-  imports = [
-    raspberry-pi-nix.nixosModules.raspberry-pi
-
-    raspberry-pi-nix.nixosModules.sd-image
+  imports = with nixos-raspberrypi.nixosModules; [
+    raspberry-pi-5.base
+    raspberry-pi-5.display-vc4
   ];
 
-  # Bootloader.
-  boot.loader.systemd-boot.enable = lib.mkForce false;
-  boot.loader.efi.canTouchEfiVariables = lib.mkForce false;
+  system.nixos.tags =
+    let
+      cfg = config.boot.loader.raspberryPi;
+    in
+    [
+      "raspberry-pi-${cfg.variant}"
+      cfg.bootloader
+      config.boot.kernelPackages.kernel.version
+    ];
 
-  raspberry-pi-nix.board = "bcm2712";
+  # Assumes the system will continue to reside on the installation media (sd-card)
+  fileSystems = {
+    "/boot/firmware" = {
+      device = "/dev/disk/by-label/FIRMWARE";
+      fsType = "vfat";
+      options = [
+        "noatime"
+        "noauto"
+        "x-systemd.automount"
+        "x-systemd.idle-timeout=1min"
+      ];
+    };
 
-  # Disable rpi libcamera fork to avoid rebuild webkitgtk
-  # https://github.com/nix-community/raspberry-pi-nix/issues/48#issuecomment-2369426119
-  raspberry-pi-nix.libcamera-overlay.enable = false;
-
-  hardware.raspberry-pi.config = {
-    all = {
-      base-dt-params = {
-        BOOT_UART = {
-          value = 1;
-          enable = true;
-        };
-        uart_2ndstage = {
-          value = 1;
-          enable = true;
-        };
-      };
-      dt-overlays = {
-        disable-bt = {
-          enable = true;
-          params = { };
-        };
-      };
+    "/" = {
+      device = "/dev/disk/by-label/NIXOS_SD";
+      fsType = "ext4";
+      options = [ "noatime" ];
     };
   };
 }

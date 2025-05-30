@@ -1,10 +1,10 @@
 inputs:
 
 let
-  inherit (import ../../modules/_shared/lib.nix inputs) mkNixosConfiguration;
+  inherit (import ../../modules/_shared/lib.nix inputs) mkNixosRpiConfiguration;
   inherit (import ../_shared.nix) user_yzx9 networking_lab;
 in
-mkNixosConfiguration {
+mkNixosRpiConfiguration {
   config = {
     vars = {
       hostname = "yzx9-pie";

@@ -59,9 +59,7 @@
     # Configure Neovim with Nix!
     nixvim = {
       url = "github:nix-community/nixvim";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -102,8 +100,8 @@
             buildInputs = [
               pkgs.just
               pkgs.nixos-rebuild
-              inputs.home-manager.packages.${system}.default
               inputs.agenix.packages.${system}.default
+              inputs.home-manager.packages.${system}.default
             ];
           };
         }
