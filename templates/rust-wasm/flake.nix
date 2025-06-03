@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
+    systems.url = "github:nix-systems/default";
     fenix = {
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -10,24 +11,21 @@
   };
 
   outputs =
-    { nixpkgs, fenix, ... }:
+    {
+      nixpkgs,
+      systems,
+      fenix,
+      ...
+    }:
 
     let
-      inherit (nixpkgs) lib;
-
-      supportedSystems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
-      forEachSystem = systems: f: lib.genAttrs systems f;
-      forEachSupportedSystem = forEachSystem supportedSystems;
+      eachSystem = nixpkgs.lib.genAttrs (import systems);
     in
     {
       # nix develop
-      devShells = forEachSupportedSystem (
+      devShells = eachSystem (
         system:
+
         let
           pkgs = import nixpkgs {
             inherit system;

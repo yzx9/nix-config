@@ -1,10 +1,17 @@
 {
   description = "Go project";
 
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    systems.url = "github:nix-systems/default";
+  };
 
   outputs =
-    { self, nixpkgs }:
+    {
+      self,
+      nixpkgs,
+      systems,
+    }:
     let
       # to work with older version of flakes
       lastModifiedDate = self.lastModifiedDate or self.lastModified or "197001010000";
@@ -12,29 +19,18 @@
       # Generate a user-friendly version number.
       version = builtins.substring 0 12 lastModifiedDate;
 
-      # System types to support.
-      supportedSystems = [
-        "x86_64-linux"
-        "x86_64-darwin"
-        "aarch64-linux"
-        "aarch64-darwin"
-      ];
-
-      # Helper function to generate an attrset '{ x86_64-linux = f "x86_64-linux"; ... }'.
-      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-
-      # Nixpkgs instantiated for supported system types.
-      nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
+      # Helper function to generate an attrset
+      eachSystem = nixpkgs.lib.genAttrs (import systems);
     in
     {
       # nix build .#<package_name>
       # nix run .#<package_name>
-      packages = forAllSystems (
+      packages = eachSystem (
         system:
-        let
-          pkgs = nixpkgsFor.${system};
-          fs = pkgs.lib.fileset;
 
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+          fs = pkgs.lib.fileset;
           pname = "YOUR_APP";
         in
         {
@@ -102,14 +98,15 @@
       );
 
       # nix develop .
-      devShells = forAllSystems (
+      devShells = eachSystem (
         system:
+
         let
-          pkgs = nixpkgsFor.${system};
+          pkgs = nixpkgs.legacyPackages.${system};
         in
         {
           default = pkgs.mkShell {
-            buildInputs = with pkgs; [
+            packages = with pkgs; [
               go
               gopls
               gotools

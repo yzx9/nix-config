@@ -26,6 +26,7 @@
   # Each item in `inputs` will be passed as a parameter to the `outputs` function after being pulled and built.
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    systems.url = "github:nix-systems/default";
 
     nur = {
       url = "github:nix-community/NUR";
@@ -51,6 +52,7 @@
       url = "github:ryantm/agenix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
+        systems.follows = "systems";
         darwin.follows = "nix-darwin";
         home-manager.follows = "home-manager";
       };
@@ -59,37 +61,36 @@
     # Configure Neovim with Nix!
     nixvim = {
       url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        systems.follows = "systems";
+      };
     };
   };
 
   # The `outputs` function will return all the build results of the flake.
-  # A flake can have many use cases and different types of outputs,
-  # parameters in `outputs` are defined in `inputs` and can be referenced by their names.
-  # However, `self` is an exception, this special parameter points to the `outputs` itself (self-reference)
-  # The `@` syntax here is used to alias the attribute set of the inputs's parameter, making it convenient to use inside the function.
+  # A flake can have many use cases and different types of outputs, parameters
+  # in `outputs` are defined in `inputs` and can be referenced by their names.
+  #
+  # However, `self` is an exception, this special parameter points to the
+  # `outputs` itself (self-reference).
+  #
+  # The `@` syntax here is used to alias the attribute set of the inputs's
+  # parameter, making it convenient to use inside the function.
   outputs =
-    { nixpkgs, ... }@inputs:
+    { nixpkgs, systems, ... }@inputs:
 
     let
-      hosts = import ./hosts inputs;
-
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
-      forEachSystem = f: nixpkgs.lib.genAttrs systems (system: f system);
+      eachSystem = nixpkgs.lib.genAttrs (import systems);
     in
     {
-      inherit (hosts) nixosConfigurations darwinConfigurations homeConfigurations;
+      inherit (import ./hosts inputs) nixosConfigurations darwinConfigurations homeConfigurations;
 
       # nix run .#<command>
-      packages = forEachSystem (system: import ./packages (inputs // { inherit system; }));
+      packages = eachSystem (system: import ./packages (inputs // { inherit system; }));
 
       # nix develop
-      devShells = forEachSystem (
+      devShells = eachSystem (
         system:
 
         let
@@ -97,7 +98,7 @@
         in
         {
           default = pkgs.mkShell {
-            buildInputs = [
+            packages = [
               pkgs.just
               pkgs.nixos-rebuild
               inputs.agenix.packages.${system}.default
@@ -111,6 +112,6 @@
       templates = import ./templates;
 
       # nix fmt: nix code formatter
-      formatter = forEachSystem (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
+      formatter = eachSystem (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
     };
 }

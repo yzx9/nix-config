@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
+    systems.url = "github:nix-systems/default";
 
     pyproject-nix = {
       url = "github:pyproject-nix/pyproject.nix";
@@ -27,6 +28,7 @@
     {
       self,
       nixpkgs,
+      systems,
       uv2nix,
       pyproject-nix,
       pyproject-build-systems,
@@ -36,13 +38,7 @@
     let
       inherit (nixpkgs) lib;
 
-      supportedSystems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
-      forEachSupportedSystem = lib.genAttrs supportedSystems;
+      eachSystem = lib.genAttrs (import systems);
 
       # Load a uv workspace from a workspace root.
       # Uv2nix treats all uv projects as workspace projects.
@@ -99,7 +95,7 @@
         };
     in
     {
-      packages = forEachSupportedSystem (system: {
+      packages = eachSystem (system: {
         # Package a virtual environment as our main application.
         #
         # Enable no optional dependencies for production build.
@@ -107,7 +103,7 @@
       });
 
       # Make hello runnable with `nix run`
-      apps = forEachSupportedSystem (
+      apps = eachSystem (
         system:
 
         let
@@ -124,7 +120,7 @@
       # This example provides two different modes of development:
       # - Impurely using uv to manage virtual environments
       # - Pure development using uv2nix to manage virtual environments
-      devShells = forEachSupportedSystem (
+      devShells = eachSystem (
         system:
         let
           inherit (mkPkgs system) pkgs python pythonSet;
