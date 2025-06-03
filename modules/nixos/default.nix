@@ -15,5 +15,7 @@
     ./nvidia.nix
     ./proxy.nix
     ./system.nix
+
+    ./modules/frpc.nix
   ];
 }
