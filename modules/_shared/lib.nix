@@ -22,13 +22,15 @@ let
   ];
 
   mkHMConfiguration = cfg: {
-    home-manager.useGlobalPkgs = true;
-    home-manager.useUserPackages = true;
-    home-manager.extraSpecialArgs = specialArgs;
-    home-manager.users.${cfg.config.vars.user.name} = import ../../home;
-    home-manager.sharedModules = (mkHmModules cfg) ++ [
-      agenix.homeManagerModules.default
-    ];
+    home-manager = {
+      useGlobalPkgs = true;
+      useUserPackages = true;
+      extraSpecialArgs = specialArgs;
+      users.${cfg.config.vars.user.name} = import ../../home;
+      sharedModules = (mkHmModules cfg) ++ [
+        agenix.homeManagerModules.default
+      ];
+    };
   };
 in
 {
