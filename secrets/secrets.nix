@@ -34,10 +34,7 @@ let
   ];
 in
 {
-  "api-key-deepseek.age".publicKeys = all;
-  "api-key-gemini.age".publicKeys = all;
-  "api-key-openrouter.age".publicKeys = all;
-  "api-key-siliconflow.age".publicKeys = all;
+  "api-keys.age".publicKeys = all;
   "id-lab.pub.age".publicKeys = all;
   "rss-pwd.age".publicKeys = all;
   "ssh-config.age".publicKeys = all;

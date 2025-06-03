@@ -14,44 +14,46 @@ let
   model = "gemini/gemini-2.5-flash-preview-05-20";
   # weakModel = "gemini/gemini-2.5-flash-preview-05-20";
 
-  toYAML = lib.generators.toYAML { };
+  # Inject api keys in runtime due to the limitation of agnix
+  pkg = pkgs.writeShellScriptBin "aider" ''
+    declare -A secrets
+
+    while IFS='=' read -r key value; do
+      [[ -z "$key" ]] && continue # ignore empty lines
+      [[ "$key" == \#* ]] && continue # ignore comments
+      secrets["@$key@"]="$value"
+    done < "${config.age.secrets."api-keys".path}"
+
+    declare -A mapping=(
+      ["DEEPSEEK_API_KEY"]="@deepseek@"
+      ["GEMINI_API_KEY"]="@gemini@"
+      ["OPENAI_API_KEY"]="@siliconflow@" # siliconflow, openai compatible
+      ["OPENROUTER_API_KEY"]="@openrouter@"
+    )
+
+    for envVar in "''${!mapping[@]}"; do
+      secretKey="''${mapping[$envVar]}"
+      if [[ -v secrets[$secretKey] ]]; then
+        export "$envVar"="''${secrets[$secretKey]}"
+      else
+        echo "Warning: key $secretKey not defined in secrets." >&2
+      fi
+    done
+
+    export OPENAI_API_BASE="https://api.siliconflow.cn/v1"
+
+    ${lib.optionalString hasProxy "export HTTPS_PROXY=${config.proxy.httpProxy}"}
+
+    ${lib.getExe pkgs.aider-chat} $@
+  '';
 in
 lib.mkIf config.purpose.dev.enable {
-  home.packages = [
-    # API Keys and settings
-    # NOTE: inject api_key in runtime due to the limitation of agnix
-    (pkgs.writeShellScriptBin "aider" ''
-      declare -A secrets=(
-        ["DEEPSEEK_API_KEY"]="${config.age.secrets.api-key-deepseek.path}"
-        ["GEMINI_API_KEY"]="${config.age.secrets.api-key-gemini.path}"
-        ["OPENAI_API_KEY"]="${config.age.secrets.api-key-siliconflow.path}" # siliconflow, openai compatible
-        ["OPENROUTER_API_KEY"]="${config.age.secrets.api-key-openrouter.path}"
-      )
 
-      for envVar in "''${!secrets[@]}"; do
-        secretFile="''${secrets[$envVar]}"
+  age.secrets."api-keys".file = ../secrets/api-keys.age;
 
-        if [ -f "$secretFile" ]; then
-          export "$envVar"="$(cat "$secretFile")"
-        else
-          echo "Warning: Secret file $secretFile does not exist, no api_key injected for $envVar."
-        fi
-      done
+  home.packages = [ pkg ];
 
-      export OPENAI_API_BASE="https://api.siliconflow.cn/v1"
-
-      ${lib.optionalString hasProxy "export HTTPS_PROXY=${config.proxy.httpProxy}"}
-
-      ${lib.getExe pkgs.aider-chat} $@
-    '')
-  ];
-
-  age.secrets."api-key-deepseek".file = ../secrets/api-key-deepseek.age;
-  age.secrets."api-key-gemini".file = ../secrets/api-key-gemini.age;
-  age.secrets."api-key-openrouter".file = ../secrets/api-key-openrouter.age;
-  age.secrets."api-key-siliconflow".file = ../secrets/api-key-siliconflow.age;
-
-  home.file.".aider.conf.yml".text = toYAML {
+  home.file.".aider.conf.yml".text = lib.generators.toYAML { } {
     #############
     # Main model:
 
