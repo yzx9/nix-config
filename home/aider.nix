@@ -10,9 +10,11 @@ let
 
   # Configured:
   #  - deepseek/deepseek-chat
-  #  - gemini/gemini-2.0-flash
-  model = "gemini/gemini-2.5-flash-preview-05-20";
-  # weakModel = "gemini/gemini-2.5-flash-preview-05-20";
+  #  - gemini/gemini-2.5-pro-preview-05-06
+  #  - gemini/gemini-2.5-flash-preview-05-20
+  #  - openai/Qwen/Qwen3-32B # siliconflow
+  model = "gemini/gemini-2.5-pro-preview-05-06";
+  weakModel = "gemini/gemini-2.5-flash-preview-05-20";
 
   # Inject api keys in runtime due to the limitation of agnix
   pkg = pkgs.writeShellScriptBin "aider" ''
@@ -61,7 +63,7 @@ lib.mkIf config.purpose.dev.enable {
     model = model;
 
     # Specify the model to use for commit messages and chat history summarization (default depends on --model)
-    # weak-model = weakModel;
+    weak-model = weakModel;
 
     ###############
     # Git settings:
@@ -88,4 +90,26 @@ lib.mkIf config.purpose.dev.enable {
     ## Use VI editing mode in the terminal (default: False)
     vim = true;
   };
+
+  home.file.".aider.model.metadata.json".text = builtins.toJSON (
+    lib.genAttrs
+      (lib.map (size: "openai/Qwen/Qwen3-${size}B") [
+        "8"
+        "14"
+        "32"
+      ])
+      (_: {
+        "max_tokens" = 8192;
+        "max_input_tokens" = 8192;
+        "max_output_tokens" = 8192;
+        # "input_cost_per_token" = 4 e-07;
+        # "output_cost_per_token" = 8 e-07;
+        # "litellm_provider"= "siliconflow";
+        "supports_function_calling" = true;
+        "supports_tool_choice" = true;
+        "supports_reasoning" = true;
+        "mode" = "chat";
+        "source" = "https://cloud.siliconflow.cn/models";
+      })
+  );
 }
