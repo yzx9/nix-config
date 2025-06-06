@@ -10,10 +10,10 @@ let
 
   # Configured:
   #  - deepseek/deepseek-chat
-  #  - gemini/gemini-2.5-pro-preview-05-06
+  #  - gemini/gemini-2.5-pro-preview-06-05
   #  - gemini/gemini-2.5-flash-preview-05-20
   #  - openai/Qwen/Qwen3-32B # siliconflow
-  model = "gemini/gemini-2.5-pro-preview-05-06";
+  model = "gemini/gemini-2.5-pro-preview-06-05";
   weakModel = "gemini/gemini-2.5-flash-preview-05-20";
 
   # Inject api keys in runtime due to the limitation of agnix
@@ -92,24 +92,18 @@ lib.mkIf config.purpose.dev.enable {
   };
 
   home.file.".aider.model.metadata.json".text = builtins.toJSON (
-    lib.genAttrs
-      (lib.map (size: "openai/Qwen/Qwen3-${size}B") [
-        "8"
-        "14"
-        "32"
-      ])
-      (_: {
-        "max_tokens" = 8192;
-        "max_input_tokens" = 8192;
-        "max_output_tokens" = 8192;
-        # "input_cost_per_token" = 4 e-07;
-        # "output_cost_per_token" = 8 e-07;
-        # "litellm_provider"= "siliconflow";
-        "supports_function_calling" = true;
-        "supports_tool_choice" = true;
-        "supports_reasoning" = true;
-        "mode" = "chat";
-        "source" = "https://cloud.siliconflow.cn/models";
-      })
+    lib.genAttrs [ "openai/Qwen/Qwen3-8B" "openai/Qwen/Qwen3-14B" "openai/Qwen/Qwen3-32B" ] (_: {
+      "max_tokens" = 8192;
+      "max_input_tokens" = 8192;
+      "max_output_tokens" = 8192;
+      # "input_cost_per_token" = 4 e-07;
+      # "output_cost_per_token" = 8 e-07;
+      # "litellm_provider"= "siliconflow";
+      "supports_function_calling" = true;
+      "supports_tool_choice" = true;
+      "supports_reasoning" = true;
+      "mode" = "chat";
+      "source" = "https://cloud.siliconflow.cn/models";
+    })
   );
 }
