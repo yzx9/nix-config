@@ -2,11 +2,7 @@
 
 You can safely ignore this file if you don't need a proxy.
 
-
-See Also
---------
-
-https://github.com/NixOS/nix/issues/1472#issuecomment-1532955973
+See: https://github.com/NixOS/nix/issues/1472#issuecomment-1532955973
 """
 
 import argparse
@@ -21,7 +17,7 @@ class DarwinProxyManager:
     nix_daemon_name = "org.nixos.nix-daemon"
 
     # NOTE: curl only accept the lowercase of `http_proxy`!
-    # NOTE: https://curl.se/libcurl/c/libcurl-env.html
+    # See: https://curl.se/libcurl/c/libcurl-env.html
     keys = ["http_proxy", "https_proxy"]
 
     def __init__(self, proxy: str) -> None:
