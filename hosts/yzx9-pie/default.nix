@@ -24,6 +24,8 @@ mkNixosRpiConfiguration {
       ./gnome.nix
     ];
 
-    networking = networking_lab;
+    networking = networking_lab // {
+      wireless.enable = false;
+    };
   };
 }
