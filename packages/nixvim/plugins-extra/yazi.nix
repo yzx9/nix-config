@@ -6,10 +6,10 @@
 {
   plugins.yazi.enable = true;
 
-  dependencies.yazi = {
-    enable = true;
-    package = config.yazi.package;
-  };
+  # Yazi will automatically apply your configuration if you are using the
+  # default configuration directory (~/.config/yazi). This is the default
+  # behavior of home-manager for `program.yazi`.
+  dependencies.yazi.enable = true;
 
   keymaps = [
     # -- 👇 in this section, choose your own keymappings!
