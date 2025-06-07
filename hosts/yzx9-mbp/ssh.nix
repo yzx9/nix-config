@@ -2,7 +2,7 @@
 
 let
   ssh = "${config.home.homeDirectory}/.ssh/";
-  toSshPath = path: lib.removePrefix ssh path;
+  toSshPath = lib.removePrefix ssh;
 in
 {
   # ssh
@@ -24,18 +24,12 @@ in
       path = "${ssh}id_github";
       mode = "400";
     };
-
-    id-lab = {
-      file = ../../secrets/id-lab.age;
-      path = "${ssh}id_lab";
-      mode = "400";
-    };
   };
 
-  home.file.".ssh/id_auth.pub".source = ../../secrets/id-auth.pub;
-  home.file.".ssh/id_github.pub".source = ../../secrets/id-github.pub;
-
-  programs.ssh = {
-    matchBlocks."github.com".identityFile = (toSshPath config.age.secrets.id-github.path);
+  home.file = {
+    ".ssh/id_auth.pub".source = ../../secrets/id-auth.pub;
+    ".ssh/id_github.pub".source = ../../secrets/id-github.pub;
   };
+
+  programs.ssh.matchBlocks."github.com".identityFile = toSshPath config.age.secrets.id-github.path;
 }

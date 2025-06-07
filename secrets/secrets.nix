@@ -35,7 +35,6 @@ let
 in
 {
   "api-keys.age".publicKeys = all;
-  "id-lab.pub.age".publicKeys = all;
   "rss-pwd.age".publicKeys = all;
   "ssh-config.age".publicKeys = all;
   "xray.json.age".publicKeys = all;
@@ -47,5 +46,4 @@ in
   "id-auth_root.age".publicKeys = root ++ [ system_yzx9-mbp ];
   "id-git_root.age".publicKeys = root;
   "id-github_root.age".publicKeys = root;
-  "id-lab.age".publicKeys = root;
 }

@@ -12,6 +12,7 @@
 
     ssh-config = {
       file = ../../secrets/ssh-config.age;
+      # do not put it to /etc/ssh/ssh_config.d/xxx, id_auth is not a system-wide setting
       path = "/var/root/.ssh/config";
       owner = "root";
       group = "wheel";
