@@ -5,7 +5,7 @@ permissions:
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 1,15 * *' # Runs at 00:00 on the 1st and 15th of every month
+    - cron: "0 6 * * 2" # Runs at Beijing Time 14:00 every Tuesday (UTC 6:00)
 jobs:
   lockfile:
     runs-on: ubuntu-latest
