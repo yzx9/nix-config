@@ -23,7 +23,6 @@ mkNixosRpiConfiguration {
     imports = [
       ./frpc.nix
       ./hardware-configuration.nix
-      ./kanboard.nix
       ./networking.nix
       ./rss.nix
     ];
