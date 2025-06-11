@@ -1,10 +1,10 @@
 { config, ... }:
 
 {
-  age.secrets.frpc_yzx9-rpi5.file = ../../secrets/frpc_yzx9-rpi5.toml.age;
+  age.secrets.frpc.file = ../../secrets/frpc.toml.age;
 
   services.frpc = {
     enable = true;
-    configFile = config.age.secrets.frpc_yzx9-rpi5.path;
+    configFile = config.age.secrets.frpc.path;
   };
 }
