@@ -13,14 +13,6 @@
   # remove nix-channel related tools & configs, we use flakes instead.
   nix.channel.enable = false;
 
-  # but NIX_PATH is still used by many useful tools, so we set it to the same
-  # value as the one used by this flake. Make `nix repl '<nixpkgs>'` use the
-  # same nixpkgs as the one used by this flake.
-  environment.etc."nix/inputs/nixpkgs".source = "${inputs.nixpkgs}";
-
-  # Add this flake to the NIX_PATH, so that `nix repl '<this-flake>'` works.
-  nix.registry.yzx9.to = {
-    type = "path";
-    path = "${../../.}";
-  };
+  # Add this flake to the NIX_PATH, so that `nix repl yzx9` works.
+  nix.registry.yzx9.flake = inputs.self;
 }
