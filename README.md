@@ -14,27 +14,37 @@ nix build .#PACKAGE
 
 ## Adding a host
 
-1. Add the host configuration to `hosts/{HOST_NAME}/default.nix`. Modify `home.nix` and `host.nix` as needed.
-2. Generate the host keys, add the public key to your secrets, and re-encrypt the secrets.
+General way:
+
+1. Add the host configuration to `hosts/$(hostname)/default.nix`, modify `home.nix` and `host.nix` as needed.
+2. Generate the host keys, add the public key to `secrets/secrets.nix`, and re-encrypt the secrets using `agenix -r`.
 3. Add the new host configuration to `hosts/default.nix`.
 4. Deploy the configuration to your host.
    - If you're adding a new host with a standalone Home Manager setup, using `nix develop` might be helpful.
+   - Check the `deploy` command in `justfile`, if applicable
 
 ### Raspberry Pi: Build and Flash an SD Card Image
 
-We use [raspberry-pi-nix](https://github.com/nix-community/raspberry-pi-nix) for
-Raspberry Pi setup. Make sure to check the documentation first.
+We use [`nixos-raspberrypi`](https://github.com/nvmd/nixos-raspberrypi) for Raspberry Pi setup. Make sure to check the
+documentation first.
 
-Building an image and flashing it to an SD card is an effective way to set up your
-Raspberry Pi:
+Building an image and flashing it to an SD card is an effective way to set up your Raspberry Pi. However, creating an
+SD card image using `nixos-raspberrypi` can take some effort. We recommend starting with an official example:
 
 ```sh
-nix build '.#nixosConfigurations.rpi-example.config.system.build.sdImage'
+# Clone the repo and update the config as needed
+nix build 'github:nvmd/nixos-raspberrypi#nixosConfigurations.installerImages.rpi5'
+```
+
+This method builds a ready-to-use NixOS image. You can flash it directly to your SD card:
+
+```sh
 zstdcat result/sd-image/nixos-sd-image-23.11.20230703.ea4c80b-aarch64-linux.img.zst \
     | sudo dd of=/dev/mmcblk0 bs=100M
 ```
 
-This method creates and deploys a ready-to-use NixOS image to your SD card.
+After booting, you’ll have a running NixOS system on your Raspberry Pi. From there, you can deploy your own
+configuration.
 
 ## Known issues
 
@@ -42,11 +52,11 @@ This method creates and deploys a ready-to-use NixOS image to your SD card.
 
 To remove the uninstalled APPs icon from Launchpad:
 
-1.  `sudo nix store gc --debug && sudo nix-collect-garbage --delete-old`
-2.  click on the uninstalled APP's icon in Launchpad, it will show a question mark
-3.  if the app starts normally:
-    1.  right click on the running app's icon in Dock, select "Options" -> "Show in Finder" and delete it
-4.  hold down the Option key, a `x` button will appear on the icon, click it to remove the icon
+1.  Run command: `sudo nix store gc --debug && sudo nix-collect-garbage --delete-old`
+2.  Click on the uninstalled APP's icon in Launchpad, it will show a question mark
+3.  If the app starts normally, right click on the running app's icon in Dock, select "Options" -> "Show in Finder" and
+    delete it
+4.  Hold down the Option key, a `x` button will appear on the icon, click it to remove the icon
 
 ### Agenix
 
@@ -111,6 +121,7 @@ To fix it, you need to reload the driver. The easiest way is rebooting. If you c
 
 1. Check which modules are loaded: `lsmod | grep nvidia` and find processes using NVIDIA: `lsof | grep nvidia`
 2. Stop services if needed (e.g., stop GNOME with `sudo systemctl isolate multi-user.target`)
-3. Unload modules: `sudo modprobe -r nvidia_uvm nvidia_drm nvidia_modeset nvidia`. If `modprobe -r` fails, check what is still using the modules and kill the processes manually.
+3. Unload modules: `sudo modprobe -r nvidia_uvm nvidia_drm nvidia_modeset nvidia`. If `modprobe -r` fails, check what
+   is still using the modules and kill the processes manually.
 4. Reload module: `sudo modprobe nvidia`
 5. Test again: `nvidia-smi`. If problems persist, a full system reboot is recommended.
