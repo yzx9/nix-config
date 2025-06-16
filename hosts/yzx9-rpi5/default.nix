@@ -21,6 +21,7 @@ mkNixosRpiConfiguration {
 
   host = {
     imports = [
+      ./backup.nix
       ./frpc.nix
       ./hardware-configuration.nix
       ./networking.nix

@@ -30,10 +30,11 @@ let
 in
 {
   "api-keys.age".publicKeys = all;
+  "frpc.toml.age".publicKeys = all;
+  "lab-account.age".publicKeys = all;
   "rss-pwd.age".publicKeys = all;
   "ssh-config.age".publicKeys = all;
   "xray.json.age".publicKeys = all;
-  "frpc.toml.age".publicKeys = all;
 
   # root only
   "id-auth_root.age".publicKeys = root ++ [ system_yzx9-mbp ];
