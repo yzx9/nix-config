@@ -10,11 +10,11 @@ let
 
   # Configured:
   #  - deepseek/deepseek-chat
-  #  - gemini/gemini-2.5-pro-preview-06-05
-  #  - gemini/gemini-2.5-flash-preview-05-20
+  #  - gemini/gemini-2.5-pro
+  #  - gemini/gemini-2.5-flash
   #  - openai/Qwen/Qwen3-32B # siliconflow
-  model = "gemini/gemini-2.5-pro-preview-06-05";
-  weakModel = "gemini/gemini-2.5-flash-preview-05-20";
+  model = "gemini/gemini-2.5-pro";
+  weakModel = "gemini/gemini-2.5-flash";
 
   # Inject api keys in runtime due to the limitation of agnix
   pkg = pkgs.writeShellScriptBin "aider" ''
