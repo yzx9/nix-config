@@ -2,9 +2,11 @@
 # homepage: https://github.com/akinsho/bufferline.nvim
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/bufferline/index.html
 {
-  plugins.bufferline = {
-    enable = true;
-  };
+  plugins.bufferline.enable = true;
+
+  # # Enable catppuccin colors
+  # # https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/groups/integrations/bufferline.lua
+  # colorschemes.catppuccin.settings.integrations.bufferline = true;
 
   keymaps = [
     {

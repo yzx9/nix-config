@@ -6,28 +6,37 @@
 {
   plugins.lualine = {
     enable = true;
+
     settings = {
-      globalstatus = true;
-      disabledFiletypes = {
-        statusline = [
-          "dashboard"
-          "alpha"
-          "starter"
-          "Starter"
-        ];
-      };
-      theme = {
-        normal = {
-          a = {
-            bg = "#b4befe";
-            fg = "#1c1d21";
-          };
-          b.bg = "nil";
-          c.bg = "nil";
-          y.bg = "nil";
-          z.bg = "nil";
+      options = {
+        globalstatus = true;
+
+        disabled_filetypes = {
+          statusline = [
+            "dashboard"
+            "alpha"
+            "starter"
+            "Starter"
+          ];
         };
+
+        # Enable catppuccin colors
+        # https://github.com/catppuccin/nvim/tree/main/lua/lualine
+        theme = "catppuccin";
+        # theme = {
+        #   normal = {
+        #     a = {
+        #       bg = "#b4befe";
+        #       fg = "#1c1d21";
+        #     };
+        #     b.bg = "nil";
+        #     c.bg = "nil";
+        #     y.bg = "nil";
+        #     z.bg = "nil";
+        #   };
+        # };
       };
+
       sections = {
         lualine_a = [
           {
@@ -35,12 +44,15 @@
             fmt = "string.lower";
           }
         ];
+
         lualine_b = [
           {
             __unkeyed-1 = "branch";
             icon = icons.GitBranch; # 
           }
+
           "diff"
+
           {
             __unkeyed-1 = "diagnostic";
             symbols = {
@@ -51,6 +63,7 @@
             };
           }
         ];
+
         lualine_c = [
           {
             __unkeyed-1 = "filename";
@@ -61,6 +74,7 @@
             };
             separator.left = "";
           }
+
           {
             __unkeyed-1 = "macro";
             fmt.__raw = ''
@@ -76,6 +90,7 @@
             draw_empty = false;
           }
         ];
+
         lualine_x = [
           "encoding"
           "fileformat"
@@ -84,7 +99,9 @@
             icon_only = true;
           }
         ];
+
         lualine_y = [ "progress" ];
+
         lualine_z = [ "location" ];
       };
     };

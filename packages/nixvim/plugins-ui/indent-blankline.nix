@@ -36,5 +36,9 @@
 
   # Enable catppuccin colors
   # https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/groups/integrations/indent_blankline.lua
-  colorschemes.catppuccin.settings.integrations.indent_blankline = true;
+  colorschemes.catppuccin.settings.integrations.indent_blankline = {
+    enabled = true;
+    scope_color = ""; # catppuccin color (eg. `lavender`) Default: text
+    colored_indent_levels = false;
+  };
 }

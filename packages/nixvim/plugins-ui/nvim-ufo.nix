@@ -27,6 +27,10 @@
     };
   };
 
+  # Enable catppuccin colors
+  # https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/groups/integrations/ufo.lua
+  colorschemes.catppuccin.settings.integrations.ufo = true;
+
   keymaps = [
     {
       mode = "n";

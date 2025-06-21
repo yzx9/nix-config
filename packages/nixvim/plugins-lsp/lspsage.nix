@@ -84,6 +84,10 @@ lib.mkIf config.lsp.enable {
     };
   };
 
+  # Enable catppuccin colors
+  # https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/groups/integrations/lsp_saga.lua
+  colorschemes.catppuccin.settings.integrations.lsp_saga = true;
+
   keymaps = [
     {
       mode = "n";
