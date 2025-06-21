@@ -11,8 +11,10 @@
 lib.mkIf config.lsp.enable {
   plugins.conform-nvim = {
     enable = true;
+
     settings = {
       notify_on_error = true;
+
       formatters_by_ft =
         let
           genPrettier =
@@ -89,6 +91,7 @@ lib.mkIf config.lsp.enable {
       desc = "Disable autoformat-on-save",
       bang = true,
     })
+
     vim.api.nvim_create_user_command("FormatEnable", function()
       vim.b.disable_autoformat = false
       vim.g.disable_autoformat = false
