@@ -8,6 +8,7 @@
     ./apps.nix
     ./base.nix
     ./bat.nix
+    ./btop.nix
     ./git.nix
     ./gpg.nix
     ./nvim.nix

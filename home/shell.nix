@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   programs.bash.enable = true;
@@ -26,50 +26,33 @@
   };
 
   # The minimal, blazing-fast, and infinitely customizable prompt for any shell!
-  programs.starship = {
-    enable = true;
-
-    enableBashIntegration = true;
-    enableZshIntegration = true;
-
-    settings = {
-      character = {
-        success_symbol = "[›](bold green)";
-        error_symbol = "[›](bold red)";
-        vimcmd_symbol = "[❮](subtext1)"; # For use with zsh-vi-mode
+  programs.starship =
+    let
+      catppuccin = pkgs.fetchFromGitHub {
+        owner = "catppuccin";
+        repo = "starship";
+        rev = "e99ba6b210c0739af2a18094024ca0bdf4bb3225";
+        hash = "sha256-1w0TJdQP5lb9jCrCmhPlSexf0PkAlcz8GBDEsRjPRns=";
       };
+    in
+    {
+      enable = true;
 
-      palette = "catppuccin_mocha";
+      enableBashIntegration = true;
+      enableZshIntegration = true;
 
-      # https://github.com/catppuccin/starship/blob/main/themes/mocha.toml
-      palettes.catppuccin_mocha = {
-        rosewater = "#f5e0dc";
-        flamingo = "#f2cdcd";
-        pink = "#f5c2e7";
-        mauve = "#cba6f7";
-        red = "#f38ba8";
-        maroon = "#eba0ac";
-        peach = "#fab387";
-        yellow = "#f9e2af";
-        green = "#a6e3a1";
-        teal = "#94e2d5";
-        sky = "#89dceb";
-        sapphire = "#74c7ec";
-        blue = "#89b4fa";
-        lavender = "#b4befe";
-        text = "#cdd6f4";
-        subtext1 = "#bac2de";
-        subtext0 = "#a6adc8";
-        overlay2 = "#9399b2";
-        overlay1 = "#7f849c";
-        overlay0 = "#6c7086";
-        surface2 = "#585b70";
-        surface1 = "#45475a";
-        surface0 = "#313244";
-        base = "#1e1e2e";
-        mantle = "#181825";
-        crust = "#11111b";
-      };
+      settings = lib.mkMerge [
+        {
+          character = {
+            success_symbol = "[›](bold green)";
+            error_symbol = "[›](bold red)";
+            vimcmd_symbol = "[❮](subtext1)"; # For use with zsh-vi-mode
+          };
+
+          palette = "catppuccin_mocha";
+        }
+
+        (lib.importTOML "${catppuccin}/themes/mocha.toml")
+      ];
     };
-  };
 }
