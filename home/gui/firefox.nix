@@ -28,6 +28,7 @@ in
       AppAutoUpdate = false;
       DisableAppUpdate = true;
       ExtensionUpdate = false;
+      PasswordManagerEnabled = false;
     };
 
     profiles.${config.vars.user.name} = {
