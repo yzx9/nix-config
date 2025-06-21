@@ -1,20 +1,21 @@
 # Highlight colors for neovim
 # homepage: https://github.com/brenoprata10/nvim-highlight-colors
-{ pkgs, icons, ... }:
+# nixvim doc: https://nix-community.github.io/nixvim/plugins/highlight-colors/index.html
+{ icons, ... }:
 
 {
-  extraPlugins = [ pkgs.vimPlugins.nvim-highlight-colors ];
+  plugins.highlight-colors = {
+    enable = true;
 
-  # https://github.com/brenoprata10/nvim-highlight-colors#options
-  extraConfigLua = ''
-    require("nvim-highlight-colors").setup({
-      render = "virtual",
-      virtual_symbol = "${icons.FileModified}",
-      virtual_symbol_position = "eow",
-      virtual_symbol_prefix = " ",
-      virtual_symbol_suffix = "",
-    })
-  '';
+    # https://github.com/brenoprata10/nvim-highlight-colors#options
+    settings = {
+      render = "virtual";
+      virtual_symbol = "${icons.FileModified}";
+      virtual_symbol_position = "eow";
+      virtual_symbol_prefix = " ";
+      virtual_symbol_suffix = "";
+    };
+  };
 
   keymaps = [
     {
