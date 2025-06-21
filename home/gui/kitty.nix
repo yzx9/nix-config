@@ -33,7 +33,7 @@ lib.mkMerge [
       settings = {
         hide_window_decorations = if pkgs.stdenvNoCC.hostPlatform.isDarwin then "titlebar-only" else "yes";
         window_margin_width = 5;
-        background_opacity = 0.85;
+        background_opacity = 0.9;
         macos_show_window_title_in = "window";
 
         # NOTE: disabling the read confirmation is this akes a security risk
