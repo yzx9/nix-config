@@ -60,7 +60,7 @@ lib.mkIf config.lsp.enable {
         ruff_format.command = lib.getExe pkgs.ruff;
         ruff_organize_imports.command = lib.getExe pkgs.ruff;
         # rustfmt.command = lib.getExe pkgs.rustfmt;
-        # goimports.command = "${pkgs.gotools}/bin/goimports";
+        # goimports.command = lib.getExe' pkgs.gotools "goimports""};
         # gofmt.command = lib.getExe pkgs.go;
         nixfmt.command = lib.getExe pkgs.nixfmt-rfc-style;
         yamllint.command = lib.getExe pkgs.yamllint;

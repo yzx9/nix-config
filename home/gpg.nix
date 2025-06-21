@@ -30,6 +30,6 @@ lib.mkIf config.purpose.daily {
       max-cache-ttl-ssh 60480000
     ''
     + lib.optionalString pinentry_mac ''
-      pinentry-program ${lib.getBin pkgs.pinentry_mac}/bin/pinentry-mac
+      pinentry-program ${lib.getExe pkgs.pinentry_mac}
     '';
 }

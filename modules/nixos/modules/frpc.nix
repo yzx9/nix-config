@@ -44,7 +44,7 @@ in
         Type = "simple";
 
         # the command to execute when the service starts up
-        ExecStart = ''${cfg.package}/bin/frpc -c ${cfg.configFile}'';
+        ExecStart = ''${lib.getExe' cfg.package "frpc"} -c ${cfg.configFile}'';
       };
     };
   };
