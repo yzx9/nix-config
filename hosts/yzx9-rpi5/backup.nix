@@ -1,8 +1,8 @@
 { config, pkgs, ... }:
 
 {
-  age.secrets.labAccount.file = ../../secrets/lab-account.age;
-  age.secrets.backupPassphrase.file = ../../secrets/backup-passphrase.age;
+  age.secrets.lab-account.file = ../../secrets/lab-account.age;
+  age.secrets.backup-passphrase.file = ../../secrets/backup-passphrase.age;
 
   environment.systemPackages = [ pkgs.cifs-utils ]; # samba
 
@@ -13,7 +13,7 @@
     options = [
       # this line prevents hanging on network split
       "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s"
-      "credentials=${config.age.secrets.labAccount.path}"
+      "credentials=${config.age.secrets.lab-account.path}"
     ];
   };
 
@@ -27,6 +27,8 @@
       inherit (config.services) freshrss;
     in
     {
+      # TODO: backup radicale
+
       repo = "/nas/home/backup";
       doInit = true;
       compression = "auto,lzma";
@@ -34,14 +36,14 @@
 
       encryption = {
         mode = "repokey";
-        passCommand = "cat ${config.age.secrets.backupPassphrase.path}";
+        passCommand = "cat ${config.age.secrets.backup-passphrase.path}";
       };
 
       prune.keep = {
         within = "1d"; # Keep all archives from the last day
         daily = 7;
         weekly = 4;
-        monthly = -1;  # Keep at least one archive for each month
+        monthly = -1; # Keep at least one archive for each month
       };
 
       readWritePaths = [

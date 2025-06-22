@@ -22,10 +22,11 @@ mkNixosRpiConfiguration {
   host = {
     imports = [
       ./backup.nix
+      ./freshrss.nix
       ./frpc.nix
       ./hardware-configuration.nix
       ./networking.nix
-      ./rss.nix
+      ./radicale.nix
     ];
   };
 }

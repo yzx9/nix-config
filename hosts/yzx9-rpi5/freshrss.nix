@@ -6,8 +6,8 @@ let
   vhost = "freshrss";
 in
 {
-  age.secrets."rss-pwd" = {
-    file = ../../secrets/rss-pwd.age;
+  age.secrets."freshrss-pwd" = {
+    file = ../../secrets/freshrss-pwd.age;
     owner = config.services.freshrss.user;
     group = config.users.users.${config.services.freshrss.user}.group;
   };
@@ -45,7 +45,7 @@ in
     baseUrl = baseUrl;
 
     defaultUser = vars.user.name;
-    passwordFile = config.age.secrets."rss-pwd".path;
+    passwordFile = config.age.secrets."freshrss-pwd".path;
   };
 
   services.nginx.virtualHosts.${vhost} = {
