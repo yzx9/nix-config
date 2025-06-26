@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   pkgs,
   lib,
   ...
@@ -7,9 +8,6 @@
 
 lib.mkMerge [
   {
-    # Allow unfree packages
-    # nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ ];
-
     # The home.packages option allows you to install Nix packages into your
     # environment.
     home.packages = with pkgs; [
