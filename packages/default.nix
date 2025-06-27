@@ -9,6 +9,8 @@ let
   pkgs = nixpkgs.legacyPackages.${system};
 
   all_platforms = {
+    gemini-cli = pkgs.callPackage ./gemini-cli { };
+
     nixvim = import ./nixvim {
       inherit pkgs;
       nixvim = nixvim.legacyPackages.${system};

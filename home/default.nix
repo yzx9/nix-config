@@ -9,6 +9,7 @@
     ./base.nix
     ./bat.nix
     ./btop.nix
+    ./gemini.nix
     ./git.nix
     ./gpg.nix
     ./nvim.nix
