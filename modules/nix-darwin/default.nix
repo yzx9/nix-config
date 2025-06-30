@@ -14,8 +14,8 @@
     ./aerospace.nix
     ./docker.nix
     ./homebrew.nix
+    ./networking.nix
     ./nix-core.nix
-    ./proxy.nix
     ./system.nix
   ];
 }

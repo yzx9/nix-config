@@ -12,8 +12,8 @@
     ../_shared/overlays.nix
 
     ./docker.nix
+    ./networking.nix
     ./nvidia.nix
-    ./proxy.nix
     ./system.nix
 
     ./modules/frpc.nix

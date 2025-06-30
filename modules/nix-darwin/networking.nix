@@ -7,11 +7,21 @@
 
 let
   cfg = config.proxy;
+
+  assets =
+    with pkgs;
+    symlinkJoin {
+      name = "xray-assets";
+      paths = [
+        v2ray-geoip
+        v2ray-domain-list-community
+      ];
+    };
 in
 lib.mkIf cfg.selfHost.enable {
   age.secrets."xray.json".file = ../../secrets/xray.json.age;
 
-  # run `launchctl kickstart -k system/org.nixos.xray`
+  # To restart service: `launchctl kickstart -k system/org.nixos.xray`
   launchd.daemons.xray = {
     path = [ pkgs.xray ];
 
@@ -21,7 +31,11 @@ lib.mkIf cfg.selfHost.enable {
     serviceConfig = {
       RunAtLoad = true;
       KeepAlive = true;
-      # StandardOutPath = "/var/lib/xray.out";
+      StandardOutPath = "/var/lib/xray.out";
+      StandardErrorPath = "/var/lib/xray.err";
+
+      # https://xtls.github.io/config/features/env.html
+      EnvironmentVariables.XRAY_LOCATION_ASSET = "${assets}/share/v2ray";
     };
   };
 }
