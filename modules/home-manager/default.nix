@@ -13,6 +13,7 @@
     }
 
     ../../home
+    ../_shared/overlays
     ../_shared/nix-core.nix
   ];
 }

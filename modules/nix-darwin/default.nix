@@ -5,11 +5,11 @@
     inputs.agenix.darwinModules.default
     inputs.home-manager.darwinModules.home-manager
 
+    ../_shared/overlays
     ../_shared/apps.nix
     ../_shared/options.nix
     ../_shared/nix-core.nix
     ../_shared/nix-system.nix
-    ../_shared/overlays.nix
 
     ./aerospace.nix
     ./docker.nix
