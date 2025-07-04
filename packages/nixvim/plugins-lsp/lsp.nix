@@ -1,6 +1,7 @@
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/lsp/index.html
 {
   config,
+  pkgs,
   lib,
   icons,
   ...
@@ -112,7 +113,12 @@ lib.mkIf config.lsp.enable {
       # frontend
       html.enable = true;
       cssls.enable = true;
-      tailwindcss.enable = true;
+      tailwindcss = {
+        enable = true;
+        package = pkgs.tailwindcss-language-server.override {
+          nodejs_latest = pkgs.nodejs;
+        };
+      };
       ts_ls.enable = true;
       #eslint.enable = true;
       volar = {
