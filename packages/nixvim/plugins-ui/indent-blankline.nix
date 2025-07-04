@@ -9,8 +9,10 @@
     settings = {
       indent.char = "▏";
 
-      # Disable scope highlighting
-      scope.enabled = false;
+      scope = {
+        show_start = false;
+        show_end = false;
+      };
 
       exclude.filetypes = [
         "aerial"
@@ -26,11 +28,6 @@
         "toggleterm"
         "Trouble"
       ];
-
-      scope = {
-        show_start = false;
-        show_end = false;
-      };
     };
   };
 
@@ -38,7 +35,7 @@
   # https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/groups/integrations/indent_blankline.lua
   colorschemes.catppuccin.settings.integrations.indent_blankline = {
     enabled = true;
-    scope_color = ""; # catppuccin color (eg. `lavender`) Default: text
+    scope_color = "mauve"; # catppuccin color (eg. `lavender`) Default: text
     colored_indent_levels = false;
   };
 }
