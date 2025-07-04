@@ -1,8 +1,4 @@
-{
-  pkgs,
-  nixvim,
-  ...
-}:
+{ pkgs, nixvim }:
 
 let
   inherit (pkgs) lib;

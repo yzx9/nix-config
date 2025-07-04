@@ -8,10 +8,16 @@
 let
   pkgs = nixpkgs.legacyPackages.${system};
 
+  nixvim' = import ./nixvim {
+    inherit pkgs;
+    nixvim = nixvim.legacyPackages.${system};
+  };
+
   all_platforms = {
-    nixvim = import ./nixvim {
-      inherit pkgs;
-      nixvim = nixvim.legacyPackages.${system};
+    nixvim = nixvim';
+
+    nixvim-lsp = nixvim'.extend {
+      lsp.enable = true;
     };
   };
 
