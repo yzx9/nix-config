@@ -25,11 +25,6 @@ lib.mkMerge [
         size = 13;
       };
 
-      shellIntegration = {
-        enableBashIntegration = true;
-        enableZshIntegration = true;
-      };
-
       settings = {
         hide_window_decorations = if pkgs.stdenvNoCC.hostPlatform.isDarwin then "titlebar-only" else "yes";
         window_margin_width = 5;

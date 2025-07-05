@@ -1,6 +1,15 @@
 { pkgs, lib, ... }:
 
 {
+  home.shell = {
+    # Disable globally shell integration for all supported shells.
+    enableShellIntegration = false;
+
+    # Enable individual shell integrations can be overridden with their respective option
+    enableBashIntegration = true;
+    enableZshIntegration = true;
+  };
+
   programs.bash.enable = true;
 
   programs.zsh = {
@@ -19,40 +28,34 @@
   };
 
   # A multi-shell multi-command argument completer
-  programs.carapace = {
-    enable = true;
-    enableBashIntegration = true;
-    enableZshIntegration = true;
-  };
+  programs.carapace.enable = true;
 
   # The minimal, blazing-fast, and infinitely customizable prompt for any shell!
-  programs.starship =
-    let
-      catppuccin = pkgs.fetchFromGitHub {
-        owner = "catppuccin";
-        repo = "starship";
-        rev = "e99ba6b210c0739af2a18094024ca0bdf4bb3225";
-        hash = "sha256-1w0TJdQP5lb9jCrCmhPlSexf0PkAlcz8GBDEsRjPRns=";
-      };
-    in
-    {
-      enable = true;
+  programs.starship = {
+    enable = true;
 
-      enableBashIntegration = true;
-      enableZshIntegration = true;
+    settings = lib.mkMerge [
+      {
+        character = {
+          success_symbol = "[›](bold green)";
+          error_symbol = "[›](bold red)";
+          vimcmd_symbol = "[❮](subtext1)"; # For use with zsh-vi-mode
+        };
 
-      settings = lib.mkMerge [
-        {
-          character = {
-            success_symbol = "[›](bold green)";
-            error_symbol = "[›](bold red)";
-            vimcmd_symbol = "[❮](subtext1)"; # For use with zsh-vi-mode
+        palette = "catppuccin_mocha";
+      }
+
+      (
+        let
+          catppuccin = pkgs.fetchFromGitHub {
+            owner = "catppuccin";
+            repo = "starship";
+            rev = "e99ba6b210c0739af2a18094024ca0bdf4bb3225";
+            hash = "sha256-1w0TJdQP5lb9jCrCmhPlSexf0PkAlcz8GBDEsRjPRns=";
           };
-
-          palette = "catppuccin_mocha";
-        }
-
-        (lib.importTOML "${catppuccin}/themes/mocha.toml")
-      ];
-    };
+        in
+        lib.importTOML "${catppuccin}/themes/mocha.toml"
+      )
+    ];
+  };
 }

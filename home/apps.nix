@@ -67,8 +67,6 @@ lib.mkMerge [
     programs.direnv = {
       enable = true;
       nix-direnv.enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
     };
 
     home.shellAliases.j = "just";

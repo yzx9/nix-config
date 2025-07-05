@@ -9,8 +9,6 @@
   programs.yazi = lib.mkMerge [
     {
       enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
     }
 
     (lib.mkIf config.purpose.daily {
