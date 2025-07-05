@@ -18,8 +18,8 @@ stdenv.mkDerivation (finalAttrs: {
   dontConfigure = true;
 
   nativeBuildInputs = [
-    swift
     unzip
+    swift
   ];
 
   buildPhase = ''
