@@ -48,7 +48,9 @@ configuration.
 
 ## Known issues
 
-### Darwin apps in dock
+### Darwin
+
+#### Uninstalled apps in Launchpad
 
 To remove the uninstalled APPs icon from Launchpad:
 
@@ -58,7 +60,25 @@ To remove the uninstalled APPs icon from Launchpad:
     delete it
 4.  Hold down the Option key, a `x` button will appear on the icon, click it to remove the icon
 
+#### Remove old version entries from Finder
+
+```sh
+# re-register regular apps
+/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -domain local -domain system -domain user
+
+# re-register nixpkgs
+/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -R -v "/Applications/Nix Apps"
+
+# restart Finder to see effect
+killall Finder
+```
+
 ### Agenix
+
+#### Service restart
+
+Agenix secrets are runtime-only resources, meaning that the NixOS hot-reload system cannot detect changes to them.
+Therefore, it is necessary to manually restart any related services.
 
 #### Debug activation on darwin
 
@@ -117,7 +137,8 @@ nvidia-smi
 Failed to initialize NVML: Driver/library version mismatch
 ```
 
-To fix it, you need to reload the driver. The easiest way is rebooting. If you can't reboot, follow these steps:
+To fix it, you need to reload the driver. The easiest way is **rebooting**.
+If you can't reboot, follow these steps:
 
 1. Check which modules are loaded: `lsmod | grep nvidia` and find processes using NVIDIA: `lsof | grep nvidia`
 2. Stop services if needed (e.g., stop GNOME with `sudo systemctl isolate multi-user.target`)
