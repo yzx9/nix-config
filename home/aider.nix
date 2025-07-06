@@ -24,7 +24,9 @@ lib.mkIf config.purpose.dev.enable {
     # Inject api keys in runtime due to the limitation of agnix
     (pkgs.writeShellApplication {
       name = "aider";
-      runtimeInputs = [ pkgs.aider-chat ];
+      runtimeInputs = [
+        pkgs.aider-chat-with-playwright
+      ];
       text = ''
         declare -A secrets
 
