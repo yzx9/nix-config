@@ -113,12 +113,7 @@ lib.mkIf config.lsp.enable {
       # frontend
       html.enable = true;
       cssls.enable = true;
-      tailwindcss = {
-        enable = true;
-        package = pkgs.tailwindcss-language-server.override {
-          nodejs_latest = pkgs.nodejs;
-        };
-      };
+      tailwindcss.enable = true;
       ts_ls.enable = true;
       #eslint.enable = true;
       volar = {
