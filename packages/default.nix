@@ -14,6 +14,8 @@ let
   };
 
   all_platforms = {
+    aim = pkgs.callPackage ./aim { };
+
     nixvim = nixvim';
 
     nixvim-lsp = nixvim'.extend {
