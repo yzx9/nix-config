@@ -58,9 +58,9 @@
     settings = lib.mkMerge [
       {
         character = {
-          success_symbol = "[›](bold green)";
-          error_symbol = "[›](bold red)";
-          vimcmd_symbol = "[❮](subtext1)"; # For use with zsh-vi-mode
+          success_symbol = "[➜](bold green)";
+          error_symbol = "[➜](bold red)";
+          vimcmd_symbol = "[:](subtext1)"; # For use with zsh-vi-mode
         };
 
         palette = "catppuccin_mocha";
