@@ -12,12 +12,12 @@ let
   #  - deepseek/deepseek-chat
   #  - gemini/gemini-2.5-pro
   #  - gemini/gemini-2.5-flash
-  #  - openai/Qwen/Qwen3-32B # siliconflow
+  #  - openai/Qwen/Qwen3-{8,14,32}B # siliconflow
+  #  - openai/moonshotai/Kimi-Dev-72B # siliconflow
   model = "gemini/gemini-2.5-pro";
   weakModel = "gemini/gemini-2.5-flash";
 in
 lib.mkIf config.purpose.dev.enable {
-
   age.secrets."api-keys".file = ../secrets/api-keys.age;
 
   home.packages = [
@@ -107,18 +107,27 @@ lib.mkIf config.purpose.dev.enable {
   };
 
   home.file.".aider.model.metadata.json".text = builtins.toJSON (
-    lib.genAttrs [ "openai/Qwen/Qwen3-8B" "openai/Qwen/Qwen3-14B" "openai/Qwen/Qwen3-32B" ] (_: {
-      "max_tokens" = 8192;
-      "max_input_tokens" = 8192;
-      "max_output_tokens" = 8192;
-      # "input_cost_per_token" = 4 e-07;
-      # "output_cost_per_token" = 8 e-07;
-      # "litellm_provider"= "siliconflow";
-      "supports_function_calling" = true;
-      "supports_tool_choice" = true;
-      "supports_reasoning" = true;
-      "mode" = "chat";
-      "source" = "https://cloud.siliconflow.cn/models";
-    })
+    lib.genAttrs
+      [
+        "openai/Qwen/Qwen3-8B"
+        "openai/Qwen/Qwen3-14B"
+        "openai/Qwen/Qwen3-32B"
+        "openai/moonshotai/Kimi-Dev-72B"
+        "openai/moonshotai/Kimi-K2-Instruct"
+        "openai/Pro/moonshotai/Kimi-K2-Instruct"
+      ]
+      (_: {
+        "max_tokens" = 8192;
+        "max_input_tokens" = 128000;
+        "max_output_tokens" = 8192;
+        # "input_cost_per_token" = 4 e-07;
+        # "output_cost_per_token" = 8 e-07;
+        # "litellm_provider"= "siliconflow";
+        "supports_function_calling" = true;
+        "supports_tool_choice" = true;
+        "supports_reasoning" = true;
+        "mode" = "chat";
+        "source" = "https://cloud.siliconflow.cn/models";
+      })
   );
 }
