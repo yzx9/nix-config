@@ -34,6 +34,8 @@
           vim.cmd(t.id .. "ToggleTermSetName " .. term_name)
         end
       '';
+
+      lazyLoad.settings.cmd = "ToggleTerm";
     };
   };
 

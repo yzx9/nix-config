@@ -28,6 +28,7 @@ nixvim.makeNixvimWithModule {
       plugins-extra/fidget.nix
       plugins-extra/illuminate.nix
       plugins-extra/lazygit.nix
+      plugins-extra/lz-n.nix
       plugins-extra/telescope.nix
       plugins-extra/toggleterm.nix
       plugins-extra/which-key.nix

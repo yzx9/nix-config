@@ -7,6 +7,8 @@
     enable = true;
 
     extensions.fzf-native.enable = true;
+
+    lazyLoad.settings.cmd = "Telescope";
   };
 
   # Needed for live grep

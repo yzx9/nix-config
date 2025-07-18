@@ -82,6 +82,8 @@ lib.mkIf config.lsp.enable {
       scrollDown = "<C-f>";
       scrollUp = "<C-b>";
     };
+
+    # lazyLoad.settings.cmd = "Lspsaga";
   };
 
   # Enable catppuccin colors

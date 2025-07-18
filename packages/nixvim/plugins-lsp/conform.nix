@@ -77,6 +77,11 @@ lib.mkIf config.lsp.enable {
         end
       '';
     };
+
+    lazyLoad.settings = {
+      cmd = "ConformInfo";
+      event = "BufWritePre";
+    };
   };
 
   extraConfigLua = ''

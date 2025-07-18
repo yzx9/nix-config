@@ -1,10 +1,11 @@
 # File Browser extension for telescope.nvim
 # homepage: https://github.com/mikavilpas/yazi.nvim
 # NixVim doc: https://nix-community.github.io/nixvim/plugins/yazi/index.html
-{ config, ... }:
-
 {
-  plugins.yazi.enable = true;
+  plugins.yazi = {
+    enable = true;
+    lazyLoad.settings.cmd = "Yazi";
+  };
 
   # Yazi will automatically apply your configuration if you are using the
   # default configuration directory (~/.config/yazi). This is the default

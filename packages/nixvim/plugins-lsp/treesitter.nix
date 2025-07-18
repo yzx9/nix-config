@@ -15,5 +15,5 @@ lib.mkIf config.lsp.enable {
 
   # Enable catppuccin colors
   # https://github.com/catppuccin/nvim/blob/main/lua/catppuccin/groups/integrations/treesitter.lua
-  colorschemes.catppuccin.settings.integrations.treesitter.enabled = true;
+  colorschemes.catppuccin.settings.integrations.treesitter.enabled = config.plugins.treesitter.enable;
 }
