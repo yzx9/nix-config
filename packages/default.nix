@@ -13,15 +13,19 @@ let
     nixvim = nixvim.legacyPackages.${system};
   };
 
-  all_platforms = {
-    aim = pkgs.callPackage ./aim { };
+  all_platforms =
+    let
+      catppuccin-bat = pkgs.callPackage ./catppuccin-bat { };
+    in
+    {
+      aim = pkgs.callPackage ./aim { };
 
-    nixvim = nixvim';
+      inherit catppuccin-bat;
+      catppuccin-yazi-flavor = pkgs.callPackage ./catppuccin-yazi-flavor { inherit catppuccin-bat; };
 
-    nixvim-lsp = nixvim'.extend {
-      lsp.enable = true;
+      nixvim = nixvim';
+      nixvim-lsp = nixvim'.extend { lsp.enable = true; };
     };
-  };
 
   darwin = {
     macism = pkgs.callPackage ./macism { };

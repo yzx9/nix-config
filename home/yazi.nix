@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   pkgs,
   lib,
   ...
@@ -9,9 +10,17 @@
   programs.yazi = lib.mkMerge [
     {
       enable = true;
+      shellWrapperName = "y";
     }
 
     (lib.mkIf config.purpose.daily {
+      theme.flavor.dark = "mocha";
+
+      flavors.mocha = inputs.self.packages.${config.vars.system}.catppuccin-yazi-flavor.override {
+        flavor = "mocha";
+        color = "blue";
+      };
+
       plugins = {
         git = pkgs.yaziPlugins.git;
       };
@@ -37,6 +46,4 @@
       };
     })
   ];
-
-  home.shellAliases.y = "yazi";
 }
