@@ -1,7 +1,7 @@
 {
   lib,
   stdenv,
-  fetchurl,
+  fetchFromGitHub,
   unzip,
   swift,
 }:
@@ -10,8 +10,10 @@ stdenv.mkDerivation (finalAttrs: {
   pname = "macism";
   version = "1.3.3";
 
-  src = fetchurl {
-    url = "https://github.com/laishulu/macism/archive/refs/tags/v${finalAttrs.version}.zip";
+  src = fetchFromGitHub {
+    owner = "laishulu";
+    repo = "macism";
+    rev = "v${finalAttrs.version}";
     hash = "sha256-1A86UOxas+pps2erUZlnEF042jXyVK7dUeQsFs2bPx0=";
   };
 

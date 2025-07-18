@@ -1,4 +1,4 @@
-{ config, inputs, ... }:
+{ pkgs, ... }:
 
 {
   programs.bat = {
@@ -7,7 +7,7 @@
     config.theme = "mocha";
 
     themes.mocha = {
-      src = inputs.self.packages.${config.vars.system}.catppuccin-bat;
+      src = pkgs.catppuccin-bat;
       file = "themes/Catppuccin Mocha.tmTheme";
     };
   };

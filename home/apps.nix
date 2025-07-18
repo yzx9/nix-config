@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   pkgs,
   lib,
   ...
@@ -38,7 +37,8 @@ lib.mkMerge [
   # Daily
   (lib.mkIf config.purpose.daily {
     home.packages =
-      (with pkgs; [
+      with pkgs;
+      [
         # fantastic
         asciiquarium
         cmatrix
@@ -47,14 +47,12 @@ lib.mkMerge [
         # msic
         age # encryption tool
         gopass # password manager
-      ])
+        aim
+      ]
       ++ lib.optionals config.purpose.gui [
         # you have to run `gopass-jsonapi configure` manually, because I dont know how to
         # do it automatically
-        pkgs.gopass-jsonapi # TODO: move to firefox.nix
-      ]
-      ++ [
-        inputs.self.packages.${config.vars.system}.aim # only support darwin now
+        gopass-jsonapi # TODO: move to firefox.nix
       ];
   })
 
