@@ -3,14 +3,13 @@
 # NixVim doc: https://nix-community.github.io/nixvim/plugins/yazi/index.html
 {
   plugins.yazi = {
+    # Yazi will automatically apply your configuration if you are using the
+    # default configuration directory (~/.config/yazi). This is the default
+    # behavior of home-manager for `program.yazi`.
     enable = true;
+
     lazyLoad.settings.cmd = "Yazi";
   };
-
-  # Yazi will automatically apply your configuration if you are using the
-  # default configuration directory (~/.config/yazi). This is the default
-  # behavior of home-manager for `program.yazi`.
-  dependencies.yazi.enable = true;
 
   keymaps = [
     # -- 👇 in this section, choose your own keymappings!
