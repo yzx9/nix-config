@@ -22,13 +22,13 @@ nixvim.makeNixvimWithModule {
       ./utils.nix
 
       # Plugins provide additional features
-      plugins-extra/autopairs.nix
       plugins-extra/cmp.nix
       plugins-extra/copilot.nix
       plugins-extra/fidget.nix
       plugins-extra/illuminate.nix
       plugins-extra/lazygit.nix
       plugins-extra/lz-n.nix
+      plugins-extra/nvim-autopairs.nix
       plugins-extra/telescope.nix
       plugins-extra/toggleterm.nix
       plugins-extra/which-key.nix
