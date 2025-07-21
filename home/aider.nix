@@ -14,8 +14,8 @@ let
   #  - gemini/gemini-2.5-flash
   #  - openai/Qwen/Qwen3-{8,14,32}B # siliconflow
   #  - openai/moonshotai/Kimi-Dev-72B # siliconflow
-  model = "gemini/gemini-2.5-pro";
-  weakModel = "gemini/gemini-2.5-flash";
+  model = "openai/moonshotai/Kimi-Dev-72B";
+  weakModel = "openai/Qwen/Qwen3-32B";
 in
 lib.mkIf config.purpose.dev.enable {
   age.secrets."api-keys".file = ../secrets/api-keys.age;
