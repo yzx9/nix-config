@@ -56,16 +56,12 @@ in
     dev = {
       enable = lib.mkEnableOption "for development, will install development-specific applications";
 
-      devops.enable = lib.mkOption {
-        type = lib.types.bool;
+      nix.enable = (lib.mkEnableOption "for Nix development, will install Nix-specific applications") // {
         default = config.purpose.dev.enable;
-        description = "for DevOps, will install DevOps-specific applications";
       };
 
-      nix.enable = lib.mkOption {
-        type = lib.types.bool;
+      ops.enable = (lib.mkEnableOption "for Ops, will install Ops-specific applications") // {
         default = config.purpose.dev.enable;
-        description = "for Nix development, will install Nix-specific applications";
       };
     };
   };

@@ -83,8 +83,17 @@ lib.mkMerge [
     };
   })
 
-  # DevOps
-  (lib.mkIf config.purpose.dev.devops.enable {
+  # Dev - Nix
+  (lib.mkIf config.purpose.dev.nix.enable {
+    home.packages = with pkgs; [
+      hydra-check # check hydra status
+      nixpkgs-review
+      nix-output-monitor
+    ];
+  })
+
+  # Dev - Ops
+  (lib.mkIf config.purpose.dev.ops.enable {
     home.packages = with pkgs; [
       # networking tools
       # iputils
@@ -97,15 +106,6 @@ lib.mkMerge [
       ipcalc # it is a calculator for the IPv4/v6 addresses
 
       lsof
-    ];
-  })
-
-  # Dev - Nix
-  (lib.mkIf config.purpose.dev.nix.enable {
-    home.packages = with pkgs; [
-      hydra-check # check hydra status
-      nixpkgs-review
-      nix-output-monitor
     ];
   })
 ]

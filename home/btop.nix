@@ -15,7 +15,7 @@ let
     hash = "sha256-mEGZwScVPWGu+Vbtddc/sJ+mNdD2kKienGZVUcTSl+c=";
   };
 in
-lib.mkIf config.purpose.dev.devops.enable {
+lib.mkIf config.purpose.dev.ops.enable {
   home.packages = [ pkgs.btop ];
 
   xdg.configFile = {
