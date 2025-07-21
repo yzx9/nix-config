@@ -34,6 +34,7 @@
     settings = {
       buffer_editor = "vi";
       edit_mode = "vi";
+      show_banner = false;
 
       # FIXME: https://github.com/nushell/nushell/issues/14650
       # Use cursor shapes to differentiate instead
