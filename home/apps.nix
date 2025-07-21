@@ -59,10 +59,9 @@ lib.mkMerge [
   # Dev
   (lib.mkIf config.purpose.dev.enable {
     home.packages = with pkgs; [
-      python313
+      python3
       just # command runner
       hyperfine # benchmarking tool
-      gitmoji-cli
     ];
 
     programs.direnv = {
@@ -71,16 +70,6 @@ lib.mkMerge [
     };
 
     home.shellAliases.j = "just";
-
-    # gitmoji-cli
-    home.file.".gitmojirc.json".text = lib.strings.toJSON {
-      "autoAdd" = false;
-      "emojiFormat" = "emoji";
-      "scopePrompt" = true;
-      "messagePrompt" = true;
-      "capitalizeTitle" = true;
-      "gitmojisUrl" = "https://gitmoji.dev/api/gitmojis";
-    };
   })
 
   # Dev - Nix
