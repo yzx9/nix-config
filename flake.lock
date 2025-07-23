@@ -29,6 +29,29 @@
         "type": "github"
       }
     },
+    "aim": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "systems": [
+          "systems"
+        ]
+      },
+      "locked": {
+        "lastModified": 1753432821,
+        "narHash": "sha256-a2MgiksHyiYg1G7iPaHEqmo7fFHMBV3OOsVaNsyHxCk=",
+        "owner": "yzx9",
+        "repo": "aim",
+        "rev": "96a613ca8c80849acb122c98cd8aa45aaeb22e5c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yzx9",
+        "repo": "aim",
+        "type": "github"
+      }
+    },
     "argononed": {
       "flake": false,
       "locked": {
@@ -324,6 +347,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "aim": "aim",
         "home-manager": "home-manager",
         "nix-darwin": "nix-darwin",
         "nixos-raspberrypi": "nixos-raspberrypi",

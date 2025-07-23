@@ -18,8 +18,6 @@ let
       catppuccin-bat = pkgs.callPackage ./catppuccin-bat { };
     in
     {
-      aim = pkgs.callPackage ./aim { };
-
       inherit catppuccin-bat;
       catppuccin-yazi-flavor = pkgs.callPackage ./catppuccin-yazi-flavor { inherit catppuccin-bat; };
 

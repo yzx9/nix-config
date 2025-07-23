@@ -11,6 +11,7 @@
     ./btop.nix
     ./gemini.nix
     ./git.nix
+    ./gitmoji.nix
     ./gpg.nix
     ./nvim.nix
     ./pim.nix

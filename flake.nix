@@ -65,6 +65,14 @@
         systems.follows = "systems";
       };
     };
+
+    aim = {
+      url = "github:yzx9/aim";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        systems.follows = "systems";
+      };
+    };
   };
 
   # The `outputs` function will return all the build results of the flake.
