@@ -49,10 +49,7 @@ in
       let
         inherit (config.purpose) daily gui;
       in
-      lib.optionals daily [
-        "canon-ufrii-driver" # printer
-      ]
-      ++ lib.optionals gui [
+      lib.optionals gui [
         "middleclick" # mouse
         "snipaste" # screen shot
       ]
