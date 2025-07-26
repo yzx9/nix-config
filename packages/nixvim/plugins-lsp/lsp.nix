@@ -121,6 +121,9 @@ lib.mkIf config.lsp.enable {
         tslsIntegration = true;
       };
 
+      # toml
+      taplo.enable = true;
+
       # jsonls.enable = true;
       # yamlls.enable = true;
       # dockerls.enable = true;

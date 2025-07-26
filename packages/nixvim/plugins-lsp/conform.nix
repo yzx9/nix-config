@@ -47,6 +47,7 @@ lib.mkIf config.lsp.enable {
           ];
           rust = [ "rustfmt" ];
           sh = [ "shfmt" ];
+          toml = [ "taplo" ];
           yaml = [
             "prettierd"
             "prettier"
@@ -55,16 +56,17 @@ lib.mkIf config.lsp.enable {
         };
 
       formatters = {
-        prettierd.command = lib.getExe pkgs.prettierd;
+        # goimports.command = lib.getExe' pkgs.gotools "goimports""};
+        # gofmt.command = lib.getExe pkgs.go;
         ruff_fix.command = lib.getExe pkgs.ruff;
         ruff_format.command = lib.getExe pkgs.ruff;
         ruff_organize_imports.command = lib.getExe pkgs.ruff;
         # rustfmt.command = lib.getExe pkgs.rustfmt;
-        # goimports.command = lib.getExe' pkgs.gotools "goimports""};
-        # gofmt.command = lib.getExe pkgs.go;
+        shfmt.command = lib.getExe pkgs.shfmt;
+        toml.command = lib.getExe pkgs.taplo;
+        prettierd.command = lib.getExe pkgs.prettierd;
         nixfmt.command = lib.getExe pkgs.nixfmt-rfc-style;
         yamllint.command = lib.getExe pkgs.yamllint;
-        shfmt.command = lib.getExe pkgs.shfmt;
       };
 
       format_on_save = ''
