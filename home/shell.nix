@@ -47,6 +47,30 @@
       PROMPT_INDICATOR_VI_NORMAL = "";
       PROMPT_INDICATOR_VI_INSERT = "";
     };
+
+    extraConfig = "
+      $env.config.keybindings ++= [
+        {
+          name: complete_hint_chunk
+          modifier: shift
+          keycode: right
+          mode: [ emacs vi_normal vi_insert ]
+          event: {
+            until: [
+              { send: historyhintwordcomplete }
+              { edit: movewordright }
+            ]
+          }
+        }
+        {
+          name: un_complete_hint_chunk
+          modifier: shift
+          keycode: left
+          mode: [ emacs vi_normal vi_insert ]
+          event: { edit: backspaceword }
+        }
+      ];
+    ";
   };
 
   # A multi-shell multi-command argument completer
