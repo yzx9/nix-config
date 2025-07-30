@@ -81,7 +81,8 @@ in
     initialPassword = "a1b2c3d4"; # NOTE: Don't forget to set a password with ‘passwd’.
     extraGroups = [
       "wheel"
-    ] ++ lib.optionals config.networking.networkmanager.enable [ "networkmanager" ];
+    ]
+    ++ lib.optionals config.networking.networkmanager.enable [ "networkmanager" ];
     # packages = with pkgs; [];
   };
   users.defaultUserShell = pkgs.nushell;

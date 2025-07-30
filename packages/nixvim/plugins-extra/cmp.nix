@@ -94,49 +94,48 @@
     cmp-path.enable = true; # file system paths
   };
 
-  extraConfigLua =
-    ''
-      local cmp = require('cmp')
+  extraConfigLua = ''
+    local cmp = require('cmp')
 
-      -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-      cmp.setup.cmdline({'/', "?" }, {
-        sources = {
-          { name = 'buffer' }
-        }
-      })
-
-       -- Set configuration for specific filetype.
-      cmp.setup.filetype('gitcommit', {
-        sources = cmp.config.sources({
-          { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
-        }, {
-          { name = 'buffer' },
-        })
-      })
-
-      -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-      cmp.setup.cmdline(':', {
-        sources = cmp.config.sources({
-          { name = 'path' }
-        }, {
-        { name = 'cmdline' }
-      }),
-      -- formatting = {
-      --   format = function(_, vim_item)
-      --     vim_item.kind = cmdIcons[vim_item.kind] or "FOO"
-      --     return vim_item
-      --   end
-      -- }
-      })
-    ''
-    + lib.optionalString config.lsp.enable ''
-      -- Set up lspconfig.
-      local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
-      -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-      -- NOTE: To simplify configuration, we only add some conflicted LSP here.
-      require('lspconfig')['pyright'].setup {
-        capabilities = capabilities
+    -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+    cmp.setup.cmdline({'/', "?" }, {
+      sources = {
+        { name = 'buffer' }
       }
-    '';
+    })
+
+     -- Set configuration for specific filetype.
+    cmp.setup.filetype('gitcommit', {
+      sources = cmp.config.sources({
+        { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it.
+      }, {
+        { name = 'buffer' },
+      })
+    })
+
+    -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+    cmp.setup.cmdline(':', {
+      sources = cmp.config.sources({
+        { name = 'path' }
+      }, {
+      { name = 'cmdline' }
+    }),
+    -- formatting = {
+    --   format = function(_, vim_item)
+    --     vim_item.kind = cmdIcons[vim_item.kind] or "FOO"
+    --     return vim_item
+    --   end
+    -- }
+    })
+  ''
+  + lib.optionalString config.lsp.enable ''
+    -- Set up lspconfig.
+    local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+    -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+    -- NOTE: To simplify configuration, we only add some conflicted LSP here.
+    require('lspconfig')['pyright'].setup {
+      capabilities = capabilities
+    }
+  '';
 }

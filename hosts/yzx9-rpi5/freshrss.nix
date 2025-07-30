@@ -21,11 +21,9 @@ let
   '';
 
   freshrssWithProxy = pkgs.freshrss.overrideAttrs (prev: {
-    postInstall =
-      (prev.postInstall or "")
-      + ''
-        cp ${configCustom} $out/config.custom.php
-      '';
+    postInstall = (prev.postInstall or "") + ''
+      cp ${configCustom} $out/config.custom.php
+    '';
   });
 in
 {
