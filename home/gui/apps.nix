@@ -32,7 +32,7 @@ lib.mkIf purpose.gui {
         )) # knowledge base
 
         # design
-        blender # 3D design
+        # blender # 3D design # broken: #429309
         openscad # 3D parametric design, broken on darwin
         inkscape # SVG design
       ]

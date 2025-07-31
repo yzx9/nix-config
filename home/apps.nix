@@ -76,8 +76,7 @@ lib.mkMerge [
   (lib.mkIf config.purpose.dev.nix.enable {
     home.packages = with pkgs; [
       hydra-check # check hydra status
-      nixpkgs-review
-      nix-output-monitor
+      (nixpkgs-review.override { withNom = true; })
     ];
   })
 
