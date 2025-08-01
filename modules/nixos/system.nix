@@ -85,7 +85,7 @@ in
     ++ lib.optionals config.networking.networkmanager.enable [ "networkmanager" ];
     # packages = with pkgs; [];
   };
-  users.defaultUserShell = pkgs.nushell;
+  users.defaultUserShell = pkgs.zsh;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
