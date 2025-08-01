@@ -49,7 +49,7 @@ lib.mkMerge [
         gopass # password manager
         aim
       ]
-      ++ lib.optionals config.purpose.gui [
+      ++ lib.optionals config.programs.firefox.enable [
         # you have to run `gopass-jsonapi configure` manually, because I dont know how to
         # do it automatically
         gopass-jsonapi # TODO: move to firefox.nix
