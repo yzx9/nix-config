@@ -14,7 +14,7 @@ let
   #  - gemini/gemini-2.5-flash
   #  - openai/Qwen/Qwen3-{8,14,32}B # siliconflow
   #  - openai/moonshotai/Kimi-Dev-72B # siliconflow
-  model = "openai/moonshotai/Kimi-Dev-72B";
+  model = "openai/Qwen/Qwen3-Coder-480B-A35B-Instruct";
   weakModel = "openai/Qwen/Qwen3-32B";
 in
 lib.mkIf config.purpose.dev.enable {
@@ -112,6 +112,7 @@ lib.mkIf config.purpose.dev.enable {
         "openai/Qwen/Qwen3-8B"
         "openai/Qwen/Qwen3-14B"
         "openai/Qwen/Qwen3-32B"
+        "openai/Qwen/Qwen3-Coder-480B-A35B-Instruct"
         "openai/moonshotai/Kimi-Dev-72B"
         "openai/moonshotai/Kimi-K2-Instruct"
         "openai/Pro/moonshotai/Kimi-K2-Instruct"
