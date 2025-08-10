@@ -47,7 +47,6 @@ lib.mkMerge [
         # msic
         age # encryption tool
         gopass # password manager
-        aim
       ]
       ++ lib.optionals config.programs.firefox.enable [
         # you have to run `gopass-jsonapi configure` manually, because I dont know how to
