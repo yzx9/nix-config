@@ -114,11 +114,26 @@ lib.mkIf config.lsp.enable {
       html.enable = true;
       cssls.enable = true;
       tailwindcss.enable = true;
-      ts_ls.enable = true;
-      #eslint.enable = true;
+      ts_ls = {
+        enable = true;
+
+        filetypes = [ "vue" ];
+
+        extraOptions = {
+          init_options = {
+            plugins = [
+              {
+                name = "@vue/typescript-plugin";
+                location = "${lib.getBin pkgs.vue-language-server}/lib/language-tools/packages/language-server";
+                languages = [ "vue" ];
+              }
+            ];
+          };
+        };
+      };
       volar = {
         enable = true;
-        tslsIntegration = true;
+        tslsIntegration = false;
       };
 
       # toml
