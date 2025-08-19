@@ -228,10 +228,11 @@ lib.mkIf cfg.gui {
 
         {
           "if".app-id = "com.azul.zulu.java";
-          "if".window-title-regex-substring = "ImageJ";
+          "if".app-name-regex-substring = "Launcher"; # ImageJ
+          # "if".window-title-regex-substring = "ImageJ";
           run = [
             "layout floating"
-            "move-node-to-workspace 5"
+            "move-node-to-workspace 6"
           ];
         }
 
