@@ -66,6 +66,13 @@
       };
     };
 
+    # A collection of Firefox add-ons packaged for Nix.
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=/pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Analyze. Interact. Manage Your Time, with calendar support
     aim = {
       url = "github:yzx9/aim";
       inputs = {
