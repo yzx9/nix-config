@@ -109,36 +109,37 @@ in
           (with inputs.firefox-addons.packages."${config.vars.system}"; [
             gopass-bridge
             privacy-badger
+            smartproxy
             vue-js-devtools
             zotero-connector
           ])
           ++ [
-            (
-              let
-                version = "3.4.3";
-              in
-              inputs.firefox-addons.lib."${config.vars.system}".buildFirefoxXpiAddon {
-                pname = "zeroomega";
-                inherit version;
-                addonId = "suziwen1@gmail.com";
-                url = "https://github.com/zero-peak/ZeroOmega/releases/download/v${version}/firefox-release.zip";
-                sha256 = "be63248b6665e68d9096003a8320a1ae41977ed63977dbe43f417aa1d60a02f6";
-                meta = with lib; {
-                  description = "Manage and switch between multiple proxies quickly &amp; easily.";
-                  license = licenses.gpl3;
-                  mozPermissions = [
-                    "proxy"
-                    "tabs"
-                    "alarms"
-                    "storage"
-                    "webRequest"
-                    "webRequestBlocking"
-                    "contextMenus"
-                  ];
-                  platforms = platforms.all;
-                };
-              }
-            )
+            # (
+            #   let
+            #     version = "3.4.3";
+            #   in
+            #   inputs.firefox-addons.lib."${config.vars.system}".buildFirefoxXpiAddon {
+            #     pname = "zeroomega";
+            #     inherit version;
+            #     addonId = "suziwen1@gmail.com";
+            #     url = "https://github.com/zero-peak/ZeroOmega/releases/download/v${version}/firefox-release.zip";
+            #     sha256 = "be63248b6665e68d9096003a8320a1ae41977ed63977dbe43f417aa1d60a02f6";
+            #     meta = with lib; {
+            #       description = "Manage and switch between multiple proxies quickly &amp; easily.";
+            #       license = licenses.gpl3;
+            #       mozPermissions = [
+            #         "proxy"
+            #         "tabs"
+            #         "alarms"
+            #         "storage"
+            #         "webRequest"
+            #         "webRequestBlocking"
+            #         "contextMenus"
+            #       ];
+            #       platforms = platforms.all;
+            #     };
+            #   }
+            # )
           ];
       };
 
