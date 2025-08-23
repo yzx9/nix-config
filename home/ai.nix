@@ -41,9 +41,9 @@ lib.mkIf config.purpose.dev.enable {
           fi
         done
 
-        export OPENAI_HOST="https://api.siliconflow.cn/v1"
-
         ${lib.optionalString hasProxy "export HTTPS_PROXY=${config.proxy.httpProxy}"}
+
+        export CONTEXT_FILE_NAMES='["AGENTS.md"]'
 
         exec goose "$@"
       '';
@@ -88,23 +88,33 @@ lib.mkIf config.purpose.dev.enable {
 
   # goose config file
   xdg.configFile."goose/config.yaml".text = toYAML {
+    # Model Configuration
+    GOOSE_PROVIDER = "openrouter";
+    GOOSE_MODEL = "qwen/qwen3-coder";
+    GOOSE_TEMPERATURE = 0.7;
+
     # siliconflow: Value error, after assistant message, next must be user message
     # GOOSE_PROVIDER = "openai";
     # GOOSE_MODEL = "Qwen/Qwen3-Coder-480B-A35B-Instruct";
     # OPENAI_BASE_PATH = "v1/chat/completions";
     # OPENAI_HOST = "https://api.siliconflow.cn/v1";
 
-    GOOSE_PROVIDER = "openrouter";
-    GOOSE_MODEL = "qwen/qwen3-coder";
+    # Planning Configuration
+    # GOOSE_PLANNER_PROVIDER = "openai";
+    # GOOSE_PLANNER_MODEL = "gpt-5";
 
+    # Tool Configuration
+    GOOSE_MODE = "smart_approve";
+    GOOSE_TOOLSHIM = true;
+    GOOSE_CLI_MIN_PRIORITY = 0.2;
+
+    # Environment Configuration
     extensions.developer = {
+      bundled = true;
       enabled = true;
       type = "builtin";
       name = "developer";
-      display_name = "Developer Tools";
-      description = null;
       timeout = 300;
-      bundled = true;
     };
   };
 
