@@ -4,7 +4,7 @@
 
     ./gui
 
-    ./aider.nix
+    ./ai.nix
     ./apps.nix
     ./base.nix
     ./bat.nix
