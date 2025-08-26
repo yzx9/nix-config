@@ -12,78 +12,68 @@ lib.mkIf config.lsp.enable {
   plugins.lspsaga = {
     enable = true;
 
-    beacon = {
-      enable = true;
-    };
+    settings = {
+      beacon.enable = true;
 
-    codeAction = {
-      showServerName = true;
-      onlyInCursor = true;
-      keys = {
-        exec = "<CR>";
-        quit = [
-          "<Esc>"
-          "q"
-        ];
+      code_action = {
+        show_server_name = true;
+        only_in_cursor = true;
+        keys = {
+          exec = "<CR>";
+          quit = [
+            "<Esc>"
+            "q"
+          ];
+        };
       };
-    };
 
-    ui = {
-      border = "rounded"; # One of none, single, double, rounded, solid, shadow
-      codeAction = "${icons.DiagnosticHint}"; # Can be any symbol you want 💡
-    };
-
-    finder = {
-      keys = {
-        quit = [
-          "<Esc>"
-          "q"
-        ];
+      ui = {
+        border = "rounded"; # One of none, single, double, rounded, solid, shadow
+        code_action = "${icons.DiagnosticHint}"; # Can be any symbol you want 💡
       };
-    };
 
-    hover = {
-      openCmd = "!firefox"; # Choose your browser
-    };
+      finder.keys.quit = [
+        "<Esc>"
+        "q"
+      ];
 
-    implement = {
-      enable = false;
-    };
-
-    lightbulb = {
-      enable = true;
-      sign = true;
-      virtualText = false;
-    };
-
-    outline = {
-      closeAfterJump = true;
-    };
-
-    rename = {
-      autoSave = false;
-      inSelect = false;
-      keys = {
-        exec = "<CR>";
-        quit = [
-          "<C-k>"
-          "<Esc>"
-        ];
-        select = "x";
+      hover = {
+        open_cmd = "!firefox"; # Choose your browser
       };
-    };
 
-    # Breadcrumbs
-    symbolInWinbar = {
-      enable = true;
-    };
+      implement.enable = false;
 
-    scrollPreview = {
-      scrollDown = "<C-f>";
-      scrollUp = "<C-b>";
-    };
+      lightbulb = {
+        enable = true;
+        sign = true;
+        virtual_text = false;
+      };
 
-    # lazyLoad.settings.cmd = "Lspsaga";
+      outline.close_after_jump = true;
+
+      rename = {
+        auto_save = false;
+        in_select = false;
+        keys = {
+          exec = "<CR>";
+          quit = [
+            "<C-k>"
+            "<Esc>"
+          ];
+          select = "x";
+        };
+      };
+
+      # Breadcrumbs
+      symbol_in_winbar.enable = true;
+
+      scroll_preview = {
+        scroll_down = "<C-f>";
+        scroll_up = "<C-b>";
+      };
+
+      # lazyLoad.settings.cmd = "Lspsaga";
+    };
   };
 
   # Enable catppuccin colors

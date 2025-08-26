@@ -31,5 +31,5 @@
   colorschemes.catppuccin.settings.integrations.gitsigns = true;
 
   # Enable lspsaga code action integrations
-  plugins.lspsaga.codeAction.extendGitSigns = true;
+  plugins.lspsaga.settings.code_action.extend_git_signs = true;
 }
