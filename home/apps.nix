@@ -29,7 +29,7 @@ lib.mkMerge [
       wget
       tree
 
-      neofetch # print information about your system
+      # neofetch # print information about your system
       ouch # compressing and decompressing
     ];
   }

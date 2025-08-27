@@ -44,7 +44,7 @@ lib.mkMerge [
   ####################
   {
     programs.khal = {
-      inherit enable;
+      enable = false; # https://github.com/NixOS/nixpkgs/pull/437045
 
       # https://khal.readthedocs.io/en/latest/configure.html#locale-timeformat
       locale = {
