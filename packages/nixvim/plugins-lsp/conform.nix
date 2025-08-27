@@ -45,7 +45,6 @@ lib.mkIf config.lsp.enable {
             "ruff_format" # To run the Ruff formatter.
             "ruff_organize_imports" # To organize the imports.
           ];
-          rust = [ "rustfmt" ];
           sh = [ "shfmt" ];
           toml = [ "taplo" ];
           yaml = [
@@ -61,7 +60,6 @@ lib.mkIf config.lsp.enable {
         ruff_fix.command = lib.getExe pkgs.ruff;
         ruff_format.command = lib.getExe pkgs.ruff;
         ruff_organize_imports.command = lib.getExe pkgs.ruff;
-        # rustfmt.command = lib.getExe pkgs.rustfmt;
         shfmt.command = lib.getExe pkgs.shfmt;
         toml.command = lib.getExe pkgs.taplo;
         prettierd.command = lib.getExe pkgs.prettierd;
