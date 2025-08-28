@@ -1,7 +1,6 @@
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/lsp/index.html
 {
   config,
-  pkgs,
   lib,
   icons,
   ...
@@ -94,8 +93,6 @@ lib.mkIf config.lsp.enable {
 
         # Since rust_analyzer is version-sensitive of rustc, we do not install it here
         package = null;
-
-        # It will be installed separately
         installCargo = false;
         installRustc = false;
       };
@@ -114,26 +111,10 @@ lib.mkIf config.lsp.enable {
       html.enable = true;
       cssls.enable = true;
       tailwindcss.enable = true;
-      ts_ls = {
-        enable = true;
-
-        filetypes = [ "vue" ];
-
-        extraOptions = {
-          init_options = {
-            plugins = [
-              {
-                name = "@vue/typescript-plugin";
-                location = "${lib.getBin pkgs.vue-language-server}/lib/language-tools/packages/language-server";
-                languages = [ "vue" ];
-              }
-            ];
-          };
-        };
-      };
+      ts_ls.enable = true;
       volar = {
         enable = true;
-        tslsIntegration = false;
+        tslsIntegration = true;
       };
 
       # toml
