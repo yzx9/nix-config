@@ -15,13 +15,21 @@ in
 
   programs.ssh = {
     enable = true;
-    addKeysToAgent = "yes";
+    enableDefaultConfig = false;
 
     includes = [
       (toSshPath config.age.secrets.ssh-config.path)
     ];
 
     matchBlocks = {
+      "*" = {
+        addKeysToAgent = "yes";
+        forwardAgent = true;
+        forwardX11 = false;
+        serverAliveInterval = 0;
+        serverAliveCountMax = 3;
+      };
+
       "github.com" = {
         hostname = "github.com";
         user = "git";
