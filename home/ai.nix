@@ -49,41 +49,41 @@ lib.mkIf config.purpose.dev.enable {
       '';
     })
 
-    # (pkgs.writeShellApplication {
-    #   name = "aider";
-    #   runtimeInputs = [ pkgs.aider-chat-with-playwright ];
-    #   text = ''
-    #     declare -A secrets
-    #
-    #     while IFS='=' read -r key value; do
-    #       [[ -z "$key" ]] && continue # ignore empty lines
-    #       [[ "$key" == \#* ]] && continue # ignore comments
-    #       secrets["@$key@"]="$value"
-    #     done < "${config.age.secrets."api-keys".path}"
-    #
-    #     declare -A mapping=(
-    #       ["DEEPSEEK_API_KEY"]="@deepseek@"
-    #       ["GEMINI_API_KEY"]="@gemini@"
-    #       ["OPENAI_API_KEY"]="@siliconflow@" # siliconflow, openai compatible
-    #       ["OPENROUTER_API_KEY"]="@openrouter@"
-    #     )
-    #
-    #     for envVar in "''${!mapping[@]}"; do
-    #       secretKey="''${mapping[$envVar]}"
-    #       if [[ -v secrets[$secretKey] ]]; then
-    #         export "$envVar"="''${secrets[$secretKey]}"
-    #       else
-    #         echo "Warning: key $secretKey not defined in secrets." >&2
-    #       fi
-    #     done
-    #
-    #     export OPENAI_API_BASE="https://api.siliconflow.cn/v1"
-    #
-    #     ${lib.optionalString hasProxy "export HTTPS_PROXY=${config.proxy.httpProxy}"}
-    #
-    #     exec aider "$@"
-    #   '';
-    # })
+    (pkgs.writeShellApplication {
+      name = "aider";
+      runtimeInputs = [ pkgs.aider-chat-with-playwright ];
+      text = ''
+        declare -A secrets
+
+        while IFS='=' read -r key value; do
+          [[ -z "$key" ]] && continue # ignore empty lines
+          [[ "$key" == \#* ]] && continue # ignore comments
+          secrets["@$key@"]="$value"
+        done < "${config.age.secrets."api-keys".path}"
+
+        declare -A mapping=(
+          ["DEEPSEEK_API_KEY"]="@deepseek@"
+          ["GEMINI_API_KEY"]="@gemini@"
+          ["OPENAI_API_KEY"]="@siliconflow@" # siliconflow, openai compatible
+          ["OPENROUTER_API_KEY"]="@openrouter@"
+        )
+
+        for envVar in "''${!mapping[@]}"; do
+          secretKey="''${mapping[$envVar]}"
+          if [[ -v secrets[$secretKey] ]]; then
+            export "$envVar"="''${secrets[$secretKey]}"
+          else
+            echo "Warning: key $secretKey not defined in secrets." >&2
+          fi
+        done
+
+        export OPENAI_API_BASE="https://api.siliconflow.cn/v1"
+
+        ${lib.optionalString hasProxy "export HTTPS_PROXY=${config.proxy.httpProxy}"}
+
+        exec aider "$@"
+      '';
+    })
   ];
 
   # goose config file

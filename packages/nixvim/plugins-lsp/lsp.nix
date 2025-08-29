@@ -85,7 +85,7 @@ lib.mkIf config.lsp.enable {
 
       # c/cpp
       clangd.enable = true;
-      # cmake.enable = true;
+      cmake.enable = true;
 
       # rust
       rust_analyzer = {
