@@ -109,12 +109,25 @@ lib.mkIf config.purpose.dev.enable {
     GOOSE_CLI_MIN_PRIORITY = 0.2;
 
     # Environment Configuration
-    extensions.developer = {
-      bundled = true;
-      enabled = true;
-      type = "builtin";
-      name = "developer";
-      timeout = 300;
+    extensions = {
+      developer = {
+        bundled = true;
+        enabled = true;
+        type = "builtin";
+        name = "developer";
+        display_name = "Developer Tools";
+        timeout = 300;
+      };
+
+      computercontroller = {
+        enabled = true;
+        type = "builtin";
+        name = "computercontroller";
+        display_name = "Computer Controller";
+        description = null;
+        timeout = 300;
+        bundled = true;
+      };
     };
   };
 
