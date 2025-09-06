@@ -2,7 +2,7 @@ inputs:
 
 let
   inherit (import ../../modules/_shared/lib.nix inputs) mkNixosRpiConfiguration;
-  inherit (import ../_shared.nix) user_yzx9;
+  inherit (import ../_shared.nix) user_yzx9 mkNetworkingLab;
 in
 mkNixosRpiConfiguration {
   config = {
@@ -25,8 +25,9 @@ mkNixosRpiConfiguration {
       ./freshrss.nix
       ./frpc.nix
       ./hardware-configuration.nix
-      ./networking.nix
       ./radicale.nix
     ];
+
+    networking = mkNetworkingLab "end0" "10.6.18.188";
   };
 }

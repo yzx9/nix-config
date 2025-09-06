@@ -2,7 +2,7 @@ inputs:
 
 let
   inherit (import ../../modules/_shared/lib.nix inputs) mkNixosRpiConfiguration;
-  inherit (import ../_shared.nix) user_yzx9 networking_lab;
+  inherit (import ../_shared.nix) user_yzx9 networkingLabWireless;
 in
 mkNixosRpiConfiguration {
   config = {
@@ -24,7 +24,7 @@ mkNixosRpiConfiguration {
       ./gnome.nix
     ];
 
-    networking = networking_lab // {
+    networking = networkingLabWireless // {
       wireless.enable = false;
     };
   };

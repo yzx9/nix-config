@@ -16,7 +16,7 @@ in
   };
 
   # networking
-  networking_lab = {
+  networkingLabWireless = {
     nameservers = [
       "1.1.1.1"
       "8.8.8.8"
@@ -33,5 +33,26 @@ in
         chn.pskRaw = "935490cd011d5c6af8fa1b12a2fce67437d6fcc800daf278b0e6342ca3e97374";
       };
     };
+  };
+
+  mkNetworkingLab = interface: address: {
+    interfaces.${interface} = {
+      ipv4.addresses = [
+        {
+          inherit address;
+          prefixLength = 24;
+        }
+      ];
+    };
+
+    defaultGateway = {
+      inherit interface;
+      address = "10.6.18.254";
+    };
+
+    nameservers = [
+      "1.1.1.1"
+      "8.8.8.8"
+    ];
   };
 }

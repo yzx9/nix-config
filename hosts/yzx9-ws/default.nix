@@ -2,7 +2,7 @@ inputs:
 
 let
   inherit (import ../../modules/_shared/lib.nix inputs) mkNixosConfiguration;
-  inherit (import ../_shared.nix) user_yzx9 networking_lab;
+  inherit (import ../_shared.nix) user_yzx9 mkNetworkingLab;
 in
 mkNixosConfiguration {
   config = {
@@ -34,7 +34,7 @@ mkNixosConfiguration {
       ./xorg.nix
     ];
 
-    networking = networking_lab;
+    networking = mkNetworkingLab "enp2s0" "10.6.18.189";
 
     # enable binfmt QEMU
     boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
