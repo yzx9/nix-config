@@ -24,7 +24,7 @@ in
     matchBlocks = {
       "*" = {
         addKeysToAgent = "yes";
-        forwardAgent = true;
+        forwardAgent = false;
         forwardX11 = false;
         serverAliveInterval = 0;
         serverAliveCountMax = 3;
