@@ -25,6 +25,7 @@ lib.mkMerge [
       gnugrep
       gnused
       # more shell tools
+      ripgrep
       unzip
       wget
       tree
