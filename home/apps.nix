@@ -48,6 +48,7 @@ lib.mkMerge [
         # msic
         age # encryption tool
         gopass # password manager
+        glow # markdown viewer
       ]
       ++ lib.optionals config.programs.firefox.enable [
         # you have to run `gopass-jsonapi configure` manually, because I dont know how to
@@ -76,7 +77,11 @@ lib.mkMerge [
   (lib.mkIf config.purpose.dev.nix.enable {
     home.packages = with pkgs; [
       hydra-check # check hydra status
-      (nixpkgs-review.override { withNom = true; })
+      (nixpkgs-review.override {
+        withNom = true;
+        withDelta = true;
+        withGlow = true;
+      })
     ];
   })
 
