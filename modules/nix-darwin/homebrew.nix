@@ -77,7 +77,6 @@ in
         "vial" # keyboard
         "wechat" # chat
         "fiji" # image viewer
-        "hyperconnect" # xiaomi
         # "master-pdf-editor"
       ];
   };
