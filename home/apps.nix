@@ -49,6 +49,7 @@ lib.mkMerge [
         age # encryption tool
         gopass # password manager
         glow # markdown viewer
+        trilium-desktop # note taking app
       ]
       ++ lib.optionals config.programs.firefox.enable [
         # you have to run `gopass-jsonapi configure` manually, because I dont know how to
