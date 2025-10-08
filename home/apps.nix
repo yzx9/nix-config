@@ -30,7 +30,7 @@ lib.mkMerge [
       wget
       tree
 
-      # neofetch # print information about your system
+      neofetch # print information about your system
       ouch # compressing and decompressing
     ];
   }
@@ -78,6 +78,7 @@ lib.mkMerge [
   (lib.mkIf config.purpose.dev.nix.enable {
     home.packages = with pkgs; [
       hydra-check # check hydra status
+
       (nixpkgs-review.override {
         withNom = true;
         withDelta = true;
@@ -89,6 +90,8 @@ lib.mkMerge [
   # Dev - Ops
   (lib.mkIf config.purpose.dev.ops.enable {
     home.packages = with pkgs; [
+      lsof
+
       # networking tools
       # iputils
       mtr # a network diagnostic tool
@@ -98,8 +101,6 @@ lib.mkMerge [
       socat # replacement of openbsd-netcat
       nmap # a utility for network discovery and security auditing
       ipcalc # it is a calculator for the IPv4/v6 addresses
-
-      lsof
     ];
   })
 ]
