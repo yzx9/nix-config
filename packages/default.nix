@@ -1,5 +1,6 @@
 {
   system,
+  aim,
   nixpkgs,
   nixvim,
   ...
@@ -20,6 +21,8 @@ let
     {
       inherit catppuccin-bat;
       catppuccin-yazi-flavor = pkgs.callPackage ./catppuccin-yazi-flavor { inherit catppuccin-bat; };
+
+      aim = aim.packages.${system}.aim;
 
       nixvim = nixvim';
       nixvim-lsp = nixvim'.extend { lsp.enable = true; };
