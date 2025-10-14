@@ -26,6 +26,7 @@ mkNixosRpiConfiguration {
       ./frpc.nix
       ./hardware-configuration.nix
       ./radicale.nix
+      # ./trilium.nix # wait for 25.11 or customized nixpkgs
     ];
 
     networking = mkNetworkingLab "end0" "10.6.18.188";

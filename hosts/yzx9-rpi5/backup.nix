@@ -28,6 +28,7 @@
     in
     {
       # TODO: backup radicale
+      # TODO: backup trilium
 
       repo = "/nas/home/backup";
       doInit = true;
