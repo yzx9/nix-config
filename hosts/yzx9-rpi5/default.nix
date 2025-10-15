@@ -25,6 +25,7 @@ mkNixosRpiConfiguration {
       ./freshrss.nix
       ./frpc.nix
       ./hardware-configuration.nix
+      ./mysql.nix
       ./radicale.nix
       # ./trilium.nix # wait for 25.11 or customized nixpkgs
     ];
