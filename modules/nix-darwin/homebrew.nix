@@ -68,6 +68,7 @@ in
         "krita" # 2D design
         "bambu-studio" # 3D ptinter
         "freecad" # 3D design
+        "inkscape" # SVG design
 
         # misc
         "google-chrome" # browser

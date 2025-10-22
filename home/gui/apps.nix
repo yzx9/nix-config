@@ -22,22 +22,19 @@ lib.mkIf purpose.gui {
       [
         dbeaver-bin # SQL client
         zotero # reference manager, with two plugins: zotero-better-bibtex, zotmoov ({%w}/{%y})
-
-        (logseq.overrideAttrs (
-          finalAttrs: prevAttrs: {
-            nativeBuildInputs = prevAttrs.nativeBuildInputs ++ [
-              darwin.autoSignDarwinBinariesHook
-            ];
-          }
-        )) # knowledge base
+        logseq # knowledge base
 
         # design
-        # blender # 3D design # broken: #429309
         openscad # 3D parametric design, broken on darwin
-        inkscape # SVG design
+        inkscape # SVG design, broken on darwin: #383860
+        # adwaita-icon-theme
       ]
       ++ lib.optionals isDarwin [
         vaa3d-x # only support darwin now
+      ]
+      ++ lib.optionals (!isDarwin) [
+        # design
+        blender # 3D design, broken on darwin: #429309
       ]
     );
 }
