@@ -97,21 +97,21 @@ lib.mkMerge [
 
   (lib.mkIf enable {
     home.packages = lib.optionals enable [
-      (pkgs.todoman.overrideAttrs {
-        # https://github.com/pimutils/todoman/pull/576
-        src = pkgs.fetchFromGitHub {
-          owner = "yzx9";
-          repo = "todoman";
-          rev = "7ef0c073b5cabb8029a7793867e652d879d90123";
-          hash = "sha256-Fi9PmbxtoglG0lIWmwNd0q4UZaozgG2wnybNq0S21Go=";
-        };
-
-        disabledTests = [
-          "test_filtering_lists"
-          "test_main"
-          "test_missing_path"
-        ];
-      })
+      # (pkgs.todoman.overrideAttrs {
+      #   # https://github.com/pimutils/todoman/pull/576
+      #   src = pkgs.fetchFromGitHub {
+      #     owner = "yzx9";
+      #     repo = "todoman";
+      #     rev = "7ef0c073b5cabb8029a7793867e652d879d90123";
+      #     hash = "sha256-Fi9PmbxtoglG0lIWmwNd0q4UZaozgG2wnybNq0S21Go=";
+      #   };
+      #
+      #   disabledTests = [
+      #     "test_filtering_lists"
+      #     "test_main"
+      #     "test_missing_path"
+      #   ];
+      # })
     ];
 
     # docs: https://todoman.readthedocs.io/en/stable/configure.html

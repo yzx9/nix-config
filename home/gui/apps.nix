@@ -22,7 +22,6 @@ lib.mkIf purpose.gui {
       [
         dbeaver-bin # SQL client
         zotero # reference manager, with two plugins: zotero-better-bibtex, zotmoov ({%w}/{%y})
-        logseq # knowledge base
 
         # design
         openscad # 3D parametric design, broken on darwin
@@ -33,6 +32,8 @@ lib.mkIf purpose.gui {
         vaa3d-x # only support darwin now
       ]
       ++ lib.optionals (!isDarwin) [
+        logseq # knowledge base, broken on darwin
+
         # design
         blender # 3D design, broken on darwin: #429309
       ]
