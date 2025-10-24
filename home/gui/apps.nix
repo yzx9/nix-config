@@ -24,9 +24,8 @@ lib.mkIf purpose.gui {
         zotero # reference manager, with two plugins: zotero-better-bibtex, zotmoov ({%w}/{%y})
 
         # design
-        openscad # 3D parametric design, broken on darwin
+        openscad # 3D parametric design
         inkscape # SVG design, broken on darwin: #383860
-        # adwaita-icon-theme
       ]
       ++ lib.optionals isDarwin [
         vaa3d-x # only support darwin now
