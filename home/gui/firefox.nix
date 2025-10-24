@@ -17,6 +17,15 @@ in
   programs.firefox = {
     enable = config.purpose.gui;
 
+    package =
+      if pkgs.stdenv.isDarwin then
+        # issues#451884, PR: #454842
+        pkgs.firefox.overrideAttrs (_: {
+          gtk_modules = [ ];
+        })
+      else
+        pkgs.firefox;
+
     # https://releases.mozilla.org/pub/firefox/releases/${version}/linux-x86_64/xpi/
     languagePacks = [
       "en-US"
