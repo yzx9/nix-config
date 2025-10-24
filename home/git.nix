@@ -23,9 +23,6 @@ in
     enable = true;
     lfs.enable = config.purpose.daily;
 
-    userName = git.name;
-    userEmail = git.email;
-
     # includes = [
     #   {
     #     # use different email & name for work
@@ -34,41 +31,49 @@ in
     #   }
     # ];
 
-    extraConfig = {
-      init.defaultBranch = "main";
-      push.autoSetupRemote = true;
-      pull.rebase = true;
-      submodule.fetchJobs = 4;
-    };
-
     signing = {
       signByDefault = true;
       key = "~/.ssh/id_git.pub";
       format = "ssh";
     };
 
-    delta = {
-      enable = config.purpose.daily;
-      options = {
-        features = "side-by-side";
+    settings = {
+      user = {
+        name = git.name;
+        email = git.email;
+      };
+
+      init.defaultBranch = "main";
+      push.autoSetupRemote = true;
+      pull.rebase = true;
+      submodule.fetchJobs = 4;
+
+      alias = {
+        # common aliases
+        br = "branch";
+        co = "checkout";
+        st = "status";
+        ls = "log --pretty=format:\"%C(yellow)%h%Cred%d\\\\ %Creset%s%Cblue\\\\ [%cn]\" --decorate";
+        ll = "log --pretty=format:\"%C(yellow)%h%Cred%d\\\\ %Creset%s%Cblue\\\\ [%cn]\" --decorate --numstat";
+        cm = "commit -m";
+        ca = "commit -am";
+        dc = "diff --cached";
+        amend = "commit --amend -m";
+
+        # aliases for submodule
+        update = "submodule update --init --recursive";
+        foreach = "submodule foreach";
       };
     };
+  };
 
-    aliases = {
-      # common aliases
-      br = "branch";
-      co = "checkout";
-      st = "status";
-      ls = "log --pretty=format:\"%C(yellow)%h%Cred%d\\\\ %Creset%s%Cblue\\\\ [%cn]\" --decorate";
-      ll = "log --pretty=format:\"%C(yellow)%h%Cred%d\\\\ %Creset%s%Cblue\\\\ [%cn]\" --decorate --numstat";
-      cm = "commit -m";
-      ca = "commit -am";
-      dc = "diff --cached";
-      amend = "commit --amend -m";
+  programs.delta = {
+    enable = config.purpose.daily;
 
-      # aliases for submodule
-      update = "submodule update --init --recursive";
-      foreach = "submodule foreach";
+    enableGitIntegration = true;
+
+    options = {
+      features = "side-by-side";
     };
   };
 
