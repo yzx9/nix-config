@@ -1,3 +1,5 @@
+{ lib, ... }:
+
 {
   imports = [
     ../modules/_shared/options.nix
@@ -17,4 +19,6 @@
     ./ssh.nix
     ./yazi.nix
   ];
+
+  launchd.agents.activate-agenix.config.KeepAlive.Crashed = lib.mkForce true;
 }
