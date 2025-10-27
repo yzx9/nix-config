@@ -50,6 +50,26 @@ configuration.
 
 ### Darwin
 
+#### Daemons not running
+
+Check the daemon status and try to bootstrap/start them:
+
+```sh
+ls /Library/LaunchDaemons
+sudo launchctl print system/org.nixos.bar
+sudo launchctl bootstarp system /Library/LaunchDaemons/org.nixos.bar
+sudo launchctl kickstart -k system/org.nixos.bar
+```
+
+If this resolves the issue, please verify permissions in `Settings` -> `General` -> `Login Items & Extensions`.
+Make sure all relevant entries are enabled (including `sh`, most Nix-Darwin services run using `sh -c bar`).
+
+And you can check the log:
+
+```sh
+sudo log show --last boot --predicate "process == 'launchd' AND composedMessage CONTAINS 'org.nixos.xray'"
+```
+
 #### Uninstalled apps in Launchpad
 
 To remove the uninstalled APPs icon from Launchpad:
@@ -80,7 +100,11 @@ killall Finder
 Agenix secrets are runtime-only resources, meaning that the NixOS hot-reload system cannot detect changes to them.
 Therefore, it is necessary to manually restart any related services.
 
-#### Debug activation on darwin
+#### Debugging activation on darwin
+
+First, check weather the decrypted target directory exists. If it does not, verify the daemon status (see section above).
+
+Then, enable logging by adding the following configuration.
 
 ```nix
 launchd.daemons.activate-agenix.serviceConfig = {
