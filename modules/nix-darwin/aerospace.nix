@@ -1,21 +1,8 @@
 { config, lib, ... }:
 
-let
-  cfg = config.purpose;
-  rollRight = i: lib.elemAt ((lib.range 1 9) ++ [ 0 ]) i;
-  mapNumToLetter = i: lib.substring i 1 "qwertasdfg";
-  genNumKeyBindings =
-    key: value:
-    lib.mkMerge (
-      lib.map (i: {
-        "${key (builtins.toString (rollRight i))}" = value (builtins.toString (i + 1)); # 1-based
-        "${key (mapNumToLetter i)}" = value (builtins.toString (i + 1)); # 1-based
-      }) (lib.range 0 9)
-    );
-in
-lib.mkIf cfg.gui {
+{
   services.aerospace = {
-    enable = true;
+    enable = config.purpose.gui;
 
     settings = {
       # You can use it to add commands that run after login to macOS user session.
@@ -82,77 +69,88 @@ lib.mkIf cfg.gui {
 
       # 'main' binding mode declaration
       # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
+      #
       # 'main' binding mode must be always presented
       # Fallback value (if you omit the key): mode.main.binding = {}
-      mode.main.binding = lib.mkMerge [
-        {
-          # All possible keys:
-          # - Letters.        a, b, c, ..., z
-          # - Numbers.        0, 1, 2, ..., 9
-          # - Keypad numbers. keypad0, keypad1, keypad2, ..., keypad9
-          # - F-keys.         f1, f2, ..., f20
-          # - Special keys.   minus, equal, period, comma, slash, backslash, quote, semicolon, backtick,
-          #                   leftSquareBracket, rightSquareBracket, space, enter, esc, backspace, tab
-          # - Keypad special. keypadClear, keypadDecimalMark, keypadDivide, keypadEnter, keypadEqual,
-          #                   keypadMinus, keypadMultiply, keypadPlus
-          # - Arrows.         left, down, up, right
+      mode.main.binding =
+        let
+          genBindings =
+            toKey: toValue:
+            lib.listToAttrs (
+              lib.map (c: {
+                name = toKey c;
+                value = toValue c;
+              }) (lib.stringToCharacters "qwertasdfgzxcvb")
+            );
+        in
+        lib.mkMerge [
+          {
+            # All possible keys:
+            # - Letters.        a, b, c, ..., z
+            # - Numbers.        0, 1, 2, ..., 9
+            # - Keypad numbers. keypad0, keypad1, keypad2, ..., keypad9
+            # - F-keys.         f1, f2, ..., f20
+            # - Special keys.   minus, equal, period, comma, slash, backslash, quote, semicolon, backtick,
+            #                   leftSquareBracket, rightSquareBracket, space, enter, esc, backspace, tab
+            # - Keypad special. keypadClear, keypadDecimalMark, keypadDivide, keypadEnter, keypadEqual,
+            #                   keypadMinus, keypadMultiply, keypadPlus
+            # - Arrows.         left, down, up, right
+            #
+            # All possible modifiers: cmd, alt, ctrl, shift
+            #
+            # All possible commands: https://nikitabobko.github.io/AeroSpace/commands
+            #
+            # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
+            # You can uncomment the following lines to open up terminal with alt + enter shortcut (like in i3)
+            # alt-enter = '''exec-and-forget osascript -e '
+            # tell application "Terminal"
+            #     do script
+            #     activate
+            # end tell'
+            # '''
 
-          # All possible modifiers: cmd, alt, ctrl, shift
+            # See: https://nikitabobko.github.io/AeroSpace/commands#layout
+            alt-slash = "layout tiles horizontal vertical";
+            alt-comma = "layout accordion horizontal vertical";
 
-          # All possible commands: https://nikitabobko.github.io/AeroSpace/commands
+            # See: https://nikitabobko.github.io/AeroSpace/commands#focus
+            alt-h = "focus left";
+            alt-j = "focus down";
+            alt-k = "focus up";
+            alt-l = "focus right";
 
-          # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
-          # You can uncomment the following lines to open up terminal with alt + enter shortcut (like in i3)
-          # alt-enter = '''exec-and-forget osascript -e '
-          # tell application "Terminal"
-          #     do script
-          #     activate
-          # end tell'
-          # '''
+            # See: https://nikitabobko.github.io/AeroSpace/commands#move
+            alt-shift-h = "move left";
+            alt-shift-j = "move down";
+            alt-shift-k = "move up";
+            alt-shift-l = "move right";
 
-          # # See: https://nikitabobko.github.io/AeroSpace/commands#layout
-          alt-slash = "layout tiles horizontal vertical";
-          alt-comma = "layout accordion horizontal vertical";
+            # See: https://nikitabobko.github.io/AeroSpace/commands#resize
+            alt-shift-minus = "resize smart -50";
+            alt-shift-equal = "resize smart +50";
+            alt-shift-y = "resize smart -50";
+            alt-shift-u = "resize smart +50";
 
-          # # See: https://nikitabobko.github.io/AeroSpace/commands#focus
-          alt-h = "focus left";
-          alt-j = "focus down";
-          alt-k = "focus up";
-          alt-l = "focus right";
+            # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
+            alt-tab = "workspace-back-and-forth";
+            # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
+            alt-shift-tab = "move-workspace-to-monitor --wrap-around next";
 
-          # See: https://nikitabobko.github.io/AeroSpace/commands#move
-          alt-shift-h = "move left";
-          alt-shift-j = "move down";
-          alt-shift-k = "move up";
-          alt-shift-l = "move right";
+            # See: https://nikitabobko.github.io/AeroSpace/commands#mode
+            alt-shift-semicolon = "mode service";
+          }
 
-          # See: https://nikitabobko.github.io/AeroSpace/commands#resize
-          alt-shift-minus = "resize smart -50";
-          alt-shift-equal = "resize smart +50";
-          alt-shift-y = "resize smart -50";
-          alt-shift-u = "resize smart +50";
+          # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
+          (genBindings (c: "alt-${c}") (c: "workspace ${c}"))
 
-          # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
-          alt-tab = "workspace-back-and-forth";
-          # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
-          alt-shift-tab = "move-workspace-to-monitor --wrap-around next";
-
-          # See: https://nikitabobko.github.io/AeroSpace/commands#mode
-          alt-shift-semicolon = "mode service";
-        }
-
-        # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
-        (genNumKeyBindings (i: "alt-${i}") (i: "workspace ${i}"))
-
-        # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
-        (genNumKeyBindings (i: "alt-shift-${i}") (i: [
-          "move-node-to-workspace ${i}"
-          "workspace ${i}"
-        ]))
-      ];
+          # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
+          (genBindings (c: "alt-shift-${c}") (c: [
+            "move-node-to-workspace ${c}"
+            "workspace ${c}"
+          ]))
+        ];
 
       # 'service' binding mode declaration.
-      # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
       mode.service.binding = {
         esc = [
           "reload-config"
@@ -204,17 +202,30 @@ lib.mkIf cfg.gui {
         ];
       };
 
+      # a: Main
+      # b: [B]rowser
+      # c: [C]hat
+      # d: [D]ev
+      # t: [T]rilium
+      # x: Misc
+
       workspace-to-monitor-force-assignment = {
-        "1" = "built-in";
-        "2" = "main";
-        "3" = [
+        "a" = "main";
+        "b" = "main";
+        "c" = "built-in";
+        "d" = [
           "3"
           "built-in"
         ];
-        "6" = "built-in";
+        "x" = "built-in";
       };
 
       on-window-detected = [
+        {
+          "if".app-id = "org.mozilla.firefox";
+          run = "move-node-to-workspace b";
+        }
+
         # Most windows of wechat need to be float, including picture preview, video
         # call, etc. The only exception is the main window, howevery it's not easy to
         # detect the main window, so we just float all windows of wechat.
@@ -227,50 +238,54 @@ lib.mkIf cfg.gui {
         }
 
         {
-          "if".app-id = "com.azul.zulu.java";
-          "if".app-name-regex-substring = "Launcher"; # ImageJ
-          # "if".window-title-regex-substring = "ImageJ";
-          run = [
-            "layout floating"
-            "move-node-to-workspace 6"
-          ];
-        }
-
-        {
-          "if".app-id = "com.microsoft.Outlook";
-          "if".window-title-regex-substring = "Reminder";
-          run = [
-            "layout floating"
-            "move-node-to-workspace 1"
-          ];
-        }
-        {
-          "if".window-title-regex-substring = "Reminder";
-          run = "layout floating";
-        }
-
-        {
           "if".app-id = "net.kovidgoyal.kitty";
-          run = "move-node-to-workspace 3";
+          run = "move-node-to-workspace d";
         }
 
         {
-          "if".app-id = "org.mozilla.firefox";
-          run = "move-node-to-workspace 2";
+          "if".app-id = "com.electron.trilium-notes";
+          run = "move-node-to-workspace t";
         }
+
+        {
+          "if" = {
+            app-id = "com.azul.zulu.java";
+            app-name-regex-substring = "Launcher"; # ImageJ
+          };
+
+          run = [
+            "layout floating"
+            "move-node-to-workspace x"
+          ];
+        }
+
+        # {
+        #   "if".app-id = "com.microsoft.Outlook";
+        #   "if".window-title-regex-substring = "Reminder";
+        #   run = [
+        #     "layout floating"
+        #     "move-node-to-workspace m"
+        #   ];
+        # }
+        # {
+        #   "if".window-title-regex-substring = "Reminder";
+        #   run = "layout floating";
+        # }
       ];
     };
   };
 
-  # Enable "Group windows by application"
-  # https://nikitabobko.github.io/AeroSpace/guide#a-note-on-mission-control
-  system.defaults.dock.expose-group-apps = true;
+  system.defaults = lib.mkIf config.services.aerospace.enable {
+    # Enable "Group windows by application"
+    # https://nikitabobko.github.io/AeroSpace/guide#a-note-on-mission-control
+    dock.expose-group-apps = true;
 
-  # Disable "Displays have separate Spaces"
-  # https://nikitabobko.github.io/AeroSpace/guide#a-note-on-displays-have-separate-spaces
-  system.defaults.spaces.spans-displays = true;
+    # Disable "Displays have separate Spaces"
+    # https://nikitabobko.github.io/AeroSpace/guide#a-note-on-displays-have-separate-spaces
+    spaces.spans-displays = true;
 
-  # Disable windows opening animations
-  # https://nikitabobko.github.io/AeroSpace/goodies#disable-open-animations
-  system.defaults.NSGlobalDomain.NSAutomaticWindowAnimationsEnabled = false;
+    # Disable windows opening animations
+    # https://nikitabobko.github.io/AeroSpace/goodies#disable-open-animations
+    NSGlobalDomain.NSAutomaticWindowAnimationsEnabled = false;
+  };
 }
