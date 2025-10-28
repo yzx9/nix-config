@@ -8,7 +8,6 @@
     # Enable individual shell integrations can be overridden with their respective option
     enableBashIntegration = true;
     enableZshIntegration = true;
-    enableNushellIntegration = true;
   };
 
   programs.bash.enable = true;
@@ -26,51 +25,6 @@
         file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
       }
     ];
-  };
-
-  programs.nushell = {
-    enable = true;
-
-    settings = {
-      buffer_editor = "vi";
-      edit_mode = "vi";
-      show_banner = false;
-
-      # FIXME: https://github.com/nushell/nushell/issues/14650
-      # Use cursor shapes to differentiate instead
-      cursor_shape.vi_insert = "blink_line";
-      cursor_shape.vi_normal = "blink_block";
-    };
-
-    environmentVariables = {
-      # Disable prompt from Nushell Because it is duplicated with that of Starship
-      PROMPT_INDICATOR_VI_NORMAL = "";
-      PROMPT_INDICATOR_VI_INSERT = "";
-    };
-
-    extraConfig = "
-      $env.config.keybindings ++= [
-        {
-          name: complete_hint_chunk
-          modifier: shift
-          keycode: right
-          mode: [ emacs vi_normal vi_insert ]
-          event: {
-            until: [
-              { send: historyhintwordcomplete }
-              { edit: movewordright }
-            ]
-          }
-        }
-        {
-          name: un_complete_hint_chunk
-          modifier: shift
-          keycode: left
-          mode: [ emacs vi_normal vi_insert ]
-          event: { edit: backspaceword }
-        }
-      ];
-    ";
   };
 
   # A multi-shell multi-command argument completer
