@@ -1,4 +1,9 @@
-{ pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   home.shell = {
@@ -6,8 +11,8 @@
     enableShellIntegration = false;
 
     # Enable individual shell integrations can be overridden with their respective option
-    enableBashIntegration = true;
-    enableZshIntegration = true;
+    enableBashIntegration = config.programs.bash.enable;
+    enableZshIntegration = config.programs.zsh.enable;
   };
 
   programs.bash.enable = true;
