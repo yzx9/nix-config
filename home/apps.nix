@@ -62,6 +62,7 @@ lib.mkMerge [
   (lib.mkIf config.purpose.dev.enable {
     home.packages = with pkgs; [
       python3
+      binutils
       just # command runner
       hyperfine # benchmarking tool
     ];
