@@ -67,16 +67,6 @@ in
     };
   };
 
-  programs.delta = {
-    enable = config.purpose.daily;
-
-    enableGitIntegration = true;
-
-    options = {
-      features = "side-by-side";
-    };
-  };
-
   # Github cli tool
   programs.gh = {
     enable = config.purpose.daily;

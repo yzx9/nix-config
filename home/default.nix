@@ -11,6 +11,7 @@
     ./base.nix
     ./bat.nix
     ./btop.nix
+    ./delta.nix
     ./git.nix
     ./gpg.nix
     ./nvim.nix
