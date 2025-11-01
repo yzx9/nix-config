@@ -24,14 +24,14 @@ lib.mkMerge [
       gnutar
       gnugrep
       gnused
-      # more shell tools
-      ripgrep
+      # more common shell tools
+      rsync
       unzip
       wget
       tree
 
+      ripgrep # a line-oriented search tool
       neofetch # print information about your system
-      ouch # compressing and decompressing
     ];
   }
 
@@ -49,7 +49,7 @@ lib.mkMerge [
         age # encryption tool
         gopass # password manager
         glow # markdown viewer
-        trilium-desktop # note taking app
+        ouch # compressing and decompressing
       ]
       ++ lib.optionals config.programs.firefox.enable [
         # you have to run `gopass-jsonapi configure` manually, because I dont know how to

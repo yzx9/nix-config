@@ -21,6 +21,7 @@ lib.mkIf purpose.gui {
     ++ lib.optionals purpose.daily (
       [
         dbeaver-bin # SQL client
+        trilium-desktop # note taking app
         zotero # reference manager, with two plugins: zotero-better-bibtex, zotmoov ({%w}/{%y})
 
         # design
