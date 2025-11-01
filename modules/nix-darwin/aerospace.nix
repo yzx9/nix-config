@@ -202,12 +202,21 @@
         ];
       };
 
-      # a: Main
-      # b: [B]rowser
-      # c: [C]hat
-      # d: [D]ev
-      # t: [T]rilium
-      # x: Misc
+      # a: main
+      # b: Browser
+      # c: Chat
+      # d: Development
+      # e: Email
+      # f: Figure
+      # g:
+      # q:
+      # r:
+      # s:
+      # t: Trilium
+      # v: Viture machine
+      # w:
+      # x: misc
+      # z: Zotero
 
       workspace-to-monitor-force-assignment = {
         "a" = "main";
@@ -220,58 +229,61 @@
         "x" = "built-in";
       };
 
-      on-window-detected = [
-        {
-          "if".app-id = "org.mozilla.firefox";
-          run = "move-node-to-workspace b";
-        }
-
-        # Most windows of wechat need to be float, including picture preview, video
-        # call, etc. The only exception is the main window, howevery it's not easy to
-        # detect the main window, so we just float all windows of wechat.
-        {
-          "if".app-id = "com.tencent.xinWeChat";
-          # # Wechat set window title after creating the window, so the following line
-          # # doesn't work.
-          # "if".window-title-regex-substring = "WeChat"; # WeChat (Chats)
-          run = "layout floating";
-        }
-
-        {
-          "if".app-id = "net.kovidgoyal.kitty";
-          run = "move-node-to-workspace d";
-        }
-
-        {
-          "if".app-id = "com.electron.trilium-notes";
-          run = "move-node-to-workspace t";
-        }
-
-        {
-          "if" = {
-            app-id = "com.azul.zulu.java";
-            app-name-regex-substring = "Launcher"; # ImageJ
+      on-window-detected =
+        let
+          mkMove = appId: workspace: {
+            "if".app-id = appId;
+            run = "move-node-to-workspace ${workspace}";
           };
+        in
+        [
+          (mkMove "com.nixos.firefox" "b")
+          (mkMove "com.kovidgoyal.kitty" "d")
+          (mkMove "com.microsoft.Outlook" "e")
+          (mkMove "org.inkscape.Inkscape" "f")
+          (mkMove "com.microsoft.Powerpoint" "f")
+          (mkMove "com.electron.trilium-notes" "t")
+          (mkMove "com.vmware.fusion" "v")
+          (mkMove "com.eusoft.eudic" "x")
+          (mkMove "sc.fiji" "x")
+          (mkMove "org.zotero.zotero" "z")
 
-          run = [
-            "layout floating"
-            "move-node-to-workspace x"
-          ];
-        }
+          # Most windows of wechat need to be float, including picture preview, video
+          # call, etc. The only exception is the main window, howevery it's not easy to
+          # detect the main window, so we just float all windows of wechat.
+          {
+            "if".app-id = "com.tencent.xinWeChat";
+            # # Wechat set window title after creating the window, so the following line
+            # # doesn't work.
+            # "if".window-title-regex-substring = "WeChat"; # WeChat (Chats)
+            run = "layout floating";
+          }
 
-        # {
-        #   "if".app-id = "com.microsoft.Outlook";
-        #   "if".window-title-regex-substring = "Reminder";
-        #   run = [
-        #     "layout floating"
-        #     "move-node-to-workspace m"
-        #   ];
-        # }
-        # {
-        #   "if".window-title-regex-substring = "Reminder";
-        #   run = "layout floating";
-        # }
-      ];
+          {
+            "if" = {
+              app-id = "com.azul.zulu.java";
+              app-name-regex-substring = "Launcher"; # ImageJ
+            };
+
+            run = [
+              "layout floating"
+              "move-node-to-workspace x"
+            ];
+          }
+
+          # {
+          #   "if".app-id = "com.microsoft.Outlook";
+          #   "if".window-title-regex-substring = "Reminder";
+          #   run = [
+          #     "layout floating"
+          #     "move-node-to-workspace m"
+          #   ];
+          # }
+          # {
+          #   "if".window-title-regex-substring = "Reminder";
+          #   run = "layout floating";
+          # }
+        ];
     };
   };
 
