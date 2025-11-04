@@ -6,13 +6,13 @@
 
     ./gui
 
-    ./ai.nix
     ./apps.nix
     ./base.nix
     ./bat.nix
     ./btop.nix
     ./delta.nix
     ./git.nix
+    ./goose.nix
     ./gpg.nix
     ./nvim.nix
     ./pim.nix
