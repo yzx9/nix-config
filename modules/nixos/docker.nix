@@ -3,14 +3,22 @@
 let
   inherit (config) vars;
   cfg = config.docker;
+
+  proxySettings = lib.mkIf config.proxy.selfHost.enable {
+    "http-proxy" = "127.0.0.1:${builtins.toString config.proxy.selfHost.httpProxyPort}";
+    "no-proxy" = "127.0.0.0/8";
+  };
 in
 lib.mkIf cfg.enable {
   virtualisation.docker = {
     enable = true;
 
-    rootless = lib.mkIf cfg.rootless {
-      enable = true;
+    daemon.settings = proxySettings;
+
+    rootless = {
+      enable = cfg.rootless;
       setSocketVariable = true;
+      daemon.settings = proxySettings;
     };
   };
 
