@@ -6,7 +6,7 @@
 }:
 
 let
-  hasProxy = !(builtins.isNull config.proxy.httpProxy);
+  hasProxy = config.proxy.httpProxy != null;
   toYAML = lib.generators.toYAML { };
 in
 lib.mkIf config.purpose.dev.enable {

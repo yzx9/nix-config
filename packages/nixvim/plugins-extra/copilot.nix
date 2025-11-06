@@ -26,7 +26,7 @@
     cmp.settings.sources = [ { name = "copilot"; } ];
   };
 
-  extraConfigLuaPre = lib.optionalString (!(builtins.isNull config.httpProxy)) ''
+  extraConfigLuaPre = lib.optionalString (config.httpProxy != null) ''
     vim.g.copilot_proxy = "${config.httpProxy}"
   '';
 }

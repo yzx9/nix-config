@@ -4,7 +4,7 @@ let
   ssh = "${config.home.homeDirectory}/.ssh/";
   toSshPath = path: lib.removePrefix ssh path;
 
-  needProxyCommand = !(builtins.isNull config.proxy.socksProxy);
+  needProxyCommand = config.proxy.socksProxy != null;
   proxyCommand = lib.mkIf needProxyCommand "nc -v -x ${config.proxy.socksProxy} %h %p";
 in
 {
