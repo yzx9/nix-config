@@ -13,6 +13,7 @@
     ./delta.nix
     ./git.nix
     ./goose.nix
+    ./gopass.nix
     ./gpg.nix
     ./nvim.nix
     ./pim.nix
@@ -21,5 +22,6 @@
     ./yazi.nix
   ];
 
+  # See: ryantm/agenix#352
   launchd.agents.activate-agenix.config.KeepAlive.Crashed = lib.mkForce true;
 }

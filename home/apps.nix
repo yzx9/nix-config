@@ -37,25 +37,17 @@ lib.mkMerge [
 
   # Daily
   (lib.mkIf config.purpose.daily {
-    home.packages =
-      with pkgs;
-      [
-        # fantastic
-        asciiquarium
-        cmatrix
-        sl
+    home.packages = with pkgs; [
+      # fantastic
+      asciiquarium
+      cmatrix
+      sl
 
-        # msic
-        age # encryption tool
-        gopass # password manager
-        glow # markdown viewer
-        ouch # compressing and decompressing
-      ]
-      ++ lib.optionals config.programs.firefox.enable [
-        # you have to run `gopass-jsonapi configure` manually, because I dont know how to
-        # do it automatically
-        gopass-jsonapi # TODO: move to firefox.nix
-      ];
+      # msic
+      age # encryption tool
+      glow # markdown viewer
+      ouch # compressing and decompressing
+    ];
   })
 
   # Dev
