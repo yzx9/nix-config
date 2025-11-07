@@ -26,17 +26,25 @@ mkNixosConfiguration {
     };
   };
 
-  host = {
-    imports = [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+  host =
+    { lib, ... }:
+    {
+      imports = [
+        # Include the results of the hardware scan.
+        ./hardware-configuration.nix
 
-      ./xorg.nix
-    ];
+        ./xorg.nix
+      ];
 
-    networking = mkNetworkingLab "enp2s0" "10.6.18.189";
+      networking = lib.mkMerge [
+        (mkNetworkingLab "enp2s0" "10.6.18.189")
 
-    # enable binfmt QEMU
-    boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-  };
+        {
+          firewall.allowedTCPPorts = [ 30202 ];
+        }
+      ];
+
+      # enable binfmt QEMU
+      boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+    };
 }
