@@ -112,10 +112,7 @@ lib.mkIf config.lsp.enable {
       cssls.enable = true;
       tailwindcss.enable = true;
       ts_ls.enable = true;
-      volar = {
-        enable = true;
-        tslsIntegration = true;
-      };
+      vue_ls.enable = true;
 
       # toml
       taplo.enable = true;
