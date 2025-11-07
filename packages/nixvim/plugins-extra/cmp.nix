@@ -134,8 +134,8 @@
 
     -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
     -- NOTE: To simplify configuration, we only add some conflicted LSP here.
-    require('lspconfig')['pyright'].setup {
+    vim.lsp.config('pyright', {
       capabilities = capabilities
-    }
+    })
   '';
 }
