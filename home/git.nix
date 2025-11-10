@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ config, lib, ... }:
 
 let
   inherit (config.vars.user) git;
@@ -80,18 +75,4 @@ in
     };
   };
 
-  # Gitmoji: An emoji guide for your commit messages
-  # homepage: https://gitmoji.dev/
-  home.packages = lib.optionals config.purpose.dev.enable [ pkgs.gitmoji-cli ];
-
-  home.file.".gitmojirc.json" = lib.mkIf config.purpose.dev.enable {
-    text = lib.strings.toJSON {
-      "autoAdd" = false;
-      "emojiFormat" = "emoji";
-      "scopePrompt" = true;
-      "messagePrompt" = true;
-      "capitalizeTitle" = true;
-      "gitmojisUrl" = "https://gitmoji.dev/api/gitmojis";
-    };
-  };
 }
