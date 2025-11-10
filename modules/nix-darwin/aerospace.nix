@@ -256,7 +256,10 @@
             # # Wechat set window title after creating the window, so the following line
             # # doesn't work.
             # "if".window-title-regex-substring = "WeChat"; # WeChat (Chats)
-            run = "layout floating";
+            run = [
+              "layout floating"
+              "move-node-to-workspace c"
+            ];
           }
 
           {
