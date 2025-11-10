@@ -1,10 +1,9 @@
 inputs:
 
 let
-  inherit (import ../../modules/_shared/lib.nix inputs) mkDarwinConfiguration;
   inherit (import ../_shared.nix) user_yzx9;
 in
-mkDarwinConfiguration {
+inputs.self.lib.mkDarwinConfiguration {
   config = {
     vars = {
       hostname = "yzx9-mbp";

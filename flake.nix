@@ -102,6 +102,8 @@
     {
       inherit (import ./hosts inputs) nixosConfigurations darwinConfigurations homeConfigurations;
 
+      lib = import ./lib.nix inputs;
+
       # nix run .#<command>
       packages = eachSystem (system: import ./packages (inputs // { inherit system; }));
 

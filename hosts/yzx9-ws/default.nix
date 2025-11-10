@@ -1,10 +1,9 @@
 inputs:
 
 let
-  inherit (import ../../modules/_shared/lib.nix inputs) mkNixosConfiguration;
   inherit (import ../_shared.nix) user_yzx9 mkNetworkingLab;
 in
-mkNixosConfiguration {
+inputs.self.lib.mkNixosConfiguration {
   config = {
     vars = {
       hostname = "yzx9-ws";

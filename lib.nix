@@ -26,7 +26,7 @@ let
       useGlobalPkgs = true;
       useUserPackages = true;
       extraSpecialArgs = specialArgs;
-      users.${cfg.config.vars.user.name} = import ../../home;
+      users.${cfg.config.vars.user.name} = import ./home;
       sharedModules = (mkHmModules cfg) ++ [
         agenix.homeManagerModules.default
       ];
@@ -38,7 +38,7 @@ in
     nixosConfigurations."${cfg.config.vars.hostname}" = nixpkgs.lib.nixosSystem {
       inherit (cfg.config.vars) system;
       inherit specialArgs;
-      modules = (mkModules cfg) ++ [ ../nixos ];
+      modules = (mkModules cfg) ++ [ ./modules/nixos ];
     };
   };
 
@@ -46,7 +46,7 @@ in
     nixosConfigurations."${cfg.config.vars.hostname}" = nixos-raspberrypi.lib.nixosSystem {
       inherit (cfg.config.vars) system;
       modules = (mkModules cfg) ++ [
-        ../nixos
+        ./modules/nixos
 
         {
           # Rpi use custom bootloader
@@ -74,14 +74,14 @@ in
     darwinConfigurations."${cfg.config.vars.hostname}" = nix-darwin.lib.darwinSystem {
       inherit (cfg.config.vars) system;
       inherit specialArgs;
-      modules = (mkModules cfg) ++ [ ../nix-darwin ];
+      modules = (mkModules cfg) ++ [ ./modules/nix-darwin ];
     };
   };
 
   mkHomeConfiguration = cfg: {
     homeConfigurations."${cfg.config.vars.hostname}" = home-manager.lib.homeManagerConfiguration {
       pkgs = nixpkgs.legacyPackages.${cfg.config.vars.system};
-      modules = (mkHmModules cfg) ++ [ ../home-manager ];
+      modules = (mkHmModules cfg) ++ [ ./modules/home-manager ];
       extraSpecialArgs = specialArgs;
     };
   };
