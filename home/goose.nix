@@ -44,8 +44,6 @@ lib.mkIf config.purpose.dev.enable {
 
           ${lib.optionalString hasProxy "export HTTPS_PROXY=${config.proxy.httpProxy}"}
 
-          export CONTEXT_FILE_NAMES='["AGENTS.md"]'
-
           exec goose "$@"
         '';
       };
@@ -57,6 +55,8 @@ lib.mkIf config.purpose.dev.enable {
     # Model Configuration
     GOOSE_PROVIDER = "openrouter";
     GOOSE_MODEL = "qwen/qwen3-coder";
+    GOOSE_PLANNER_PROVIDER = "openrouter";
+    GOOSE_PLANNER_MODEL = "google/gemini-2.5-pro";
     GOOSE_TEMPERATURE = 0.7;
 
     # siliconflow: Value error, after assistant message, next must be user message
@@ -73,6 +73,8 @@ lib.mkIf config.purpose.dev.enable {
     GOOSE_MODE = "smart_approve";
     GOOSE_TOOLSHIM = true;
     GOOSE_CLI_MIN_PRIORITY = 0.2;
+
+    CONTEXT_FILE_NAMES = [ "AGENTS.md" ];
 
     # Environment Configuration
     extensions = {
