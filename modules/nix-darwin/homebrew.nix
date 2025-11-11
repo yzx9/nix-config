@@ -47,22 +47,23 @@ in
     # `brew install --cask`
     casks =
       let
-        inherit (config.purpose) daily gui;
+        inherit (config.purpose) daily gui dev;
       in
       lib.optionals gui [
+        "logi-options+" # mouse/keyboard
         "middleclick" # mouse
+        # "scroll-reverser" # mouse
         "snipaste" # screen shot
       ]
-      ++ lib.optionals (daily && gui) [
+      ++ lib.optionals (gui && daily) [
         # productivity
         "eudic" # dictionary
-        "microsoft-word"
         "microsoft-excel"
+        "microsoft-word"
         "microsoft-powerpoint"
         "microsoft-outlook" # email
         "onedrive" # cloud storage
         "tencent-meeting" # video conference
-        "visual-studio-code" # editor
 
         # design
         "krita" # 2D design
@@ -71,14 +72,16 @@ in
         "inkscape" # SVG design
 
         # misc
+        "fiji" # image viewer
         "google-chrome" # browser
-        "scroll-reverser" # mouse
         "steam" # game
         "vmware-fusion" # virtual machine
-        "vial" # keyboard
-        "wechat" # chat
-        "fiji" # image viewer
+        "vial" # keyboard configurator
+        "wechat" # chat app
         # "master-pdf-editor"
+      ]
+      ++ lib.optionals (gui && dev) [
+        "visual-studio-code" # editor
       ];
   };
 }
