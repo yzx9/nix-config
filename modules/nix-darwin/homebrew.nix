@@ -80,7 +80,7 @@ in
         "wechat" # chat app
         # "master-pdf-editor"
       ]
-      ++ lib.optionals (gui && dev) [
+      ++ lib.optionals (gui && dev.enable) [
         "visual-studio-code" # editor
       ];
   };
