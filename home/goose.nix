@@ -54,7 +54,7 @@ lib.mkIf config.purpose.dev.enable {
   xdg.configFile."goose/config.yaml".text = toYAML {
     # Model Configuration
     GOOSE_PROVIDER = "openrouter";
-    GOOSE_MODEL = "qwen/qwen3-coder";
+    GOOSE_MODEL = "minimax/minimax-m2";
     GOOSE_PLANNER_PROVIDER = "openrouter";
     GOOSE_PLANNER_MODEL = "google/gemini-2.5-pro";
     GOOSE_TEMPERATURE = 0.7;
@@ -70,7 +70,7 @@ lib.mkIf config.purpose.dev.enable {
     # GOOSE_PLANNER_MODEL = "gpt-5";
 
     # Tool Configuration
-    GOOSE_MODE = "smart_approve";
+    GOOSE_MODE = "completely_autonomous"; # completely_autonomous, manual_approval, smart_approve, chat_only
     GOOSE_TOOLSHIM = true;
     GOOSE_CLI_MIN_PRIORITY = 0.2;
 
