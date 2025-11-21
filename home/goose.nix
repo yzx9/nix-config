@@ -54,6 +54,7 @@ lib.mkIf config.purpose.dev.enable {
   xdg.configFile."goose/config.yaml".text = toYAML {
     # Model Configuration
     GOOSE_PROVIDER = "openrouter";
+    # GOOSE_MODEL = "z-ai/glm-4.6";
     GOOSE_MODEL = "minimax/minimax-m2";
     GOOSE_PLANNER_PROVIDER = "openrouter";
     GOOSE_PLANNER_MODEL = "google/gemini-2.5-pro";
@@ -73,8 +74,6 @@ lib.mkIf config.purpose.dev.enable {
     GOOSE_MODE = "completely_autonomous"; # completely_autonomous, manual_approval, smart_approve, chat_only
     GOOSE_TOOLSHIM = true;
     GOOSE_CLI_MIN_PRIORITY = 0.2;
-
-    CONTEXT_FILE_NAMES = [ "AGENTS.md" ];
 
     # Environment Configuration
     extensions = {
