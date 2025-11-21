@@ -206,7 +206,7 @@
       # b: Browser
       # c: Chat
       # d: Development
-      # e: Email
+      # e: Eudic, Email
       # f: Figure
       # g:
       # q:
@@ -226,6 +226,7 @@
           "3"
           "built-in"
         ];
+        "e" = "built-in";
         "x" = "built-in";
       };
 
@@ -239,12 +240,12 @@
         [
           (mkMove "com.nixos.firefox" "b")
           (mkMove "com.kovidgoyal.kitty" "d")
+          (mkMove "com.eusoft.eudic" "e")
           (mkMove "com.microsoft.Outlook" "e")
           (mkMove "org.inkscape.Inkscape" "f")
           (mkMove "com.microsoft.Powerpoint" "f")
           (mkMove "com.electron.trilium-notes" "t")
           (mkMove "com.vmware.fusion" "v")
-          (mkMove "com.eusoft.eudic" "x")
           (mkMove "sc.fiji" "x")
           (mkMove "org.zotero.zotero" "z")
 
@@ -273,19 +274,6 @@
               "move-node-to-workspace x"
             ];
           }
-
-          # {
-          #   "if".app-id = "com.microsoft.Outlook";
-          #   "if".window-title-regex-substring = "Reminder";
-          #   run = [
-          #     "layout floating"
-          #     "move-node-to-workspace m"
-          #   ];
-          # }
-          # {
-          #   "if".window-title-regex-substring = "Reminder";
-          #   run = "layout floating";
-          # }
         ];
     };
   };
