@@ -202,21 +202,21 @@
         ];
       };
 
-      # a: main
-      # b: Browser
-      # c: Chat
-      # d: Development
-      # e: Eudic, Email
-      # f: Figure
-      # g:
-      # q:
-      # r:
-      # s:
-      # t: Trilium
-      # v: Viture machine
-      # w:
-      # x: misc
-      # z: Zotero
+      # A: main
+      # B: [B]rowser
+      # C: [C]hat
+      # D: [D]evelopment
+      # E: [E]udic, [E]mail
+      # F:
+      # G: [G]raphics design: Bambu Studio, FreeCAD, Inkscape, Powerpoint
+      # Q: Dbeaver
+      # R:
+      # S:
+      # T: [T]rilium
+      # V: [V]iture machine
+      # W:
+      # X: misc
+      # Z: [Z]otero
 
       workspace-to-monitor-force-assignment = {
         "a" = "main";
@@ -232,22 +232,30 @@
 
       on-window-detected =
         let
-          mkMove = appId: workspace: {
+          mkMove = workspace: appId: {
             "if".app-id = appId;
             run = "move-node-to-workspace ${workspace}";
           };
         in
         [
-          (mkMove "com.nixos.firefox" "b")
-          (mkMove "com.kovidgoyal.kitty" "d")
-          (mkMove "com.eusoft.eudic" "e")
-          (mkMove "com.microsoft.Outlook" "e")
-          (mkMove "org.inkscape.Inkscape" "f")
-          (mkMove "com.microsoft.Powerpoint" "f")
-          (mkMove "com.electron.trilium-notes" "t")
-          (mkMove "com.vmware.fusion" "v")
-          (mkMove "sc.fiji" "x")
-          (mkMove "org.zotero.zotero" "z")
+          (mkMove "b" "com.nixos.firefox")
+          (mkMove "d" "com.kovidgoyal.kitty")
+          (mkMove "e" "com.eusoft.eudic")
+          (mkMove "e" "com.microsoft.Outlook")
+          (mkMove "g" "com.bambulab.bambu-studio")
+          (mkMove "g" "org.freecad.FreeCAD")
+          (mkMove "g" "org.inkscape.Inkscape")
+          (mkMove "g" "com.microsoft.Powerpoint")
+          (mkMove "q" "org.jkiss.dbeaver.core.product")
+          (mkMove "t" "com.electron.trilium-notes")
+          (mkMove "v" "com.vmware.fusion")
+          (mkMove "x" "sc.fiji")
+          (mkMove "z" "org.zotero.zotero")
+
+          {
+            "if".app-id = "com.apple.finder";
+            run = "layout floating";
+          }
 
           # Most windows of wechat need to be float, including picture preview, video
           # call, etc. The only exception is the main window, howevery it's not easy to
