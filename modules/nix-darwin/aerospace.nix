@@ -211,7 +211,7 @@
       # G: [G]raphics design: Bambu Studio, FreeCAD, Inkscape, Powerpoint
       # Q: Dbeaver
       # R:
-      # S:
+      # S: [S]tudy: Preview, Zotero
       # T: [T]rilium
       # V: [V]iture machine
       # W:
@@ -247,10 +247,11 @@
           (mkMove "g" "org.inkscape.Inkscape")
           (mkMove "g" "com.microsoft.Powerpoint")
           (mkMove "q" "org.jkiss.dbeaver.core.product")
+          (mkMove "s" "com.apple.Preview")
+          (mkMove "s" "org.zotero.zotero")
           (mkMove "t" "com.electron.trilium-notes")
           (mkMove "v" "com.vmware.fusion")
           (mkMove "x" "sc.fiji")
-          (mkMove "z" "org.zotero.zotero")
 
           {
             "if".app-id = "com.apple.finder";
