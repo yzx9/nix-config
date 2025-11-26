@@ -8,7 +8,6 @@
 
     (_final: _prev: inputs.self.packages.${config.vars.system})
 
-    (import ./fish.nix)
     (import ./vimPlugins.nix)
   ];
 }
