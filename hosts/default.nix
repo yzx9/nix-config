@@ -3,7 +3,7 @@
 let
   inherit (nixpkgs) lib;
   recursiveMergeAttrs =
-    listOfAttrsets: lib.fold (attrset: acc: lib.recursiveUpdate attrset acc) { } listOfAttrsets;
+    listOfAttrsets: lib.foldr (attrset: acc: lib.recursiveUpdate attrset acc) { } listOfAttrsets;
 in
 recursiveMergeAttrs [
   (import ./cvcd-gpu0/default.nix inputs)
