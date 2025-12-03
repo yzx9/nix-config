@@ -30,6 +30,14 @@
         file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
       }
     ];
+
+    # Workaround to make vi-mode work with atuin
+    initContent = lib.optionalString config.programs.atuin.enable ''
+      function zvm_after_init() {
+        zvm_bindkey viins '^R' atuin-search
+        zvm_bindkey vicmd '^R' atuin-search
+      }
+    '';
   };
 
   # A multi-shell multi-command argument completer
@@ -62,5 +70,21 @@
         lib.importTOML "${catppuccin}/themes/mocha.toml"
       )
     ];
+  };
+
+  programs.atuin = {
+    enable = config.purpose.daily;
+
+    forceOverwriteSettings = true; # NOTE: DANGER: This will overwrite any user settings on each activation
+
+    flags = [ "--disable-up-arrow" ]; # or --disable-ctrl-r
+
+    settings = {
+      auto_sync = false; # TODO: Enable aync, maybe setup our own server?
+      sync_frequency = "1h";
+      sync_address = "https://api.atuin.sh";
+      search_mode = "fuzzy";
+      keymap_mode = "vim-insert";
+    };
   };
 }
