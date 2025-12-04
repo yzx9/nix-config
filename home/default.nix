@@ -7,6 +7,7 @@
     ./gui
 
     ./apps.nix
+    ./atuin.nix
     ./base.nix
     ./bat.nix
     ./btop.nix

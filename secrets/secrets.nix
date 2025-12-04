@@ -30,6 +30,9 @@ let
 in
 {
   "api-keys.age".publicKeys = all;
+  "atuin-sync-address.age".publicKeys = all;
+  "atuin-session.age".publicKeys = all;
+  "atuin-key.age".publicKeys = all;
   "backup-passphrase.age".publicKeys = all;
   "freshrss-pwd.age".publicKeys = all;
   "frpc.toml.age".publicKeys = all;
