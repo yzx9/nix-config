@@ -20,6 +20,7 @@ inputs.self.lib.mkNixosRpiConfiguration {
 
   host = {
     imports = [
+      ./atuin.nix
       ./backup.nix
       ./freshrss.nix
       ./frpc.nix
