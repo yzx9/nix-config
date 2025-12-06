@@ -9,6 +9,11 @@
 
     # https://github.com/brenoprata10/nvim-highlight-colors#options
     settings.render = "background";
+
+    lazyLoad.settings = {
+      cmd = "HighlightColors";
+      event = "DeferredUIEnter";
+    };
   };
 
   keymaps = [

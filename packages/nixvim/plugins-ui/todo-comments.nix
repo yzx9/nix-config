@@ -6,6 +6,15 @@
     enable = true;
     # highlight.pattern = ".*<(KEYWORDS)\s*";
     # search.pattern = "\\b(KEYWORDS)";
+
+    lazyLoad.settings = {
+      event = "DeferredUIEnter";
+      keys = [
+        "<leader>fT"
+        "]T"
+        "[T"
+      ];
+    };
   };
 
   keymaps = [

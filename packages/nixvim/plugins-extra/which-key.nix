@@ -79,6 +79,21 @@
       ];
     };
 
+    lazyLoad.settings = {
+      event = "DeferredUIEnter"; # equivalent to lazy.nvim's VeryLazy event.
+
+      keys = [
+        {
+          __unkeyed-1 = "<leader>?";
+          __unkeyed-2 = ''
+            function()
+              require("which-key").show({ global = false })
+            end,
+          '';
+          desc = "Buffer Local Keymaps (which-key)";
+        }
+      ];
+    };
   };
 
   # Enable catppuccin colors

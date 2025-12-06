@@ -29,6 +29,8 @@
         "Trouble"
       ];
     };
+
+    lazyLoad.settings.event = "DeferredUIEnter";
   };
 
   # Enable catppuccin colors

@@ -1,3 +1,4 @@
+# homepage: https://github.com/neovim/nvim-lspconfig/
 # nixvim doc: https://nix-community.github.io/nixvim/plugins/lsp/index.html
 {
   config,

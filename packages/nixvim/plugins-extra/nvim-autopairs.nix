@@ -20,11 +20,17 @@
         highlight_grey = "LineNr";
       };
     };
-  };
 
-  # With cmp integration
-  # https://github.com/AstroNvim/AstroNvim/blob/v4.7.7/lua/astronvim/plugins/configs/nvim-autopairs.lua#L10
-  extraConfigLua = ''
-    require("cmp").event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done { tex = false })
-  '';
+    lazyLoad.settings = {
+      event = "InsertEnter";
+
+      # With cmp integration
+      # https://github.com/AstroNvim/AstroNvim/blob/v4.7.7/lua/astronvim/plugins/configs/nvim-autopairs.lua#L10
+      after.__raw = ''
+        function()
+          require("cmp").event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done { tex = false })
+        end
+      '';
+    };
+  };
 }

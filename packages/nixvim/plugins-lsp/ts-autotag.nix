@@ -4,5 +4,10 @@
 { config, ... }:
 
 {
-  plugins.ts-autotag.enable = config.lsp.enable;
+  plugins.ts-autotag = {
+    enable = config.lsp.enable;
+
+    # lazy loading is not necessary here
+    # lazyLoad.settings
+  };
 }

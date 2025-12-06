@@ -24,6 +24,8 @@
         untracked.text = icons.GitSign;
       };
     };
+
+    lazyLoad.settings.event = "DeferredUIEnter";
   };
 
   # Enable catppuccin colors

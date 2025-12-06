@@ -12,9 +12,15 @@
     # nixvim doc: https://nix-community.github.io/nixvim/plugins/copilot-lua/index.html
     copilot-lua = {
       enable = true;
+
       settings = {
         suggestion.enabled = false;
         panel.enabled = false;
+      };
+
+      lazyLoad.settings = {
+        cmd = "Copilot";
+        event = "InsertEnter";
       };
     };
 

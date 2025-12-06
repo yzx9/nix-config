@@ -37,9 +37,7 @@ lib.mkIf config.lsp.enable {
         "q"
       ];
 
-      hover = {
-        open_cmd = "!firefox"; # Choose your browser
-      };
+      hover.open_cmd = "!firefox"; # Choose your browser
 
       implement.enable = false;
 
@@ -71,9 +69,9 @@ lib.mkIf config.lsp.enable {
         scroll_down = "<C-f>";
         scroll_up = "<C-b>";
       };
-
-      # lazyLoad.settings.cmd = "Lspsaga";
     };
+
+    lazyLoad.settings.event = "LspAttach";
   };
 
   # Enable catppuccin colors
