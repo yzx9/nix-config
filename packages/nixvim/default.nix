@@ -25,7 +25,6 @@ nixvim.makeNixvimWithModule {
       plugins-extra/cmp.nix
       plugins-extra/copilot.nix
       plugins-extra/fidget.nix
-      plugins-extra/illuminate.nix
       plugins-extra/lazygit.nix
       plugins-extra/lz-n.nix
       plugins-extra/nvim-autopairs.nix
@@ -38,6 +37,7 @@ nixvim.makeNixvimWithModule {
       plugins-lsp/comment.nix
       plugins-lsp/conform.nix
       # plugins-lsp/dap.nix # need more exploration
+      plugins-lsp/illuminate.nix
       plugins-lsp/lsp.nix
       plugins-lsp/lspsage.nix
       # plugins-lsp/neotest.nix # need more exploration
