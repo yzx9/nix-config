@@ -64,6 +64,10 @@ switch-dev:
   sudo nixos-rebuild switch --show-trace --verbose --flake .
 
 [linux]
+rollback:
+  sudo nixos-rebuild switch --rollback
+
+[linux]
 hm-switch hostname = `hostname`:
   home-manager switch --flake .#{{hostname}}
 
@@ -84,6 +88,13 @@ switch: switch-noproxy (proxy "set")
 [macos]
 switch-dev:
   sudo darwin-rebuild switch --show-trace --verbose --flake .
+
+[macos]
+rollback: rollback-noproxy (proxy "set")
+
+[macos]
+rollback-noproxy:
+  sudo darwin-rebuild switch --rollback
 
 [macos]
 proxy mode="auto_switch":
