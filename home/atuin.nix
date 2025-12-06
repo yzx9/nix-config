@@ -18,7 +18,7 @@
 
   programs.atuin =
     let
-      atuinWrapped = pkgs.writeShellApplication {
+      atuin = pkgs.writeShellApplication {
         name = "atuin";
         runtimeInputs = [ pkgs.atuin ];
         text = ''
@@ -34,16 +34,6 @@
           exec atuin "$@"
         '';
       };
-
-      # Add version and meta information to pass the Home Manager checks
-      atuin = atuinWrapped.overrideAttrs (old: {
-        version = pkgs.atuin.version;
-        pname = "atuin";
-        name = "atuin-${pkgs.atuin.version}";
-        meta = (old.meta or { }) // {
-          mainProgram = "atuin";
-        };
-      });
     in
     {
       enable = config.purpose.daily;
@@ -52,8 +42,6 @@
 
       # NOTE: DANGER: This will overwrite any user settings on each activation
       forceOverwriteSettings = true;
-
-      daemon.enable = true;
 
       settings = {
         search_mode = "fuzzy";
