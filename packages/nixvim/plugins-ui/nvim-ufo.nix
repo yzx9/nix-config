@@ -6,7 +6,7 @@
     enable = true;
 
     settings = {
-      privider_selector = ''
+      provider_selector = ''
         function(bufnr, filetype, buftype)
           local ftMap = {
             vim = "indent",
