@@ -41,6 +41,7 @@ nixvim.makeNixvimWithModule {
       plugins-lsp/lsp.nix
       plugins-lsp/lspsage.nix
       # plugins-lsp/neotest.nix # need more exploration
+      plugins-lsp/nvim-ufo.nix
       plugins-lsp/treesitter.nix
       plugins-lsp/ts-autotag.nix
       plugins-lsp/ts-context-commentstring.nix
@@ -52,7 +53,6 @@ nixvim.makeNixvimWithModule {
       plugins-ui/indent-blankline.nix
       plugins-ui/lualine.nix
       plugins-ui/nvim-highlight-colors.nix
-      plugins-ui/nvim-ufo.nix
       plugins-ui/todo-comments.nix
       plugins-ui/web-devicon.nix
     ];
