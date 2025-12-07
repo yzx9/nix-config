@@ -5,6 +5,8 @@
     enable = config.purpose.gui;
 
     settings = {
+      config-version = 2;
+
       # You can use it to add commands that run after login to macOS user session.
       # 'start-at-login' needs to be 'true' for 'after-login-command' to work
       # Available commands: https://nikitabobko.github.io/AeroSpace/commands
@@ -47,6 +49,15 @@
       # Also see: https://nikitabobko.github.io/AeroSpace/goodies#disable-hide-app
       automatically-unhide-macos-hidden-apps = true;
 
+      # List of workspaces that should stay alive even when they contain no windows,
+      # even when they are invisible.
+      persistent-workspaces = lib.stringToCharacters "QWERTASDFGZXCVB";
+
+      # A callback that runs every time binding mode changes
+      # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
+      # See: https://nikitabobko.github.io/AeroSpace/commands#mode
+      on-mode-changed = [ ];
+
       # Possible values: (qwerty|dvorak)
       # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
       key-mapping.preset = "qwerty";
@@ -79,7 +90,7 @@
             lib.listToAttrs (
               lib.map (c: {
                 name = toKey c;
-                value = toValue c;
+                value = toValue (lib.toUpper c);
               }) (lib.stringToCharacters "qwertasdfgzxcvb")
             );
         in
@@ -219,15 +230,15 @@
       # Z: [Z]otero
 
       workspace-to-monitor-force-assignment = {
-        "a" = "main";
-        "b" = "main";
-        "c" = "built-in";
-        "d" = [
+        "A" = "main";
+        "B" = "main";
+        "C" = "built-in";
+        "D" = [
           "3"
           "built-in"
         ];
-        "e" = "built-in";
-        "x" = "built-in";
+        "E" = "built-in";
+        "X" = "built-in";
       };
 
       on-window-detected =
@@ -238,20 +249,20 @@
           };
         in
         [
-          (mkMove "b" "com.nixos.firefox")
-          (mkMove "d" "com.kovidgoyal.kitty")
-          (mkMove "e" "com.eusoft.eudic")
-          (mkMove "e" "com.microsoft.Outlook")
-          (mkMove "g" "com.bambulab.bambu-studio")
-          (mkMove "g" "org.freecad.FreeCAD")
-          (mkMove "g" "org.inkscape.Inkscape")
-          (mkMove "g" "com.microsoft.Powerpoint")
-          (mkMove "q" "org.jkiss.dbeaver.core.product")
-          (mkMove "s" "com.apple.Preview")
-          (mkMove "s" "org.zotero.zotero")
-          (mkMove "t" "com.electron.trilium-notes")
-          (mkMove "v" "com.vmware.fusion")
-          (mkMove "x" "sc.fiji")
+          (mkMove "B" "com.nixos.firefox")
+          (mkMove "D" "com.kovidgoyal.kitty")
+          (mkMove "E" "com.eusoft.eudic")
+          (mkMove "E" "com.microsoft.Outlook")
+          (mkMove "G" "com.bambulab.bambu-studio")
+          (mkMove "G" "org.freecad.FreeCAD")
+          (mkMove "G" "org.inkscape.Inkscape")
+          (mkMove "G" "com.microsoft.Powerpoint")
+          (mkMove "Q" "org.jkiss.dbeaver.core.product")
+          (mkMove "S" "com.apple.Preview")
+          (mkMove "S" "org.zotero.zotero")
+          (mkMove "T" "com.electron.trilium-notes")
+          (mkMove "V" "com.vmware.fusion")
+          (mkMove "X" "sc.fiji")
 
           {
             "if".app-id = "com.apple.finder";
@@ -268,7 +279,7 @@
             # "if".window-title-regex-substring = "WeChat"; # WeChat (Chats)
             run = [
               "layout floating"
-              "move-node-to-workspace c"
+              "move-node-to-workspace C"
             ];
           }
 
@@ -280,7 +291,7 @@
 
             run = [
               "layout floating"
-              "move-node-to-workspace x"
+              "move-node-to-workspace X"
             ];
           }
         ];
