@@ -48,6 +48,16 @@ configuration.
 
 ## Known issues
 
+### Substituter not activated
+
+Check your current nix config:
+
+```sh
+nix config show
+```
+
+Also check weather there is a user-wide config at `~/.config/nix`
+
 ### Darwin
 
 #### Daemons not running
@@ -69,16 +79,6 @@ And you can check the log:
 ```sh
 sudo log show --last boot --predicate "process == 'launchd' AND composedMessage CONTAINS 'org.nixos.xray'"
 ```
-
-#### Uninstalled apps in Launchpad
-
-To remove the uninstalled APPs icon from Launchpad:
-
-1.  Run command: `sudo nix store gc --debug && sudo nix-collect-garbage --delete-old`
-2.  Click on the uninstalled APP's icon in Launchpad, it will show a question mark
-3.  If the app starts normally, right click on the running app's icon in Dock, select "Options" -> "Show in Finder" and
-    delete it
-4.  Hold down the Option key, a `x` button will appear on the icon, click it to remove the icon
 
 #### Remove old version entries from Finder
 
