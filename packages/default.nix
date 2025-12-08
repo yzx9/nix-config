@@ -7,7 +7,7 @@
 }:
 
 let
-  pkgs = nixpkgs.legacyPackages.${system}.extend (import ../modules/_shared/overlays/vimPlugins.nix);
+  pkgs = nixpkgs.legacyPackages.${system};
 
   nixvim' = import ./nixvim {
     inherit pkgs;
