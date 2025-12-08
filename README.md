@@ -170,3 +170,43 @@ If you can't reboot, follow these steps:
    is still using the modules and kill the processes manually.
 4. Reload module: `sudo modprobe nvidia`
 5. Test again: `nvidia-smi`. If problems persist, a full system reboot is recommended.
+
+### How to override ...?
+
+#### Rust
+
+```nix
+goose-cli = prev.goose-cli.overrideAttrs {
+inherit version src;
+
+cargoDeps = final.rustPlatform.fetchCargoVendor {
+  inherit src;
+  hash = "sha256-V6Vf6YzCNDwMlLFHICianR6f6zz7fEbm7+1Qeel3GDI=";
+};
+};
+```
+
+#### Vim plugins
+
+```nix
+final: prev: {
+  vimPlugins = prev.vimPlugins // {
+    fzf-lua = prev.neovimUtils.buildNeovimPlugin {
+      luaAttr = prev.luaPackages.fzf-lua.overrideAttrs (oldAttrs: {
+        version = "0.0.2311-1";
+
+        knownRockspec =
+          (prev.fetchurl {
+            url = "mirror://luarocks/fzf-lua-0.0.2311-1.rockspec";
+            sha256 = "0ldxn3v2bkjydnqcq5zz0rxxlv953azi6zvm8hl9vdsil1gg9vcz";
+          }).outPath;
+
+        src = prev.fetchzip {
+          url = "https://github.com/ibhagwan/fzf-lua/archive/3170d98240266a68c2611fc63260c3ab431575aa.zip";
+          sha256 = "0zlrzvwc29arf8y6x6niyglqgvj403mryffnwq18nmd6gabrjjx1";
+        };
+      });
+    };
+  };
+}
+```
