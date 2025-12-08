@@ -128,9 +128,6 @@
         }
       );
 
-      # nix flake init -t yzx9#<template_name>
-      templates = import ./templates;
-
       # nix fmt: nix code formatter
       formatter = eachSystem (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
     };
