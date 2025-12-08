@@ -37,6 +37,8 @@ let
         fi
       done
 
+      export GOOSE_DISABLE_KEYRING=1
+
       ${lib.optionalString hasProxy "export HTTPS_PROXY=${config.proxy.httpProxy}"}
 
       exec goose "$@"
@@ -51,22 +53,16 @@ lib.mkIf config.purpose.dev.enable {
   # goose config file
   xdg.configFile."goose/config.yaml".text = toYAML {
     # Model Configuration
-    GOOSE_PROVIDER = "openrouter";
-    # GOOSE_MODEL = "z-ai/glm-4.6";
-    GOOSE_MODEL = "minimax/minimax-m2";
-    GOOSE_PLANNER_PROVIDER = "openrouter";
-    GOOSE_PLANNER_MODEL = "google/gemini-2.5-pro";
+    GOOSE_PROVIDER = "openai"; # siliconflow
+    GOOSE_MODEL = "zai-org/glm-4.6";
     GOOSE_TEMPERATURE = 0.7;
-
-    # siliconflow: Value error, after assistant message, next must be user message
-    # GOOSE_PROVIDER = "openai";
-    # GOOSE_MODEL = "Qwen/Qwen3-Coder-480B-A35B-Instruct";
-    # OPENAI_BASE_PATH = "v1/chat/completions";
-    # OPENAI_HOST = "https://api.siliconflow.cn/v1";
+    # siliconflow config
+    OPENAI_BASE_PATH = "chat/completions";
+    OPENAI_HOST = "https://api.siliconflow.cn/v1";
 
     # Planning Configuration
-    # GOOSE_PLANNER_PROVIDER = "openai";
-    # GOOSE_PLANNER_MODEL = "gpt-5";
+    GOOSE_PLANNER_PROVIDER = "openrouter";
+    GOOSE_PLANNER_MODEL = "google/gemini-2.5-pro";
 
     # Tool Configuration
     GOOSE_MODE = "completely_autonomous"; # completely_autonomous, manual_approval, smart_approve, chat_only
