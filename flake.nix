@@ -104,8 +104,10 @@
 
       lib = import ./lib.nix inputs;
 
+      overlays = import ./overlays inputs;
+
       # nix run .#<command>
-      packages = eachSystem (system: import ./packages (inputs // { inherit system; }));
+      packages = eachSystem (import ./packages inputs);
 
       # nix develop
       devShells = eachSystem (

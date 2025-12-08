@@ -1,13 +1,15 @@
 {
-  system,
-  aim,
+  self,
   nixpkgs,
+  aim,
   nixvim,
   ...
 }:
 
+system:
+
 let
-  pkgs = nixpkgs.legacyPackages.${system};
+  pkgs = nixpkgs.legacyPackages.${system}.extend self.overlays.default;
 
   nixvim' = import ./nixvim {
     inherit pkgs;

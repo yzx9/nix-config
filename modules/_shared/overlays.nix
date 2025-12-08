@@ -2,12 +2,12 @@
 
 {
   nixpkgs.overlays = [
+    inputs.self.overlays.default
+
     inputs.nur.overlays.default
 
     inputs.aim.overlays.default
 
     (_final: _prev: inputs.self.packages.${config.vars.system})
-
-    (import ./goose.nix)
   ];
 }
