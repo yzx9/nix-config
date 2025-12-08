@@ -8,6 +8,8 @@
 
     (_final: _prev: inputs.self.packages.${config.vars.system})
 
+    (import ./goose.nix)
+
     (import ./vimPlugins.nix)
   ];
 }

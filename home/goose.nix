@@ -8,47 +8,45 @@
 let
   hasProxy = config.proxy.httpProxy != null;
   toYAML = lib.generators.toYAML { };
+
+  # Inject api keys in runtime
+  goose-cli' = pkgs.writeShellApplication {
+    name = "goose";
+    runtimeInputs = [ pkgs.goose-cli ];
+    text = ''
+      declare -A secrets
+
+      while IFS='=' read -r key value; do
+        [[ -z "$key" ]] && continue # ignore empty lines
+        [[ "$key" == \#* ]] && continue # ignore comments
+        secrets["@$key@"]="$value"
+      done < "${config.age.secrets."api-keys".path}"
+
+      declare -A mapping=(
+        ["GOOGLE_API_KEY"]="@gemini@"
+        ["OPENAI_API_KEY"]="@siliconflow@" # siliconflow, openai compatible
+        ["OPENROUTER_API_KEY"]="@openrouter@"
+      )
+
+      for envVar in "''${!mapping[@]}"; do
+        secretKey="''${mapping[$envVar]}"
+        if [[ -v secrets[$secretKey] ]]; then
+          export "$envVar"="''${secrets[$secretKey]}"
+        else
+          echo "Warning: key $secretKey not defined in secrets." >&2
+        fi
+      done
+
+      ${lib.optionalString hasProxy "export HTTPS_PROXY=${config.proxy.httpProxy}"}
+
+      exec goose "$@"
+    '';
+  };
 in
 lib.mkIf config.purpose.dev.enable {
   age.secrets."api-keys".file = ../secrets/api-keys.age;
 
-  # Inject api keys in runtime
-  home.packages =
-    let
-      goose-cli = pkgs.writeShellApplication {
-        name = "goose";
-        runtimeInputs = [ pkgs.goose-cli ];
-        text = ''
-          declare -A secrets
-
-          while IFS='=' read -r key value; do
-            [[ -z "$key" ]] && continue # ignore empty lines
-            [[ "$key" == \#* ]] && continue # ignore comments
-            secrets["@$key@"]="$value"
-          done < "${config.age.secrets."api-keys".path}"
-
-          declare -A mapping=(
-            ["GOOGLE_API_KEY"]="@gemini@"
-            ["OPENAI_API_KEY"]="@siliconflow@" # siliconflow, openai compatible
-            ["OPENROUTER_API_KEY"]="@openrouter@"
-          )
-
-          for envVar in "''${!mapping[@]}"; do
-            secretKey="''${mapping[$envVar]}"
-            if [[ -v secrets[$secretKey] ]]; then
-              export "$envVar"="''${secrets[$secretKey]}"
-            else
-              echo "Warning: key $secretKey not defined in secrets." >&2
-            fi
-          done
-
-          ${lib.optionalString hasProxy "export HTTPS_PROXY=${config.proxy.httpProxy}"}
-
-          exec goose "$@"
-        '';
-      };
-    in
-    [ goose-cli ];
+  home.packages = [ goose-cli' ];
 
   # goose config file
   xdg.configFile."goose/config.yaml".text = toYAML {
