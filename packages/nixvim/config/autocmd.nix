@@ -15,7 +15,6 @@
     q_close_windows.clear = true;
     terminal_settings.clear = true;
     unlist_quickfix.clear = true;
-
   };
 
   autoCmd = [

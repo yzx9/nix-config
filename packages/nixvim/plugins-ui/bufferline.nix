@@ -5,7 +5,9 @@
   plugins.bufferline = {
     enable = true;
 
-    settings.highlights.__raw = ''require("catppuccin.special.bufferline").get_theme()'';
+    settings.highlights.__raw = ''
+      require("catppuccin.special.bufferline").get_theme()
+    '';
 
     lazyLoad.settings.lazy = true; # Lazy load manually
   };
@@ -20,18 +22,14 @@
       mode = "n";
       key = "<S-h>";
       action = "<cmd>BufferLineCyclePrev<cr>";
-      options = {
-        desc = "Cycle to previous buffer";
-      };
+      options.desc = "Cycle to previous buffer";
     }
 
     {
       mode = "n";
       key = "<S-l>";
       action = "<cmd>BufferLineCycleNext<cr>";
-      options = {
-        desc = "Cycle to next buffer";
-      };
+      options.desc = "Cycle to next buffer";
     }
   ];
 }

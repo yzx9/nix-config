@@ -3,6 +3,7 @@
 # nixvim doc: https://nix-community.github.io/nixvim/colorschemes/catppuccin/index.html
 {
   colorscheme = "catppuccin";
+
   colorschemes.catppuccin = {
     enable = true;
     lazyLoad.enable = true;
