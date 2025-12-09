@@ -8,16 +8,19 @@
   ...
 }:
 
+let
+  toJSON = lib.generators.toJSON { };
+in
 lib.mkIf config.purpose.dev.enable {
   home.packages = [ pkgs.gitmoji-cli ];
 
-  home.file.".gitmojirc.json".text = lib.strings.toJSON {
-    "autoAdd" = false;
-    "emojiFormat" = "emoji";
-    "scopePrompt" = true;
-    "messagePrompt" = true;
-    "capitalizeTitle" = true;
-    "gitmojisUrl" = "https://gitmoji.dev/api/gitmojis";
+  home.file.".gitmojirc.json".text = toJSON {
+    autoAdd = false;
+    emojiFormat = "emoji";
+    scopePrompt = true;
+    messagePrompt = true;
+    capitalizeTitle = true;
+    gitmojisUrl = "https://gitmoji.dev/api/gitmojis";
   };
 
   home.file.".gitmoji/gitmojis.json".text =
@@ -30,8 +33,6 @@ lib.mkIf config.purpose.dev.enable {
       };
 
       data = lib.importJSON "${gitmoji}/packages/gitmojis/src/gitmojis.json";
-
-      toJSON = lib.generators.toJSON { };
     in
     toJSON data.gitmojis;
 }

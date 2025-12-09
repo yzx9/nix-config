@@ -8,6 +8,7 @@
 let
   hasProxy = config.proxy.httpProxy != null;
   toYAML = lib.generators.toYAML { };
+  toJSON = lib.generators.toJSON { };
 
   # Inject api keys in runtime
   goose-cli' = pkgs.writeShellApplication {
@@ -24,7 +25,7 @@ let
 
       declare -A mapping=(
         ["GOOGLE_API_KEY"]="@gemini@"
-        ["OPENAI_API_KEY"]="@siliconflow@" # siliconflow, openai compatible
+        ["SILICONFLOW_API_KEY"]="@siliconflow@"
         ["OPENROUTER_API_KEY"]="@openrouter@"
       )
 
@@ -51,44 +52,65 @@ lib.mkIf config.purpose.dev.enable {
   home.packages = [ goose-cli' ];
 
   # goose config file
-  xdg.configFile."goose/config.yaml".text = toYAML {
-    # Model Configuration
-    GOOSE_PROVIDER = "openai"; # siliconflow
-    GOOSE_MODEL = "zai-org/glm-4.6";
-    GOOSE_TEMPERATURE = 0.7;
-    # siliconflow config
-    OPENAI_BASE_PATH = "chat/completions";
-    OPENAI_HOST = "https://api.siliconflow.cn/v1";
+  xdg.configFile = {
+    "goose/config.yaml".text = toYAML {
+      # Model Configuration
+      GOOSE_PROVIDER = "custom_siliconflow";
+      GOOSE_MODEL = "zai-org/glm-4.6";
+      GOOSE_TEMPERATURE = 0.7;
 
-    # Planning Configuration
-    GOOSE_PLANNER_PROVIDER = "openrouter";
-    GOOSE_PLANNER_MODEL = "google/gemini-2.5-pro";
+      # Planning Configuration
+      GOOSE_PLANNER_PROVIDER = "openrouter";
+      GOOSE_PLANNER_MODEL = "google/gemini-2.5-pro";
 
-    # Tool Configuration
-    GOOSE_MODE = "completely_autonomous"; # completely_autonomous, manual_approval, smart_approve, chat_only
-    GOOSE_TOOLSHIM = true;
-    GOOSE_CLI_MIN_PRIORITY = 0.2;
+      # Tool Configuration
+      GOOSE_MODE = "completely_autonomous"; # completely_autonomous, manual_approval, smart_approve, chat_only
+      GOOSE_TOOLSHIM = true;
+      GOOSE_CLI_MIN_PRIORITY = 0.2;
 
-    # Environment Configuration
-    extensions = {
-      developer = {
-        bundled = true;
-        enabled = true;
-        type = "builtin";
-        name = "developer";
-        display_name = "Developer Tools";
-        timeout = 300;
+      # Environment Configuration
+      extensions = {
+        developer = {
+          bundled = true;
+          enabled = true;
+          type = "builtin";
+          name = "developer";
+          display_name = "Developer Tools";
+          timeout = 300;
+        };
+
+        computercontroller = {
+          enabled = true;
+          type = "builtin";
+          name = "computercontroller";
+          display_name = "Computer Controller";
+          description = null;
+          timeout = 300;
+          bundled = true;
+        };
       };
+    };
 
-      computercontroller = {
-        enabled = true;
-        type = "builtin";
-        name = "computercontroller";
-        display_name = "Computer Controller";
-        description = null;
-        timeout = 300;
-        bundled = true;
-      };
+    "goose/custom_providers/custom_siliconflow.json".text = toJSON {
+      name = "custom_siliconflow";
+      engine = "openai";
+      display_name = "SiliconFlow";
+      description = "Custom SiliconFlow provider";
+      api_key_env = "SILICONFLOW_API_KEY";
+      base_url = "https://api.siliconflow.cn/v1/chat/completions";
+      models = [
+        {
+          name = "zai-org/glm-4.6";
+          context_limit = 128000;
+          input_token_cost = null;
+          output_token_cost = null;
+          currency = null;
+          supports_cache_control = null;
+        }
+      ];
+      headers = null;
+      timeout_seconds = null;
+      supports_streaming = true;
     };
   };
 }
