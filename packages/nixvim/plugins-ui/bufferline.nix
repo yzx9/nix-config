@@ -10,15 +10,9 @@
     lazyLoad.settings.lazy = true; # Lazy load manually
   };
 
-  # Enable catppuccin colors
-  colorschemes.catppuccin.lazyLoad.settings.after.__raw = ''
-    function()
-      -- local mocha = require("catppuccin.palettes").get_palette "mocha"
-      -- bufferline.setup {
-      --   highlights = require("catppuccin.special.bufferline").get_theme()
-      -- }
-      require('lz.n').trigger_load("bufferline.nvim")
-    end
+  # Enable catppuccin colors and trigger bufferline load after
+  colorschemes.catppuccin.luaConfig.post = ''
+    require('lz.n').trigger_load("bufferline.nvim")
   '';
 
   keymaps = [
