@@ -27,7 +27,7 @@ inputs.self.lib.mkNixosRpiConfiguration {
       ./hardware-configuration.nix
       ./mysql.nix
       ./radicale.nix
-      # ./trilium.nix # wait for 25.11 or customized nixpkgs
+      ./trilium.nix
     ];
 
     networking = mkNetworkingLab "end0" "10.6.18.188";
