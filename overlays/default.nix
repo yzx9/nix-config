@@ -1,12 +1,12 @@
 { nixpkgs, ... }:
 
 let
-  goose = import ./goose.nix;
+  goose-cli = import ./goose-cli.nix;
 in
 {
-  inherit goose;
+  inherit goose-cli;
 
   default = nixpkgs.lib.composeManyExtensions [
-    goose
+    goose-cli
   ];
 }
