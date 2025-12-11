@@ -48,6 +48,8 @@
         };
 
         palette = "catppuccin_mocha";
+
+        gcloud.disabled = true;
       }
 
       (
