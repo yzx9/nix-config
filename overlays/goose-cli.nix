@@ -1,13 +1,13 @@
 final: prev:
 
 let
-  version = "1.16.0";
+  version = "1.16.1";
 
   src = prev.fetchFromGitHub {
     owner = "block";
     repo = "goose";
     tag = "v${version}";
-    hash = "sha256-AhpVkwWjiVYH2ulWC4SvtpvlIq5u1GZmuDxVszK3OzA=";
+    hash = "sha256-lMlpgsLkPQsvc5Ad8sRrwO27ytb5hpF3doUR18DUrvw=";
   };
 in
 {
@@ -16,7 +16,7 @@ in
 
     cargoDeps = final.rustPlatform.fetchCargoVendor {
       inherit src;
-      hash = "sha256-IOHg+bD9Bof7Hzka7Cw3vdUzzuZid1vQHc+KYy8Ep3c=";
+      hash = "sha256-WPrCwvGVOuTKXEHLR0WRV+YXr4r10fQf9t/Sfs/2bNI=";
     };
 
     checkFlags = (prev.checkFlags or [ ]) ++ [
