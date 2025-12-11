@@ -26,6 +26,8 @@ let
 
       aim = aim.packages.${system}.aim;
 
+      pmp-library = pkgs.callPackage ./pmp-library { };
+
       nixvim = nixvim';
       nixvim-lsp = nixvim'.extend { lsp.enable = true; };
     };
