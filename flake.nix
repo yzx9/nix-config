@@ -102,12 +102,16 @@
     {
       inherit (import ./hosts inputs) nixosConfigurations darwinConfigurations homeConfigurations;
 
-      lib = import ./lib.nix inputs;
-
-      overlays = import ./overlays inputs;
-
       # nix run .#<command>
       packages = eachSystem (import ./packages inputs);
+
+      lib = import ./lib.nix inputs;
+
+      # nixpkgs overlay
+      overlays = import ./overlays inputs;
+
+      # NixOS modules
+      nixosModules = import ./nixosModules inputs;
 
       # nix develop
       devShells = eachSystem (

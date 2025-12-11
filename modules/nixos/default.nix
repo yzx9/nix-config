@@ -2,6 +2,7 @@
 
 {
   imports = [
+    inputs.self.nixosModules.default
     inputs.agenix.nixosModules.default
     inputs.home-manager.nixosModules.home-manager
 
@@ -15,7 +16,5 @@
     ./networking.nix
     ./nvidia.nix
     ./system.nix
-
-    ./modules/frpc.nix
   ];
 }
