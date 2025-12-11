@@ -18,6 +18,10 @@ stdenvNoCC.mkDerivation {
     hash = "sha256-hjqmNxIr/KCN9k5ZT7O994BeWdp56NP7aS34+nZ/fQQ=";
   };
 
+  nativeBuildInputs = [
+    catppuccin-bat
+  ];
+
   dontConfigure = true;
   dontBuild = true;
 
