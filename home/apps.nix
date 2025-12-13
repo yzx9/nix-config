@@ -44,6 +44,7 @@ lib.mkMerge [
       sl
 
       # msic
+      lazygit # simple terminal UI for git
       age # encryption tool
       glow # markdown viewer
       ouch # compressing and decompressing
