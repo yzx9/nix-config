@@ -66,7 +66,7 @@ in
         }
       ];
       specialArgs = specialArgs // {
-        inherit (specialArgs) nixos-raspberrypi;
+        inherit nixos-raspberrypi;
       };
     };
   };
