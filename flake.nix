@@ -39,8 +39,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # NOTE: dont override nixpkgs since it leads cache-missing
-    nixos-raspberrypi.url = "github:nvmd/nixos-raspberrypi";
+    nixpkgs-rpi.url = "github:nvmd/nixpkgs/modules-with-keys-unstable";
+    nixos-raspberrypi = {
+      url = "github:nvmd/nixos-raspberrypi";
+      inputs.nixpkgs.follows = "nixpkgs-rpi"; # NOTE: use the modified nixpkgs
+    };
 
     # Manage a user environment using Nix
     home-manager = {
