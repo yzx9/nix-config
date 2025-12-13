@@ -2,8 +2,8 @@
 
 let
   inherit (config) vars;
-  baseUrl = "10.1.1.1";
-  vhost = "freshrss";
+
+  virtualHost = "freshrss";
 
   # Custom configuration for FreshRSS.
   # Only used before the first run, edit `/var/lib/freshrss/config.php after the install process is completed
@@ -20,7 +20,8 @@ let
     ];
   '';
 
-  freshrssWithProxy = pkgs.freshrss.overrideAttrs (prev: {
+  # Override FreshRSS package to include custom configuration file.
+  package = pkgs.freshrss.overrideAttrs (prev: {
     postInstall = (prev.postInstall or "") + ''
       cp ${configCustom} $out/config.custom.php
     '';
@@ -34,18 +35,15 @@ in
   };
 
   services.freshrss = {
+    inherit package virtualHost;
+
     enable = true;
-
-    package = freshrssWithProxy;
-
-    virtualHost = vhost;
-    baseUrl = baseUrl;
-
+    baseUrl = "127.0.0.1";
     defaultUser = vars.user.name;
     passwordFile = config.age.secrets."freshrss-pwd".path;
   };
 
-  services.nginx.virtualHosts.${vhost} = {
+  services.nginx.virtualHosts.${virtualHost} = {
     listen = [
       {
         addr = "127.0.0.1";
