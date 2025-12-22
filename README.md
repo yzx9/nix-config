@@ -176,14 +176,19 @@ If you can't reboot, follow these steps:
 #### Rust
 
 ```nix
-goose-cli = prev.goose-cli.overrideAttrs {
-inherit version src;
-
-cargoDeps = final.rustPlatform.fetchCargoVendor {
-  inherit src;
-  hash = "sha256-V6Vf6YzCNDwMlLFHICianR6f6zz7fEbm7+1Qeel3GDI=";
-};
-};
+goose-cli = prev.goose-cli.overrideAttrs (finalAttrs: prevAttrs: {
+  version = "1.18.0";
+  src = prev.fetchFromGitHub {
+    owner = "block";
+    repo = "goose";
+    tag = "v${finalAttrs.version}";
+    hash = "";
+  };
+  cargoDeps = final.rustPlatform.fetchCargoVendor {
+    inherit (finalAttrs) src;
+    hash = "";
+  };
+});
 ```
 
 #### Vim plugins
