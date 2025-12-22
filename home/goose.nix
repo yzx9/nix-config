@@ -24,6 +24,7 @@ let
       done < "${config.age.secrets."api-keys".path}"
 
       declare -A mapping=(
+        ["GLM_CODING_API_KEY"]="@glm-coding@"
         ["GOOGLE_API_KEY"]="@gemini@"
         ["SILICONFLOW_API_KEY"]="@siliconflow@"
         ["OPENROUTER_API_KEY"]="@openrouter@"
@@ -55,18 +56,18 @@ lib.mkIf config.purpose.dev.enable {
   xdg.configFile = {
     "goose/config.yaml".text = toYAML {
       # Model Configuration
-      GOOSE_PROVIDER = "custom_siliconflow";
-      GOOSE_MODEL = "zai-org/glm-4.6";
+      GOOSE_PROVIDER = "custom_glm_coding";
+      GOOSE_MODEL = "glm-4.7";
       GOOSE_TEMPERATURE = 0.7;
 
       # Planning Configuration
       GOOSE_PLANNER_PROVIDER = "openrouter";
-      GOOSE_PLANNER_MODEL = "google/gemini-2.5-pro";
+      GOOSE_PLANNER_MODEL = "google/gemini-3-pro-preview";
 
       # Tool Configuration
       GOOSE_MODE = "completely_autonomous"; # completely_autonomous, manual_approval, smart_approve, chat_only
       GOOSE_TOOLSHIM = true;
-      GOOSE_CLI_MIN_PRIORITY = 0.2;
+      GOOSE_CLI_MIN_PRIORITY = 0.8; # output verbosity: high -> 0.8, medium -> 0.2, all -> 0.0
 
       # Environment Configuration
       extensions = {
@@ -104,6 +105,28 @@ lib.mkIf config.purpose.dev.enable {
           context_limit = 128000;
           input_token_cost = null;
           output_token_cost = null;
+          currency = null;
+          supports_cache_control = null;
+        }
+      ];
+      headers = null;
+      timeout_seconds = null;
+      supports_streaming = true;
+    };
+
+    "goose/custom_providers/custom_glm_coding.json".text = toJSON {
+      name = "custom_glm_coding";
+      engine = "anthropic";
+      display_name = "GLM Coding";
+      description = "Custom GLM Coding provider";
+      api_key_env = "GLM_CODING_API_KEY";
+      base_url = "https://open.bigmodel.cn/api/anthropic";
+      models = [
+        {
+          name = "glm-4.7";
+          context_limit = 200000;
+          input_token_cost = 0;
+          output_token_cost = 0;
           currency = null;
           supports_cache_control = null;
         }
