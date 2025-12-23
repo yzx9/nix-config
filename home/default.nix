@@ -11,6 +11,7 @@
     ./base.nix
     ./bat.nix
     ./btop.nix
+    ./claude-code.nix
     ./delta.nix
     ./git.nix
     ./gitmoji.nix

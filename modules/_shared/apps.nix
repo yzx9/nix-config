@@ -4,11 +4,11 @@
 #
 ##########################################################################
 
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
-  # # Allow unfree packages
-  # nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ ];
+  # Allow unfree packages
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "claude-code" ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
