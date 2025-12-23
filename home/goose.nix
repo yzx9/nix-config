@@ -19,15 +19,19 @@ let
     ];
     text = ''
       export GOOSE_DISABLE_KEYRING=1
+      export LANGFUSE_URL=https://us.cloud.langfuse.com
+      export LANGFUSE_INIT_PROJECT_PUBLIC_KEY=pk-lf-84b79195-3106-473a-bdbf-448e146a206d
 
       ${lib.optionalString hasProxy "export HTTPS_PROXY=${config.proxy.httpProxy}"}
 
       with-secrets \
         "${config.age.secrets."llm-api-keys".path}" \
+        "${config.age.secrets."langfuse-secret-key".path}" \
         --allow GLM_CODING_API_KEY \
         --allow GOOGLE_API_KEY \
         --allow SILICONFLOW_API_KEY \
         --allow OPENROUTER_API_KEY \
+        --map langfuse-goose LANGFUSE_INIT_PROJECT_SECRET_KEY \
         -- goose "$@"
     '';
   };
@@ -35,6 +39,7 @@ in
 lib.mkIf config.purpose.dev.enable {
   age.secrets = {
     "llm-api-keys".file = ../secrets/llm-api-keys.age;
+    "langfuse-secret-key".file = ../secrets/langfuse-secret-key.age;
   };
 
   home.packages = [ goose-cli' ];

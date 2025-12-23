@@ -36,6 +36,7 @@ in
   "freshrss-pwd.age".publicKeys = all;
   "frpc.toml.age".publicKeys = all;
   "lab-account.age".publicKeys = all;
+  "langfuse-secret-key.age".publicKeys = all;
   "llm-api-keys.age".publicKeys = all;
   "radicale-auth.age".publicKeys = all;
   "ssh-config.age".publicKeys = all;
