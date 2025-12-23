@@ -69,7 +69,7 @@ in
   options.proxy = {
     selfHost = {
       enable = lib.mkEnableOption "self-hosted proxy";
-      public = lib.mkEnableOption "public proxy";
+      public = lib.mkEnableOption "public & auto switching http proxy";
 
       socksProxyPort = lib.mkOption {
         type = lib.types.int;
@@ -87,6 +87,15 @@ in
       };
     };
 
+    socksProxy = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default =
+        if config.proxy.selfHost.enable then
+          "127.0.0.1:${builtins.toString config.proxy.selfHost.socksProxyPort}"
+        else
+          null;
+    };
+
     httpProxy = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default =
@@ -96,11 +105,11 @@ in
           null;
     };
 
-    socksProxy = lib.mkOption {
+    httpPublicProxy = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default =
         if config.proxy.selfHost.enable then
-          "127.0.0.1:${builtins.toString config.proxy.selfHost.socksProxyPort}"
+          "127.0.0.1:${builtins.toString config.proxy.selfHost.httpProxyPublicPort}"
         else
           null;
     };

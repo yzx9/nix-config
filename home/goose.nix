@@ -6,7 +6,7 @@
 }:
 
 let
-  hasProxy = config.proxy.httpProxy != null;
+  hasProxy = config.proxy.httpPublicProxy != null;
   toYAML = lib.generators.toYAML { };
   toJSON = lib.generators.toJSON { };
 
@@ -22,7 +22,7 @@ let
       export LANGFUSE_URL=https://us.cloud.langfuse.com
       export LANGFUSE_INIT_PROJECT_PUBLIC_KEY=pk-lf-84b79195-3106-473a-bdbf-448e146a206d
 
-      ${lib.optionalString hasProxy "export HTTPS_PROXY=${config.proxy.httpProxy}"}
+      ${lib.optionalString hasProxy "export HTTPS_PROXY=${config.proxy.httpPublicProxy}"}
 
       with-secrets \
         "${config.age.secrets."llm-api-keys".path}" \

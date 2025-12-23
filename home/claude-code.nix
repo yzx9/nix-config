@@ -6,8 +6,7 @@
 }:
 
 let
-  # hasProxy = config.proxy.httpProxy != null;
-  hasProxy = false;
+  hasProxy = config.proxy.httpPublicProxy != null;
 
   # Claude Code wrapper script to inject API keys at runtime
   claude-code' = pkgs.writeShellApplication {
@@ -23,7 +22,7 @@ let
     ];
     text = ''
       # Proxy configuration
-      ${lib.optionalString hasProxy "export HTTPS_PROXY=http://${config.proxy.httpProxy}"}
+      ${lib.optionalString hasProxy "export HTTPS_PROXY=http://${config.proxy.httpPublicProxy}"}
 
       # Inject API keys at runtime
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
