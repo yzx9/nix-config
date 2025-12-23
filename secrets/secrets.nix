@@ -29,7 +29,6 @@ let
   all = systems ++ users;
 in
 {
-  "api-keys.age".publicKeys = all;
   "atuin-sync-address.age".publicKeys = all;
   "atuin-session.age".publicKeys = all;
   "atuin-key.age".publicKeys = all;
@@ -37,6 +36,7 @@ in
   "freshrss-pwd.age".publicKeys = all;
   "frpc.toml.age".publicKeys = all;
   "lab-account.age".publicKeys = all;
+  "llm-api-keys.age".publicKeys = all;
   "radicale-auth.age".publicKeys = all;
   "ssh-config.age".publicKeys = all;
   "xray.json.age".publicKeys = all;

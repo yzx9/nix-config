@@ -13,42 +13,29 @@ let
   # Inject api keys in runtime
   goose-cli' = pkgs.writeShellApplication {
     name = "goose";
-    runtimeInputs = [ pkgs.goose-cli ];
+    runtimeInputs = [
+      pkgs.with-secrets
+      pkgs.goose-cli
+    ];
     text = ''
-      declare -A secrets
-
-      while IFS='=' read -r key value; do
-        [[ -z "$key" ]] && continue # ignore empty lines
-        [[ "$key" == \#* ]] && continue # ignore comments
-        secrets["@$key@"]="$value"
-      done < "${config.age.secrets."api-keys".path}"
-
-      declare -A mapping=(
-        ["GLM_CODING_API_KEY"]="@glm-coding@"
-        ["GOOGLE_API_KEY"]="@gemini@"
-        ["SILICONFLOW_API_KEY"]="@siliconflow@"
-        ["OPENROUTER_API_KEY"]="@openrouter@"
-      )
-
-      for envVar in "''${!mapping[@]}"; do
-        secretKey="''${mapping[$envVar]}"
-        if [[ -v secrets[$secretKey] ]]; then
-          export "$envVar"="''${secrets[$secretKey]}"
-        else
-          echo "Warning: key $secretKey not defined in secrets." >&2
-        fi
-      done
-
       export GOOSE_DISABLE_KEYRING=1
 
       ${lib.optionalString hasProxy "export HTTPS_PROXY=${config.proxy.httpProxy}"}
 
-      exec goose "$@"
+      with-secrets \
+        "${config.age.secrets."llm-api-keys".path}" \
+        --allow GLM_CODING_API_KEY \
+        --allow GOOGLE_API_KEY \
+        --allow SILICONFLOW_API_KEY \
+        --allow OPENROUTER_API_KEY \
+        -- goose "$@"
     '';
   };
 in
 lib.mkIf config.purpose.dev.enable {
-  age.secrets."api-keys".file = ../secrets/api-keys.age;
+  age.secrets = {
+    "llm-api-keys".file = ../secrets/llm-api-keys.age;
+  };
 
   home.packages = [ goose-cli' ];
 

@@ -30,4 +30,6 @@ in
   pmp-library = pkgs.callPackage ./pmp-library { };
 
   vaa3d-x = pkgs.callPackage ./vaa3d-x { };
+
+  with-secrets = pkgs.callPackage ./with-secrets { };
 }
