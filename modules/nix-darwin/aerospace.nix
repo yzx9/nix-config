@@ -215,7 +215,7 @@
 
       # A: main
       # B: [B]rowser
-      # C: [C]hat
+      # C: [C]hat: Wechat
       # D: [D]evelopment
       # E: [E]udic, [E]mail
       # F:
@@ -225,7 +225,7 @@
       # S: [S]tudy: Preview, Zotero
       # T: [T]rilium
       # V: [V]iture machine
-      # W:
+      # W: [W]ord: Microsoft Word, Excel
       # X: misc
       # Z: [Z]otero
 
@@ -262,6 +262,8 @@
           (mkMove "S" "org.zotero.zotero")
           (mkMove "T" "com.electron.trilium-notes")
           (mkMove "V" "com.vmware.fusion")
+          (mkMove "W" "com.microsoft.Word")
+          (mkMove "W" "com.microsoft.Excel")
           (mkMove "X" "sc.fiji")
 
           {
