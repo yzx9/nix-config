@@ -58,14 +58,10 @@ in
         defaultMode = "acceptEdits";
 
         # Allowed permissions
-        allow = [ ];
-
-        # Denied permissions
-        deny = [
-          "Read(.envrc)"
-          "Read(./.env)"
-          "Read(./.env.*)"
-          "Read(./secrets/**)"
+        allow = [
+          "Read(**/*)"
+          "Bash(git status:*)"
+          "Bash(git diff:*)"
         ];
 
         # Permissions that require confirmation
@@ -74,6 +70,15 @@ in
           "Bash(git force:*)"
           "Bash(rm:*)"
           "Bash(curl:*)"
+          "Bash(cargo add:*)"
+        ];
+
+        # Denied permissions
+        deny = [
+          "Read(.envrc)"
+          "Read(./.env)"
+          "Read(./.env.*)"
+          "Read(./secrets/**)"
         ];
 
         # Additional working directories Claude can access
@@ -103,6 +108,34 @@ in
         "github"
       ];
       disabledMcpjsonServers = [ "filesystem" ];
+    };
+
+    commands = {
+      changelog = ''
+        ---
+        allowed-tools: Bash(git log:*), Bash(git diff:*)
+        argument-hint: [version] [change-type] [message]
+        description: Update CHANGELOG.md with new entry
+        ---
+        Parse the version, change type, and message from the input
+        and update the CHANGELOG.md file accordingly.
+      '';
+
+      commit = ''
+        ---
+        allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*)
+        description: Create a git commit with proper message
+        ---
+        ## Context
+
+        - Current git status: !`git status`
+        - Current git diff: !`git diff HEAD`
+        - Recent commits: !`git log --oneline -5`
+
+        ## Task
+
+        Based on the changes above, create a single atomic git commit with a descriptive message.
+      '';
     };
   };
 }
