@@ -9,13 +9,13 @@
 
 stdenvNoCC.mkDerivation {
   pname = "catppuccin-yazi";
-  version = "0-unstable-2025-06-30";
+  version = "0-unstable-2025-12-30";
 
   src = fetchFromGitHub {
     owner = "catppuccin";
     repo = "yazi";
-    rev = "1a8c939e47131f2c4bd07a2daea7773c29e2a774";
-    hash = "sha256-hjqmNxIr/KCN9k5ZT7O994BeWdp56NP7aS34+nZ/fQQ=";
+    rev = "fc69d6472d29b823c4980d23186c9c120a0ad32c";
+    hash = "sha256-Og33IGS9pTim6LEH33CO102wpGnPomiperFbqfgrJjw=";
   };
 
   nativeBuildInputs = [
