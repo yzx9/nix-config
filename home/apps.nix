@@ -49,6 +49,8 @@ lib.mkMerge [
       glow # markdown viewer
       ouch # compressing and decompressing
     ];
+
+    programs.zoxide.enable = true;
   })
 
   # Dev
