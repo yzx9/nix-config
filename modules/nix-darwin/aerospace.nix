@@ -250,7 +250,7 @@
         in
         [
           (mkMove "B" "com.nixos.firefox")
-          (mkMove "D" "com.kovidgoyal.kitty")
+          (mkMove "D" "net.kovidgoyal.kitty")
           (mkMove "E" "com.eusoft.eudic")
           (mkMove "E" "com.microsoft.Outlook")
           (mkMove "G" "com.bambulab.bambu-studio")
