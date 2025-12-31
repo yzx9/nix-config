@@ -12,7 +12,7 @@ let
   claude-code' = pkgs.writeShellApplication {
     name = "claude";
     runtimeInputs = [
-      pkgs.with-secrets
+      pkgs.yzx9.with-secrets
       pkgs.claude-code
 
       # TODO: configure LSP

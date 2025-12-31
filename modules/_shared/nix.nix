@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   pkgs,
   lib,
   ...
@@ -49,4 +50,9 @@
     automatic = lib.mkDefault true;
     options = lib.mkDefault "--delete-older-than 7d";
   };
+
+  #  # Nixpkgs overlays
+  nixpkgs.overlays = [
+    inputs.self.overlays.default
+  ];
 }

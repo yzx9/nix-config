@@ -7,10 +7,9 @@
     inputs.home-manager.nixosModules.home-manager
 
     ../_shared/apps.nix
-    ../_shared/nix-core.nix
-    ../_shared/nix-system.nix
+    ../_shared/nix.nix
+    ../_shared/nix-registry.nix
     ../_shared/options.nix
-    ../_shared/overlays.nix
 
     ./docker.nix
     ./networking.nix

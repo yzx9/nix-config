@@ -29,7 +29,7 @@ lib.mkIf purpose.gui {
         inkscape # SVG design, broken on darwin: #383860
       ]
       ++ lib.optionals isDarwin [
-        vaa3d-x # only support darwin now
+        yzx9.vaa3d-x # only support darwin now
       ]
       ++ lib.optionals (!isDarwin) [
         logseq # knowledge base, broken on darwin

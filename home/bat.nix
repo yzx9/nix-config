@@ -7,7 +7,7 @@
     config.theme = "mocha";
 
     themes.mocha = {
-      src = pkgs.catppuccin-bat;
+      src = pkgs.yzx9.catppuccin-bat;
       file = "themes/Catppuccin Mocha.tmTheme";
     };
   };

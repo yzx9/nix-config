@@ -2,7 +2,7 @@
 
 {
   home.packages = [
-    (pkgs.nixvim.extend {
+    (pkgs.yzx9.nixvim.extend {
       # Set 'vi' and 'vim' aliases to nixvim
       viAlias = true;
       vimAlias = true;

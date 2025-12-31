@@ -14,7 +14,7 @@ let
   goose-cli' = pkgs.writeShellApplication {
     name = "goose";
     runtimeInputs = [
-      pkgs.with-secrets
+      pkgs.yzx9.with-secrets
       pkgs.goose-cli
     ];
     text = ''
