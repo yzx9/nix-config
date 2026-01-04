@@ -7,6 +7,7 @@
 
 let
   hasProxy = config.proxy.httpPublicProxy != null;
+  toJSON = lib.generators.toJSON { };
 
   # Claude Code wrapper script to inject API keys at runtime
   claude-code' = pkgs.writeShellApplication {
@@ -45,7 +46,6 @@ in
         # Custom API endpoint for GLM
         ANTHROPIC_BASE_URL = "https://open.bigmodel.cn/api/anthropic";
         API_TIMEOUT_MS = "3000000";
-        ANTHROPIC_DEFAULT_HAIKU_MODEL = "GLM-4.7";
 
         # Disable non-essential traffic for privacy
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
@@ -108,6 +108,41 @@ in
         "github"
       ];
       disabledMcpjsonServers = [ "filesystem" ];
+
+      hooks =
+        let
+          mkNotifyCmd =
+            msg:
+            if pkgs.stdenvNoCC.hostPlatform.isDarwin then
+              "osascript -e 'display notification \"${msg}\" with title \"Claude Code\"'"
+            else
+              "${lib.getBin pkgs.libnotify}/notify-send 'Claude Code' '${msg}'";
+        in
+        lib.mkIf config.purpose.gui {
+          Stop = [
+            {
+              matcher = "";
+              hooks = [
+                {
+                  type = "command";
+                  command = mkNotifyCmd "Claude Code is ready for more action!";
+                }
+              ];
+            }
+          ];
+
+          Notification = [
+            {
+              matcher = "";
+              hooks = [
+                {
+                  type = "command";
+                  command = mkNotifyCmd "Claude Code needs help!";
+                }
+              ];
+            }
+          ];
+        };
     };
 
     commands = {
@@ -136,6 +171,29 @@ in
 
         Based on the changes above, create a single atomic git commit with a descriptive message.
       '';
+    };
+  };
+
+  home.file.".claude/plugins/.lsp.json".text = toJSON {
+    go = {
+      command = lib.getExe pkgs.gopls;
+      args = [ "serve" ];
+      extensionToLanguage = {
+        ".go" = "go";
+      };
+    };
+
+    rust = {
+      command = lib.getExe pkgs.rust-analyzer;
+      args = [ ];
+      extensionToLanguage = {
+        ".rs" = "rust";
+      };
+    };
+
+    typescript = {
+      command = lib.getExe pkgs.typescript-language-server;
+      args = [ "--stdio" ];
     };
   };
 }
