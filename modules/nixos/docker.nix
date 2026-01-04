@@ -5,7 +5,7 @@ let
   cfg = config.docker;
 
   proxySettings = lib.mkIf config.proxy.selfHost.enable {
-    "http-proxy" = "127.0.0.1:${builtins.toString config.proxy.selfHost.httpProxyPort}";
+    "http-proxy" = "127.0.0.1:${toString config.proxy.selfHost.httpProxyPort}";
     "no-proxy" = "127.0.0.0/8";
   };
 in
