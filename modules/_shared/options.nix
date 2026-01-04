@@ -91,7 +91,7 @@ in
       type = lib.types.nullOr lib.types.str;
       default =
         if config.proxy.selfHost.enable then
-          "127.0.0.1:${builtins.toString config.proxy.selfHost.socksProxyPort}"
+          "127.0.0.1:${toString config.proxy.selfHost.socksProxyPort}"
         else
           null;
     };
@@ -100,7 +100,7 @@ in
       type = lib.types.nullOr lib.types.str;
       default =
         if config.proxy.selfHost.enable then
-          "127.0.0.1:${builtins.toString config.proxy.selfHost.httpProxyPort}"
+          "127.0.0.1:${toString config.proxy.selfHost.httpProxyPort}"
         else
           null;
     };
@@ -109,7 +109,7 @@ in
       type = lib.types.nullOr lib.types.str;
       default =
         if config.proxy.selfHost.enable then
-          "127.0.0.1:${builtins.toString config.proxy.selfHost.httpProxyPublicPort}"
+          "127.0.0.1:${toString config.proxy.selfHost.httpProxyPublicPort}"
         else
           null;
     };

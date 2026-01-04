@@ -93,7 +93,7 @@ lib.mkIf enable (
             if lib.isBool value then
               "${key} = ${toPythonBool value}"
             else if lib.isInt value then
-              "${key} = ${builtins.toString value}"
+              "${key} = ${toString value}"
             else if lib.isString value then
               "${key} = '${value}'"
             else

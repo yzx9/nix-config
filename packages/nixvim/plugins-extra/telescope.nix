@@ -78,7 +78,7 @@
         {
           inherit key mode;
 
-          action.__raw = "function() TelescopeWithTheme('${fn}', ${toLuaObject args}, '${builtins.toString extension}') end";
+          action.__raw = "function() TelescopeWithTheme('${fn}', ${toLuaObject args}, '${toString extension}') end";
           options = {
             inherit desc;
           };
