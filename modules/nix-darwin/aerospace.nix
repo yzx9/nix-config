@@ -249,7 +249,7 @@
           };
         in
         [
-          (mkMove "B" "com.nixos.firefox")
+          (mkMove "B" "org.nixos.firefox")
           (mkMove "D" "net.kovidgoyal.kitty")
           (mkMove "E" "com.eusoft.eudic")
           (mkMove "E" "com.microsoft.Outlook")
