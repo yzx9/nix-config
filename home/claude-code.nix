@@ -15,11 +15,6 @@ let
     runtimeInputs = [
       pkgs.yzx9.with-secrets
       pkgs.claude-code
-
-      # TODO: configure LSP
-      # pkgs.pyright
-      # pkgs.typescript-language-server
-      # pkgs.rust-analyzer
     ];
     text = ''
       # Proxy configuration
@@ -130,20 +125,25 @@ in
               ];
             }
           ];
-
-          Notification = [
-            {
-              matcher = "";
-              hooks = [
-                {
-                  type = "command";
-                  command = mkNotifyCmd "Claude Code needs help!";
-                }
-              ];
-            }
-          ];
         };
     };
+
+    # see also: https://github.com/VoltAgent/awesome-claude-code-subagents
+    agents =
+      let
+        awesome-claude-code-subagents = pkgs.fetchFromGitHub {
+          owner = "VoltAgent";
+          repo = "awesome-claude-code-subagents";
+          rev = "8c67a2f9c85335a204828e01e5399f357892b6a9";
+          hash = "sha256-iI7b9Sh/wj2qIeCe/E5PrWvgld6XSUllujeE8Lbs6vs=";
+        };
+      in
+      {
+        debugger = "${awesome-claude-code-subagents}/categories/04-quality-security/debugger.md";
+        python-pro = "${awesome-claude-code-subagents}/categories/02-language-specialists/python-pro.md";
+        rust-engineer = "${awesome-claude-code-subagents}/categories/02-language-specialists/rust-engineer.md";
+        vue-expert = "${awesome-claude-code-subagents}/categories/02-language-specialists/vue-expert.md";
+      };
 
     commands = {
       changelog = ''
@@ -152,6 +152,7 @@ in
         argument-hint: [version] [change-type] [message]
         description: Update CHANGELOG.md with new entry
         ---
+
         Parse the version, change type, and message from the input
         and update the CHANGELOG.md file accordingly.
       '';
@@ -161,6 +162,7 @@ in
         allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*)
         description: Create a git commit with proper message
         ---
+
         ## Context
 
         - Current git status: !`git status`
@@ -178,22 +180,19 @@ in
     go = {
       command = lib.getExe pkgs.gopls;
       args = [ "serve" ];
-      extensionToLanguage = {
-        ".go" = "go";
-      };
+      extensionToLanguage.".go" = "go";
     };
 
     rust = {
       command = lib.getExe pkgs.rust-analyzer;
       args = [ ];
-      extensionToLanguage = {
-        ".rs" = "rust";
-      };
+      extensionToLanguage.".rs" = "rust";
     };
 
     typescript = {
       command = lib.getExe pkgs.typescript-language-server;
       args = [ "--stdio" ];
+      extensionToLanguage.".ts" = "typescript";
     };
   };
 }
