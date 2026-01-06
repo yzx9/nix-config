@@ -15,7 +15,6 @@
     ./delta.nix
     ./git.nix
     ./gitmoji.nix
-    ./goose.nix
     ./gopass.nix
     ./gpg.nix
     ./nvim.nix

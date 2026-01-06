@@ -28,8 +28,7 @@ let
   };
 in
 {
-  # has been added in ./goose.nix
-  # age.secrets."llm-api-keys".file = ../secrets/llm-api-keys.age;
+  age.secrets."llm-api-keys".file = ../secrets/llm-api-keys.age;
 
   programs.claude-code = {
     enable = config.purpose.dev.enable;
