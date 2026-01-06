@@ -60,6 +60,7 @@ in
 
         # Permissions that require confirmation
         ask = [
+          "Bash(git add:*)"
           "Bash(git push:*)"
           "Bash(git force:*)"
           "Bash(rm:*)"
@@ -113,9 +114,11 @@ in
               "${lib.getBin pkgs.libnotify}/notify-send 'Claude Code' '${msg}'";
         in
         lib.mkIf config.purpose.gui {
-          Stop = [
+          # Stop: when Claude is ready for more input
+          # Notification: when Claude requests permissions or noop for 60s
+          Notification = [
             {
-              matcher = "";
+              matcher = "*";
               hooks = [
                 {
                   type = "command";
