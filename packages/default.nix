@@ -1,8 +1,9 @@
 {
   self,
   nixpkgs,
-  aim,
   nixvim,
+  agenix,
+  aim,
   ...
 }:
 
@@ -22,8 +23,6 @@ in
   inherit catppuccin-bat;
   catppuccin-yazi-flavor = pkgs.callPackage ./catppuccin-yazi-flavor { inherit catppuccin-bat; };
 
-  aim = aim.packages.${system}.aim;
-
   nixvim = nixvim';
   nixvim-lsp = nixvim'.extend { lsp.enable = true; };
 
@@ -32,4 +31,8 @@ in
   vaa3d-x = pkgs.callPackage ./vaa3d-x { };
 
   with-secrets = pkgs.callPackage ./with-secrets { };
+
+  # External packages
+  agenix = agenix.packages.${system}.default;
+  aim = aim.packages.${system}.aim;
 }

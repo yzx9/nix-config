@@ -5,7 +5,7 @@ default:
 
 ############################################################################
 #
-#  Common commands(suitable for all machines)
+#  Nix commands (suitable for all machines)
 #
 ############################################################################
 
@@ -98,7 +98,7 @@ rollback-noproxy:
 
 [macos]
 proxy mode="auto_switch":
-  sudo python3 scripts/darwin_proxy.py {{mode}} http://127.0.0.1:12345
+  sudo nix run nixpkgs#python3 scripts/darwin_proxy.py {{mode}} http://127.0.0.1:12345
   sleep 1
 
 # Remote deployments with linux-builder: https://nixcademy.com/posts/macos-linux-builder/
@@ -121,6 +121,10 @@ deploy hostname:
 fmt:
   # format the nix files in this repo
   nix fmt
+
+edit-secret name:
+  # edit a secret in the nixos-configuration repo
+  cd secrets/ && nix run .#agenix -- -e {{name}}.age
 
 path:
   echo $PATH | tr ':' '\n'

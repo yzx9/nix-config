@@ -127,9 +127,6 @@
           default = pkgs.mkShell {
             packages = [
               pkgs.just
-              pkgs.nixos-rebuild
-              inputs.agenix.packages.${system}.default
-              inputs.home-manager.packages.${system}.default
             ];
           };
         }
