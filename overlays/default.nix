@@ -2,19 +2,22 @@
 
 let
   aim = import ./aim.nix inputs;
-  packages = import ./packages.nix inputs;
+  inkscape = import ./inkscape.nix inputs;
   nur = import ./nur.nix inputs;
+  packages = import ./packages.nix inputs;
 in
 {
   inherit
     aim
-    packages
+    inkscape
     nur
+    packages
     ;
 
   default = nixpkgs.lib.composeManyExtensions [
     aim
-    packages
+    inkscape
     nur
+    packages
   ];
 }
