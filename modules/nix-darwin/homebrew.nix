@@ -50,9 +50,8 @@ in
         inherit (config.purpose) daily gui dev;
       in
       lib.optionals gui [
-        "logi-options+" # mouse/keyboard
         "middleclick" # mouse
-        # "scroll-reverser" # mouse
+        "scroll-reverser" # mouse
         "snipaste" # screen shot
       ]
       ++ lib.optionals (gui && daily) [
