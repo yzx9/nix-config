@@ -61,6 +61,7 @@ in
         # Permissions that require confirmation
         ask = [
           "Bash(git add:*)"
+          "Bash(git commit:*)"
           "Bash(git push:*)"
           "Bash(git force:*)"
           "Bash(rm:*)"
@@ -133,7 +134,7 @@ in
     # see also: https://github.com/VoltAgent/awesome-claude-code-subagents
     agents =
       let
-        awesome-claude-code-subagents = pkgs.fetchFromGitHub {
+        awesome-subagents = pkgs.fetchFromGitHub {
           owner = "VoltAgent";
           repo = "awesome-claude-code-subagents";
           rev = "8c67a2f9c85335a204828e01e5399f357892b6a9";
@@ -141,10 +142,10 @@ in
         };
       in
       {
-        debugger = "${awesome-claude-code-subagents}/categories/04-quality-security/debugger.md";
-        python-pro = "${awesome-claude-code-subagents}/categories/02-language-specialists/python-pro.md";
-        rust-engineer = "${awesome-claude-code-subagents}/categories/02-language-specialists/rust-engineer.md";
-        vue-expert = "${awesome-claude-code-subagents}/categories/02-language-specialists/vue-expert.md";
+        debugger = "${awesome-subagents}/categories/04-quality-security/debugger.md";
+        python-pro = "${awesome-subagents}/categories/02-language-specialists/python-pro.md";
+        rust-engineer = "${awesome-subagents}/categories/02-language-specialists/rust-engineer.md";
+        vue-expert = "${awesome-subagents}/categories/02-language-specialists/vue-expert.md";
       };
 
     commands = {
@@ -161,7 +162,7 @@ in
 
       commit = ''
         ---
-        allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*)
+        allowed-tools: Bash(git add:*), Bash(git diff:*), Bash(git status:*), Bash(git commit:*)
         description: Create a git commit with proper message
         ---
 
@@ -173,7 +174,8 @@ in
 
         ## Task
 
-        Based on the changes above, create a single atomic git commit with a descriptive message.
+        Based on the changes above, run the necessary check steps, including formatting and testing
+        if applicable. Then stage the changes and create a concise, descriptive git commit message.
       '';
     };
   };
