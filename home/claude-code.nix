@@ -18,7 +18,7 @@ let
     ];
     text = ''
       # Proxy configuration
-      ${lib.optionalString hasProxy "export HTTPS_PROXY=http://${config.proxy.httpPublicProxy}"}
+      ${lib.optionalString hasProxy "export HTTPS_PROXY=http://${config.proxy.httpProxy}"}
 
       # Inject API keys at runtime
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
@@ -38,7 +38,7 @@ in
     settings = {
       env = {
         # Custom API endpoint for GLM
-        ANTHROPIC_BASE_URL = "https://open.bigmodel.cn/api/anthropic";
+        ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic";
         API_TIMEOUT_MS = "3000000";
 
         # Disable non-essential traffic for privacy
@@ -54,15 +54,15 @@ in
         # Allowed permissions
         allow = [
           "Read(**/*)"
-          "Bash(git status:*)"
+          "Bash(git commit:*)"
           "Bash(git diff:*)"
+          "Bash(git status:*)"
         ];
 
         # Permissions that require confirmation
         ask = [
           "Bash(git add:*)"
-          "Bash(git commit:*)"
-          "Bash(git push:*)"
+          "Bash(git reset:*)"
           "Bash(git force:*)"
           "Bash(rm:*)"
           "Bash(curl:*)"
@@ -75,6 +75,7 @@ in
           "Read(./.env)"
           "Read(./.env.*)"
           "Read(./secrets/**)"
+          "Bash(git push:*)"
         ];
 
         # Additional working directories Claude can access
