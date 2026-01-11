@@ -6,12 +6,11 @@
   ...
 }:
 
+let
+  enable = config.purpose.daily;
+in
 {
-  home.packages = lib.optionals config.purpose.daily [
-    pkgs.gopass
-  ];
+  home.packages = lib.optionals enable [ pkgs.gopass ];
 
-  programs.firefox.nativeMessagingHosts = [
-    pkgs.gopass-jsonapi
-  ];
+  programs.firefox.nativeMessagingHosts = lib.optionals enable [ pkgs.gopass-jsonapi ];
 }
