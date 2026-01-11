@@ -52,9 +52,9 @@
         auto_sync = true;
         sync_frequency = "1h";
 
-        # NOTE: the following settings dont work with agenix on darwin, since
-        # agenix use `getconf DARWIN_USER_TEMP_DIR` to set the paths. So we use
-        # environment variables in the wrapper script above.
+        ## the following settings dont work with agenix on darwin, since agenix
+        ## use `getconf DARWIN_USER_TEMP_DIR` to set the paths. So we use
+        ## environment variables in the wrapper script above.
         #
         # session_path = config.age.secrets."atuin-session".path;
         # key_path = config.age.secrets."atuin-key".path;
