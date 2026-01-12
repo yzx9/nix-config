@@ -177,6 +177,14 @@ in
 
         Based on the changes above, run the necessary check steps, including formatting and testing
         if applicable. Then stage the changes and create a concise, descriptive git commit message.
+
+        ## Notes
+
+        - Check that all tests pass and code is properly formatted before committing.
+        - Check the staged changes, ask for clarification if anything is unclear.
+        - Ensure the commit message follows commit standards as per the project's guidelines.
+        - In sandboxed environments, avoid heredocs when possible and use alternatives like printf
+          or direct string expansion that don't require file creation.
       '';
     };
   };
