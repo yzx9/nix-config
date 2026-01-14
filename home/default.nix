@@ -17,7 +17,6 @@
     ./gitmoji.nix
     ./gopass.nix
     ./gpg.nix
-    ./hledger.nix
     ./nvim.nix
     ./pim.nix
     ./shell.nix
