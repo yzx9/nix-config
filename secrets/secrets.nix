@@ -25,21 +25,26 @@ let
     user_yzx9-pie
   ];
 
-  root = [ user_yzx9-mbp ];
-  all = systems ++ users;
+  rescue = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH1wXmjC1JYCCj0ONwe2BfAdaZNw/TQUF7T4Rn0xbFLp rescue@yzx9.xyz";
+
+  root = [
+    user_yzx9-mbp
+    rescue
+  ];
+  all_keys = systems ++ users;
 in
 {
-  "atuin-sync-address.age".publicKeys = all;
-  "atuin-session.age".publicKeys = all;
-  "atuin-key.age".publicKeys = all;
-  "backup-passphrase.age".publicKeys = all;
-  "freshrss-pwd.age".publicKeys = all;
-  "frpc.toml.age".publicKeys = all;
-  "lab-account.age".publicKeys = all;
-  "llm-api-keys.age".publicKeys = all;
-  "radicale-auth.age".publicKeys = all;
-  "ssh-config.age".publicKeys = all;
-  "xray.json.age".publicKeys = all;
+  "atuin-sync-address.age".publicKeys = all_keys;
+  "atuin-session.age".publicKeys = all_keys;
+  "atuin-key.age".publicKeys = all_keys;
+  "backup-passphrase.age".publicKeys = all_keys;
+  "freshrss-pwd.age".publicKeys = all_keys;
+  "frpc.toml.age".publicKeys = all_keys;
+  "lab-account.age".publicKeys = all_keys;
+  "llm-api-keys.age".publicKeys = all_keys;
+  "radicale-auth.age".publicKeys = all_keys;
+  "ssh-config.age".publicKeys = all_keys;
+  "xray.json.age".publicKeys = all_keys;
 
   # root only
   "id-auth_root.age".publicKeys = root ++ [ system_yzx9-mbp ];
