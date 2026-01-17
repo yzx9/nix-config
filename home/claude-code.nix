@@ -143,10 +143,11 @@ in
         };
       in
       {
-        debugger = "${awesome-subagents}/categories/04-quality-security/debugger.md";
-        python-pro = "${awesome-subagents}/categories/02-language-specialists/python-pro.md";
-        rust-engineer = "${awesome-subagents}/categories/02-language-specialists/rust-engineer.md";
-        vue-expert = "${awesome-subagents}/categories/02-language-specialists/vue-expert.md";
+        # PREF: remove readFile
+        debugger = lib.readFile "${awesome-subagents}/categories/04-quality-security/debugger.md";
+        python-pro = lib.readFile "${awesome-subagents}/categories/02-language-specialists/python-pro.md";
+        rust-engineer = lib.readFile "${awesome-subagents}/categories/02-language-specialists/rust-engineer.md";
+        vue-expert = lib.readFile "${awesome-subagents}/categories/02-language-specialists/vue-expert.md";
       };
 
     commands = {
@@ -157,8 +158,8 @@ in
         description: Update CHANGELOG.md with new entry
         ---
 
-        Parse the version, change type, and message from the input
-        and update the CHANGELOG.md file accordingly.
+        Parse the version, change type, and message from the input and update the CHANGELOG.md file
+        accordingly.
       '';
 
       commit = ''
@@ -181,8 +182,11 @@ in
         ## Notes
 
         - Check that all tests pass and code is properly formatted before committing.
-        - Check the staged changes, ask for clarification if anything is unclear.
-        - Ensure the commit message follows commit standards as per the project's guidelines.
+        - Check unstaged changes. If there are no staged changes, or if the unstaged changes are
+          only minor formatting or comment fixes, stage them. Otherwise, do not modify the current
+          staged changes and proceed to the next step.
+        - Analyze the changes to determine the appropriate commit type
+        - Write a commit message follows commit standards as per the project's guidelines.
         - In sandboxed environments, avoid heredocs when possible and use alternatives like printf
           or direct string expansion that don't require file creation.
       '';
