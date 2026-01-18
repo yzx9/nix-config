@@ -219,9 +219,7 @@
         "argononed": "argononed",
         "flake-compat": "flake-compat",
         "nixos-images": "nixos-images",
-        "nixpkgs": [
-          "nixpkgs-rpi"
-        ]
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
         "lastModified": 1767357537,
@@ -239,6 +237,22 @@
     },
     "nixpkgs": {
       "locked": {
+        "lastModified": 1768599367,
+        "narHash": "sha256-Wi4Wv7ltAAj7Ik8PGJkpUmpjO+K4eRZsWAEYrDd37YA=",
+        "owner": "nvmd",
+        "repo": "nixpkgs",
+        "rev": "c5f954e9abf64be4b07415cad77f8a4965a7bffb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nvmd",
+        "ref": "modules-with-keys-25.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
         "lastModified": 1768178648,
         "narHash": "sha256-kz/F6mhESPvU1diB7tOM3nLcBfQe7GU7GQCymRlTi/s=",
         "owner": "nixos",
@@ -249,22 +263,6 @@
       "original": {
         "owner": "nixos",
         "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs-rpi": {
-      "locked": {
-        "lastModified": 1764509843,
-        "narHash": "sha256-VF6bFLAkwvl6nddfK2XgEz2//Mstvq8q2+lW+q1bQ/8=",
-        "owner": "nvmd",
-        "repo": "nixpkgs",
-        "rev": "2d0fb1092febfa381ffaecc6c039a01a7b6512e5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nvmd",
-        "ref": "modules-with-keys-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -322,8 +320,7 @@
         "home-manager": "home-manager",
         "nix-darwin": "nix-darwin",
         "nixos-raspberrypi": "nixos-raspberrypi",
-        "nixpkgs": "nixpkgs",
-        "nixpkgs-rpi": "nixpkgs-rpi",
+        "nixpkgs": "nixpkgs_2",
         "nixvim": "nixvim",
         "nur": "nur",
         "systems": "systems"
