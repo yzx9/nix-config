@@ -63,7 +63,7 @@ lib.mkIf config.lsp.enable {
         shfmt.command = lib.getExe pkgs.shfmt;
         toml.command = lib.getExe pkgs.taplo;
         prettierd.command = lib.getExe pkgs.prettierd;
-        nixfmt.command = lib.getExe pkgs.nixfmt-rfc-style;
+        nixfmt.command = lib.getExe pkgs.nixfmt;
         yamllint.command = lib.getExe pkgs.yamllint;
       };
 
