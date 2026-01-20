@@ -12,15 +12,19 @@ let
   # Claude Code wrapper script to inject API keys at runtime
   claude-code' = pkgs.writeShellApplication {
     name = "claude";
+
     runtimeInputs = [
       pkgs.yzx9.with-secrets
       pkgs.claude-code
     ];
-    text = ''
-      # Proxy configuration
-      ${lib.optionalString hasProxy "export HTTPS_PROXY=http://${config.proxy.httpProxy}"}
 
-      # Inject API keys at runtime
+    runtimeEnv = {
+      # Proxy configuration
+      HTTPS_PROXY = lib.optionalString hasProxy "http://${config.proxy.httpProxy}";
+    };
+
+    # Inject API keys at runtime
+    text = ''
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
         --map GLM_CODING_API_KEY ANTHROPIC_AUTH_TOKEN \
         -- claude "$@"
@@ -57,6 +61,10 @@ in
           "Bash(git commit:*)"
           "Bash(git diff:*)"
           "Bash(git status:*)"
+          "Bash(cargo build:*)"
+          "Bash(cargo check:*)"
+          "Bash(cargo fmt:*)"
+          "Bash(cargo test:*)"
         ];
 
         # Permissions that require confirmation
@@ -143,11 +151,11 @@ in
         };
       in
       {
-        # PREF: remove readFile
+        # PERF: remove readFile
         debugger = lib.readFile "${awesome-subagents}/categories/04-quality-security/debugger.md";
         python-pro = lib.readFile "${awesome-subagents}/categories/02-language-specialists/python-pro.md";
         rust-engineer = lib.readFile "${awesome-subagents}/categories/02-language-specialists/rust-engineer.md";
-        vue-expert = lib.readFile "${awesome-subagents}/categories/02-language-specialists/vue-expert.md";
+        frontend-developer = lib.readFile "${awesome-subagents}/categories/01-core-development/frontend-developer.md";
       };
 
     commands = {
