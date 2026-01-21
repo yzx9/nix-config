@@ -18,6 +18,7 @@
     ./gopass.nix
     ./gpg.nix
     ./nvim.nix
+    ./opnecode.nix
     ./pim.nix
     ./shell.nix
     ./ssh.nix
