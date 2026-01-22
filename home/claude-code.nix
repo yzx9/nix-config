@@ -72,6 +72,11 @@ in
           "Bash(git add:*)"
           "Bash(git reset:*)"
           "Bash(git force:*)"
+          "Bash(git push:*)"
+          "Bash(gh pr close:*)"
+          "Bash(gh pr create:*)"
+          "Bash(gh issue close:*)"
+          "Bash(gh issue delete:*)"
           "Bash(rm:*)"
           "Bash(curl:*)"
           "Bash(cargo add:*)"
@@ -83,11 +88,13 @@ in
           "Read(./.env)"
           "Read(./.env.*)"
           "Read(./secrets/**)"
-          "Bash(git push:*)"
         ];
 
         # Additional working directories Claude can access
-        additionalDirectories = [ ];
+        additionalDirectories = [
+          "~/.matplotlib" # for python plotting
+          "~/.cache/" # for various language toolchains
+        ];
       };
 
       sandbox = {
@@ -149,13 +156,16 @@ in
           rev = "8c67a2f9c85335a204828e01e5399f357892b6a9";
           hash = "sha256-iI7b9Sh/wj2qIeCe/E5PrWvgld6XSUllujeE8Lbs6vs=";
         };
+
+        # PERF: remove readFile
+        read = fname: lib.readFile "${awesome-subagents}/categories/${fname}";
       in
       {
-        # PERF: remove readFile
-        debugger = lib.readFile "${awesome-subagents}/categories/04-quality-security/debugger.md";
-        python-pro = lib.readFile "${awesome-subagents}/categories/02-language-specialists/python-pro.md";
-        rust-engineer = lib.readFile "${awesome-subagents}/categories/02-language-specialists/rust-engineer.md";
-        frontend-developer = lib.readFile "${awesome-subagents}/categories/01-core-development/frontend-developer.md";
+        debugger = read "04-quality-security/debugger.md";
+        python-pro = read "02-language-specialists/python-pro.md";
+        rust-engineer = read "02-language-specialists/rust-engineer.md";
+        frontend-developer = read "01-core-development/frontend-developer.md";
+        code-reviewer = read "04-quality-security/code-reviewer.md";
       };
 
     commands = {
