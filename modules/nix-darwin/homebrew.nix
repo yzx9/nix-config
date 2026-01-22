@@ -69,6 +69,7 @@ in
         "bambu-studio" # 3D ptinter
         "freecad" # 3D design
         "inkscape" # SVG design
+        "blender" # 3D design and animation
 
         # misc
         "fiji" # image viewer

@@ -24,6 +24,8 @@ lib.mkIf purpose.gui {
         trilium-desktop # note taking app
         zotero # reference manager, with two plugins: zotero-better-bibtex, zotmoov ({%w}/{%y})
 
+        meshlab # 3D mesh processing
+
         # design
         openscad # 3D parametric design
         inkscape # SVG design, broken on darwin: #383860
