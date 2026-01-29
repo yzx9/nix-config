@@ -44,7 +44,6 @@ lib.mkMerge [
       sl
 
       # msic
-      lazygit # simple terminal UI for git
       age # encryption tool
       glow # markdown viewer
       ouch # compressing and decompressing
@@ -58,6 +57,7 @@ lib.mkMerge [
     home.packages = with pkgs; [
       python3
       binutils
+      lazygit # simple terminal UI for git
       just # command runner
       hyperfine # benchmarking tool
     ];
