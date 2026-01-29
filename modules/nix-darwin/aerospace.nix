@@ -257,6 +257,7 @@
           (mkMove "G" "org.freecad.FreeCAD")
           (mkMove "G" "org.inkscape.Inkscape")
           (mkMove "G" "com.microsoft.Powerpoint")
+          (mkMove "G" "com.blackmagic-design.DaVinciResolve")
           (mkMove "Q" "org.jkiss.dbeaver.core.product")
           (mkMove "S" "com.apple.Preview")
           (mkMove "S" "org.zotero.zotero")
