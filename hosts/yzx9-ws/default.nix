@@ -36,7 +36,7 @@ inputs.self.lib.mkNixosConfiguration {
       ];
 
       networking = lib.mkMerge [
-        (mkNetworkingLab "enp2s0" "10.6.18.189")
+        (mkNetworkingLab "enp2s0" "10.6.141.235")
 
         {
           firewall.allowedTCPPorts = [ 30202 ];

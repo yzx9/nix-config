@@ -47,7 +47,7 @@ in
 
     defaultGateway = {
       inherit interface;
-      address = "10.6.18.254";
+      address = "10.6.141.1";
     };
 
     nameservers = [
