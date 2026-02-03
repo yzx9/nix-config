@@ -50,7 +50,7 @@ in
 
         {
           # Rpi use custom bootloader
-          boot.loader.raspberryPi.bootloader = "kernel";
+          boot.loader.raspberry-pi.bootloader = "kernel";
           boot.loader.systemd-boot.enable = false;
           boot.loader.efi.canTouchEfiVariables = false;
 
