@@ -30,6 +30,6 @@ inputs.self.lib.mkNixosRpiConfiguration {
       ./trilium.nix
     ];
 
-    networking = mkNetworkingLab "end0" "10.6.18.188";
+    networking = mkNetworkingLab "end0" "10.6.141.234";
   };
 }
