@@ -1,7 +1,7 @@
 {
   config,
   pkgs,
-  # lib,
+  lib,
   ...
 }:
 
@@ -41,6 +41,8 @@ in
     package = opencode';
 
     settings = {
+      theme = "system";
+
       provider.zhipuai.options = {
         baseURL = "https://open.bigmodel.cn/api/coding/paas/v4";
         apiKey = "{env:GLM_CODING_API_KEY}";
@@ -61,6 +63,15 @@ in
           "git force *" = "ask";
           "git push *" = "deny";
           "gh pr create *" = "ask";
+          "gh pr close *" = "ask";
+          "gh issue close *" = "ask";
+          "gh issue delete *" = "ask";
+
+          # rust
+          "cargo build *" = "allow";
+          "cargo check *" = "allow";
+          "cargo fmt *" = "allow";
+          "cargo test *" = "allow";
         };
       };
     };
@@ -102,4 +113,26 @@ in
       '';
     };
   };
+
+  xdg.configFile."opencode/plugins/notification.js".text =
+    let
+      msg = "Session Completed!";
+      notifyCmd =
+        if pkgs.stdenvNoCC.hostPlatform.isDarwin then
+          "osascript -e 'display notification \"${msg}\" with title \"opencode\"'"
+        else
+          "${lib.getBin pkgs.libnotify}/notify-send 'opencode' '${msg}'";
+    in
+    ''
+      export const NotificationPlugin = async ({ project, client, $, directory, worktree }) => {
+        return {
+          event: async ({ event }) => {
+            // Send notification on session completion
+            if (event.type === "session.idle") {
+              await $`${notifyCmd}`;
+            }
+          },
+        }
+      }
+    '';
 }
