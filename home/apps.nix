@@ -47,6 +47,7 @@ lib.mkMerge [
       age # encryption tool
       glow # markdown viewer
       ouch # compressing and decompressing
+      libqalculate # powerful calculator
     ];
 
     programs.zoxide.enable = true;
