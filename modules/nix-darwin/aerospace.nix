@@ -259,6 +259,7 @@
           (mkMove "G" "com.microsoft.Powerpoint")
           (mkMove "G" "com.blackmagic-design.DaVinciResolve")
           (mkMove "Q" "org.jkiss.dbeaver.core.product")
+          (mkMove "Q" "com.tencent.meeting")
           (mkMove "S" "com.apple.Preview")
           (mkMove "S" "org.zotero.zotero")
           (mkMove "T" "com.electron.trilium-notes")
