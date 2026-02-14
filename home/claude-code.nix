@@ -47,6 +47,12 @@ in
 
         # Disable non-essential traffic for privacy
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
+
+        ANTHROPIC_DEFAULT_OPUS_MODEL = "GLM-5";
+        ANTHROPIC_DEFAULT_SONNET_MODEL = "GLM-5";
+        # ANTHROPIC_DEFAULT_HAIKU_MODEL = "GLM-5";
+
+        CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
       };
 
       theme = "dark";
@@ -63,6 +69,7 @@ in
           "Bash(git status:*)"
           "Bash(cargo build:*)"
           "Bash(cargo check:*)"
+          "Bash(cargo clippy:*)"
           "Bash(cargo fmt:*)"
           "Bash(cargo test:*)"
         ];
