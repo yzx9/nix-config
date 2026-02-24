@@ -63,7 +63,8 @@ in
 
         # Allowed permissions
         allow = [
-          "Read(**/*)"
+          "Read(**/*)" # allow reading all files, but deny specific sensitive files below
+          "WebFetch" # allow any fetches
           "Bash(git commit:*)"
           "Bash(git diff:*)"
           "Bash(git status:*)"
@@ -108,10 +109,10 @@ in
         enabled = true;
         autoAllowBashIfSandboxed = true;
         # excludedCommands = [ "docker" ];
-        # network = {
-        #   allowUnixSockets = [ "/var/run/docker.sock" ];
-        #   allowLocalBinding = true;
-        # };
+        network = {
+          #   allowUnixSockets = [ "/var/run/docker.sock" ];
+          allowLocalBinding = true;
+        };
       };
 
       attribution = {
