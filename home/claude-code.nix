@@ -73,6 +73,10 @@ in
           "Bash(cargo clippy:*)"
           "Bash(cargo fmt:*)"
           "Bash(cargo test:*)"
+          "Bash(nix build:*)"
+          "Bash(nix eval:*)"
+          "Bash(nix-build:*)"
+          "Bash(nix-instantiate:*)"
         ];
 
         # Permissions that require confirmation
