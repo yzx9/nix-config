@@ -20,6 +20,7 @@ lib.mkMerge [
       # shell tools
       # NOTE: override some of the darwin built-in tools
       coreutils
+      coreutils-prefixed
       curl
       gnutar
       gnugrep
