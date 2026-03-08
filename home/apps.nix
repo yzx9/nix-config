@@ -9,31 +9,37 @@ lib.mkMerge [
   {
     # The home.packages option allows you to install Nix packages into your
     # environment.
-    home.packages = with pkgs; [
-      # You can also create simple shell scripts directly inside your
-      # configuration. For example, this adds a command 'my-hello' to your
-      # environment:
-      # (pkgs.writeShellScriptBin "my-hello" ''
-      #   echo "Hello, ${config.home.username}!"
-      # '')
+    home.packages =
+      (with pkgs; [
+        # You can also create simple shell scripts directly inside your
+        # configuration. For example, this adds a command 'my-hello' to your
+        # environment:
+        # (pkgs.writeShellScriptBin "my-hello" ''
+        #   echo "Hello, ${config.home.username}!"
+        # '')
 
-      # shell tools
-      # NOTE: override some of the darwin built-in tools
-      coreutils
-      coreutils-prefixed
-      curl
-      gnutar
-      gnugrep
-      gnused
-      # more common shell tools
-      rsync
-      unzip
-      wget
-      tree
+        # shell tools
+        # NOTE: override some of the darwin built-in tools
+        coreutils
+        curl
+        gnutar
+        gnugrep
+        gnused
+        # more common shell tools
+        rsync
+        unzip
+        wget
+        tree
 
-      ripgrep # a line-oriented search tool
-      neofetch # print information about your system
-    ];
+        ripgrep # a line-oriented search tool
+        neofetch # print information about your system
+      ])
+      ++ lib.optionals pkgs.stdenvNoCC.hostPlatform.isDarwin (
+        with pkgs;
+        [
+          coreutils-prefixed
+        ]
+      );
   }
 
   # Daily
