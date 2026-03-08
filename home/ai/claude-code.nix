@@ -30,13 +30,14 @@ let
         -- claude "$@"
     '';
   };
+
+  skills = import ./skills.nix { inherit pkgs; };
 in
 {
-  age.secrets."llm-api-keys".file = ../secrets/llm-api-keys.age;
-
   programs.claude-code = {
     enable = config.purpose.dev.enable;
     package = claude-code';
+    inherit skills;
 
     # See: https://code.claude.com/docs/en/settings
     settings = {
@@ -65,6 +66,7 @@ in
         allow = [
           "Read(**/*)" # allow reading all files, but deny specific sensitive files below
           "WebFetch" # allow any fetches
+          "WebSearch" # allow any searches
           "Bash(git commit:*)"
           "Bash(git diff:*)"
           "Bash(git status:*)"
@@ -179,48 +181,6 @@ in
         frontend-developer = read "01-core-development/frontend-developer.md";
         code-reviewer = read "04-quality-security/code-reviewer.md";
       };
-
-    commands = {
-      changelog = ''
-        ---
-        allowed-tools: Bash(git log:*), Bash(git diff:*)
-        argument-hint: [version] [change-type] [message]
-        description: Update CHANGELOG.md with new entry
-        ---
-
-        Parse the version, change type, and message from the input and update the CHANGELOG.md file
-        accordingly.
-      '';
-
-      commit = ''
-        ---
-        allowed-tools: Bash(git add:*), Bash(git diff:*), Bash(git status:*), Bash(git commit:*)
-        description: Create a git commit with proper message
-        ---
-
-        ## Context
-
-        - Current git status: !`git status`
-        - Current git diff: !`git diff HEAD`
-        - Recent commits: !`git log --oneline -5`
-
-        ## Task
-
-        Based on the changes above, run the necessary check steps, including formatting and testing
-        if applicable. Then stage the changes and create a concise, descriptive git commit message.
-
-        ## Notes
-
-        - Check that all tests pass and code is properly formatted before committing.
-        - Check unstaged changes. If there are no staged changes, or if the unstaged changes are
-          only minor formatting or comment fixes, stage them. Otherwise, do not modify the current
-          staged changes and proceed to the next step.
-        - Analyze the changes to determine the appropriate commit type
-        - Write a commit message follows commit standards as per the project's guidelines.
-        - In sandboxed environments, avoid heredocs when possible and use alternatives like printf
-          or direct string expansion that don't require file creation.
-      '';
-    };
   };
 
   home.file.".claude/plugins/.lsp.json".text = toJSON {

@@ -4,6 +4,7 @@
   imports = [
     ../modules/_shared/options.nix
 
+    ./ai
     ./gui
 
     ./apps.nix
@@ -11,14 +12,12 @@
     ./base.nix
     ./bat.nix
     ./btop.nix
-    ./claude-code.nix
     ./delta.nix
     ./git.nix
     ./gitmoji.nix
     ./gopass.nix
     ./gpg.nix
     ./nvim.nix
-    ./opnecode.nix
     ./pim.nix
     ./shell.nix
     ./ssh.nix
