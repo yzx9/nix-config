@@ -10,6 +10,17 @@
 
 let
   toJSON = lib.generators.toJSON { };
+
+  gitmoji = pkgs.fetchFromGitHub {
+    owner = "carloscuesta";
+    repo = "gitmoji";
+    tag = "v3.15.0";
+    hash = "sha256-qqias3MHI5OiJvdfhPL9i6UtBbmIGnUV7f8Jw4zomKA=";
+  };
+
+  # NOTE: We need to import the JSON file at build time, otherwise the gitmoji-cli
+  # package will fail to build because it won't find the gitmojis.json file at runtime
+  data = lib.importJSON "${gitmoji}/packages/gitmojis/src/gitmojis.json";
 in
 lib.mkIf config.purpose.dev.enable {
   home.packages = [ pkgs.gitmoji-cli ];
@@ -23,16 +34,5 @@ lib.mkIf config.purpose.dev.enable {
     gitmojisUrl = "https://gitmoji.dev/api/gitmojis";
   };
 
-  home.file.".gitmoji/gitmojis.json".text =
-    let
-      gitmoji = pkgs.fetchFromGitHub {
-        owner = "carloscuesta";
-        repo = "gitmoji";
-        tag = "v3.15.0";
-        hash = "sha256-qqias3MHI5OiJvdfhPL9i6UtBbmIGnUV7f8Jw4zomKA=";
-      };
-
-      data = lib.importJSON "${gitmoji}/packages/gitmojis/src/gitmojis.json";
-    in
-    toJSON data.gitmojis;
+  home.file.".gitmoji/gitmojis.json".text = toJSON data.gitmojis;
 }
