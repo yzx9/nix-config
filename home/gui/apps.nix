@@ -27,8 +27,8 @@ lib.mkIf purpose.gui {
         meshlab # 3D mesh processing
 
         # design
-        openscad # 3D parametric design
-        inkscape # SVG design, broken on darwin: #383860
+        # openscad # 3D parametric design
+        # inkscape # SVG design, broken on darwin: #383860
       ]
       ++ lib.optionals isDarwin [
         yzx9.vaa3d-x # only support darwin now
