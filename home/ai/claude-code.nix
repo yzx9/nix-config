@@ -6,7 +6,8 @@
 }:
 
 let
-  hasProxy = config.proxy.httpPublicProxy != null;
+  # hasProxy = config.proxy.httpPublicProxy != null;
+  hasProxy = false;
   toJSON = lib.generators.toJSON { };
 
   # Claude Code wrapper script to inject API keys at runtime
@@ -43,15 +44,16 @@ in
     settings = {
       env = {
         # Custom API endpoint for GLM
-        ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic";
+        # ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic";
+        ANTHROPIC_BASE_URL = "https://open.bigmodel.cn/api/anthropic";
         API_TIMEOUT_MS = "3000000";
 
         # Disable non-essential traffic for privacy
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
 
         ANTHROPIC_DEFAULT_OPUS_MODEL = "GLM-5";
-        ANTHROPIC_DEFAULT_SONNET_MODEL = "GLM-5";
-        # ANTHROPIC_DEFAULT_HAIKU_MODEL = "GLM-5";
+        ANTHROPIC_DEFAULT_SONNET_MODEL = "GLM-4.7";
+        ANTHROPIC_DEFAULT_HAIKU_MODEL = "GLM-4.7";
 
         CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
       };
