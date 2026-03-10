@@ -32,7 +32,7 @@ lib.mkMerge [
         tree
 
         ripgrep # a line-oriented search tool
-        neofetch # print information about your system
+        fastfetch # system information tool
       ])
       ++ lib.optionals pkgs.stdenvNoCC.hostPlatform.isDarwin (
         with pkgs;
