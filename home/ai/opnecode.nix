@@ -6,7 +6,7 @@
 }:
 
 let
-  # hasProxy = config.proxy.httpPublicProxy != null;
+  hasProxy = config.proxy.httpPublicProxy != null;
 
   # Opencode wrapper script to inject API keys at runtime
   opencode' = pkgs.writeShellApplication {
@@ -18,7 +18,7 @@ let
 
     runtimeEnv = {
       # Proxy configuration
-      # HTTPS_PROXY = lib.optionalString hasProxy "http://${config.proxy.httpProxy}";
+      HTTPS_PROXY = lib.optionalString hasProxy "http://${config.proxy.httpPublicProxy}";
 
       # Disable automatic LSP download for privacy
       OPENCODE_DISABLE_LSP_DOWNLOAD = "true";
@@ -27,7 +27,7 @@ let
     # Inject API keys at runtime
     text = ''
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
-        --allow GLM_CODING_API_KEY \
+        --allow UNI_YUANJING_API_KEY \
         -- opencode "$@"
     '';
   };
@@ -44,8 +44,9 @@ in
       theme = "system";
 
       provider.zhipuai.options = {
-        baseURL = "https://open.bigmodel.cn/api/coding/paas/v4";
-        apiKey = "{env:GLM_CODING_API_KEY}";
+        # baseURL = "https://open.bigmodel.cn/api/coding/paas/v4";
+        baseURL = "https://maas-api.ai-yuanjing.com/openapi/compatible-mode/v1";
+        apiKey = "{env:YUANJING_API_KEY}";
       };
 
       permission = {

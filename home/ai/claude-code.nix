@@ -10,50 +10,66 @@ let
   hasProxy = false;
   toJSON = lib.generators.toJSON { };
 
-  # Claude Code wrapper script to inject API keys at runtime
-  claude-code' = pkgs.writeShellApplication {
-    name = "claude";
-
-    runtimeInputs = [
-      pkgs.yzx9.with-secrets
-      pkgs.claude-code
-    ];
-
-    runtimeEnv = {
-      # Proxy configuration
-      HTTPS_PROXY = lib.optionalString hasProxy "http://${config.proxy.httpProxy}";
-    };
-
-    # Inject API keys at runtime
-    text = ''
-      with-secrets "${config.age.secrets."llm-api-keys".path}" \
-        --map GLM_CODING_API_KEY ANTHROPIC_AUTH_TOKEN \
-        -- claude "$@"
-    '';
-  };
-
   skills = import ./skills.nix { inherit pkgs; };
 in
 {
   programs.claude-code = {
     enable = config.purpose.dev.enable;
-    package = claude-code';
+
     inherit skills;
+
+    # Claude Code wrapper script to inject API keys at runtime
+    package = pkgs.writeShellApplication {
+      name = "claude";
+
+      runtimeInputs = [
+        pkgs.yzx9.with-secrets
+        pkgs.claude-code
+      ];
+
+      runtimeEnv = {
+        HTTPS_PROXY = lib.optionalString hasProxy "http://${config.proxy.httpProxy}";
+      };
+
+      text = ''
+        PROVIDER="''${PROVIDER:-glm}"
+
+        case "$PROVIDER" in
+          glm)
+            API_KEY_NAME="GLM_CODING_API_KEY"
+            export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
+            export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5"
+            export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-4.7"
+            export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.7"
+            ;;
+          uni)
+            API_KEY_NAME="UNI_YUANJING_API_KEY"
+            export ANTHROPIC_BASE_URL="https://maas-api.ai-yuanjing.com/openapi/compatible-mode"
+            export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5"
+            export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5"
+            export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-5"
+            ;;
+          *)
+            echo "Unknown PROVIDER: $PROVIDER"
+            exit 1
+            ;;
+        esac
+
+        with-secrets "${config.age.secrets."llm-api-keys".path}" \
+          --map "$API_KEY_NAME" ANTHROPIC_AUTH_TOKEN \
+          --allow CONTEXT7_API_KEY \
+          -- claude "$@"
+      '';
+    };
 
     # See: https://code.claude.com/docs/en/settings
     settings = {
       env = {
         # Custom API endpoint for GLM
-        # ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic";
-        ANTHROPIC_BASE_URL = "https://open.bigmodel.cn/api/anthropic";
         API_TIMEOUT_MS = "3000000";
 
         # Disable non-essential traffic for privacy
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
-
-        ANTHROPIC_DEFAULT_OPUS_MODEL = "GLM-5";
-        ANTHROPIC_DEFAULT_SONNET_MODEL = "GLM-4.7";
-        ANTHROPIC_DEFAULT_HAIKU_MODEL = "GLM-4.7";
 
         CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
       };
@@ -116,9 +132,15 @@ in
       sandbox = {
         enabled = true;
         autoAllowBashIfSandboxed = true;
-        # excludedCommands = [ "docker" ];
+        excludedCommands = [ "docker" ];
         network = {
-          #   allowUnixSockets = [ "/var/run/docker.sock" ];
+          allowedDomains = [
+            "github.com"
+            "*.npmjs.org"
+            "registry.yarnpkg.com"
+            "*.crates.io"
+          ];
+          allowUnixSockets = [ "/var/run/docker.sock" ];
           allowLocalBinding = true;
         };
       };
@@ -131,10 +153,10 @@ in
 
       # MCP server configuration
       enableAllProjectMcpServers = false;
-      enabledMcpjsonServers = [
-        "memory"
-        "github"
-      ];
+      # enabledMcpjsonServers = [
+      #   "memory"
+      #   "github"
+      # ];
       disabledMcpjsonServers = [ "filesystem" ];
 
       hooks =
@@ -163,6 +185,19 @@ in
         };
     };
 
+    mcpServers = {
+      # github = {
+      #   type = "http";
+      #   url = "https://api.githubcopilot.com/mcp/";
+      # };
+
+      context7 = {
+        type = "http";
+        url = "https://mcp.context7.com/mcp";
+        headers.CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
+      };
+    };
+
     # see also: https://github.com/VoltAgent/awesome-claude-code-subagents
     agents =
       let
@@ -177,7 +212,7 @@ in
         read = fname: lib.readFile "${awesome-subagents}/categories/${fname}";
       in
       {
-        debugger = read "04-quality-security/debugger.md";
+        debugger = ./agents/debugger.md;
         python-pro = read "02-language-specialists/python-pro.md";
         rust-engineer = read "02-language-specialists/rust-engineer.md";
         frontend-developer = read "01-core-development/frontend-developer.md";
@@ -185,7 +220,7 @@ in
       };
   };
 
-  home.file.".claude/plugins/.lsp.json".text = toJSON {
+  home.file.".claude/plugins/my-plugin/.lsp.json".text = toJSON {
     go = {
       command = lib.getExe pkgs.gopls;
       args = [ "serve" ];
