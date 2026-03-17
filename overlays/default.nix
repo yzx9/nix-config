@@ -1,23 +1,17 @@
 { nixpkgs, ... }@inputs:
 
 let
-  aim = import ./aim.nix inputs;
-  inkscape = import ./inkscape.nix inputs;
-  nur = import ./nur.nix inputs;
-  packages = import ./packages.nix inputs;
-in
-{
-  inherit
-    aim
-    inkscape
-    nur
-    packages
-    ;
+  inherit (nixpkgs) lib;
 
-  default = nixpkgs.lib.composeManyExtensions [
-    aim
-    inkscape
-    nur
-    packages
-  ];
+  overlays = {
+    aim = import ./aim.nix inputs;
+    claude-code = import ./claude-code inputs;
+    inkscape = import ./inkscape.nix inputs;
+    nur = import ./nur.nix inputs;
+    packages = import ./packages.nix inputs;
+  };
+in
+overlays
+// {
+  default = lib.composeManyExtensions (lib.attrValues overlays);
 }
