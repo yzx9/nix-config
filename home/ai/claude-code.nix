@@ -6,61 +6,60 @@
 }:
 
 let
-  # hasProxy = config.proxy.httpPublicProxy != null;
-  hasProxy = false;
+  hasProxy = config.proxy.httpPublicProxy != null;
   toJSON = lib.generators.toJSON { };
 
   skills = import ./skills.nix { inherit pkgs; };
+
+  # Claude Code wrapper script to inject API keys at runtime
+  claude-code' = pkgs.writeShellApplication {
+    name = "claude";
+
+    runtimeInputs = [
+      pkgs.yzx9.with-secrets
+      pkgs.claude-code
+    ];
+
+    runtimeEnv = {
+      HTTPS_PROXY = lib.optionalString hasProxy "http://${config.proxy.httpPublicProxy}";
+    };
+
+    text = ''
+      PROVIDER="''${PROVIDER:-glm}"
+
+      case "$PROVIDER" in
+        glm)
+          API_KEY_NAME="GLM_CODING_API_KEY"
+          export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
+          export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5"
+          export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-4.7"
+          export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.7"
+          ;;
+        uni)
+          API_KEY_NAME="UNI_YUANJING_API_KEY"
+          export ANTHROPIC_BASE_URL="https://maas-api.ai-yuanjing.com/openapi/compatible-mode"
+          export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5"
+          export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5"
+          export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-5"
+          ;;
+        *)
+          echo "Unknown PROVIDER: $PROVIDER"
+          exit 1
+          ;;
+      esac
+
+      with-secrets "${config.age.secrets."llm-api-keys".path}" \
+        --map "$API_KEY_NAME" ANTHROPIC_AUTH_TOKEN \
+        --allow CONTEXT7_API_KEY \
+        -- claude "$@"
+    '';
+  };
 in
 {
   programs.claude-code = {
     enable = config.purpose.dev.enable;
-
+    package = claude-code';
     inherit skills;
-
-    # Claude Code wrapper script to inject API keys at runtime
-    package = pkgs.writeShellApplication {
-      name = "claude";
-
-      runtimeInputs = [
-        pkgs.yzx9.with-secrets
-        pkgs.claude-code
-      ];
-
-      runtimeEnv = {
-        HTTPS_PROXY = lib.optionalString hasProxy "http://${config.proxy.httpProxy}";
-      };
-
-      text = ''
-        PROVIDER="''${PROVIDER:-glm}"
-
-        case "$PROVIDER" in
-          glm)
-            API_KEY_NAME="GLM_CODING_API_KEY"
-            export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
-            export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5"
-            export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-4.7"
-            export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.7"
-            ;;
-          uni)
-            API_KEY_NAME="UNI_YUANJING_API_KEY"
-            export ANTHROPIC_BASE_URL="https://maas-api.ai-yuanjing.com/openapi/compatible-mode"
-            export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5"
-            export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5"
-            export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-5"
-            ;;
-          *)
-            echo "Unknown PROVIDER: $PROVIDER"
-            exit 1
-            ;;
-        esac
-
-        with-secrets "${config.age.secrets."llm-api-keys".path}" \
-          --map "$API_KEY_NAME" ANTHROPIC_AUTH_TOKEN \
-          --allow CONTEXT7_API_KEY \
-          -- claude "$@"
-      '';
-    };
 
     # See: https://code.claude.com/docs/en/settings
     settings = {

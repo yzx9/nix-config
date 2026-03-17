@@ -27,6 +27,7 @@ let
     # Inject API keys at runtime
     text = ''
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
+        --allow GLM_CODING_API_KEY \
         --allow UNI_YUANJING_API_KEY \
         -- opencode "$@"
     '';
@@ -43,10 +44,24 @@ in
     settings = {
       theme = "system";
 
-      provider.zhipuai.options = {
-        # baseURL = "https://open.bigmodel.cn/api/coding/paas/v4";
-        baseURL = "https://maas-api.ai-yuanjing.com/openapi/compatible-mode/v1";
-        apiKey = "{env:YUANJING_API_KEY}";
+      provider = {
+        zhipuai.options.apiKey = "{env:GLM_CODING_API_KEY}";
+
+        uni = {
+          npm = "@ai-sdk/openai-compatible";
+          name = "UNI Yuanjing";
+          options = {
+            baseURL = "https://maas-api.ai-yuanjing.com/openapi/compatible-mode/v1";
+            apiKey = "{env:UNI_YUANJING_API_KEY}";
+          };
+          models.glm-5 = {
+            name = "GLM-5";
+            limit = {
+              context = 204800;
+              output = 131072;
+            };
+          };
+        };
       };
 
       permission = {
@@ -75,9 +90,24 @@ in
           "cargo test *" = "allow";
         };
       };
+
+      mcp = {
+        # github = {
+        #   type = "http";
+        #   url = "https://api.githubcopilot.com/mcp/";
+        # };
+
+        context7 = {
+          enabled = true;
+          type = "remote";
+          url = "https://mcp.context7.com/mcp";
+          headers.CONTEXT7_API_KEY = "{env:CONTEXT7_API_KEY}";
+        };
+      };
     };
   };
 
+  # Send notification on session completion
   xdg.configFile."opencode/plugins/notification.js".text =
     let
       msg = "Session Completed!";
@@ -88,15 +118,12 @@ in
           "${lib.getBin pkgs.libnotify}/notify-send 'opencode' '${msg}'";
     in
     ''
-      export const NotificationPlugin = async ({ project, client, $, directory, worktree }) => {
-        return {
-          event: async ({ event }) => {
-            // Send notification on session completion
-            if (event.type === "session.idle") {
-              await $`${notifyCmd}`;
-            }
-          },
+      export const NotificationPlugin = async ({ project, client, $, directory, worktree }) => ({
+        async event({ event }) {
+          if (event.type === "session.idle") {
+            await $`${notifyCmd}`;
+          }
         }
-      }
+      })
     '';
 }
