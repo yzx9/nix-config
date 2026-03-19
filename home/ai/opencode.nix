@@ -45,7 +45,7 @@ in
       theme = "system";
 
       provider = {
-        zhipuai.options.apiKey = "{env:GLM_CODING_API_KEY}";
+        zhipuai-coding-plan.options.apiKey = "{env:GLM_CODING_API_KEY}";
 
         uni = {
           npm = "@ai-sdk/openai-compatible";
@@ -103,8 +103,44 @@ in
           url = "https://mcp.context7.com/mcp";
           headers.CONTEXT7_API_KEY = "{env:CONTEXT7_API_KEY}";
         };
+
+        zai-vision = {
+          enabled = true;
+          type = "local";
+          command = [ "${pkgs.yzx9.zai-mcp-server}/bin/zai-mcp-server" ];
+          environment = {
+            Z_AI_API_KEY = "{env:GLM_CODING_API_KEY}";
+            Z_AI_MODE = "ZHIPU";
+          };
+        };
+
+        zai-web-search = {
+          enabled = true;
+          type = "remote";
+          url = "https://open.bigmodel.cn/api/mcp/web_search_prime/mcp";
+          headers.Authorization = "Bearer {env:GLM_CODING_API_KEY}";
+        };
+
+        zai-web-reader = {
+          enabled = true;
+          type = "remote";
+          url = "https://open.bigmodel.cn/api/mcp/web_reader/mcp";
+          headers.Authorization = "Bearer {env:GLM_CODING_API_KEY}";
+        };
+
+        zai-zread = {
+          enabled = false;
+          type = "remote";
+          url = "https://open.bigmodel.cn/api/mcp/zread/mcp";
+          headers.Authorization = "Bearer {env:GLM_CODING_API_KEY}";
+        };
       };
     };
+
+    rules = ''
+      ## General Guidelines
+      - When you need to search docs, use `context7` tools.
+    '';
   };
 
   # Send notification on session completion

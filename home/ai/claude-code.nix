@@ -184,6 +184,11 @@ in
         };
     };
 
+    memory.text = ''
+      ## General Guidelines
+      - When you need to search docs, use `context7` tools.
+    '';
+
     mcpServers = {
       # github = {
       #   type = "http";

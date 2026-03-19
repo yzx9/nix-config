@@ -14,13 +14,15 @@ let
 
   catppuccin-bat = pkgs.callPackage ./catppuccin-bat { };
 
+  zai-mcp-server = pkgs.callPackage ./zai-mcp-server { };
+
   nixvim' = import ./nixvim {
     inherit pkgs;
     nixvim = nixvim.legacyPackages.${system};
   };
 in
 {
-  inherit catppuccin-bat;
+  inherit catppuccin-bat zai-mcp-server;
   catppuccin-yazi-flavor = pkgs.callPackage ./catppuccin-yazi-flavor { inherit catppuccin-bat; };
 
   nixvim = nixvim';
