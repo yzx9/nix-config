@@ -5,5 +5,5 @@ let
 in
 lib.mkIf cfg.enable {
   # nixpkgs docker was broken, see: https://github.com/nix-darwin/nix-darwin/issues/112
-  homebrew.casks = [ "docker-desktop" ];
+  # homebrew.casks = [ "docker" ];
 }
