@@ -14,10 +14,13 @@ buildNpmPackage (finalAttrs: {
   };
 
   postPatch = ''
+    substituteInPlace package.json \
+      --replace-fail '"@modelcontextprotocol/sdk": "1.17.5"' '"@modelcontextprotocol/sdk": "1.26.0"'
+
     cp ${./package-lock.json} package-lock.json
   '';
 
-  npmDepsHash = "sha256-bPljAkpO+Rh4fXRVIrSSIdlUaWMEINcjFqtnC/z3eTo=";
+  npmDepsHash = "sha256-55NJI3KsvBo3tufhLyGkelMAlattli2U65RS1KLuMyc=";
 
   dontNpmBuild = true;
   npmPackFlags = [ "--ignore-scripts" ];
