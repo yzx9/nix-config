@@ -22,7 +22,7 @@
 
         # Enable catppuccin colors
         # https://github.com/catppuccin/nvim/tree/main/lua/lualine
-        theme = "catppuccin";
+        theme = "catppuccin-nvim";
         # theme = {
         #   normal = {
         #     a = {
