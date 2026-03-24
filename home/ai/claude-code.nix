@@ -70,6 +70,9 @@ in
         # Disable non-essential traffic for privacy
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
 
+        # Disable cch attribution header
+        CLAUDE_CODE_ATTRIBUTION_HEADER = "0";
+
         CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
       };
 
