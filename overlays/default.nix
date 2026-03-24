@@ -5,6 +5,7 @@ let
 
   overlays = {
     aim = import ./aim.nix inputs;
+    direnv = import ./direnv.nix inputs;
     inkscape = import ./inkscape.nix inputs;
     nur = import ./nur.nix inputs;
     packages = import ./packages.nix inputs;
