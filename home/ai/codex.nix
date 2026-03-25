@@ -12,7 +12,6 @@ let
     runtimeInputs = [
       pkgs.yzx9.with-secrets
       pkgs.codex
-
     ];
 
     runtimeEnv.HTTPS_PROXY = "http://${config.proxy.httpProxy}";

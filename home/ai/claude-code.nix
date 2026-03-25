@@ -32,7 +32,7 @@ let
           API_KEY_NAME="GLM_CODING_API_KEY"
           export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
           export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5"
-          export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-4.7"
+          export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5"
           export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.7"
           ;;
         uni)
@@ -50,6 +50,7 @@ let
 
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
         --map "$API_KEY_NAME" ANTHROPIC_AUTH_TOKEN \
+        --allow GLM_CODING_API_KEY \
         --allow CONTEXT7_API_KEY \
         -- claude "$@"
     '';
@@ -203,6 +204,34 @@ in
         url = "https://mcp.context7.com/mcp";
         headers.CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
       };
+
+      zai-vision = {
+        type = "stdio";
+        command = "${pkgs.yzx9.zai-mcp-server}/bin/zai-mcp-server";
+        args = [ ];
+        env = {
+          Z_AI_API_KEY = "\${GLM_CODING_API_KEY}";
+          Z_AI_MODE = "ZHIPU";
+        };
+      };
+
+      zai-web-search = {
+        type = "http";
+        url = "https://open.bigmodel.cn/api/mcp/web_search_prime/mcp";
+        headers.Authorization = "Bearer \${GLM_CODING_API_KEY}";
+      };
+
+      zai-web-reader = {
+        type = "http";
+        url = "https://open.bigmodel.cn/api/mcp/web_reader/mcp";
+        headers.Authorization = "Bearer \${GLM_CODING_API_KEY}";
+      };
+
+      # zai-zread = {
+      #   type = "http";
+      #   url = "https://open.bigmodel.cn/api/mcp/zread/mcp";
+      #   headers.Authorization = "Bearer \${GLM_CODING_API_KEY}";
+      # };
     };
 
     # see also: https://github.com/VoltAgent/awesome-claude-code-subagents
