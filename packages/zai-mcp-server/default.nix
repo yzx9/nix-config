@@ -6,21 +6,19 @@
 
 buildNpmPackage (finalAttrs: {
   pname = "zai-mcp-server";
-  version = "0.1.2";
+  version = "0.1.3";
 
   src = fetchurl {
     url = "https://registry.npmjs.org/@z_ai/mcp-server/-/mcp-server-${finalAttrs.version}.tgz";
-    hash = "sha256-etfPQbfzihM84MM25xE7uFxz5jUhRRFMwn6jOEhL4QY=";
+    hash = "sha256-wSmCWR44HHfb34X9u7Y0w4z+PSFFUCG7q4lrevuTrUY=";
   };
 
   postPatch = ''
-    substituteInPlace package.json \
-      --replace-fail '"@modelcontextprotocol/sdk": "1.17.5"' '"@modelcontextprotocol/sdk": "1.26.0"'
-
     cp ${./package-lock.json} package-lock.json
   '';
 
-  npmDepsHash = "sha256-55NJI3KsvBo3tufhLyGkelMAlattli2U65RS1KLuMyc=";
+  npmDepsHash = "sha256-Smpbac6Ded99buABK+AobWbXaTHMQYbDYm131XQ31XU=";
+  npmDepsFetcherVersion = 2;
 
   dontNpmBuild = true;
   npmPackFlags = [ "--ignore-scripts" ];
