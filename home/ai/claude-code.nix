@@ -167,7 +167,7 @@ in
           mkNotifyCmd =
             msg:
             if pkgs.stdenvNoCC.hostPlatform.isDarwin then
-              "osascript -e 'display notification \"${msg}\" with title \"Claude Code\"'"
+              "${pkgs.terminal-notifier}/bin/terminal-notifier -title 'Claude Code' -message '${msg}' -activate 'net.kovidgoyal.kitty'"
             else
               "${lib.getBin pkgs.libnotify}/notify-send 'Claude Code' '${msg}'";
         in

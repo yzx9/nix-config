@@ -146,10 +146,10 @@ in
   # Send notification on session completion
   xdg.configFile."opencode/plugins/notification.js".text =
     let
-      msg = "Session Completed!";
+      msg = "Turn Completed!";
       notifyCmd =
         if pkgs.stdenvNoCC.hostPlatform.isDarwin then
-          "osascript -e 'display notification \"${msg}\" with title \"opencode\"'"
+          "${pkgs.terminal-notifier}/bin/terminal-notifier -title 'opencode' -message '${msg}' -activate 'net.kovidgoyal.kitty'"
         else
           "${lib.getBin pkgs.libnotify}/notify-send 'opencode' '${msg}'";
     in
