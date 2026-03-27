@@ -31,8 +31,8 @@ let
         glm)
           API_KEY_NAME="GLM_CODING_API_KEY"
           export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
-          export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5"
-          export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5"
+          export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5-turbo"
+          export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5-turbo"
           export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.7"
           ;;
         uni)
@@ -205,10 +205,14 @@ in
         headers.CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
       };
 
+      playwright = {
+        type = "stdio";
+        command = "${pkgs.playwright-mcp}/bin/playwright-mcp";
+      };
+
       zai-vision = {
         type = "stdio";
         command = "${pkgs.yzx9.zai-mcp-server}/bin/zai-mcp-server";
-        args = [ ];
         env = {
           Z_AI_API_KEY = "\${GLM_CODING_API_KEY}";
           Z_AI_MODE = "ZHIPU";

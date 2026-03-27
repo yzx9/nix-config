@@ -15,6 +15,11 @@ let
 
   codex' = pkgs.writeShellApplication {
     name = "codex";
+
+    derivationArgs = {
+      inherit (pkgs.codex) pname version;
+    };
+
     runtimeInputs = [
       pkgs.yzx9.with-secrets
       pkgs.codex
@@ -36,13 +41,26 @@ in
     inherit skills;
 
     settings = {
+      model = "gpt-5.4";
+      notice.model_migrations."gpt-5.3-codex" = "gpt-5.4";
+
       sandbox_mode = "workspace-write";
       approval_policy = "untrusted";
       allow_login_shell = false;
+
       notify = [
         "${pkgs.python3}"
         "${codex-notify}"
       ];
+
+      mcp_servers = {
+        context7 = {
+          url = "https://mcp.context7.com/mcp";
+          env_http_headers.CONTEXT7_API_KEY = "\$CONTEXT7_API_KEY";
+        };
+
+        playwright.command = "${pkgs.playwright-mcp}/bin/mcp-server-playwright";
+      };
     };
   };
 }

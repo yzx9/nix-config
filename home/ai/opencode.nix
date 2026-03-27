@@ -104,6 +104,12 @@ in
           headers.CONTEXT7_API_KEY = "{env:CONTEXT7_API_KEY}";
         };
 
+        playwright = {
+          enabled = true;
+          type = "local";
+          command = [ "${pkgs.playwright-mcp}/bin/mcp-server-playwright" ];
+        };
+
         zai-vision = {
           enabled = true;
           type = "local";
