@@ -107,13 +107,13 @@ in
         playwright = {
           enabled = true;
           type = "local";
-          command = [ "${pkgs.playwright-mcp}/bin/mcp-server-playwright" ];
+          command = [ (lib.getExe pkgs.playwright-mcp) ];
         };
 
         zai-vision = {
           enabled = true;
           type = "local";
-          command = [ "${pkgs.yzx9.zai-mcp-server}/bin/zai-mcp-server" ];
+          command = [ (lib.getExe pkgs.yzx9.zai-mcp-server) ];
           environment = {
             Z_AI_API_KEY = "{env:GLM_CODING_API_KEY}";
             Z_AI_MODE = "ZHIPU";

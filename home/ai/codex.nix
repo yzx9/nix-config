@@ -59,7 +59,7 @@ in
           env_http_headers.CONTEXT7_API_KEY = "\$CONTEXT7_API_KEY";
         };
 
-        playwright.command = "${pkgs.playwright-mcp}/bin/mcp-server-playwright";
+        playwright.command = lib.getExe pkgs.playwright-mcp;
       };
     };
   };
