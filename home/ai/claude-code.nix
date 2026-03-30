@@ -149,7 +149,10 @@ in
             "registry.yarnpkg.com"
             "*.crates.io"
           ];
-          allowUnixSockets = [ "/var/run/docker.sock" ];
+          allowUnixSockets = [
+            "/var/run/docker.sock"
+            "/nix/var/nix/daemon-socket/socket"
+          ];
           allowLocalBinding = true;
         };
       };
