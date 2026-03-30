@@ -142,6 +142,11 @@ in
         enabled = true;
         autoAllowBashIfSandboxed = true;
         excludedCommands = [ "docker" ];
+
+        filesystem = {
+          allowWrite = [ "~/.gstack/" ];
+        };
+
         network = {
           allowedDomains = [
             "github.com"
@@ -269,6 +274,29 @@ in
         code-reviewer = read "04-quality-security/code-reviewer.md";
       };
   };
+
+  # Create symlinks for gstack skills
+  home.activation.gstack-skills = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    GSTACK="${pkgs.yzx9.gstack}/share/gstack"
+
+    # Main gstack directory (skills reference ~/.claude/skills/gstack/bin/ etc.)
+    ln -sfn "$GSTACK" "$HOME/.claude/skills/gstack"
+
+    # Individual skill symlinks (Claude Code discovers skills here)
+    for dir in "$GSTACK"/*/; do
+      skill="''${dir%/}"
+      skill="''${skill##*/}"
+      [ -f "$dir/SKILL.md" ] || continue
+      [ "$skill" = "node_modules" ] && continue
+      ln -sfn "gstack/$skill" "$HOME/.claude/skills/$skill"
+    done
+
+    # Runtime state directory
+    mkdir -p "$HOME/.gstack/projects" "$HOME/.gstack/sessions"
+
+    # Disable update check (nix manages updates)
+    "$GSTACK/bin/gstack-config" set update_check false 2>/dev/null || true
+  '';
 
   home.file.".claude/plugins/my-plugin/.lsp.json".text = toJSON {
     go = {

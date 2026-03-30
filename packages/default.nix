@@ -14,6 +14,8 @@ let
 
   catppuccin-bat = pkgs.callPackage ./catppuccin-bat { };
 
+  gstack = pkgs.callPackage ./gstack { };
+
   zai-mcp-server = pkgs.callPackage ./zai-mcp-server { };
 
   nixvim' = import ./nixvim {
@@ -22,7 +24,7 @@ let
   };
 in
 {
-  inherit catppuccin-bat zai-mcp-server;
+  inherit catppuccin-bat gstack zai-mcp-server;
   catppuccin-yazi-flavor = pkgs.callPackage ./catppuccin-yazi-flavor { inherit catppuccin-bat; };
 
   nixvim = nixvim';
