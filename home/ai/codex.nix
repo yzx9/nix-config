@@ -30,6 +30,7 @@ let
     text = ''
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
         --allow CONTEXT7_API_KEY \
+        --allow GITHUB_PAT \
         -- codex "$@"
     '';
   };
@@ -57,6 +58,11 @@ in
         context7 = {
           url = "https://mcp.context7.com/mcp";
           env_http_headers.CONTEXT7_API_KEY = "\$CONTEXT7_API_KEY";
+        };
+
+        github = {
+          url = "https://api.githubcopilot.com/mcp/";
+          env_http_headers.Authorization = "Bearer \$GITHUB_PAT";
         };
 
         playwright.command = lib.getExe pkgs.playwright-mcp;

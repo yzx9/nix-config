@@ -27,6 +27,8 @@ let
     # Inject API keys at runtime
     text = ''
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
+        --allow CONTEXT7_API_KEY \
+        --allow GITHUB_PAT \
         --allow GLM_CODING_API_KEY \
         --allow UNI_YUANJING_API_KEY \
         -- opencode "$@"
@@ -92,10 +94,11 @@ in
       };
 
       mcp = {
-        # github = {
-        #   type = "http";
-        #   url = "https://api.githubcopilot.com/mcp/";
-        # };
+        github = {
+          type = "http";
+          url = "https://api.githubcopilot.com/mcp/";
+          headers.Authorization = "Bearer {env:GITHUB_PAT}";
+        };
 
         context7 = {
           enabled = true;

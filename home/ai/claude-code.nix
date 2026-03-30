@@ -50,8 +50,9 @@ let
 
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
         --map "$API_KEY_NAME" ANTHROPIC_AUTH_TOKEN \
-        --allow GLM_CODING_API_KEY \
         --allow CONTEXT7_API_KEY \
+        --allow GITHUB_PAT \
+        --allow GLM_CODING_API_KEY \
         -- claude "$@"
     '';
   };
@@ -100,6 +101,11 @@ in
           "Bash(nix eval:*)"
           "Bash(nix-build:*)"
           "Bash(nix-instantiate:*)"
+          "mcp__plugin_claude-code-home-manager_context7"
+          "mcp__plugin_claude-code-home-manager_playwright"
+          "mcp__plugin_claude-code-home-manager_zai-web-reader"
+          "mcp__plugin_claude-code-home-manager_zai-web-search"
+          "mcp__plugin_claude-code-home-manager_zai-web-vision"
         ];
 
         # Permissions that require confirmation
@@ -194,10 +200,11 @@ in
     '';
 
     mcpServers = {
-      # github = {
-      #   type = "http";
-      #   url = "https://api.githubcopilot.com/mcp/";
-      # };
+      github = {
+        type = "http";
+        url = "https://api.githubcopilot.com/mcp/";
+        headers.Authorization = "Bearer \${GITHUB_PAT}";
+      };
 
       context7 = {
         type = "http";
