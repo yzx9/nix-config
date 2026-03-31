@@ -87,11 +87,14 @@ in
         # Allowed permissions
         allow = [
           "Read(**/*)" # allow reading all files, but deny specific sensitive files below
+          "Read(~/.cargo/registry/)"
+          "Search"
           "WebFetch" # allow any fetches
           "WebSearch" # allow any searches
           "Bash(git commit:*)"
           "Bash(git diff:*)"
           "Bash(git status:*)"
+          "Bash(curl:*)"
           "Bash(cargo build:*)"
           "Bash(cargo check:*)"
           "Bash(cargo clippy:*)"
@@ -119,7 +122,6 @@ in
           "Bash(gh issue close:*)"
           "Bash(gh issue delete:*)"
           "Bash(rm:*)"
-          "Bash(curl:*)"
           "Bash(cargo add:*)"
         ];
 
@@ -133,7 +135,7 @@ in
 
         # Additional working directories Claude can access
         additionalDirectories = [
-          "~/.matplotlib" # for python plotting
+          "~/.matplotlib/" # for python plotting
           "~/.cache/" # for various language toolchains
         ];
       };
