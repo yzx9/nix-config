@@ -24,11 +24,10 @@
   # > sudo borg list /path/to/repo::archive
   services.borgbackup.jobs.root =
     let
-      inherit (config.services) freshrss;
+      inherit (config.services) freshrss trilium-server;
     in
     {
       # TODO: backup radicale
-      # TODO: backup trilium
 
       repo = "/nas/home/backup";
       doInit = true;
@@ -58,6 +57,8 @@
       paths = [
         # See: https://freshrss.github.io/FreshRSS/en/admins/05_Backup.html
         freshrss.dataDir
+
+        "${trilium-server.dataDir}/backup"
       ];
 
       # See: https://borgbackup.readthedocs.io/en/stable/usage/help.html#borg-help-patterns
