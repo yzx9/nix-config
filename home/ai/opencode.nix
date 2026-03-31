@@ -154,21 +154,24 @@ in
 
   # Send notification on session completion
   xdg.configFile."opencode/plugins/notification.js".text =
-    let
-      msg = "Turn Completed!";
-      notifyCmd =
-        if pkgs.stdenvNoCC.hostPlatform.isDarwin then
-          "${pkgs.terminal-notifier}/bin/terminal-notifier -title 'opencode' -message '${msg}' -activate 'net.kovidgoyal.kitty'"
-        else
-          "${lib.getBin pkgs.libnotify}/notify-send 'opencode' '${msg}'";
-    in
-    ''
-      export const NotificationPlugin = async ({ project, client, $, directory, worktree }) => ({
-        async event({ event }) {
-          if (event.type === "session.idle") {
-            await $`${notifyCmd}`;
-          }
-        }
-      })
-    '';
+    lib.optionalString config.purpose.dev.enable
+      (
+        let
+          msg = "Turn Completed!";
+          notifyCmd =
+            if pkgs.stdenvNoCC.hostPlatform.isDarwin then
+              "${pkgs.terminal-notifier}/bin/terminal-notifier -title 'opencode' -message '${msg}' -activate 'net.kovidgoyal.kitty'"
+            else
+              "${lib.getBin pkgs.libnotify}/notify-send 'opencode' '${msg}'";
+        in
+        ''
+          export const NotificationPlugin = async ({ project, client, $, directory, worktree }) => ({
+            async event({ event }) {
+              if (event.type === "session.idle") {
+                await $`${notifyCmd}`;
+              }
+            }
+          })
+        ''
+      );
 }

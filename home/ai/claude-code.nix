@@ -278,29 +278,31 @@ in
   };
 
   # Create symlinks for gstack skills
-  home.activation.gstack-skills = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    GSTACK="${pkgs.yzx9.gstack}/share/gstack"
+  home.activation.gstack-skills = lib.mkIf config.purpose.dev.enable (
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      GSTACK="${pkgs.yzx9.gstack}/share/gstack"
 
-    # Main gstack directory (skills reference ~/.claude/skills/gstack/bin/ etc.)
-    ln -sfn "$GSTACK" "$HOME/.claude/skills/gstack"
+      # Main gstack directory (skills reference ~/.claude/skills/gstack/bin/ etc.)
+      ln -sfn "$GSTACK" "$HOME/.claude/skills/gstack"
 
-    # Individual skill symlinks (Claude Code discovers skills here)
-    for dir in "$GSTACK"/*/; do
-      skill="''${dir%/}"
-      skill="''${skill##*/}"
-      [ -f "$dir/SKILL.md" ] || continue
-      [ "$skill" = "node_modules" ] && continue
-      ln -sfn "gstack/$skill" "$HOME/.claude/skills/$skill"
-    done
+      # Individual skill symlinks (Claude Code discovers skills here)
+      for dir in "$GSTACK"/*/; do
+        skill="''${dir%/}"
+        skill="''${skill##*/}"
+        [ -f "$dir/SKILL.md" ] || continue
+        [ "$skill" = "node_modules" ] && continue
+        ln -sfn "gstack/$skill" "$HOME/.claude/skills/$skill"
+      done
 
-    # Runtime state directory
-    mkdir -p "$HOME/.gstack/projects" "$HOME/.gstack/sessions"
+      # Runtime state directory
+      mkdir -p "$HOME/.gstack/projects" "$HOME/.gstack/sessions"
 
-    # Disable update check (nix manages updates)
-    "$GSTACK/bin/gstack-config" set update_check false 2>/dev/null || true
-  '';
+      # Disable update check (nix manages updates)
+      "$GSTACK/bin/gstack-config" set update_check false 2>/dev/null || true
+    ''
+  );
 
-  home.file.".claude/plugins/my-plugin/.lsp.json".text = toJSON {
+  home.file.".claude/plugins/my-plugin/.lsp.json".text = lib.mkIf config.purpose.dev.enable (toJSON {
     go = {
       command = lib.getExe pkgs.gopls;
       args = [ "serve" ];
@@ -318,5 +320,5 @@ in
       args = [ "--stdio" ];
       extensionToLanguage.".ts" = "typescript";
     };
-  };
+  });
 }
