@@ -306,23 +306,25 @@ in
     ''
   );
 
-  home.file.".claude/plugins/my-plugin/.lsp.json".text = lib.mkIf config.purpose.dev.enable (toJSON {
-    go = {
-      command = lib.getExe pkgs.gopls;
-      args = [ "serve" ];
-      extensionToLanguage.".go" = "go";
-    };
+  home.file.".claude/plugins/my-plugin/.lsp.json" = lib.mkIf config.purpose.dev.enable {
+    text = toJSON {
+      go = {
+        command = lib.getExe pkgs.gopls;
+        args = [ "serve" ];
+        extensionToLanguage.".go" = "go";
+      };
 
-    rust = {
-      command = lib.getExe pkgs.rust-analyzer;
-      args = [ ];
-      extensionToLanguage.".rs" = "rust";
-    };
+      rust = {
+        command = lib.getExe pkgs.rust-analyzer;
+        args = [ ];
+        extensionToLanguage.".rs" = "rust";
+      };
 
-    typescript = {
-      command = lib.getExe pkgs.typescript-language-server;
-      args = [ "--stdio" ];
-      extensionToLanguage.".ts" = "typescript";
+      typescript = {
+        command = lib.getExe pkgs.typescript-language-server;
+        args = [ "--stdio" ];
+        extensionToLanguage.".ts" = "typescript";
+      };
     };
-  });
+  };
 }
