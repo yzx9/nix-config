@@ -137,13 +137,17 @@ in
         additionalDirectories = [
           "~/.matplotlib/" # for python plotting
           "~/.cache/" # for various language toolchains
+          "~/.gstack/" # gstack runtime state (sessions, projects, etc.)
         ];
       };
 
       sandbox = {
         enabled = true;
         autoAllowBashIfSandboxed = true;
-        excludedCommands = [ "docker" ];
+        excludedCommands = [
+          "docker"
+          "codex"
+        ];
 
         filesystem = {
           allowWrite = [ "~/.gstack/" ];
