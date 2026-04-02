@@ -7,7 +7,6 @@
 
 let
   hasProxy = config.proxy.httpPublicProxy != null;
-  toJSON = lib.generators.toJSON { };
 
   skills = import ./skills.nix { inherit pkgs; };
 
@@ -213,6 +212,49 @@ in
       - When you need to search docs, use `context7` tools.
     '';
 
+    lspServers = {
+      go = {
+        command = "gopls";
+        args = [ "serve" ];
+        extensionToLanguage.".go" = "go";
+      };
+
+      pyright = {
+        command = "pyright-langserver";
+        args = [ "--stdio" ];
+        extensionToLanguage = {
+          ".py" = "python";
+          ".pyi" = "python";
+        };
+      };
+
+      rust-analyzer = {
+        command = "rust-analyzer";
+        extensionToLanguage.".rs" = "rust";
+      };
+
+      typescript = {
+        command = "typescript-language-server";
+        args = [ "--stdio" ];
+        extensionToLanguage = {
+          ".ts" = "typescript";
+          ".tsx" = "typescriptreact";
+          ".js" = "javascript";
+          ".jsx" = "javascriptreact";
+          ".mts" = "typescript";
+          ".cts" = "typescript";
+          ".mjs" = "javascript";
+          ".cjs" = "javascript";
+        };
+      };
+
+      vue = {
+        command = "vue-language-server";
+        args = [ "--stdio" ];
+        extensionToLanguage.".vue" = "vue";
+      };
+    };
+
     mcpServers = {
       github = {
         type = "http";
@@ -305,26 +347,4 @@ in
       "$GSTACK/bin/gstack-config" set update_check false 2>/dev/null || true
     ''
   );
-
-  home.file.".claude/plugins/my-plugin/.lsp.json" = lib.mkIf config.purpose.dev.enable {
-    text = toJSON {
-      go = {
-        command = lib.getExe pkgs.gopls;
-        args = [ "serve" ];
-        extensionToLanguage.".go" = "go";
-      };
-
-      rust = {
-        command = lib.getExe pkgs.rust-analyzer;
-        args = [ ];
-        extensionToLanguage.".rs" = "rust";
-      };
-
-      typescript = {
-        command = lib.getExe pkgs.typescript-language-server;
-        args = [ "--stdio" ];
-        extensionToLanguage.".ts" = "typescript";
-      };
-    };
-  };
 }
