@@ -90,19 +90,21 @@ in
           "Search"
           "WebFetch" # allow any fetches
           "WebSearch" # allow any searches
-          "Bash(git commit:*)"
-          "Bash(git diff:*)"
-          "Bash(git status:*)"
-          "Bash(curl:*)"
-          "Bash(cargo build:*)"
-          "Bash(cargo check:*)"
-          "Bash(cargo clippy:*)"
-          "Bash(cargo fmt:*)"
-          "Bash(cargo test:*)"
-          "Bash(nix build:*)"
-          "Bash(nix eval:*)"
-          "Bash(nix-build:*)"
-          "Bash(nix-instantiate:*)"
+          "Bash(git add *)"
+          "Bash(git commit *)"
+          "Bash(git diff *)"
+          "Bash(git status *)"
+          "Bash(curl *)"
+          "Bash(cargo build *)"
+          "Bash(cargo check *)"
+          "Bash(cargo clippy *)"
+          "Bash(cargo fmt *)"
+          "Bash(cargo test *)"
+          "Bash(nix build *)"
+          "Bash(nix eval *)"
+          "Bash(nix hash *)"
+          "Bash(nix-build *)"
+          "Bash(nix-instantiate *)"
           "mcp__plugin_claude-code-home-manager_context7"
           "mcp__plugin_claude-code-home-manager_playwright"
           "mcp__plugin_claude-code-home-manager_zai-web-reader"
@@ -112,16 +114,15 @@ in
 
         # Permissions that require confirmation
         ask = [
-          "Bash(git add:*)"
-          "Bash(git reset:*)"
-          "Bash(git force:*)"
-          "Bash(git push:*)"
-          "Bash(gh pr close:*)"
-          "Bash(gh pr create:*)"
-          "Bash(gh issue close:*)"
-          "Bash(gh issue delete:*)"
-          "Bash(rm:*)"
-          "Bash(cargo add:*)"
+          "Bash(git reset *)"
+          "Bash(git force *)"
+          "Bash(git push *)"
+          "Bash(gh pr close *)"
+          "Bash(gh pr create *)"
+          "Bash(gh issue close *)"
+          "Bash(gh issue delete *)"
+          "Bash(rm -rf *)"
+          "Bash(cargo add *)"
         ];
 
         # Denied permissions
@@ -144,8 +145,9 @@ in
         enabled = true;
         autoAllowBashIfSandboxed = true;
         excludedCommands = [
-          "docker"
           "codex"
+          "docker"
+          "nix"
         ];
 
         filesystem = {
@@ -172,14 +174,6 @@ in
         commit = "";
         pr = "";
       };
-
-      # MCP server configuration
-      enableAllProjectMcpServers = false;
-      # enabledMcpjsonServers = [
-      #   "memory"
-      #   "github"
-      # ];
-      disabledMcpjsonServers = [ "filesystem" ];
 
       hooks =
         let
@@ -209,7 +203,9 @@ in
 
     memory.text = ''
       ## General Guidelines
-      - When you need to search docs, use `context7` tools.
+      - Use `context7` tools whenever you need to search documentation
+      - Use `playwright` for any web automation tasks, such as testing web apps
+      - Use the `github` for any GitHub-related interactions, such as searching repositories.
     '';
 
     lspServers = {
