@@ -52,6 +52,8 @@ let
         --allow CONTEXT7_API_KEY \
         --allow GITHUB_PAT \
         --allow GLM_CODING_API_KEY \
+        --allow ZOTERO_API_KEY \
+        --allow ZOTERO_LIBRARY_ID \
         -- claude "$@"
     '';
   };
@@ -288,6 +290,16 @@ in
         type = "http";
         url = "https://open.bigmodel.cn/api/mcp/web_reader/mcp";
         headers.Authorization = "Bearer \${GLM_CODING_API_KEY}";
+      };
+
+      zotero-mcp = {
+        type = "stdio";
+        command = lib.getExe pkgs.yzx9.zotero-mcp;
+        env = {
+          ZOTERO_LOCAL = "true";
+          ZOTERO_API_KEY = "\${ZOTERO_API_KEY}";
+          ZOTERO_LIBRARY_ID = "\${ZOTERO_LIBRARY_ID}";
+        };
       };
 
       # zai-zread = {

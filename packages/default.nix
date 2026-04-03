@@ -18,13 +18,15 @@ let
 
   zai-mcp-server = pkgs.callPackage ./zai-mcp-server { };
 
+  zotero-mcp = pkgs.callPackage ./zotero-mcp { };
+
   nixvim' = import ./nixvim {
     inherit pkgs;
     nixvim = nixvim.legacyPackages.${system};
   };
 in
 {
-  inherit catppuccin-bat gstack zai-mcp-server;
+  inherit catppuccin-bat gstack zai-mcp-server zotero-mcp;
   catppuccin-yazi-flavor = pkgs.callPackage ./catppuccin-yazi-flavor { inherit catppuccin-bat; };
 
   nixvim = nixvim';
