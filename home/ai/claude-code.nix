@@ -85,36 +85,13 @@ in
         # Default permission mode
         defaultMode = "acceptEdits";
 
-        # Allowed permissions
-        allow = [
-          "Read(**/*)" # allow reading all files, but deny specific sensitive files below
-          "Read(~/.cargo/registry/)"
-          "Search"
-          "WebFetch" # allow any fetches
-          "WebSearch" # allow any searches
-          "Bash(git add *)"
-          "Bash(git commit *)"
-          "Bash(git diff *)"
-          "Bash(git status *)"
-          "Bash(curl *)"
-          "Bash(cargo build *)"
-          "Bash(cargo check *)"
-          "Bash(cargo clippy *)"
-          "Bash(cargo fmt *)"
-          "Bash(cargo test *)"
-          "Bash(nix build *)"
-          "Bash(nix eval *)"
-          "Bash(nix hash *)"
-          "Bash(nix-build *)"
-          "Bash(nix-instantiate *)"
-          "mcp__plugin_claude-code-home-manager_context7"
-          "mcp__plugin_claude-code-home-manager_playwright"
-          "mcp__plugin_claude-code-home-manager_zai-web-reader"
-          "mcp__plugin_claude-code-home-manager_zai-web-search"
-          "mcp__plugin_claude-code-home-manager_zai-web-vision"
+        # Deny > Ask > Allow
+        deny = [
+          "Read(./.env)"
+          "Read(./.env.*)"
+          "Read(./secrets/**)"
         ];
 
-        # Permissions that require confirmation
         ask = [
           "Bash(git reset *)"
           "Bash(git force *)"
@@ -127,12 +104,47 @@ in
           "Bash(cargo add *)"
         ];
 
-        # Denied permissions
-        deny = [
-          "Read(.envrc)"
-          "Read(./.env)"
-          "Read(./.env.*)"
-          "Read(./secrets/**)"
+        allow = [
+          "Read(**/*)" # allow reading all files, but deny specific sensitive files below
+          "Read(~/.cargo/registry/*)"
+          "Read(/nix/store/*)"
+
+          "Search"
+          "WebFetch" # allow any fetches
+          "WebSearch" # allow any searches
+
+          "Bash(curl *)"
+
+          "Bash(git add *)"
+          "Bash(git commit *)"
+          "Bash(git diff *)"
+          "Bash(git status *)"
+
+          "Bash(cargo build *)"
+          "Bash(cargo check *)"
+          "Bash(cargo clippy *)"
+          "Bash(cargo fmt *)"
+          "Bash(cargo test *)"
+
+          "Bash(nix build *)"
+          "Bash(nix eval *)"
+          "Bash(nix hash *)"
+          "Bash(nix-build *)"
+          "Bash(nix-instantiate *)"
+
+          "mcp__plugin_claude-code-home-manager_context7"
+          "mcp__plugin_claude-code-home-manager_github__get_*"
+          "mcp__plugin_claude-code-home-manager_github__list_*"
+          "mcp__plugin_claude-code-home-manager_github__search_*"
+          "mcp__plugin_claude-code-home-manager_github__issue_read"
+          "mcp__plugin_claude-code-home-manager_playwright"
+          "mcp__plugin_claude-code-home-manager_zai-vision"
+          "mcp__plugin_claude-code-home-manager_zai-web-reader"
+          "mcp__plugin_claude-code-home-manager_zai-web-search"
+          "mcp__plugin_claude-code-home-manager_zotero-mcp__zotero_get_*"
+          "mcp__plugin_claude-code-home-manager_zotero-mcp__zotero_search_*"
+          "mcp__plugin_claude-code-home-manager_zotero-mcp__zotero_list_*"
+          "mcp__plugin_claude-code-home-manager_zotero-mcp__zotero_switch_library"
         ];
 
         # Additional working directories Claude can access
@@ -153,7 +165,12 @@ in
         ];
 
         filesystem = {
-          allowWrite = [ "~/.gstack/" ];
+          allowRead = [
+            "/nix/store/"
+          ];
+          allowWrite = [
+            "~/.gstack/"
+          ];
         };
 
         network = {
@@ -205,9 +222,9 @@ in
 
     memory.text = ''
       ## General Guidelines
-      - Use `context7` tools whenever you need to search documentation
-      - Use `playwright` for any web automation tasks, such as testing web apps
-      - Use the `github` for any GitHub-related interactions, such as searching repositories.
+      - Use `context7` MCP tools whenever you need to search documentation
+      - Use `playwright` MCP for any web automation tasks, such as testing web apps
+      - Use `github` MCP for any GitHub-related interactions, such as searching repositories.
     '';
 
     lspServers = {
