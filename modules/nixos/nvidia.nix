@@ -4,39 +4,42 @@ let
   cfg = config.nvidia;
 in
 lib.mkIf cfg.enable {
-  # Allow unfree packages
-  nixpkgs.config.allowUnfreePredicate =
-    pkg:
-    builtins.elem (lib.getName pkg) [
-      "nvidia-x11"
-      "nvidia-settings"
-      "nvidia-persistenced"
+  nixpkgs.config = {
+    # Allow unfree packages
+    allowUnfree = true; # TODO: Remove
+    allowUnfreePredicate =
+      pkg:
+      builtins.elem (lib.getName pkg) [
+        "nvidia-x11"
+        "nvidia-settings"
+        "nvidia-persistenced"
 
-      "cuda-merged"
-      "cuda_cccl"
-      "cuda_cudart"
-      "cuda_cuobjdump"
-      "cuda_cupti"
-      "cuda_cuxxfilt"
-      "cuda_gdb"
-      "cuda_nvcc"
-      "cuda_nvdisasm"
-      "cuda_nvrtc"
-      "cuda_nvtx"
-      "cuda_nvprune"
-      "cuda_nvml_dev"
-      "cuda_profiler_api"
-      "cuda_sanitizer_api"
-      "libcublas"
-      "libcufft"
-      "libcurand"
-      "libcusolver"
-      "libcusparse"
-      "libnvjitlink"
-      "libnpp"
-    ];
+        "cuda-merged"
+        "cuda_cccl"
+        "cuda_cudart"
+        "cuda_cuobjdump"
+        "cuda_cupti"
+        "cuda_cuxxfilt"
+        "cuda_gdb"
+        "cuda_nvcc"
+        "cuda_nvdisasm"
+        "cuda_nvrtc"
+        "cuda_nvtx"
+        "cuda_nvprune"
+        "cuda_nvml_dev"
+        "cuda_profiler_api"
+        "cuda_sanitizer_api"
+        "libcublas"
+        "libcufft"
+        "libcurand"
+        "libcusolver"
+        "libcusparse"
+        "libnvjitlink"
+        "libnpp"
+      ];
 
-  nixpkgs.config.cudaSupport = true;
+    cudaSupport = true;
+  };
 
   # Using the nixos-cuda cache
   nix.settings = {
@@ -80,7 +83,7 @@ lib.mkIf cfg.enable {
     # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
     # Only available from driver 515.43.04+
     # Currently alpha-quality/buggy, so false is currently the recommended setting.
-    open = false;
+    open = true;
 
     # Enable the Nvidia settings menu,
     # accessible via `nvidia-settings`.
