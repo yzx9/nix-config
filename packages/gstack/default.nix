@@ -51,7 +51,13 @@ stdenv.mkDerivation (finalAttrs: {
       runHook postInstall
     '';
 
-    outputHash = "sha256-kc1VNALz4dXV+sbsl3jgkZSy28BkVsdYt+MDJqWgRDY=";
+    outputHash =
+      {
+        x86_64-linux = "sha256-ow5Vho6xpobbUqYowIkdgKKYB8UCjEFJT/3O0npaeQ4=";
+        aarch64-darwin = "sha256-kc1VNALz4dXV+sbsl3jgkZSy28BkVsdYt+MDJqWgRDY=";
+      }
+      .${stdenv.hostPlatform.system}
+        or (throw "gstack node_modules hash not available for ${stdenv.hostPlatform.system}");
     outputHashAlgo = "sha256";
     outputHashMode = "recursive";
   };
