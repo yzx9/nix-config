@@ -10,6 +10,8 @@ let
 
   skills = import ./skills.nix { inherit pkgs; };
 
+  toYAML = lib.generators.toYAML { };
+
   # Claude Code wrapper script to inject API keys at runtime
   claude-code' = pkgs.writeShellApplication {
     name = "claude";
@@ -367,9 +369,19 @@ in
 
       # Runtime state directory
       mkdir -p "$HOME/.gstack/projects" "$HOME/.gstack/sessions"
-
-      # Disable update check (nix manages updates)
-      "$GSTACK/bin/gstack-config" set update_check false 2>/dev/null || true
     ''
   );
+
+  home.file.".gstack/config.yaml".text = toYAML {
+    auto_upgrade = false;
+    update_check = false;
+    telemetry = "off";
+
+    skill_prefix = false;
+    routing_declined = true;
+
+    codex_reviews = "enabled";
+    proactive = true;
+    cross_project_learnings = true;
+  };
 }
