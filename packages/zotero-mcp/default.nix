@@ -8,14 +8,14 @@
 
 python3Packages.buildPythonApplication (finalAttrs: {
   pname = "zotero-mcp";
-  version = "0.1.4";
+  version = "0.2.2";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "54yyyu";
     repo = "zotero-mcp";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-I5HsioNZRJpEEPb6yeD75JUPkI26D5enybyt/ZMQqh0=";
+    hash = "sha256-GZkzABsUh6qua66K4URPq0InLgs6cqLgKEXm7wzT+s8=";
   };
 
   build-system = with python3Packages; [
@@ -37,10 +37,7 @@ python3Packages.buildPythonApplication (finalAttrs: {
     requests
     sentence-transformers
     tiktoken
-  ];
-
-  nativeCheckInputs = with python3Packages; [
-    pytestCheckHook
+    unidecode
   ];
 
   nativeInstallCheckInputs = [
@@ -51,15 +48,11 @@ python3Packages.buildPythonApplication (finalAttrs: {
   versionCheckProgramArg = "version";
   __darwinAllowLocalNetworking = true;
 
-  # Upstream's server tests still call decorated FastMCP tools as plain
-  # functions, but current fastmcp exposes them as FunctionTool objects.
-  disabledTests = [
-    "test_advanced_search_filters_items"
-    "test_advanced_search_rejects_unknown_operation"
-    "test_create_note_includes_title_heading"
-    "test_search_notes_filters_annotation_blocks"
-    "test_batch_update_tags_validates_json_array"
-  ];
+  # Tests call @mcp.tool()-decorated functions directly (e.g. server.advanced_search(...))
+  # but fastmcp>=2.14 wraps them as FunctionTool objects, causing:
+  #   TypeError: 'FunctionTool' object is not callable
+  # Affects 202/372 tests in v0.2.2 — disable check phase entirely.
+  doCheck = false;
 
   pythonImportsCheck = [ "zotero_mcp" ];
 
