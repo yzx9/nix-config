@@ -10,8 +10,6 @@ let
 
   skills = import ./skills.nix { inherit pkgs; };
 
-  toYAML = lib.generators.toYAML { };
-
   # Claude Code wrapper script to inject API keys at runtime
   claude-code' = pkgs.writeShellApplication {
     name = "claude";
@@ -372,16 +370,17 @@ in
     ''
   );
 
-  home.file.".gstack/config.yaml".text = toYAML {
-    auto_upgrade = false;
-    update_check = false;
-    telemetry = "off";
+  # NOTE: gstack config is not fully YAML-compliant, dont use toYAML
+  home.file.".gstack/config.yaml".text = ''
+    auto_upgrade: false
+    update_check: false
+    telemetry: off
 
-    skill_prefix = false;
-    routing_declined = true;
+    skill_prefix: false
+    routing_declined: true
 
-    codex_reviews = "enabled";
-    proactive = true;
-    cross_project_learnings = true;
-  };
+    codex_reviews: enabled
+    proactive: true
+    cross_project_learnings: true
+  '';
 }
