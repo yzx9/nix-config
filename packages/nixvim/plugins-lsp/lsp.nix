@@ -53,7 +53,11 @@ lib.mkIf config.lsp.enable {
     };
 
     postConfig = ''
-      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = "rounded" })
+      vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
+        config = config or {}
+        config.border = "rounded"
+        return vim.lsp.handlers.hover(err, result, ctx, config)
+      end
 
       vim.diagnostic.config({
         virtual_text = {
