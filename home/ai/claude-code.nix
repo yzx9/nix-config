@@ -67,19 +67,19 @@ in
     # See: https://code.claude.com/docs/en/settings
     settings = {
       env = {
-        # Custom API endpoint for GLM
+        # Custom API endpoint
         API_TIMEOUT_MS = "3000000";
 
         # Disable non-essential traffic for privacy
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
 
-        # Disable cch attribution header
-        CLAUDE_CODE_ATTRIBUTION_HEADER = "0";
-
+        # Experimental feature
         CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
       };
 
       theme = "dark";
+
+      effortLevel = "high"; # "low", "medium", "high"
 
       permissions = {
         # Default permission mode
