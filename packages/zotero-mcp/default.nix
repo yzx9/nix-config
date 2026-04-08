@@ -23,28 +23,36 @@ python3Packages.buildPythonApplication (finalAttrs: {
   ];
 
   dependencies = with python3Packages; [
-    chromadb
-    ebooklib
     fastmcp
-    google-genai
     markitdown
     mcp
-    openai
     pydantic
-    pymupdf
     python-dotenv
     pyzotero
-    requests
-    sentence-transformers
-    tiktoken
     unidecode
   ];
+
+  optional-dependencies = with python3Packages; {
+    semantic = [
+      chromadb
+      google-genai
+      openai
+      sentence-transformers
+      tiktoken
+    ];
+    pdf = [
+      ebooklib
+      pymupdf
+    ];
+    scite = [
+      requests
+    ];
+  };
 
   nativeInstallCheckInputs = [
     versionCheckHook
   ];
   doInstallCheck = true;
-  versionCheckProgram = "${placeholder "out"}/bin/${finalAttrs.meta.mainProgram}";
   versionCheckProgramArg = "version";
   __darwinAllowLocalNetworking = true;
 
