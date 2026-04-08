@@ -72,6 +72,7 @@ in
         "blender" # 3D design and animation
 
         # misc
+        "hyperconnect" # xiaomi remote control
         "fiji" # image viewer
         "google-chrome" # browser
         "steam" # game
