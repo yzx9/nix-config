@@ -53,7 +53,7 @@ stdenv.mkDerivation (finalAttrs: {
 
     outputHash =
       {
-        x86_64-linux = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+        x86_64-linux = "sha256-ow5Vho6xpobbUqYowIkdgKKYB8UCjEFJT/3O0npaeQ4=";
         aarch64-darwin = "sha256-kc1VNALz4dXV+sbsl3jgkZSy28BkVsdYt+MDJqWgRDY=";
       }
       .${stdenv.hostPlatform.system}
