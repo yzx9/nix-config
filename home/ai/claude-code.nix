@@ -196,6 +196,18 @@ in
 
       hooks =
         let
+          mkDirenvHook = matcher: [
+            {
+              inherit matcher;
+              hooks = [
+                {
+                  type = "command";
+                  command = "direnv export bash >> \"$CLAUDE_ENV_FILE\"";
+                }
+              ];
+            }
+          ];
+
           mkNotifyCmd =
             msg:
             if pkgs.stdenvNoCC.hostPlatform.isDarwin then
@@ -203,10 +215,13 @@ in
             else
               "${lib.getBin pkgs.libnotify}/notify-send 'Claude Code' '${msg}'";
         in
-        lib.mkIf config.purpose.gui {
+        {
+          CwdChanged = mkDirenvHook "*";
+          FileChanged = mkDirenvHook ".envrc|.env|flake.nix|fleke.lock";
+
           # Stop: when Claude is ready for more input
           # Notification: when Claude requests permissions or noop for 60s
-          Notification = [
+          Notification = lib.optionals config.purpose.gui [
             {
               matcher = "*";
               hooks = [
