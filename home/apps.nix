@@ -33,6 +33,7 @@ lib.mkMerge [
 
         ripgrep # a line-oriented search tool
         fastfetch # system information tool
+        kitty.kitten # always install kitten for terminal control
       ])
       ++ lib.optionals pkgs.stdenvNoCC.hostPlatform.isDarwin (
         with pkgs;
