@@ -51,7 +51,7 @@
     options = lib.mkDefault "--delete-older-than 7d";
   };
 
-  #  # Nixpkgs overlays
+  # Nixpkgs overlays
   nixpkgs.overlays = [
     inputs.self.overlays.default
   ];
