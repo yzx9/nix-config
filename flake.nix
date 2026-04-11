@@ -84,6 +84,12 @@
         systems.follows = "systems";
       };
     };
+
+    # The self-improving AI agent built by Nous Research
+    hermes-agent = {
+      url = "github:yzx9/hermes-agent";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # The `outputs` function will return all the build results of the flake.

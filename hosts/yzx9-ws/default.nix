@@ -32,6 +32,7 @@ inputs.self.lib.mkNixosConfiguration {
         # Include the results of the hardware scan.
         ./hardware-configuration.nix
 
+        ./hermes-agent.nix
         ./xorg.nix
       ];
 

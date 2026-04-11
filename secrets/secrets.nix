@@ -40,6 +40,7 @@ in
   "backup-passphrase.age".publicKeys = all_keys;
   "freshrss-pwd.age".publicKeys = all_keys;
   "frpc.toml.age".publicKeys = all_keys;
+  "hermes-env.age".publicKeys = all_keys;
   "lab-account.age".publicKeys = all_keys;
   "llm-api-keys.age".publicKeys = all_keys;
   "radicale-auth.age".publicKeys = all_keys;
