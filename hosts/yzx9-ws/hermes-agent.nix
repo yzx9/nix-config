@@ -2,8 +2,10 @@
   config,
   inputs,
   pkgs,
+  lib,
   ...
 }:
+
 {
   imports = [
     inputs.hermes-agent.nixosModules.default
@@ -68,6 +70,54 @@
       matrix = {
         require_mention = false;
         auto_thread = true;
+      };
+    };
+
+    mcpServers = {
+      context7 = {
+        url = "https://mcp.context7.com/mcp";
+        headers.CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
+        timeout = 180;
+      };
+
+      github = {
+        url = "https://api.githubcopilot.com/mcp/";
+        headers.Authorization = "Bearer \${GITHUB_PAT}";
+        timeout = 180;
+      };
+
+      zai-vision = {
+        command = lib.getExe pkgs.yzx9.zai-mcp-server;
+        env = {
+          Z_AI_API_KEY = "\${GLM_API_KEY}";
+          Z_AI_MODE = "ZHIPU";
+        };
+      };
+
+      zai-web-search = {
+        url = "https://open.bigmodel.cn/api/mcp/web_search_prime/mcp";
+        headers.Authorization = "Bearer \${GLM_API_KEY}";
+        timeout = 180;
+      };
+
+      zai-web-reader = {
+        url = "https://open.bigmodel.cn/api/mcp/web_reader/mcp";
+        headers.Authorization = "Bearer \${GLM_API_KEY}";
+        timeout = 180;
+      };
+
+      zotero-mcp = {
+        command = lib.getExe pkgs.yzx9.zotero-mcp;
+        env = {
+          ZOTERO_API_KEY = "\${ZOTERO_API_KEY}";
+          ZOTERO_LIBRARY_ID = "\${ZOTERO_LIBRARY_ID}";
+        };
+      };
+
+      zai-zread = {
+        url = "https://open.bigmodel.cn/api/mcp/zread/mcp";
+        headers.Authorization = "Bearer \${GLM_API_KEY}";
+        timeout = 180;
       };
     };
   };

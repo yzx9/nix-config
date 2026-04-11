@@ -334,11 +334,11 @@ in
         };
       };
 
-      # zai-zread = {
-      #   type = "http";
-      #   url = "https://open.bigmodel.cn/api/mcp/zread/mcp";
-      #   headers.Authorization = "Bearer \${GLM_CODING_API_KEY}";
-      # };
+      zai-zread = {
+        type = "http";
+        url = "https://open.bigmodel.cn/api/mcp/zread/mcp";
+        headers.Authorization = "Bearer \${GLM_CODING_API_KEY}";
+      };
     };
 
     # see also: https://github.com/VoltAgent/awesome-claude-code-subagents
