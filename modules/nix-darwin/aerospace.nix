@@ -261,7 +261,7 @@
           (mkMove "Q" "org.jkiss.dbeaver.core.product")
           (mkMove "Q" "com.tencent.meeting")
           (mkMove "S" "com.apple.Preview")
-          (mkMove "S" "org.zotero.zotero")
+          (mkMove "S" "org.zotero.zotero-source")
           (mkMove "T" "com.electron.trilium-notes")
           (mkMove "V" "com.vmware.fusion")
           (mkMove "W" "com.microsoft.Word")
