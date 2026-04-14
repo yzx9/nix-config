@@ -121,6 +121,9 @@
       # NixOS modules
       nixosModules = import ./nixosModules inputs;
 
+      # home manager modules
+      homeManagerModules = import ./homeManagerModules inputs;
+
       # nix develop
       devShells = eachSystem (
         system:

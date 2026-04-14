@@ -2,6 +2,8 @@ inputs:
 
 let
   inherit (import ../_shared.nix) user_yzx9 mkNetworkingLab;
+
+  hermes-agent = import ./hermes-agent.nix inputs;
 in
 inputs.self.lib.mkNixosConfiguration {
   config = {
@@ -32,8 +34,9 @@ inputs.self.lib.mkNixosConfiguration {
         # Include the results of the hardware scan.
         ./hardware-configuration.nix
 
-        ./hermes-agent.nix
         ./xorg.nix
+
+        hermes-agent.host
       ];
 
       networking = lib.mkMerge [
@@ -47,4 +50,10 @@ inputs.self.lib.mkNixosConfiguration {
       # enable binfmt QEMU
       boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
     };
+
+  home = {
+    imports = [
+      hermes-agent.home
+    ];
+  };
 }
