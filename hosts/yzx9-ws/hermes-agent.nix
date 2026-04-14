@@ -39,7 +39,7 @@ inputs:
         settings = {
           model = {
             provider = "zai";
-            default = "GLM-5-turbo";
+            default = "GLM-5.1";
             base_url = "https://open.bigmodel.cn/api/coding/paas/v4";
           };
 
@@ -55,7 +55,7 @@ inputs:
           compression = {
             enabled = true;
             threshold = 0.85;
-            summary_model = "GLM-5-turbo";
+            summary_model = "GLM-5.1";
           };
 
           display = {
@@ -74,8 +74,9 @@ inputs:
           };
 
           matrix = {
-            require_mention = false;
-            auto_thread = true;
+            require_mention = false; # Require @mention in rooms (default: true)
+            auto_thread = true; # Auto-create threads for responses (default: true)
+            encryption = true; # End-to-End Encryption
           };
         };
 
