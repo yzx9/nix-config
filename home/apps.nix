@@ -43,6 +43,14 @@ lib.mkMerge [
       );
   }
 
+  # Daily or dev
+  (lib.mkIf config.purpose.daily {
+    home.packages = with pkgs; [
+      python3
+      nodejs
+    ];
+  })
+
   # Daily
   (lib.mkIf config.purpose.daily {
     home.packages = with pkgs; [
@@ -51,7 +59,7 @@ lib.mkMerge [
       cmatrix
       sl
 
-      # msic
+      # misc
       age # encryption tool
       glow # markdown viewer
       ouch # compressing and decompressing
@@ -64,7 +72,6 @@ lib.mkMerge [
   # Dev
   (lib.mkIf config.purpose.dev.enable {
     home.packages = with pkgs; [
-      python3
       binutils
       lazygit # simple terminal UI for git
       just # command runner

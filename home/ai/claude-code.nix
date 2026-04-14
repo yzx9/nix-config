@@ -237,6 +237,7 @@ in
 
     memory.text = ''
       ## General Guidelines
+      - You are living in a nix-managed environment with declarative configuration. Don't install packages imperatively. Instead, try to use `nix-env` or `npx` to add packages and tools to the environment.
       - Use `context7` MCP tools whenever you need to search documentation
       - Use `playwright` MCP for any web automation tasks, such as testing web apps
       - Use `github` MCP for any GitHub-related interactions, such as searching repositories.
