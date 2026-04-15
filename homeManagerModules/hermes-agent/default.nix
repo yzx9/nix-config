@@ -14,7 +14,7 @@
 
 let
   cfg = config.programs.hermes-agent;
-  hermes-agent = inputs.self.packages.${pkgs.system}.default;
+  hermes-agent = inputs.hermes-agent.packages.${pkgs.system}.default;
 
   # Deep-merge config type (same as nixosModules.nix)
   deepConfigType = lib.types.mkOptionType {
