@@ -2,10 +2,7 @@ inputs:
 
 {
   host = {
-    nixpkgs = {
-      overlays = [ inputs.hermes-agent.overlays.default ];
-      config.permittedInsecurePackages = [ "olm-3.2.16" ];
-    };
+
   };
 
   home =
@@ -25,12 +22,6 @@ inputs:
 
       programs.hermes-agent = {
         enable = true;
-        package = pkgs.hermes-agent.override {
-          dependency-groups = [
-            "all"
-            "matrix"
-          ];
-        };
 
         environmentFiles = [
           config.age.secrets.hermes-env.path

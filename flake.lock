@@ -179,15 +179,16 @@
         "uv2nix": "uv2nix_2"
       },
       "locked": {
-        "lastModified": 1775832494,
-        "narHash": "sha256-febQQNk87v6tPlRHXKAlAIATgpVk2/jRhjsV53Fmxs8=",
-        "owner": "yzx9",
+        "lastModified": 1776248065,
+        "narHash": "sha256-rNtGJTcXqf4y7+Qh1nC+jz6F8YrKSrOcsbHMQDIiT7s=",
+        "owner": "konsisumer",
         "repo": "hermes-agent",
-        "rev": "7a4fbdb6a4ff4e15e1d19b6819f968b977676097",
+        "rev": "b028167f63c97eeca4d1e057e8703260e9cd18f7",
         "type": "github"
       },
       "original": {
-        "owner": "yzx9",
+        "owner": "konsisumer",
+        "ref": "fix/matrix-proxy-support",
         "repo": "hermes-agent",
         "type": "github"
       }
