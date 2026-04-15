@@ -328,6 +328,7 @@ in
       zotero-mcp = {
         type = "stdio";
         command = lib.getExe pkgs.yzx9.zotero-mcp;
+        args = [ "serve" ];
         env = {
           ZOTERO_LOCAL = "true";
           ZOTERO_API_KEY = "\${ZOTERO_API_KEY}";
