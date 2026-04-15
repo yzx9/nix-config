@@ -51,5 +51,4 @@ in
   "id-auth_root.age".publicKeys = root ++ [ system_yzx9-mbp ];
   "id-git_root.age".publicKeys = root;
   "id-github_root.age".publicKeys = root;
-  "recovery.age".publicKeys = root;
 }
