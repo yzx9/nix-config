@@ -6,13 +6,13 @@
 }:
 
 let
-  cfg = config.services.hapi-runner;
+  cfg = config.programs.hapi-runner;
 in
 {
-  options.services.hapi-runner = {
+  options.programs.hapi-runner = {
     enable = lib.mkEnableOption "hapi runner";
 
-    package = lib.mkPackageOption pkgs "hapi" { };
+    package = lib.mkPackageOption pkgs [ "yzx9" "hapi" ] { };
 
     hubUrl = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
@@ -22,7 +22,7 @@ in
 
     dataDir = lib.mkOption {
       type = lib.types.str;
-      default = "${config.home.homeDirectory}/.hapi";
+      default = "${config.xdg.dataHome}/hapi";
       defaultText = lib.literalExpression ''"''${config.home.homeDirectory}/.hapi"'';
       description = "Directory for hapi state (HAPI_HOME).";
     };
@@ -44,11 +44,10 @@ in
           };
 
           Service = {
-            Environment =
-              [
-                "HAPI_HOME=${cfg.dataDir}"
-              ]
-              ++ lib.optional (cfg.hubUrl != null) "HAPI_API_URL=${cfg.hubUrl}";
+            Environment = [
+              "HAPI_HOME=${cfg.dataDir}"
+            ]
+            ++ lib.optional (cfg.hubUrl != null) "HAPI_API_URL=${cfg.hubUrl}";
 
             ExecStart = "${lib.getExe' cfg.package "hapi"} runner start --foreground";
 
@@ -73,16 +72,17 @@ in
               "--foreground"
             ];
             RunAtLoad = true;
-            KeepAlive = { SuccessfulExit = false; };
+            KeepAlive = {
+              SuccessfulExit = false;
+            };
             ThrottleInterval = 5;
             WorkingDirectory = cfg.dataDir;
-            EnvironmentVariables =
-              {
-                HAPI_HOME = cfg.dataDir;
-              }
-              // lib.optionalAttrs (cfg.hubUrl != null) {
-                HAPI_API_URL = cfg.hubUrl;
-              };
+            EnvironmentVariables = {
+              HAPI_HOME = cfg.dataDir;
+            }
+            // lib.optionalAttrs (cfg.hubUrl != null) {
+              HAPI_API_URL = cfg.hubUrl;
+            };
             StandardOutPath = "${cfg.dataDir}/logs/launchd-stdout.log";
             StandardErrorPath = "${cfg.dataDir}/logs/launchd-stderr.log";
             ProcessType = "Background";
