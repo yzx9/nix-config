@@ -31,6 +31,7 @@ lib.mkMerge [
         wget
         tree
 
+        just # command runner
         ripgrep # a line-oriented search tool
         fastfetch # system information tool
         kitty.kitten # always install kitten for terminal control
@@ -74,7 +75,6 @@ lib.mkMerge [
     home.packages = with pkgs; [
       binutils
       lazygit # simple terminal UI for git
-      just # command runner
       hyperfine # benchmarking tool
     ];
 
