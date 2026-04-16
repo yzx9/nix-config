@@ -1,5 +1,3 @@
-{ config, ... }:
-
 {
   services.hapi-hub = {
     enable = true;
