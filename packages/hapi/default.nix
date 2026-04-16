@@ -3,6 +3,7 @@
   stdenv,
   fetchFromGitHub,
   bun,
+  nodejs,
   makeBinaryWrapper,
   ripgrep,
   difftastic,
@@ -85,6 +86,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   nativeBuildInputs = [
     bun
+    nodejs
     makeBinaryWrapper
   ];
 
@@ -101,16 +103,6 @@ stdenv.mkDerivation (finalAttrs: {
     export async function loadEmbeddedAssets(): Promise<EmbeddedAsset[]> {
         return [];
     }
-    STUB
-
-    # Generate stub embeddedAssets for hub web UI
-    cat > hub/src/web/embeddedAssets.generated.ts <<'STUB'
-    export interface EmbeddedWebAsset {
-        path: string;
-        sourcePath: string;
-        mimeType: string;
-    }
-    export const embeddedAssets: EmbeddedWebAsset[] = [];
     STUB
 
     # Patch ensureRuntimeAssets to skip when no embedded assets (nix-managed tools)
@@ -131,7 +123,13 @@ stdenv.mkDerivation (finalAttrs: {
 
     patchShebangs node_modules
 
-    # Build CLI executable directly (bypass build-executable.ts to avoid archive checks)
+    # Build web UI assets
+    bun run build:web
+
+    # Generate embedded web assets manifest
+    cd hub && bun run generate:embedded-web-assets && cd ..
+
+    # Build CLI executable
     cd cli
     mkdir -p dist-exe/${target}
     bun build --compile \
