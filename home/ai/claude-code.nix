@@ -131,6 +131,7 @@ in
           "Bash(nix hash *)"
           "Bash(nix-build *)"
           "Bash(nix-instantiate *)"
+          "Bash(nix-prefetch-url:*)"
 
           "mcp__plugin_claude-code-home-manager_context7"
           "mcp__plugin_claude-code-home-manager_github__get_*"
@@ -153,6 +154,7 @@ in
           "~/.matplotlib/" # for python plotting
           "~/.cache/" # for various language toolchains
           "~/.gstack/" # gstack runtime state (sessions, projects, etc.)
+          "/nix/store" # nix store for reading installed packages and tools
         ];
       };
 
@@ -210,12 +212,14 @@ in
               "${lib.getBin pkgs.libnotify}/notify-send 'Claude Code' '${msg}'";
         in
         {
-          CwdChanged.hooks = [ direnvHook ];
+          CwdChanged = [ { hooks = [ direnvHook ]; } ];
 
-          FileChanged = {
-            matcher = ".envrc|.env|flake.nix|flake.lock";
-            hooks = [ direnvHook ];
-          };
+          FileChanged = [
+            {
+              matcher = ".envrc|.env|flake.nix|flake.lock";
+              hooks = [ direnvHook ];
+            }
+          ];
 
           # Stop: when Claude is ready for more input
           # Notification: when Claude requests permissions or noop for 60s
