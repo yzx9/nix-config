@@ -24,6 +24,7 @@ inputs.self.lib.mkNixosRpiConfiguration {
       ./backup.nix
       ./freshrss.nix
       ./frpc.nix
+      ./hapi.nix
       ./hardware-configuration.nix
       ./mysql.nix
       ./n8n.nix

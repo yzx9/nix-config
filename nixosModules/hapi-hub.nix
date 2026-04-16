@@ -12,11 +12,11 @@ in
   options.services.hapi-hub = {
     enable = lib.mkEnableOption "hapi hub";
 
-    package = lib.mkPackageOption pkgs "hapi" { };
+    package = lib.mkPackageOption pkgs [ "yzx9" "hapi" ] { };
 
     host = lib.mkOption {
       type = lib.types.str;
-      default = "0.0.0.0";
+      default = "127.0.0.1";
       description = "Host address to listen on.";
     };
 
