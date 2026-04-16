@@ -7,6 +7,8 @@
 
 let
   cfg = config.services.hapi-hub;
+  defaultUser = "hapi";
+  defaultGroup = "hapi";
 in
 {
   options.services.hapi-hub = {
@@ -33,6 +35,18 @@ in
     };
 
     relay = lib.mkEnableOption "relay mode (WireGuard + TLS end-to-end encryption via relay.hapi.run)";
+
+    user = lib.mkOption {
+      type = lib.types.str;
+      description = "User to use for running hapi services.";
+      default = defaultUser;
+    };
+
+    group = lib.mkOption {
+      type = lib.types.str;
+      description = "Group to use for running hapi services.";
+      default = defaultGroup;
+    };
 
     dataDir = lib.mkOption {
       type = lib.types.str;
@@ -72,8 +86,8 @@ in
         ExecStart = "${lib.getExe' cfg.package "hapi"} hub${lib.optionalString cfg.relay " --relay"}";
         WorkingDirectory = cfg.dataDir;
         StateDirectory = "hapi";
-        User = "hapi";
-        Group = "hapi";
+        User = cfg.user;
+        Group = cfg.group;
 
         Restart = "on-failure";
         RestartSec = 5;

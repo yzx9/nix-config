@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   package = pkgs.writeShellApplication {
@@ -19,8 +24,14 @@ let
   port = 27872;
 in
 {
+  age.secrets."hapi-cli" = {
+    file = ../../secrets/hapi-cli.age;
+    owner = config.services.hapi-hub.user;
+  };
+
   services.hapi-hub = {
     inherit package port;
+
     enable = true;
     host = "0.0.0.0";
   };
