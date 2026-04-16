@@ -78,7 +78,7 @@ in
       };
 
       theme = "dark";
-
+      editorMode = "vim";
       effortLevel = "high"; # "low", "medium", "high"
 
       permissions = {
@@ -141,6 +141,7 @@ in
           "mcp__plugin_claude-code-home-manager_zai-vision"
           "mcp__plugin_claude-code-home-manager_zai-web-reader"
           "mcp__plugin_claude-code-home-manager_zai-web-search"
+          "mcp__plugin_claude-code-home-manager_zai-zread"
           "mcp__plugin_claude-code-home-manager_zotero-mcp__zotero_get_*"
           "mcp__plugin_claude-code-home-manager_zotero-mcp__zotero_search_*"
           "mcp__plugin_claude-code-home-manager_zotero-mcp__zotero_list_*"
@@ -196,17 +197,10 @@ in
 
       hooks =
         let
-          mkDirenvHook = matcher: [
-            {
-              inherit matcher;
-              hooks = [
-                {
-                  type = "command";
-                  command = "direnv export bash >> \"$CLAUDE_ENV_FILE\"";
-                }
-              ];
-            }
-          ];
+          direnvHook = {
+            type = "command";
+            command = "direnv export bash >> \"$CLAUDE_ENV_FILE\"";
+          };
 
           mkNotifyCmd =
             msg:
@@ -216,8 +210,12 @@ in
               "${lib.getBin pkgs.libnotify}/notify-send 'Claude Code' '${msg}'";
         in
         {
-          CwdChanged = mkDirenvHook "*";
-          FileChanged = mkDirenvHook ".envrc|.env|flake.nix|fleke.lock";
+          CwdChanged.hooks = [ direnvHook ];
+
+          FileChanged = {
+            matcher = ".envrc|.env|flake.nix|flake.lock";
+            hooks = [ direnvHook ];
+          };
 
           # Stop: when Claude is ready for more input
           # Notification: when Claude requests permissions or noop for 60s
@@ -237,10 +235,13 @@ in
 
     context = ''
       ## General Guidelines
-      - You are living in a nix-managed environment with declarative configuration. Don't install packages imperatively. Instead, try to use `nix-env` or `npx` to add packages and tools to the environment.
+      - You are living in a nix-managed environment with declarative configuration.
+        Don't install packages imperatively.
+        Instead, try to use `nix-env` or `npx` to add packages and tools to the environment
+      - Use `github` MCP for any GitHub-related interactions, such as searching and exploring repositorie.
+        Prefer `github` MCP over `zai-zread` for GitHub interactions
       - Use `context7` MCP tools whenever you need to search documentation
       - Use `playwright` MCP for any web automation tasks, such as testing web apps
-      - Use `github` MCP for any GitHub-related interactions, such as searching repositories.
     '';
 
     lspServers = {
