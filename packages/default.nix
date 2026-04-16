@@ -16,6 +16,8 @@ let
 
   gstack = pkgs.callPackage ./gstack { };
 
+  hapi = pkgs.callPackage ./hapi { };
+
   zai-mcp-server = pkgs.callPackage ./zai-mcp-server { };
 
   zotero-mcp = pkgs.callPackage ./zotero-mcp { };
@@ -26,7 +28,7 @@ let
   };
 in
 {
-  inherit catppuccin-bat gstack zai-mcp-server zotero-mcp;
+  inherit catppuccin-bat gstack hapi zai-mcp-server zotero-mcp;
   catppuccin-yazi-flavor = pkgs.callPackage ./catppuccin-yazi-flavor { inherit catppuccin-bat; };
 
   nixvim = nixvim';
