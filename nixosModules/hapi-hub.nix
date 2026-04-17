@@ -69,17 +69,16 @@ in
       wants = [ "network-online.target" ];
       after = [ "network-online.target" ];
 
-      description = "HAPI Hub (server + web UI)";
+      description = "HAPI Hub";
 
-      environment =
-        {
-          HAPI_LISTEN_HOST = cfg.host;
-          HAPI_LISTEN_PORT = toString cfg.port;
-          HAPI_HOME = cfg.dataDir;
-        }
-        // lib.optionalAttrs (cfg.publicUrl != null) {
-          HAPI_PUBLIC_URL = cfg.publicUrl;
-        };
+      environment = {
+        HAPI_LISTEN_HOST = cfg.host;
+        HAPI_LISTEN_PORT = toString cfg.port;
+        HAPI_HOME = cfg.dataDir;
+      }
+      // lib.optionalAttrs (cfg.publicUrl != null) {
+        HAPI_PUBLIC_URL = cfg.publicUrl;
+      };
 
       serviceConfig = {
         Type = "simple";

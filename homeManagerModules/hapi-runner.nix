@@ -31,14 +31,27 @@ in
   config = lib.mkIf cfg.enable (
     lib.mkMerge [
       {
-        home.packages = [ cfg.package ];
+        home.packages = [
+          (pkgs.symlinkJoin {
+            name = "hapi";
+            paths = [ cfg.package ];
+            nativeBuildInputs = [ pkgs.makeWrapper ];
+            postBuild = ''
+              wrapProgram $out/bin/hapi \
+                --set HAPI_HOME "${cfg.dataDir}" \
+                ${lib.optionalString (cfg.hubUrl != null) ''
+                  --set HAPI_API_URL "${cfg.hubUrl}"
+                ''}
+            '';
+          })
+        ];
       }
 
       # ── Linux: systemd user service ────────────────────────────────────
       (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
         systemd.user.services.hapi-runner = {
           Unit = {
-            Description = "HAPI Runner (background agent session manager)";
+            Description = "HAPI Runner";
             After = [ "network-online.target" ];
             Wants = [ "network-online.target" ];
           };
@@ -49,11 +62,11 @@ in
             ]
             ++ lib.optional (cfg.hubUrl != null) "HAPI_API_URL=${cfg.hubUrl}";
 
-            ExecStart = "${lib.getExe' cfg.package "hapi"} runner start --foreground";
+            ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${cfg.dataDir}";
+            ExecStart = "${lib.getExe cfg.package} runner start --foreground";
 
             Restart = "on-failure";
             RestartSec = 5;
-            WorkingDirectory = cfg.dataDir;
           };
 
           Install.WantedBy = [ "default.target" ];
@@ -66,7 +79,7 @@ in
           enable = true;
           config = {
             ProgramArguments = [
-              "${lib.getExe' cfg.package "hapi"}"
+              "${lib.getExe cfg.package}"
               "runner"
               "start"
               "--foreground"
