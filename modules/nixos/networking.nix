@@ -19,10 +19,10 @@ let
     };
 in
 lib.mkMerge [
-  (lib.mkIf (cfg.httpProxy != null) {
+  (lib.mkIf (cfg.httpPublicProxy != null) {
     # Configure network proxy if necessary
-    networking.proxy.default = "http://${cfg.httpProxy}";
-    networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+    networking.proxy.default = "http://${cfg.httpPublicProxy}";
+    networking.proxy.noProxy = "10.1.0.0/16,10.152.183.0/24,127.0.0.1,localhost,internal.domain";
   })
 
   (lib.mkIf cfg.selfHost.enable {
