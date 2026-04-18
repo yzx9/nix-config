@@ -11,7 +11,7 @@
 }:
 
 let
-  version = "0.16.6";
+  version = "0.16.7";
 
   inherit (stdenv.hostPlatform) system;
   selectSystem = attrs: attrs.${system} or (throw "Unsupported system: ${system}");
@@ -34,7 +34,7 @@ let
     owner = "tiann";
     repo = "hapi";
     tag = "v${version}";
-    hash = "sha256-RtEaS7qKnrmJ2HHYj2GqFBJDC9Gl37REAiwcOXL/kXA=";
+    hash = "sha256-MzaC6ZCqfSgx+a+zEQWRa+Zb/7QZePucmpKgsi9BxIU=";
   };
 in
 stdenv.mkDerivation (finalAttrs: {
@@ -73,7 +73,7 @@ stdenv.mkDerivation (finalAttrs: {
 
     outputHash =
       {
-        x86_64-linux = "sha256-idBeGdjLannNQWtdSC5kAmWN43Cfqgc0nrZ5kIaF6lw=";
+        x86_64-linux = "sha256-06K0e/4r2LaYv2YcGWzUCPT/5iEs2eLcy1rMDj4QVN0=";
         aarch64-linux = "sha256-w2t5LEsJBME17o2E/YmtDKp5DXQix/CRqK2eeD44BcU=";
         aarch64-darwin = "sha256-u4iYAQYvKrncMUV5oh799iJn2HU4XJjXvQqbcglzvUo=";
       }
