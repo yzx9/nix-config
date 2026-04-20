@@ -134,8 +134,8 @@
     # Shorter timeout duration
     timeoutlen = 500;
 
-    # Set window title to the filename
-    title = true;
+    # # Set window title to the filename
+    # title = true;
 
     # Save undo history to undo file (in $XDG_STATE_HOME/nvim/undo)
     undofile = true;

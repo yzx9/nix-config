@@ -35,6 +35,8 @@ lib.mkMerge [
         window_margin_width = 5;
         background_opacity = 0.9;
 
+        tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{tab.last_focused_progress_percent}{custom}{title}";
+
         # NOTE: disabling the read confirmation is this akes a security risk
         clipboard_control = "write-clipboard write-primary read-clipboard read-primary";
 
@@ -45,5 +47,7 @@ lib.mkMerge [
     };
 
     home.shellAliases.s = "kitten ssh";
+
+    xdg.configFile."kitty/tab_bar.py".source = ./kitty_tab_bar.py;
   })
 ]
