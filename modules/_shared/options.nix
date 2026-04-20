@@ -71,45 +71,60 @@ in
       enable = lib.mkEnableOption "self-hosted proxy";
       public = lib.mkEnableOption "public & auto switching http proxy";
 
-      socksProxyPort = lib.mkOption {
+      socks5Port = lib.mkOption {
         type = lib.types.int;
         default = 10086;
       };
 
-      httpProxyPort = lib.mkOption {
+      httpPort = lib.mkOption {
         type = lib.types.int;
         default = 10087;
       };
 
-      httpProxyPublicPort = lib.mkOption {
+      httpPublicPort = lib.mkOption {
         type = lib.types.int;
         default = 12345;
       };
     };
 
-    socksProxy = lib.mkOption {
+    socks5Port = lib.mkOption {
+      type = lib.types.int;
+      default = if config.proxy.selfHost.enable then config.proxy.selfHost.socks5Port else null;
+    };
+
+    httpPort = lib.mkOption {
+      type = lib.types.int;
+      default = if config.proxy.selfHost.enable then config.proxy.selfHost.httpPort else null;
+    };
+
+    httpPublicPort = lib.mkOption {
+      type = lib.types.int;
+      default = if config.proxy.selfHost.enable then config.proxy.selfHost.httpPublicPort else null;
+    };
+
+    socks5 = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default =
         if config.proxy.selfHost.enable then
-          "127.0.0.1:${toString config.proxy.selfHost.socksProxyPort}"
+          "socks5://127.0.0.1:${toString config.proxy.selfHost.socks5Port}"
         else
           null;
     };
 
-    httpProxy = lib.mkOption {
+    http = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default =
         if config.proxy.selfHost.enable then
-          "127.0.0.1:${toString config.proxy.selfHost.httpProxyPort}"
+          "http://127.0.0.1:${toString config.proxy.selfHost.httpPort}"
         else
           null;
     };
 
-    httpPublicProxy = lib.mkOption {
+    httpPublic = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default =
         if config.proxy.selfHost.enable then
-          "127.0.0.1:${toString config.proxy.selfHost.httpProxyPublicPort}"
+          "http://127.0.0.1:${toString config.proxy.selfHost.httpPublicPort}"
         else
           null;
     };

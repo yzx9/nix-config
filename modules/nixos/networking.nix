@@ -6,8 +6,6 @@
 }:
 
 let
-  cfg = config.proxy;
-
   assets =
     with pkgs;
     symlinkJoin {
@@ -19,13 +17,13 @@ let
     };
 in
 lib.mkMerge [
-  (lib.mkIf (cfg.httpPublicProxy != null) {
+  (lib.mkIf (config.proxy.httpPublic != null) {
     # Configure network proxy if necessary
-    networking.proxy.default = "http://${cfg.httpPublicProxy}";
+    networking.proxy.default = config.proxy.httpPublic;
     networking.proxy.noProxy = "10.1.0.0/16,10.152.183.0/24,127.0.0.1,localhost,internal.domain";
   })
 
-  (lib.mkIf cfg.selfHost.enable {
+  (lib.mkIf config.proxy.selfHost.enable {
     age.secrets."xray.json" = {
       file = ../../secrets/xray.json.age;
       mode = "444"; # workaround with systemd dynamic user
@@ -39,8 +37,8 @@ lib.mkMerge [
     # https://xtls.github.io/config/features/env.html
     systemd.services.v2ray.environment.XRAY_LOCATION_ASSET = "${assets}/share";
 
-    networking.firewall.allowedTCPPorts = lib.optionals cfg.selfHost.public [
-      config.proxy.selfHost.httpProxyPublicPort
+    networking.firewall.allowedTCPPorts = lib.optionals config.proxy.selfHost.public [
+      config.proxy.selfHost.httpPublicPort
     ];
   })
 ]

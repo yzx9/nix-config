@@ -6,7 +6,7 @@
 }:
 
 let
-  hasProxy = config.proxy.httpPublicProxy != null;
+  hasProxy = config.proxy.httpPublic != null;
 
   skills = import ./skills.nix { inherit pkgs; };
 
@@ -19,8 +19,8 @@ let
       pkgs.claude-code
     ];
 
-    runtimeEnv = {
-      HTTPS_PROXY = lib.optionalString hasProxy "http://${config.proxy.httpPublicProxy}";
+    runtimeEnv = lib.optionalAttrs hasProxy {
+      HTTPS_PROXY = config.proxy.httpPublic;
     };
 
     text = ''

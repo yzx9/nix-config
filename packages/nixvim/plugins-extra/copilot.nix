@@ -45,7 +45,7 @@
     };
   };
 
-  extraConfigLuaPre = lib.optionalString (config.httpProxy != null) ''
-    vim.g.copilot_proxy = "${config.httpProxy}"
+  extraConfigLuaPre = lib.optionalString (config.proxy != null) ''
+    vim.g.copilot_proxy = "${config.proxy}"
   '';
 }

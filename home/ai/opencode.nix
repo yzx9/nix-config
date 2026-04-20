@@ -6,7 +6,7 @@
 }:
 
 let
-  hasProxy = config.proxy.httpPublicProxy != null;
+  hasProxy = config.proxy.httpPublic != null;
 
   # Opencode wrapper script to inject API keys at runtime
   opencode' = pkgs.writeShellApplication {
@@ -17,12 +17,13 @@ let
     ];
 
     runtimeEnv = {
-      # Proxy configuration
-      HTTPS_PROXY = lib.optionalString hasProxy "http://${config.proxy.httpPublicProxy}";
-
       # Disable automatic LSP download for privacy
       OPENCODE_DISABLE_LSP_DOWNLOAD = "true";
-    };
+    }
+    # Proxy configuration
+    // (lib.optionalAttrs hasProxy {
+      HTTPS_PROXY = config.proxy.httpPublic;
+    });
 
     # Inject API keys at runtime
     text = ''

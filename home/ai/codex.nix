@@ -25,7 +25,7 @@ let
       pkgs.codex
     ];
 
-    runtimeEnv.HTTPS_PROXY = "http://${config.proxy.httpProxy}";
+    runtimeEnv.HTTPS_PROXY = config.proxy.http;
 
     text = ''
       with-secrets "${config.age.secrets."llm-api-keys".path}" \

@@ -4,8 +4,8 @@ let
   ssh = "${config.home.homeDirectory}/.ssh/";
   toSshPath = path: lib.removePrefix ssh path;
 
-  needProxyCommand = config.proxy.socksProxy != null;
-  proxyCommand = lib.mkIf needProxyCommand "nc -v -x ${config.proxy.socksProxy} %h %p";
+  hasProxy = config.proxy.socks5Port != null;
+  proxyCommand = lib.mkIf hasProxy "nc -v -x 127.0.0.1:${toString config.proxy.socks5Port} %h %p";
 in
 {
   age.secrets.ssh-config = {
@@ -41,6 +41,7 @@ in
         hostname = "ssh.github.com";
         port = 443;
         user = "git";
+        proxyCommand = proxyCommand;
         extraOptions.TCPKeepAlive = "yes";
       };
     };

@@ -10,10 +10,10 @@ nixvim.makeNixvimWithModule {
     options = {
       lsp.enable = lib.mkEnableOption "Enable language server protocol (LSP) support";
 
-      httpProxy = lib.mkOption {
+      proxy = lib.mkOption {
         type = with lib.types; nullOr str;
         default = null;
-        description = "HTTP proxy to use for Neovim plugins that require network access.";
+        description = "Proxy to use for Neovim plugins that require network access.";
       };
     };
 
@@ -59,7 +59,5 @@ nixvim.makeNixvimWithModule {
   };
 
   # You can use `extraSpecialArgs` to pass additional arguments to your module files
-  extraSpecialArgs = {
-    icons = import ./icons.nix;
-  };
+  extraSpecialArgs.icons = import ./icons.nix;
 }

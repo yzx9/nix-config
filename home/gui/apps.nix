@@ -35,7 +35,7 @@ lib.mkIf purpose.gui {
         (pkgs.writeShellApplication {
           name = "element-desktop";
           text = ''
-            open -a Element --args --proxy-server=socks5://${config.proxy.socksProxy}
+            open -a Element --args --proxy-server=${config.proxy.socks5}
           '';
         }) # element was installed via brew, so we add a wrapper to set the proxy for it
       ]
