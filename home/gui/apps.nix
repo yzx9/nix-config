@@ -28,16 +28,23 @@ lib.mkIf purpose.gui {
 
         # design
         # openscad # 3D parametric design
-        # inkscape # SVG design, broken on darwin: #383860
       ]
       ++ lib.optionals isDarwin [
         yzx9.vaa3d-x # only support darwin now
+
+        (pkgs.writeShellApplication {
+          name = "element-desktop";
+          text = ''
+            open -a Element --args --proxy-server=socks5://${config.proxy.socksProxy}
+          '';
+        }) # element was installed via brew, so we add a wrapper to set the proxy for it
       ]
       ++ lib.optionals (!isDarwin) [
-        logseq # knowledge base, broken on darwin
+        element-desktop # Matrix client
 
         # design
         blender # 3D design, broken on darwin: #429309
+        inkscape # SVG design, broken on darwin: #383860
       ]
     );
 }

@@ -71,6 +71,11 @@ in
         "inkscape" # SVG design
         "blender" # 3D design and animation
 
+        # chat
+        "wechat"
+        "element"
+        # "master-pdf-editor"
+
         # misc
         "hyperconnect" # xiaomi remote control
         "fiji" # image viewer
@@ -78,8 +83,6 @@ in
         "steam" # game
         "vmware-fusion" # virtual machine
         "vial" # keyboard configurator
-        "wechat" # chat app
-        # "master-pdf-editor"
       ]
       ++ lib.optionals (gui && dev.enable) [
         "visual-studio-code" # editor
