@@ -13,6 +13,8 @@
 
   age.secrets.hermes-env.file = ../../secrets/hermes-env.age;
 
+  home.packages = with pkgs; [ olm ]; # e2ee
+
   programs.hermes-agent = {
     enable = true;
 
