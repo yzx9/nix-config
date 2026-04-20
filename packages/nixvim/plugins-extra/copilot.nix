@@ -1,3 +1,4 @@
+# Copilot related plugins and configuration for nixvim
 { config, lib, ... }:
 
 {
@@ -16,6 +17,10 @@
       settings = {
         suggestion.enabled = false;
         panel.enabled = false;
+        filetypes = {
+          markdown = true;
+          help = true;
+        };
       };
 
       lazyLoad.settings = {
@@ -24,12 +29,20 @@
       };
     };
 
-    # Lua plugin to turn github copilot into a cmp source
-    # homepage: https://github.com/zbirenbaum/copilot-cmp/
-    # nixvim doc: https://nix-community.github.io/nixvim/plugins/copilot-cmp.html
-    copilot-cmp.enable = true;
+    # Configurable GitHub Copilot suggestions source for blink.cmp
+    # homepage: https://github.com/fang2hou/blink-copilot
+    # nixvim doc: https://nix-community.github.io/nixvim/plugins/blink-copilot/index.html
+    blink-copilot.enable = true;
 
-    cmp.settings.sources = [ { name = "copilot"; } ];
+    blink-cmp.settings.sources = {
+      default = [ "copilot" ];
+      providers.copilot = {
+        name = "copilot";
+        module = "blink-copilot";
+        score_offset = 100;
+        async = true;
+      };
+    };
   };
 
   extraConfigLuaPre = lib.optionalString (config.httpProxy != null) ''

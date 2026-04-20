@@ -22,7 +22,7 @@ nixvim.makeNixvimWithModule {
       ./utils.nix
 
       # Plugins provide additional features
-      plugins-extra/cmp.nix
+      plugins-extra/blink.nix
       plugins-extra/copilot.nix
       plugins-extra/fidget.nix
       plugins-extra/lazygit.nix
