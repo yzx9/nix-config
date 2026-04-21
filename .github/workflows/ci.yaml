@@ -30,6 +30,21 @@ jobs:
           - zai-mcp-server
           - zotero-mcp
 
+        exclude:
+          # vaa3d-x: macOS-only binary, no Linux support
+          - os: ubuntu-latest
+            package: vaa3d-x
+          - os: ubuntu-24.04-arm
+            package: vaa3d-x
+          # pmp-library: fails to compile on aarch64-linux
+          - os: ubuntu-24.04-arm
+            package: pmp-library
+          # zotero-mcp: dependency build failures on macOS and aarch64-linux
+          - os: ubuntu-24.04-arm
+            package: zotero-mcp
+          - os: macos-latest
+            package: zotero-mcp
+
     runs-on: ${{ matrix.os }}
 
     steps:
