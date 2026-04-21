@@ -73,7 +73,7 @@ python3Packages.buildPythonApplication (finalAttrs: {
     ];
     platforms = with lib.platforms; linux ++ darwin;
     # Error: terminate called after throwing an instance of 'onnxruntime::OnnxRuntimeException'
-    broken = with stdenv.hostPlatform; (isLinux && isAarch64) || (isDarwin && isx86_64);
+    broken = with stdenv.hostPlatform; (isLinux && isAarch64) || isDarwin;
     mainProgram = "zotero-mcp";
   };
 })
