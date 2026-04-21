@@ -96,6 +96,6 @@ stdenv.mkDerivation (finalAttrs: {
       url = "https://github.com/pmp-library/pmp-library/blob/${finalAttrs.version}/LICENSE.txt";
     };
     maintainers = with lib.maintainers; [ yzx9 ];
-    platforms = lib.platforms.all;
+    platforms = lib.platforms.x86_64;
   };
 })
