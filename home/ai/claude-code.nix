@@ -371,6 +371,8 @@ in
   };
 
   # Create symlinks for gstack skills
+  # NOTE: dont forgot to add `auto_upgrade: false` to `~/.gstack/config.yaml` to
+  # prevent gstack from upgrading itself and breaking the symlinks
   home.activation.gstack-skills = lib.mkIf config.purpose.dev.enable (
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       GSTACK="${pkgs.yzx9.gstack}/share/gstack"
@@ -391,18 +393,4 @@ in
       mkdir -p "$HOME/.gstack/projects" "$HOME/.gstack/sessions"
     ''
   );
-
-  # NOTE: gstack config is not fully YAML-compliant, dont use toYAML
-  home.file.".gstack/config.yaml".text = ''
-    auto_upgrade: false
-    update_check: false
-    telemetry: off
-
-    skill_prefix: false
-    routing_declined: true
-
-    codex_reviews: enabled
-    proactive: true
-    cross_project_learnings: true
-  '';
 }
