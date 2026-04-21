@@ -35,8 +35,12 @@ def git_dir_name(path: str) -> str:
 
 def draw_title(data: dict) -> str:
     fmt = data.get("fmt", {})
-
     tab = data.get("tab", {})
+
+    exe = os.path.basename(tab.active_exe or "")
+    if exe == "ssh":
+        return ""  # show nothing for ssh sessions
+
     dir_part = git_dir_name(tab.active_wd or "")
     if dir_part:
         return f"{fmt.bold}[{dir_part}]{fmt.nobold} "
