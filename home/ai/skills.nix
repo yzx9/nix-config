@@ -4,8 +4,8 @@ let
   anthropics-skills = pkgs.fetchFromGitHub {
     owner = "anthropics";
     repo = "skills";
-    rev = "b0cbd3df1533b396d281a6886d5132f623393a9c";
-    hash = "sha256-GzNpraXV85qUwyGs5XDe0zHYr2AazqFppWtH9JvO3QE=";
+    rev = "2c7ec5e78b8e5d43ea02e90bb8826f6b9f147b0c";
+    hash = "sha256-BMgH43diojdUrGC6ivk87eEm2W1yWNuh2fpR9JpbUnE=";
   };
 in
 {

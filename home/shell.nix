@@ -57,8 +57,8 @@
           catppuccin = pkgs.fetchFromGitHub {
             owner = "catppuccin";
             repo = "starship";
-            rev = "e99ba6b210c0739af2a18094024ca0bdf4bb3225";
-            hash = "sha256-1w0TJdQP5lb9jCrCmhPlSexf0PkAlcz8GBDEsRjPRns=";
+            rev = "5906cc369dd8207e063c0e6e2d27bd0c0b567cb8";
+            hash = "sha256-FLHjbClpTqaK4n2qmepCPkb8rocaAo3qeV4Zp1hia0g=";
           };
         in
         lib.importTOML "${catppuccin}/themes/mocha.toml"
