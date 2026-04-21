@@ -32,6 +32,7 @@ lib.mkMerge [
         tree
 
         just # command runner
+        lazygit # simple terminal UI for git
         ripgrep # a line-oriented search tool
         fastfetch # system information tool
         kitty.kitten # always install kitten for terminal control
@@ -42,6 +43,8 @@ lib.mkMerge [
           coreutils-prefixed
         ]
       );
+
+    home.shellAliases.j = "just";
   }
 
   # Daily or dev
@@ -74,7 +77,6 @@ lib.mkMerge [
   (lib.mkIf config.purpose.dev.enable {
     home.packages = with pkgs; [
       binutils
-      lazygit # simple terminal UI for git
       hyperfine # benchmarking tool
     ];
 
@@ -82,8 +84,6 @@ lib.mkMerge [
       enable = true;
       nix-direnv.enable = true;
     };
-
-    home.shellAliases.j = "just";
   })
 
   # Dev - Nix
