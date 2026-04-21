@@ -18,6 +18,17 @@ jobs:
 
         package:
           - aim
+          - catppuccin-bat
+          - catppuccin-yazi-flavor
+          - gstack
+          - hapi
+          - nixvim
+          - nixvim-lsp
+          - pmp-library
+          - vaa3d-x
+          - with-secrets
+          - zai-mcp-server
+          - zotero-mcp
 
     runs-on: ${{ matrix.os }}
 
@@ -25,10 +36,18 @@ jobs:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v31
       - uses: cachix/cachix-action@v16
+        if: github.ref == 'refs/heads/main'
         with:
           name: "${{ secrets.CACHIX_CACHE_NAME }}"
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-      - run: nix --accept-flake-config build .#${{ matrix.package }}
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - name: Build package
+        run: |
+          available=$(nix eval --json '.#${{ matrix.package }}.meta.available' 2>/dev/null || echo "false")
+          if [ "$available" = "true" ]; then
+            nix --accept-flake-config build .#${{ matrix.package }}
+          else
+            echo "⏭️ Skipping ${{ matrix.package }} - not available on this platform"
+          fi
 
   build-nixos-configuration:
     strategy:
@@ -45,7 +64,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v31
       - uses: cachix/cachix-action@v16
+        if: github.ref == 'refs/heads/main'
         with:
           name: "${{ secrets.CACHIX_CACHE_NAME }}"
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
       - run: nix --accept-flake-config build .#nixosConfigurations.${{matrix.conf.host}}.config.system.build.toplevel
