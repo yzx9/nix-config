@@ -74,7 +74,7 @@ stdenv.mkDerivation (finalAttrs: {
     outputHash =
       {
         x86_64-linux = "sha256-06K0e/4r2LaYv2YcGWzUCPT/5iEs2eLcy1rMDj4QVN0=";
-        aarch64-linux = "sha256-w2t5LEsJBME17o2E/YmtDKp5DXQix/CRqK2eeD44BcU=";
+        aarch64-linux = "sha256-VIa3KMwUtQqrgPZ/+xg1C+gG9z3BjU4mNjmuHE2GE3o=";
         aarch64-darwin = "sha256-u4iYAQYvKrncMUV5oh799iJn2HU4XJjXvQqbcglzvUo=";
       }
       .${system} or (throw "hapi deps hash not available for ${system}");
