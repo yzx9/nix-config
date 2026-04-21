@@ -2,6 +2,8 @@ inputs:
 
 let
   inherit (import ../_shared.nix) user_yzx9 mkNetworkingLab;
+
+  hermes-agent = import ./hermes-agent.nix;
 in
 inputs.self.lib.mkNixosConfiguration {
   config = {
@@ -33,6 +35,8 @@ inputs.self.lib.mkNixosConfiguration {
         ./hardware-configuration.nix
 
         ./xorg.nix
+
+        hermes-agent.host
       ];
 
       networking = lib.mkMerge [
@@ -48,6 +52,6 @@ inputs.self.lib.mkNixosConfiguration {
     };
 
   home.imports = [
-    ./hermes-agent.nix
+    hermes-agent.home
   ];
 }
