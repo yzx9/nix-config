@@ -81,82 +81,117 @@ in
       editorMode = "vim";
       effortLevel = "high"; # "low", "medium", "high"
 
-      permissions = {
-        # Default permission mode
-        defaultMode = "acceptEdits";
+      permissions =
+        let
+          mkBashSubCmds = cmd: lib.map (subcmd: "Bash(${cmd} ${subcmd} *)");
+          mkHmMcps = lib.map (mcp: "mcp__plugin_claude-code-home-manager_${mcp}");
+          mkHmMcpCmds = mcp: lib.map (cmd: "mcp__plugin_claude-code-home-manager_${mcp}__${cmd}");
+        in
+        {
+          # Default permission mode
+          defaultMode = "acceptEdits";
 
-        # Deny > Ask > Allow
-        deny = [
-          "Read(./.env)"
-          "Read(./.env.*)"
-          "Read(./secrets/**)"
-        ];
+          # Deny > Ask > Allow
+          deny = [
+            "Read(./.env)"
+            "Read(./.env.*)"
+            "Read(./secrets/**)"
+          ];
 
-        ask = [
-          "Bash(git reset *)"
-          "Bash(git force *)"
-          "Bash(git push *)"
-          "Bash(gh pr close *)"
-          "Bash(gh pr create *)"
-          "Bash(gh issue close *)"
-          "Bash(gh issue delete *)"
-          "Bash(rm -rf *)"
-          "Bash(cargo add *)"
-        ];
+          ask = [
+            "Bash(rm -rf *)"
+            "Bash(cargo add *)"
+          ]
+          ++ (mkBashSubCmds "git" [
+            "force"
+            "reset"
+            "push"
+          ])
+          ++ (mkBashSubCmds "gh pr" [
+            "close"
+            "create"
+          ])
+          ++ (mkBashSubCmds "gh issue" [
+            "close"
+            "delete"
+          ]);
 
-        allow = [
-          "Read(**/*)" # allow reading all files, but deny specific sensitive files below
-          "Read(~/.cargo/registry/*)"
-          "Read(/nix/store/*)"
+          allow = [
+            "Read(**/*)" # allow reading all files, but deny specific sensitive files below
+            "Read(~/.cargo/registry/*)"
+            "Read(/nix/store/*)"
 
-          "Search"
-          "WebFetch" # allow any fetches
-          "WebSearch" # allow any searches
+            "Search"
+            "WebFetch" # allow any fetches
+            "WebSearch" # allow any searches
 
-          "Bash(curl *)"
+            "Bash(curl *)"
+          ]
+          ++ (mkBashSubCmds "git" [
+            "add"
+            "commit"
+            "diff"
+            "fetch"
+            "pull"
+            "rebase"
+            "status"
+          ])
+          ++ (mkBashSubCmds "cargo" [
+            "build"
+            "check"
+            "clippy"
+            "fmt"
+            "test"
+          ])
+          ++ (mkBashSubCmds "nix" [
+            "build"
+            "eval"
+            "hash"
+            "build"
+          ])
+          ++ [
+            "Bash(nix-instantiate *)"
+            "Bash(nix-prefetch-url:*)"
+          ]
+          ++ (mkHmMcps [
+            "context7"
+            "playwright"
+            "zai-vision"
+            "zai-web-reader"
+            "zai-web-search"
+            "zai-zread"
+          ])
+          ++ (mkHmMcpCmds "github" [
+            "issue_read"
+            "list_commits"
+            "list_releases"
+            "list_tags"
+            "get_file_contents"
+            "get_latest_release"
+            "get_tag"
+            "search_code"
+            "search_repositories"
+          ])
+          ++ (mkHmMcpCmds "zotero-mcp" [
+            "create_note"
+            "get_item_metadata"
+            "get_item_fulltext"
+            "get_item_children"
+            "list_libraries"
+            "semantic_search"
+            "get_notes"
+            "search_items"
+            "switch_library"
+          ]);
 
-          "Bash(git add *)"
-          "Bash(git commit *)"
-          "Bash(git diff *)"
-          "Bash(git status *)"
-
-          "Bash(cargo build *)"
-          "Bash(cargo check *)"
-          "Bash(cargo clippy *)"
-          "Bash(cargo fmt *)"
-          "Bash(cargo test *)"
-
-          "Bash(nix build *)"
-          "Bash(nix eval *)"
-          "Bash(nix hash *)"
-          "Bash(nix-build *)"
-          "Bash(nix-instantiate *)"
-          "Bash(nix-prefetch-url:*)"
-
-          "mcp__plugin_claude-code-home-manager_context7"
-          "mcp__plugin_claude-code-home-manager_github__get_*"
-          "mcp__plugin_claude-code-home-manager_github__list_*"
-          "mcp__plugin_claude-code-home-manager_github__search_*"
-          "mcp__plugin_claude-code-home-manager_github__issue_read"
-          "mcp__plugin_claude-code-home-manager_playwright"
-          "mcp__plugin_claude-code-home-manager_zai-vision"
-          "mcp__plugin_claude-code-home-manager_zai-web-reader"
-          "mcp__plugin_claude-code-home-manager_zai-web-search"
-          "mcp__plugin_claude-code-home-manager_zai-zread"
-          "mcp__plugin_claude-code-home-manager_zotero-mcp__zotero_get_*"
-          "mcp__plugin_claude-code-home-manager_zotero-mcp__zotero_search_*"
-          "mcp__plugin_claude-code-home-manager_zotero-mcp__zotero_list_*"
-          "mcp__plugin_claude-code-home-manager_zotero-mcp__zotero_switch_library"
-        ];
-
-        # Additional working directories Claude can access
-        additionalDirectories = [
-          "~/.matplotlib/" # for python plotting
-          "~/.cache/" # for various language toolchains
-          "~/.gstack/" # gstack runtime state (sessions, projects, etc.)
-          "/nix/store" # nix store for reading installed packages and tools
-        ];
-      };
+          # Additional working directories Claude can access
+          additionalDirectories = [
+            "~/.matplotlib/" # for python plotting
+            "~/.cache/" # for various language toolchains
+            "~/.gstack/" # gstack runtime state (sessions, projects, etc.)
+            "/nix/store" # nix store for reading installed packages and tools
+          ];
+        };
 
       sandbox = {
         enabled = true;
@@ -201,7 +236,7 @@ in
         let
           direnvHook = {
             type = "command";
-            command = "direnv export bash >> \"$CLAUDE_ENV_FILE\"";
+            command = "direnv export echo \${0#-}>> \"$CLAUDE_ENV_FILE\"";
           };
 
           mkNotifyCmd =
@@ -373,7 +408,7 @@ in
   # Create symlinks for gstack skills
   # NOTE: dont forgot to add `auto_upgrade: false` to `~/.gstack/config.yaml` to
   # prevent gstack from upgrading itself and breaking the symlinks
-  home.activation.gstack-skills = lib.mkIf config.purpose.dev.enable (
+  home.activation.gstack-skills = lib.mkIf config.programs.claude-code.enable (
     lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       GSTACK="${pkgs.yzx9.gstack}/share/gstack"
 
