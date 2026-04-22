@@ -10,20 +10,17 @@
 }:
 
 lib.mkMerge [
-  {
+  (lib.mkIf config.purpose.gui {
     programs.kitty = {
-      enable = config.purpose.gui;
-      # settings = {
-      #   shell = "zsh --login -c nu --login --interactive"; # Spawn a nushell in login mode via default shell
-      # };
+      enable = true;
+      themeFile = "Catppuccin-Mocha";
     };
-  }
+    home.shellAliases.s = "kitten ssh";
+  })
 
   # only configure kitty in daily used host
   (lib.mkIf config.purpose.daily {
     programs.kitty = {
-      themeFile = "Catppuccin-Mocha";
-
       font = {
         name = "FiraCode Nerd Font";
         package = pkgs.nerd-fonts.fira-code;
@@ -45,8 +42,6 @@ lib.mkMerge [
         macos_quit_when_last_window_closed = true;
       };
     };
-
-    home.shellAliases.s = "kitten ssh";
 
     xdg.configFile."kitty/tab_bar.py".source = ./kitty_tab_bar.py;
   })

@@ -1,7 +1,9 @@
 import os
 import subprocess
+from functools import lru_cache
 
 
+@lru_cache(32)
 def git_dir_name(path: str) -> str:
     if not path:
         return ""
@@ -33,16 +35,31 @@ def git_dir_name(path: str) -> str:
     return path
 
 
-def draw_title(data: dict) -> str:
-    fmt = data.get("fmt", {})
-    tab = data.get("tab", {})
+def get_cwd(data: dict) -> str:
+    # Fastpath: use the last reported cwd from the window, which is updated by
+    # the shell integration and should be more responsive than querying the
+    # tab's active_wd
+    window = data.get("window", {})
+    cwd = window.get("screen", {}).get("last_reported_cwd")
+    if cwd:
+        return cwd
 
+    # Fallback
+    tab = data.get("tab", {})
+    cwd = tab.active_wd or ""
+    return cwd
+
+
+def draw_title(data: dict) -> str:
+    tab = data.get("tab", {})
     exe = os.path.basename(tab.active_exe or "")
     if exe == "ssh":
         return ""  # show nothing for ssh sessions
 
-    dir_part = git_dir_name(tab.active_wd or "")
+    cwd = get_cwd(data)
+    dir_part = git_dir_name(cwd)
     if dir_part:
+        fmt = data.get("fmt", {})
         return f"{fmt.bold}[{dir_part}]{fmt.nobold} "
-    else:
-        return ""
+
+    return ""
