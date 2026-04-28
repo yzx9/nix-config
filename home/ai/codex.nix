@@ -62,7 +62,7 @@ in
 
         github = {
           url = "https://api.githubcopilot.com/mcp/";
-          env_http_headers.Authorization = "Bearer \$GITHUB_PAT";
+          bearer_token_env_var = "GITHUB_PAT";
         };
 
         playwright.command = lib.getExe pkgs.playwright-mcp;
