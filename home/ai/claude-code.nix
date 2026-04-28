@@ -134,6 +134,7 @@ in
             "fetch"
             "pull"
             "rebase"
+            "stash"
             "status"
           ])
           ++ (mkBashSubCmds "cargo" [
@@ -163,7 +164,9 @@ in
           ])
           ++ (mkHmMcpCmds "github" [
             "issue_read"
+            "pull_request_read"
             "list_commits"
+            "list_issues"
             "list_releases"
             "list_tags"
             "get_file_contents"
