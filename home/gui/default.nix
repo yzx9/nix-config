@@ -5,5 +5,6 @@
     ./fonts.nix
     ./gtk.nix
     ./kitty.nix
+    ./thunderbird.nix
   ];
 }
