@@ -1,7 +1,7 @@
 inputs:
 
 let
-  inherit (import ../_shared.nix) user_yzx9 mkNetworkingLab;
+  inherit (import ../_shared.nix) user_yzx9;
 
   hermes-agent = import ./hermes-agent.nix;
 in
@@ -28,23 +28,16 @@ inputs.self.lib.mkNixosConfiguration {
   };
 
   host =
-    { lib, ... }:
+    { ... }:
     {
       imports = [
         # Include the results of the hardware scan.
         ./hardware-configuration.nix
 
+        ./networking.nix
         ./xorg.nix
 
         hermes-agent.host
-      ];
-
-      networking = lib.mkMerge [
-        (mkNetworkingLab "enp2s0" "10.6.141.235")
-
-        {
-          firewall.allowedTCPPorts = [ 30202 ];
-        }
       ];
 
       # enable binfmt QEMU
