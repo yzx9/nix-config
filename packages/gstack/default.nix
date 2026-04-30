@@ -12,12 +12,12 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "gstack";
-  version = "0-unstable-2026-04-23";
+  version = "0-unstable-2026-04-30";
   src = fetchFromGitHub {
     owner = "garrytan";
     repo = "gstack";
-    rev = "d75402bbd2513c55f62691347ec4c1f57c2c2830";
-    hash = "sha256-Klk0KB9n2flnn7mvjmYCTS1lDfgzhgowMCqxY9vV6Y0=";
+    rev = "454423aeb3d3dafa88d5b57bfbe0ead05569d21e";
+    hash = "sha256-fdGOtouflecAFagqbWIHeUW+HOx7eCXz0/7FN/neTxk=";
   };
 
   # Fixed-output derivation for node_modules (network access allowed in sandbox)
