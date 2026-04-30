@@ -87,7 +87,7 @@
 
     # The self-improving AI agent built by Nous Research
     hermes-agent = {
-      url = "github:konsisumer/hermes-agent/fix/matrix-proxy-support";
+      url = "github:NousResearch/hermes-agent";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
