@@ -2,6 +2,8 @@ import os
 import subprocess
 import time
 
+from kitty.fast_data_types import get_boss
+
 
 def draw_title(data: dict) -> str:
     dir_name = get_dir_name(data)
@@ -12,16 +14,14 @@ def draw_title(data: dict) -> str:
     return ""
 
 
-# -------------------------------------
-# Current working directory
-# -------------------------------------
-
-
 def get_dir_name(data: dict) -> str | None:
-    tab = data.get("tab", {})
-    exe = os.path.basename(tab.active_exe or "")
+    ta = data.get("tab")
+    if not ta:
+        return None
+
+    exe = os.path.basename(ta.active_exe or "")
     if exe in ["ssh", "s"]:
-        return None  # show nothing for ssh sessions
+        return get_ssh_target(ta)
 
     cwd = get_cwd(data)
     if not cwd:
@@ -49,6 +49,46 @@ def get_dir_name(data: dict) -> str | None:
 
     path = os.path.basename(cwd) or cwd  # show full path if it's root
     return _put(cwd, path, now)
+
+
+def get_ssh_target(ta) -> str | None:
+    try:
+        tab = get_boss().tab_for_id(ta.tab_id)
+        if not tab or not tab.active_window:
+            return None
+        cmdline = tab.active_window.child.foreground_cmdline
+    except Exception:
+        return None
+
+    if not cmdline or os.path.basename(cmdline[0]) not in ("ssh", "s"):
+        return None
+
+    args = cmdline[1:]
+    # find "--" separator: everything after it is [user@]hostname [command]
+    try:
+        sep_idx = args.index("--")
+        return args[sep_idx + 1] if sep_idx + 1 < len(args) else None
+    except ValueError:
+        pass
+
+    # fallback: skip flags, last non-flag argument is the hostname
+    target = None
+    i = 0
+    while i < len(args):
+        if args[i].startswith("-"):
+            if args[i] in ("-p", "-i", "-l", "-F", "-J", "-o", "-S", "-W", "-w"):
+                i += 2
+                continue
+            i += 1
+            continue
+        target = args[i]
+        i += 1
+    return target
+
+
+# -------------------------------------
+# Current working directory
+# -------------------------------------
 
 
 def get_cwd(data: dict) -> str:
