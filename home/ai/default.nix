@@ -4,6 +4,7 @@
   imports = [
     ./claude-code.nix
     ./codex.nix
+    ./gstack.nix
     ./hapi.nix
     ./opencode.nix
   ];
