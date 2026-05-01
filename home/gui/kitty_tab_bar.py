@@ -24,7 +24,31 @@ def get_dir_name(data: dict) -> str | None:
         return None  # show nothing for ssh sessions
 
     cwd = get_cwd(data)
-    return git_git_root(cwd)
+    if not cwd:
+        return None
+
+    now = time.monotonic()
+    if cwd in _cache:
+        result, ts = _cache[cwd]
+        if now - ts < _CACHE_TTL:
+            return result
+        del _cache[cwd]
+
+    # if is the home directory, return ~
+    if cwd == os.path.expanduser("~"):
+        return _put(cwd, "~", now)
+
+    # if is a git managed directory, show the git root name instead of the full path
+    git_root = git_git_root(cwd)
+    if git_root is not None:
+        return _put(cwd, git_root, now)
+
+    # if starts with home directory, replace it with ~
+    if cwd.startswith(os.path.expanduser("~")):
+        return _put(cwd, "~" + cwd[len(os.path.expanduser("~")) :], now)
+
+    path = os.path.basename(cwd) or cwd  # show full path if it's root
+    return _put(cwd, path, now)
 
 
 def get_cwd(data: dict) -> str:
@@ -43,21 +67,6 @@ def get_cwd(data: dict) -> str:
 
 
 def git_git_root(path: str) -> str | None:
-    if not path:
-        return None
-
-    now = time.monotonic()
-    if path in _cache:
-        result, ts = _cache[path]
-        if now - ts < _CACHE_TTL:
-            return result
-        del _cache[path]
-
-    # if is the home directory, return ~
-    if path == os.path.expanduser("~"):
-        return _put(path, "~", now)
-
-    # if is a git managed directory, get the root name
     try:
         result = subprocess.run(
             ["git", "-C", path, "rev-parse", "--show-toplevel"],
@@ -66,38 +75,34 @@ def git_git_root(path: str) -> str | None:
             timeout=0.2,
             check=False,
         )
-        if result.returncode == 0:
-            root = result.stdout.strip()
-            if root:
-                # Check if we're in a worktree by comparing common git dir
-                common_result = subprocess.run(
-                    ["git", "-C", path, "rev-parse", "--git-common-dir"],
-                    capture_output=True,
-                    text=True,
-                    timeout=0.2,
-                    check=False,
-                )
-                if common_result.returncode == 0:
-                    common_dir = common_result.stdout.strip()
-                    if not os.path.isabs(common_dir):
-                        common_dir = os.path.normpath(os.path.join(root, common_dir))
-                    main_root = os.path.dirname(common_dir)
-                    if main_root != root:
-                        # In a worktree: show main repo name + worktree dir name
-                        return _put(
-                            path,
-                            f"{os.path.basename(main_root)}/{os.path.basename(root)}",
-                            now,
-                        )
-                return _put(path, os.path.basename(root), now)
+        if result.returncode != 0:
+            return None
+
+        root = result.stdout.strip()
+        if not root:
+            return None
+
+        # Check if we're in a worktree by comparing common git dir
+        common_result = subprocess.run(
+            ["git", "-C", path, "rev-parse", "--git-common-dir"],
+            capture_output=True,
+            text=True,
+            timeout=0.2,
+            check=False,
+        )
+        if common_result.returncode == 0:
+            common_dir = common_result.stdout.strip()
+            if not os.path.isabs(common_dir):
+                common_dir = os.path.normpath(os.path.join(root, common_dir))
+            main_root = os.path.dirname(common_dir)
+            if main_root != root:
+                # In a worktree: show main repo name + worktree dir name
+                return f"{os.path.basename(main_root)}/{os.path.basename(root)}"
+
+        return os.path.basename(root)
+
     except Exception:
-        pass
-
-    # if starts with home directory, replace it with ~
-    if path.startswith(os.path.expanduser("~")):
-        return _put(path, "~" + path[len(os.path.expanduser("~")) :], now)
-
-    return _put(path, path, now)
+        return None
 
 
 # -------------------------------------
