@@ -2,10 +2,12 @@ inputs:
 
 {
   default.imports = [
+    ./gstack.nix
     ./hermes-agent
     ./hapi-runner.nix
   ];
 
-  hermes-agent.imports = [ ./hermes-agent ];
+  gstack.imports = [ ./gstack.nix ];
   hapi-runner.imports = [ ./hapi-runner.nix ];
+  hermes-agent.imports = [ ./hermes-agent ];
 }

@@ -191,7 +191,6 @@ in
           additionalDirectories = [
             "~/.matplotlib/" # for python plotting
             "~/.cache/" # for various language toolchains
-            "~/.gstack/" # gstack runtime state (sessions, projects, etc.)
             "/nix/store" # nix store for reading installed packages and tools
           ];
         };
@@ -208,9 +207,6 @@ in
         filesystem = {
           allowRead = [
             "/nix/store/"
-          ];
-          allowWrite = [
-            "~/.gstack/"
           ];
         };
 
@@ -408,4 +404,5 @@ in
       };
   };
 
+  programs.gstack.claude-code.enable = true;
 }

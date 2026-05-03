@@ -3,6 +3,7 @@
 {
   imports = [
     inputs.agenix.homeManagerModules.default
+    inputs.self.homeManagerModules.gstack
 
     {
       home.packages = [

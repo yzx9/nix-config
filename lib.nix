@@ -29,6 +29,7 @@ let
       users.${cfg.config.vars.user.name} = import ./home;
       sharedModules = (mkHmModules cfg) ++ [
         agenix.homeManagerModules.default
+        inputs.self.homeManagerModules.gstack
       ];
     };
   };
