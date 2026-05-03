@@ -254,6 +254,7 @@
           (mkMove "D" "net.kovidgoyal.kitty")
           (mkMove "E" "com.eusoft.eudic")
           (mkMove "E" "com.microsoft.Outlook")
+          (mkMove "E" "org.nixos.thunderbird")
           (mkMove "G" "com.bambulab.bambu-studio")
           (mkMove "G" "org.freecad.FreeCAD")
           (mkMove "G" "org.inkscape.Inkscape")
