@@ -1,7 +1,9 @@
-{ lib, ... }:
+{ inputs, lib, ... }:
 
 {
   imports = [
+    inputs.self.homeManagerModules.default
+
     ../modules/_shared/options.nix
 
     ./ai

@@ -6,7 +6,6 @@
 
   home =
     {
-      inputs,
       config,
       pkgs,
       lib,
@@ -14,10 +13,6 @@
     }:
 
     {
-      imports = [
-        inputs.self.homeManagerModules.default
-      ];
-
       age.secrets.hermes-env.file = ../../secrets/hermes-env.age;
 
       home.packages = with pkgs; [ olm ]; # e2ee

@@ -403,6 +403,4 @@ in
         code-reviewer = read "04-quality-security/code-reviewer.md";
       };
   };
-
-  programs.gstack.claude-code.enable = true;
 }
