@@ -364,7 +364,7 @@ in
         headers.Authorization = "Bearer \${GLM_CODING_API_KEY}";
       };
 
-      zotero-mcp = {
+      zotero-mcp = lib.mkIf (!pkgs.stdenv.hostPlatform.isAarch64) {
         type = "stdio";
         command = lib.getExe pkgs.yzx9.zotero-mcp;
         args = [ "serve" ];
