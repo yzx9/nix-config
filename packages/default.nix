@@ -1,44 +1,29 @@
 {
   self,
   nixpkgs,
-  nixvim,
   agenix,
   aim,
   ...
-}:
+}@inputs:
 
 system:
 
 let
+  callYzx9Packages = import ./callPackages.nix inputs;
+
   pkgs = nixpkgs.legacyPackages.${system}.extend self.overlays.default;
-
-  catppuccin-bat = pkgs.callPackage ./catppuccin-bat { };
-
-  gstack = pkgs.callPackage ./gstack { };
-
-  hapi = pkgs.callPackage ./hapi { };
-
-  zai-mcp-server = pkgs.callPackage ./zai-mcp-server { };
-
-  zotero-mcp = pkgs.callPackage ./zotero-mcp { };
-
-  nixvim' = import ./nixvim {
-    inherit pkgs;
-    nixvim = nixvim.legacyPackages.${system};
-  };
 in
 {
-  inherit catppuccin-bat gstack hapi zai-mcp-server zotero-mcp;
-  catppuccin-yazi-flavor = pkgs.callPackage ./catppuccin-yazi-flavor { inherit catppuccin-bat; };
-
-  nixvim = nixvim';
-  nixvim-lsp = nixvim'.extend { lsp.enable = true; };
-
-  pmp-library = pkgs.callPackage ./pmp-library { };
-
-  vaa3d-x = pkgs.callPackage ./vaa3d-x { };
-
-  with-secrets = pkgs.callPackage ./with-secrets { };
+  inherit (callYzx9Packages pkgs)
+    catppuccin-bat
+    catppuccin-yazi-flavor
+    gstack
+    hapi
+    nixvim
+    nixvim-lsp
+    zai-mcp-server
+    zotero-mcp
+    ;
 
   # External packages
   agenix = agenix.packages.${system}.default;
