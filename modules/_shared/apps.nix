@@ -8,7 +8,12 @@
 
 {
   # Allow unfree packages
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [ "claude-code" ];
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
+    builtins.elem (lib.getName pkg) [
+      "claude-code"
+      "nvim-highlight-colors" # TODO: remove
+    ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
