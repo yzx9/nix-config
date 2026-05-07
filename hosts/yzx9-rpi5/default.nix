@@ -28,6 +28,7 @@ inputs.self.lib.mkNixosRpiConfiguration {
       ./hardware-configuration.nix
       ./mysql.nix
       ./n8n.nix
+      ./paseo.nix
       ./radicale.nix
       ./trilium.nix
     ];

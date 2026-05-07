@@ -14,13 +14,15 @@ let
   pkgs = nixpkgs.legacyPackages.${system}.extend self.overlays.default;
 in
 {
-  inherit (callYzx9Packages pkgs)
+  inherit (callYzx9Packages pkgs system)
     catppuccin-bat
     catppuccin-yazi-flavor
     gstack
     hapi
     nixvim
     nixvim-lsp
+    paseo
+    paseo-relay
     zai-mcp-server
     zotero-mcp
     ;

@@ -6,6 +6,7 @@
     ./codex.nix
     ./hapi.nix
     ./opencode.nix
+    ./paseo.nix
   ];
 
   # Secrets

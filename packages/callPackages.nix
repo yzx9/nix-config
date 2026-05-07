@@ -1,4 +1,4 @@
-{ nixvim, ... }:
+{ nixvim, paseo, ... }:
 
 pkgs: system:
 
@@ -30,4 +30,9 @@ in
   zai-mcp-server = pkgs.callPackage ./zai-mcp-server { };
 
   zotero-mcp = pkgs.callPackage ./zotero-mcp { };
+
+  # 3rd-party flakes
+  paseo = paseo.packages.${system}.default;
+
+  paseo-relay = pkgs.callPackage ./paseo-relay { };
 }
