@@ -63,26 +63,37 @@ def get_ssh_target(ta) -> str | None:
     if not cmdline or os.path.basename(cmdline[0]) not in ("ssh", "s"):
         return None
 
+    target = None
     args = cmdline[1:]
     # find "--" separator: everything after it is [user@]hostname [command]
     try:
         sep_idx = args.index("--")
-        return args[sep_idx + 1] if sep_idx + 1 < len(args) else None
+        target = args[sep_idx + 1] if sep_idx + 1 < len(args) else None
     except ValueError:
         pass
 
     # fallback: skip flags, last non-flag argument is the hostname
-    target = None
-    i = 0
-    while i < len(args):
-        if args[i].startswith("-"):
-            if args[i] in ("-p", "-i", "-l", "-F", "-J", "-o", "-S", "-W", "-w"):
-                i += 2
+    if target is None:
+        i = 0
+        while i < len(args):
+            if args[i].startswith("-"):
+                if args[i] in ("-p", "-i", "-l", "-F", "-J", "-o", "-S", "-W", "-w"):
+                    i += 2
+                    continue
+                i += 1
                 continue
+            target = args[i]
             i += 1
-            continue
-        target = args[i]
-        i += 1
+
+    if target is None:
+        return None
+
+    # strip common ssh config prefixes that some users use to group hosts, e.g. "yzx9-" or "cvcd-"
+    for prefix in ["yzx9-", "cvcd-"]:
+        if target.startswith(prefix):
+            target = target[len(prefix) :]
+            break
+
     return target
 
 
