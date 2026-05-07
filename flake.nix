@@ -125,20 +125,7 @@
       homeManagerModules = import ./homeManagerModules inputs;
 
       # nix develop
-      devShells = eachSystem (
-        system:
-
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-        {
-          default = pkgs.mkShell {
-            packages = [
-              pkgs.just
-            ];
-          };
-        }
-      );
+      devShells = eachSystem (import ./devShells.nix inputs);
 
       # nix fmt: nix code formatter
       formatter = eachSystem (system: nixpkgs.legacyPackages.${system}.nixfmt);
