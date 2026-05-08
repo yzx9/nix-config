@@ -42,10 +42,14 @@ let
     + lib.concatStringsSep "\n" (
       lib.mapAttrsToList (
         name: value:
+        let
+          dir = dirOf name;
+          mkdir = lib.optionalString (dir != ".") "mkdir -p $out/${dir}";
+        in
         if builtins.isPath value || lib.isStorePath value then
-          "cp ${value} $out/${name}"
+          "${mkdir}\ncp ${value} $out/${name}"
         else
-          "cat > $out/${name} <<'HERMES_DOC_EOF'\n${value}\nHERMES_DOC_EOF"
+          "${mkdir}\ncat > $out/${name} <<'HERMES_DOC_EOF'\n${value}\nHERMES_DOC_EOF"
       ) cfg.documents
     )
   );
@@ -454,10 +458,16 @@ in
             HERMES_NIX_ENV_EOF
           ''}
 
-          # Link documents into workspace
+          # Link documents into correct locations
           ${lib.concatStringsSep "\n" (
-            lib.mapAttrsToList (name: _value: ''
-              install -m 0640 ${documentDerivation}/${name} ${cfg.workingDirectory}/${name}
+            lib.mapAttrsToList (name: _value: let
+              target = if name == "SOUL.md" then "${cfg.stateDir}/.hermes/SOUL.md"
+                else if lib.elem name ["USER.md" "MEMORY.md"] then "${cfg.stateDir}/.hermes/memories/${name}"
+                else "${cfg.workingDirectory}/${name}";
+              targetDir = dirOf target;
+            in ''
+              mkdir -p ${targetDir}
+              install -m 0640 ${documentDerivation}/${name} ${target}
             '') cfg.documents
           )}
         '';
