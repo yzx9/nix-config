@@ -4,42 +4,36 @@ let
   cfg = config.nvidia;
 in
 lib.mkIf cfg.enable {
-  nixpkgs.config = {
-    # Allow unfree packages
-    allowUnfree = true; # TODO: Remove
-    allowUnfreePredicate =
-      pkg:
-      builtins.elem (lib.getName pkg) [
-        "nvidia-x11"
-        "nvidia-settings"
-        "nvidia-persistenced"
+  allowedUnfree = [
+    "nvidia-x11"
+    "nvidia-settings"
+    "nvidia-persistenced"
 
-        "cuda-merged"
-        "cuda_cccl"
-        "cuda_cudart"
-        "cuda_cuobjdump"
-        "cuda_cupti"
-        "cuda_cuxxfilt"
-        "cuda_gdb"
-        "cuda_nvcc"
-        "cuda_nvdisasm"
-        "cuda_nvrtc"
-        "cuda_nvtx"
-        "cuda_nvprune"
-        "cuda_nvml_dev"
-        "cuda_profiler_api"
-        "cuda_sanitizer_api"
-        "libcublas"
-        "libcufft"
-        "libcurand"
-        "libcusolver"
-        "libcusparse"
-        "libnvjitlink"
-        "libnpp"
-      ];
+    "cuda-merged"
+    "cuda_cccl"
+    "cuda_cudart"
+    "cuda_cuobjdump"
+    "cuda_cupti"
+    "cuda_cuxxfilt"
+    "cuda_gdb"
+    "cuda_nvcc"
+    "cuda_nvdisasm"
+    "cuda_nvrtc"
+    "cuda_nvtx"
+    "cuda_nvprune"
+    "cuda_nvml_dev"
+    "cuda_profiler_api"
+    "cuda_sanitizer_api"
+    "libcublas"
+    "libcufft"
+    "libcurand"
+    "libcusolver"
+    "libcusparse"
+    "libnvjitlink"
+    "libnpp"
+  ];
 
-    cudaSupport = true;
-  };
+  nixpkgs.config.cudaSupport = true;
 
   # Using the nixos-cuda cache
   nix.settings = {
