@@ -21,8 +21,8 @@ in
     };
 
     port = lib.mkOption {
-      type = lib.types.str;
-      default = ":8411";
+      type = lib.types.int;
+      default = "8411";
       description = "Listen port";
     };
 
