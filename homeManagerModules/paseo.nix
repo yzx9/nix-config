@@ -5,6 +5,21 @@
   ...
 }:
 
+# Paseo — self-hosted daemon for AI coding agents (Claude Code, Codex, OpenCode).
+#
+# Architecture:
+#   ┌──────────┐     ┌────────────┐     ┌──────────┐
+#   │ Mobile App│────→│ relay server│←────│ daemon   │
+#   │ or CLI    │ ws  │ (rpi5)     │ ws  │ (local)  │
+#   └──────────┘     └────────────┘     └──────────┘
+#
+# - daemon: runs on each machine, manages AI agents
+# - relay:  WebSocket broker, bridges mobile/remote clients to daemons (E2E encrypted)
+#
+# CLI connects directly:   `paseo ls --host 10.6.141.234:6767`
+# CLI connects via relay:  `paseo ls --host 'https://app.paseo.sh/#offer=eyJ...'`
+# Pair a mobile device:    `paseo daemon pair`
+
 let
   cfg = config.programs.paseo;
 in
@@ -46,6 +61,18 @@ in
       description = "Directory for Paseo state (PASEO_HOME).";
     };
 
+    # Relay — a WebSocket broker that lets mobile apps / remote clients reach the daemon.
+    # Without relay, daemon only accepts direct TCP connections (`--host addr:port`).
+    # With relay, clients can also connect via pairing offer URL.
+    #
+    #   endpoint        — address the daemon uses to connect TO the relay (internal)
+    #   publicEndpoint  — address embedded in pairing QR/URL for clients to connect (external)
+    #                     defaults to `endpoint` if not set
+    #   useTls          — shared TLS flag for both daemon→relay and client→relay
+    #
+    # Example (daemon on same host as relay, clients on LAN):
+    #   endpoint       = "127.0.0.1:8411"
+    #   publicEndpoint = "10.6.141.234:8411"
     relay = {
       enable = lib.mkOption {
         type = lib.types.bool;
@@ -82,6 +109,10 @@ in
 
   config = lib.mkIf cfg.enable (
     lib.mkMerge [
+      {
+        home.packages = [ cfg.package ];
+      }
+
       # ── Linux: systemd user service ────────────────────────────────────
       (lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
         systemd.user.services.paseo = {
