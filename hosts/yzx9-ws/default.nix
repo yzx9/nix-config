@@ -2,8 +2,6 @@ inputs:
 
 let
   inherit (import ../_shared.nix) user_yzx9;
-
-  hermes-agent = import ./hermes-agent.nix;
 in
 inputs.self.lib.mkNixosConfiguration {
   config = {
@@ -27,24 +25,24 @@ inputs.self.lib.mkNixosConfiguration {
     };
   };
 
-  host =
-    { ... }:
-    {
-      imports = [
-        # Include the results of the hardware scan.
-        ./hardware-configuration.nix
+  host = {
+    imports = [
+      # Include the results of the hardware scan.
+      ./hardware-configuration.nix
 
-        ./networking.nix
-        ./xorg.nix
+      ./networking.nix
+      ./xorg.nix
+    ];
 
-        hermes-agent.host
-      ];
+    nixpkgs.config.permittedInsecurePackages = [
+      "olm-3.2.16"
+    ];
 
-      # enable binfmt QEMU
-      boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
-    };
+    # enable binfmt QEMU
+    boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+  };
 
   home.imports = [
-    hermes-agent.home
+    ./hermes-agent.nix
   ];
 }
