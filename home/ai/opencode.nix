@@ -96,7 +96,8 @@ in
 
       mcp = {
         github = {
-          type = "http";
+          enabled = true;
+          type = "remote";
           url = "https://api.githubcopilot.com/mcp/";
           headers.Authorization = "Bearer {env:GITHUB_PAT}";
         };
