@@ -29,16 +29,16 @@ in
 
     package = lib.mkPackageOption pkgs [ "yzx9" "paseo" ] { };
 
+    addr = lib.mkOption {
+      type = lib.types.str;
+      default = "127.0.0.1";
+      description = "Address for the Paseo daemon to bind to.";
+    };
+
     port = lib.mkOption {
       type = lib.types.port;
       default = 6767;
       description = "Port for the Paseo daemon to listen on.";
-    };
-
-    listenAddress = lib.mkOption {
-      type = lib.types.str;
-      default = "127.0.0.1";
-      description = "Address for the Paseo daemon to bind to.";
     };
 
     hostnames = lib.mkOption {
@@ -72,7 +72,7 @@ in
     #
     # Example (daemon on same host as relay, clients on LAN):
     #   endpoint       = "127.0.0.1:8411"
-    #   publicEndpoint = "10.6.141.234:8411"
+    #   publicEndpoint = "my-paseo.sh:8411"
     relay = {
       enable = lib.mkOption {
         type = lib.types.bool;
@@ -82,8 +82,7 @@ in
 
       endpoint = lib.mkOption {
         type = lib.types.nullOr lib.types.str;
-        default = null;
-        example = "10.6.141.234:8411";
+        default = "relay.paseo.sh:443";
         description = "Relay address the daemon connects to.";
       };
 
@@ -95,7 +94,7 @@ in
 
       useTls = lib.mkOption {
         type = lib.types.bool;
-        default = false;
+        default = true;
         description = "Use wss:// for the relay connection.";
       };
     };
@@ -110,7 +109,30 @@ in
   config = lib.mkIf cfg.enable (
     lib.mkMerge [
       {
-        home.packages = [ cfg.package ];
+        home.packages = [
+          (pkgs.runCommand "paseo-wrapped"
+            {
+              nativeBuildInputs = [ pkgs.makeWrapper ];
+            }
+            ''
+              mkdir -p $out/bin
+              makeWrapper ${lib.getExe cfg.package} $out/bin/paseo \
+                --set PASEO_HOME "${cfg.dataDir}" \
+                --set PASEO_LISTEN "${cfg.addr}:${toString cfg.port}" \
+                ${
+                  lib.optionalString (
+                    cfg.relay.enable && cfg.relay.endpoint != null
+                  ) ''--set PASEO_RELAY_ENDPOINT "${cfg.relay.endpoint}"''
+                } \
+                ${
+                  lib.optionalString (
+                    cfg.relay.enable && cfg.relay.publicEndpoint != null
+                  ) ''--set PASEO_RELAY_PUBLIC_ENDPOINT "${cfg.relay.publicEndpoint}"''
+                } \
+                ${lib.optionalString (cfg.relay.enable && cfg.relay.useTls) ''--set PASEO_RELAY_USE_TLS "true"''}
+            ''
+          )
+        ];
       }
 
       # ── Linux: systemd user service ────────────────────────────────────
@@ -126,7 +148,7 @@ in
             Environment = [
               "NODE_ENV=production"
               "PASEO_HOME=${cfg.dataDir}"
-              "PASEO_LISTEN=${cfg.listenAddress}:${toString cfg.port}"
+              "PASEO_LISTEN=${cfg.addr}:${toString cfg.port}"
             ]
             ++ lib.optional (cfg.hostnames == true) "PASEO_HOSTNAMES=true"
             ++ lib.optional (
@@ -145,7 +167,7 @@ in
             ExecStart =
               "${cfg.package}/bin/paseo daemon start"
               + " --foreground"
-              + " --listen ${cfg.listenAddress}:${toString cfg.port}"
+              + " --listen ${cfg.addr}:${toString cfg.port}"
               + " --home ${cfg.dataDir}"
               + lib.optionalString (!cfg.relay.enable) " --no-relay";
 
@@ -168,21 +190,19 @@ in
               "start"
               "--foreground"
               "--listen"
-              "${cfg.listenAddress}:${toString cfg.port}"
+              "${cfg.addr}:${toString cfg.port}"
               "--home"
               cfg.dataDir
             ]
             ++ lib.optional (!cfg.relay.enable) "--no-relay";
             RunAtLoad = true;
-            KeepAlive = {
-              SuccessfulExit = false;
-            };
+            KeepAlive.SuccessfulExit = false;
             ThrottleInterval = 5;
             WorkingDirectory = cfg.dataDir;
             EnvironmentVariables = {
               NODE_ENV = "production";
               PASEO_HOME = cfg.dataDir;
-              PASEO_LISTEN = "${cfg.listenAddress}:${toString cfg.port}";
+              PASEO_LISTEN = "${cfg.addr}:${toString cfg.port}";
             }
             // lib.optionalAttrs (cfg.hostnames == true) {
               PASEO_HOSTNAMES = "true";

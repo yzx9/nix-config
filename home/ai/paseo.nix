@@ -26,7 +26,7 @@
 
       text = ''
         with-secrets "${config.age.secrets."paseo".path}" \
-          --allow PASEO_PUBLIC_ENDPOINT \
+          --allow PASEO_RELAY_PUBLIC_ENDPOINT \
           -- paseo "$@"
       '';
     };
@@ -34,6 +34,7 @@
     relay = {
       enable = true;
       endpoint = "10.6.141.234:51185";
+      useTls = false;
     };
   };
 }
