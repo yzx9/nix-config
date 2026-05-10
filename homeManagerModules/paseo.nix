@@ -8,15 +8,15 @@
 # Paseo — self-hosted daemon for AI coding agents (Claude Code, Codex, OpenCode).
 #
 # Architecture:
-#   ┌──────────┐     ┌────────────┐     ┌──────────┐
-#   │ Mobile App│────→│ relay server│←────│ daemon   │
-#   │ or CLI    │ ws  │ (rpi5)     │ ws  │ (local)  │
-#   └──────────┘     └────────────┘     └──────────┘
+#   ┌───────────┐     ┌──────────────┐     ┌─────────┐
+#   │ Mobile App│────→│ relay server │←────│ daemon  │
+#   │ or CLI    │ ws  │              │ ws  │ (local) │
+#   └───────────┘     └──────────────┘     └─────────┘
 #
 # - daemon: runs on each machine, manages AI agents
 # - relay:  WebSocket broker, bridges mobile/remote clients to daemons (E2E encrypted)
 #
-# CLI connects directly:   `paseo ls --host 10.6.141.234:6767`
+# CLI connects directly:   `paseo ls --host localhost:6767`
 # CLI connects via relay:  `paseo ls --host 'https://app.paseo.sh/#offer=eyJ...'`
 # Pair a mobile device:    `paseo daemon pair`
 
@@ -61,18 +61,6 @@ in
       description = "Directory for Paseo state (PASEO_HOME).";
     };
 
-    # Relay — a WebSocket broker that lets mobile apps / remote clients reach the daemon.
-    # Without relay, daemon only accepts direct TCP connections (`--host addr:port`).
-    # With relay, clients can also connect via pairing offer URL.
-    #
-    #   endpoint        — address the daemon uses to connect TO the relay (internal)
-    #   publicEndpoint  — address embedded in pairing QR/URL for clients to connect (external)
-    #                     defaults to `endpoint` if not set
-    #   useTls          — shared TLS flag for both daemon→relay and client→relay
-    #
-    # Example (daemon on same host as relay, clients on LAN):
-    #   endpoint       = "127.0.0.1:8411"
-    #   publicEndpoint = "my-paseo.sh:8411"
     relay = {
       enable = lib.mkOption {
         type = lib.types.bool;
@@ -82,7 +70,8 @@ in
 
       endpoint = lib.mkOption {
         type = lib.types.nullOr lib.types.str;
-        default = "relay.paseo.sh:443";
+        default = null;
+        example = "localhost:8411";
         description = "Relay address the daemon connects to.";
       };
 
@@ -94,7 +83,7 @@ in
 
       useTls = lib.mkOption {
         type = lib.types.bool;
-        default = true;
+        default = false;
         description = "Use wss:// for the relay connection.";
       };
     };
@@ -104,35 +93,27 @@ in
       default = { };
       description = "Extra environment variables for the Paseo daemon.";
     };
+
+    # Declarative config.json generation.
+    #
+    # This option lets you specify the full Paseo config.json structure declaratively.
+    # The config is written to `dataDir/config.json` before the daemon starts.
+    settings = lib.mkOption {
+      type = lib.types.attrs;
+      default = { };
+      description = ''
+        Full Paseo config.json structure. Written to `dataDir/config.json`.
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable (
+    let
+      configFile = pkgs.writeText "paseo-config.json" (builtins.toJSON cfg.settings);
+    in
     lib.mkMerge [
       {
-        home.packages = [
-          (pkgs.runCommand "paseo-wrapped"
-            {
-              nativeBuildInputs = [ pkgs.makeWrapper ];
-            }
-            ''
-              mkdir -p $out/bin
-              makeWrapper ${lib.getExe cfg.package} $out/bin/paseo \
-                --set PASEO_HOME "${cfg.dataDir}" \
-                --set PASEO_LISTEN "${cfg.addr}:${toString cfg.port}" \
-                ${
-                  lib.optionalString (
-                    cfg.relay.enable && cfg.relay.endpoint != null
-                  ) ''--set PASEO_RELAY_ENDPOINT "${cfg.relay.endpoint}"''
-                } \
-                ${
-                  lib.optionalString (
-                    cfg.relay.enable && cfg.relay.publicEndpoint != null
-                  ) ''--set PASEO_RELAY_PUBLIC_ENDPOINT "${cfg.relay.publicEndpoint}"''
-                } \
-                ${lib.optionalString (cfg.relay.enable && cfg.relay.useTls) ''--set PASEO_RELAY_USE_TLS "true"''}
-            ''
-          )
-        ];
+        home.packages = [ cfg.package ];
       }
 
       # ── Linux: systemd user service ────────────────────────────────────
@@ -163,7 +144,13 @@ in
             ++ lib.optional (cfg.relay.enable && cfg.relay.useTls) "PASEO_RELAY_USE_TLS=true"
             ++ lib.mapAttrsToList (k: v: "${k}=${v}") cfg.environment;
 
-            ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p ${cfg.dataDir}";
+            ExecStartPre = [
+              "${pkgs.coreutils}/bin/mkdir -p ${cfg.dataDir}"
+            ]
+            ++ lib.optionals (cfg.settings != { }) [
+              "${pkgs.coreutils}/bin/cp ${configFile} ${cfg.dataDir}/config.json"
+            ];
+
             ExecStart =
               "${cfg.package}/bin/paseo daemon start"
               + " --foreground"
@@ -184,17 +171,38 @@ in
         launchd.agents.paseo = {
           enable = true;
           config = {
-            ProgramArguments = [
-              "${cfg.package}/bin/paseo"
-              "daemon"
-              "start"
-              "--foreground"
-              "--listen"
-              "${cfg.addr}:${toString cfg.port}"
-              "--home"
-              cfg.dataDir
-            ]
-            ++ lib.optional (!cfg.relay.enable) "--no-relay";
+            ProgramArguments =
+              let
+                daemonArgs =
+                  lib.escapeShellArgs [
+                    "daemon"
+                    "start"
+                    "--foreground"
+                    "--listen"
+                    "${cfg.addr}:${toString cfg.port}"
+                    "--home"
+                    cfg.dataDir
+                  ]
+                  + lib.optionalString (!cfg.relay.enable) " --no-relay";
+              in
+              if cfg.settings != { } then
+                [
+                  "/bin/sh"
+                  "-c"
+                  "mkdir -p '${cfg.dataDir}' && cp '${configFile}' '${cfg.dataDir}/config.json' && exec ${cfg.package}/bin/paseo ${daemonArgs}"
+                ]
+              else
+                [
+                  "${cfg.package}/bin/paseo"
+                  "daemon"
+                  "start"
+                  "--foreground"
+                  "--listen"
+                  "${cfg.addr}:${toString cfg.port}"
+                  "--home"
+                  cfg.dataDir
+                ]
+                ++ lib.optional (!cfg.relay.enable) "--no-relay";
             RunAtLoad = true;
             KeepAlive.SuccessfulExit = false;
             ThrottleInterval = 5;
