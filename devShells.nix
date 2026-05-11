@@ -9,6 +9,7 @@ in
   default = pkgs.mkShell {
     packages = with pkgs; [
       just
+      jq
 
       # formatter
       prettier
