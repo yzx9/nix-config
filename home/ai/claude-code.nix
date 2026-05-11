@@ -364,16 +364,16 @@ in
         headers.Authorization = "Bearer \${GLM_CODING_API_KEY}";
       };
 
-      zotero-mcp = lib.mkIf (!pkgs.stdenv.hostPlatform.isAarch64) {
-        type = "stdio";
-        command = lib.getExe pkgs.yzx9.zotero-mcp;
-        args = [ "serve" ];
-        env = {
-          ZOTERO_LOCAL = "true";
-          ZOTERO_API_KEY = "\${ZOTERO_API_KEY}";
-          ZOTERO_LIBRARY_ID = "\${ZOTERO_LIBRARY_ID}";
-        };
-      };
+      # zotero-mcp = lib.mkIf (!pkgs.stdenv.hostPlatform.isAarch64) {
+      #   type = "stdio";
+      #   command = lib.getExe pkgs.yzx9.zotero-mcp;
+      #   args = [ "serve" ];
+      #   env = {
+      #     ZOTERO_LOCAL = "true";
+      #     ZOTERO_API_KEY = "\${ZOTERO_API_KEY}";
+      #     ZOTERO_LIBRARY_ID = "\${ZOTERO_LIBRARY_ID}";
+      #   };
+      # };
 
       zai-zread = {
         type = "http";
