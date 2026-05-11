@@ -111,7 +111,11 @@ in
         playwright = {
           enabled = true;
           type = "local";
-          command = [ (lib.getExe pkgs.playwright-mcp) ];
+          command = lib.getExe pkgs.playwright-mcp;
+          args = [
+            "--headless"
+            "--isolated"
+          ];
         };
 
         zai-vision = {

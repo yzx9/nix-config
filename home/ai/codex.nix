@@ -65,7 +65,13 @@ in
           bearer_token_env_var = "GITHUB_PAT";
         };
 
-        playwright.command = lib.getExe pkgs.playwright-mcp;
+        playwright = {
+          command = lib.getExe pkgs.playwright-mcp;
+          args = [
+            "--headless"
+            "--isolated"
+          ];
+        };
       };
     };
   };

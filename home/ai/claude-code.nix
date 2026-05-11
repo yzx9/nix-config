@@ -341,6 +341,7 @@ in
       playwright = {
         type = "stdio";
         command = lib.getExe pkgs.playwright-mcp;
+        args = [ "--headless" "--isolated" ];
       };
 
       zai-vision = {
