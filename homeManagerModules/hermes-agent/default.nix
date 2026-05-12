@@ -42,10 +42,14 @@ let
     + lib.concatStringsSep "\n" (
       lib.mapAttrsToList (
         name: value:
+        let
+          dir = dirOf name;
+          mkdir = lib.optionalString (dir != ".") "mkdir -p $out/${dir}";
+        in
         if builtins.isPath value || lib.isStorePath value then
-          "cp ${value} $out/${name}"
+          "${mkdir}\ncp ${value} $out/${name}"
         else
-          "cat > $out/${name} <<'HERMES_DOC_EOF'\n${value}\nHERMES_DOC_EOF"
+          "${mkdir}\ncat > $out/${name} <<'HERMES_DOC_EOF'\n${value}\nHERMES_DOC_EOF"
       ) cfg.documents
     )
   );
@@ -144,13 +148,19 @@ in
       type = lib.types.attrsOf (lib.types.either lib.types.str lib.types.path);
       default = { };
       description = ''
-        Workspace files (SOUL.md, USER.md, etc.). Keys are filenames,
-        values are inline strings or paths. Installed into workingDirectory.
+        Files installed into workingDirectory. Keys are relative paths
+        (may contain subdirectories), values are inline strings or store paths.
+        Use nested keys to target hermes internals:
+          .hermes/SOUL.md              → agent personality
+          .hermes/memories/USER.md     → user profile memory
+          .hermes/memories/MEMORY.md   → agent memory
+        Plain filenames (e.g. "AGENTS.md") land in workingDirectory root.
       '';
       example = lib.literalExpression ''
         {
-          "SOUL.md" = "You are a helpful AI assistant.";
-          "USER.md" = ./documents/USER.md;
+          ".hermes/SOUL.md" = "You are a helpful AI assistant.";
+          ".hermes/memories/USER.md" = ./documents/USER.md;
+          "AGENTS.md" = ./AGENTS.md;
         }
       '';
     };
@@ -454,9 +464,12 @@ in
             HERMES_NIX_ENV_EOF
           ''}
 
-          # Link documents into workspace
+          # Link documents into workspace (supports nested keys like .hermes/SOUL.md)
           ${lib.concatStringsSep "\n" (
-            lib.mapAttrsToList (name: _value: ''
+            lib.mapAttrsToList (name: _value: let
+              targetDir = dirOf "${cfg.workingDirectory}/${name}";
+            in ''
+              mkdir -p ${targetDir}
               install -m 0640 ${documentDerivation}/${name} ${cfg.workingDirectory}/${name}
             '') cfg.documents
           )}
