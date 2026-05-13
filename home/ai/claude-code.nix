@@ -160,7 +160,7 @@ in
             "zai-vision"
             "zai-web-reader"
             "zai-web-search"
-            "zai-zread"
+            # "zai-zread"
           ])
           ++ (mkHmMcpCmds "github" [
             "issue_read"
@@ -276,8 +276,7 @@ in
       - You are living in a nix-managed environment with declarative configuration.
         Don't install packages imperatively.
         Instead, try to use `nix-env` or `npx` to add packages and tools to the environment
-      - Use `github` MCP for any GitHub-related interactions, such as searching and exploring repositorie.
-        Prefer `github` MCP over `zai-zread` for GitHub interactions
+      - Use `github` MCP for GitHub-related interactions, such as searching and exploring repositorie.
       - Use `context7` MCP tools whenever you need to search documentation
       - Use `playwright` MCP for any web automation tasks, such as testing web apps
     '';
@@ -341,7 +340,10 @@ in
       playwright = {
         type = "stdio";
         command = lib.getExe pkgs.playwright-mcp;
-        args = [ "--headless" "--isolated" ];
+        args = [
+          "--headless"
+          "--isolated"
+        ];
       };
 
       zai-vision = {
@@ -376,11 +378,11 @@ in
       #   };
       # };
 
-      zai-zread = {
-        type = "http";
-        url = "https://open.bigmodel.cn/api/mcp/zread/mcp";
-        headers.Authorization = "Bearer \${GLM_CODING_API_KEY}";
-      };
+      # zai-zread = {
+      #   type = "http";
+      #   url = "https://open.bigmodel.cn/api/mcp/zread/mcp";
+      #   headers.Authorization = "Bearer \${GLM_CODING_API_KEY}";
+      # };
     };
 
     # see also: https://github.com/VoltAgent/awesome-claude-code-subagents

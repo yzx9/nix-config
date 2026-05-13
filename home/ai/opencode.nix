@@ -142,12 +142,12 @@ in
           headers.Authorization = "Bearer {env:GLM_CODING_API_KEY}";
         };
 
-        zai-zread = {
-          enabled = false;
-          type = "remote";
-          url = "https://open.bigmodel.cn/api/mcp/zread/mcp";
-          headers.Authorization = "Bearer {env:GLM_CODING_API_KEY}";
-        };
+        # zai-zread = {
+        #   enabled = false;
+        #   type = "remote";
+        #   url = "https://open.bigmodel.cn/api/mcp/zread/mcp";
+        #   headers.Authorization = "Bearer {env:GLM_CODING_API_KEY}";
+        # };
       };
     };
 

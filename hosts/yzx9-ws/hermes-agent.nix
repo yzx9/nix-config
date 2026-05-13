@@ -115,11 +115,11 @@
       #   };
       # };
 
-      zai-zread = {
-        url = "https://open.bigmodel.cn/api/mcp/zread/mcp";
-        headers.Authorization = "Bearer \${GLM_API_KEY}";
-        timeout = 180;
-      };
+      # zai-zread = {
+      #   url = "https://open.bigmodel.cn/api/mcp/zread/mcp";
+      #   headers.Authorization = "Bearer \${GLM_API_KEY}";
+      #   timeout = 180;
+      # };
     };
 
     documents."SOUL.md" = ''
