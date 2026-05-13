@@ -74,15 +74,16 @@ in
         # chat
         "wechat"
         "element"
-        # "master-pdf-editor"
 
         # misc
         "hyperconnect" # xiaomi remote control
         "fiji" # image viewer
         "google-chrome" # browser
+        # "master-pdf-editor"
         "steam" # game
         "vmware-fusion" # virtual machine
         "vial" # keyboard configurator
+        "wetype" # input method
       ]
       ++ lib.optionals (gui && dev.enable) [
         "visual-studio-code" # editor
