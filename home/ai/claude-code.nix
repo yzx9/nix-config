@@ -151,6 +151,7 @@ in
             "eval"
             "hash"
             "build"
+            "why-depends"
           ])
           ++ [
             "Bash(nix-instantiate *)"
