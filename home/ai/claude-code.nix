@@ -207,11 +207,9 @@ in
           "nix"
         ];
 
-        filesystem = {
-          allowRead = [
-            "/nix/store/"
-          ];
-        };
+        filesystem.allowRead = [
+          "/nix/store/"
+        ];
 
         network = {
           allowedDomains = [
@@ -238,7 +236,7 @@ in
         let
           direnvHook = {
             type = "command";
-            command = "direnv export echo \${0#-}>> \"$CLAUDE_ENV_FILE\"";
+            command = "direnv export bash >> \"$CLAUDE_ENV_FILE\"";
           };
 
           mkNotifyCmd =
