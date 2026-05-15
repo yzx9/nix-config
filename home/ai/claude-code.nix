@@ -72,8 +72,9 @@ in
 
         # Disable non-essential traffic for privacy
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
-
-        # Experimental feature
+        # Disable 1M token context for 3rd party models
+        CLAUDE_CODE_DISABLE_1M_CONTEXT = 1;
+        # Enable experimental agent teams feature
         CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
       };
 
@@ -270,6 +271,62 @@ in
             }
           ];
         };
+
+      skillOverrides =
+        let
+          toKV = value: skills: lib.listToAttrs (lib.map (name: { inherit name value; }) skills);
+          mkNameOnly = toKV "name-only";
+        in
+        mkNameOnly [
+          # gstack
+          "autoplan"
+          "benchmark-models"
+          "browse"
+          "canary"
+          "careful"
+          "codex"
+          "context-restore"
+          "context-save"
+          "cso"
+          "design-consultation"
+          "design-html"
+          "design-review"
+          "design-shotgun"
+          "devex-review"
+          "document-release"
+          "find-skills"
+          "freeze"
+          "gstack"
+          "gstack-upgrade"
+          "guard"
+          "health"
+          "investigate"
+          "land-and-deploy"
+          "landing-report"
+          "make-pdf"
+          "office-hours"
+          "connect-chrome"
+          "open-gstack-browser"
+          "pair-agent"
+          "plan-ceo-review"
+          "plan-design-review"
+          "plan-devex-review"
+          "plan-eng-review"
+          "plan-tune"
+          "qa"
+          "qa-only"
+          "retro"
+          "review"
+          "scrape"
+          "setup-browser-cookies"
+          "setup-deploy"
+          "setup-gbrain"
+          "ship"
+          "skill-creator"
+          "skillify"
+          "sync-gbrain"
+          "unfreeze"
+        ];
     };
 
     context = ''
