@@ -107,6 +107,7 @@ in
             "reset"
             "push"
           ])
+          ++ (mkBashSubCmds "gh" [ "run" ])
           ++ (mkBashSubCmds "gh pr" [
             "close"
             "create"
