@@ -60,7 +60,6 @@ in
         "microsoft-excel"
         "microsoft-word"
         "microsoft-powerpoint"
-        "microsoft-outlook" # email
         "onedrive" # cloud storage
         "tencent-meeting" # video conference
 
