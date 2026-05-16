@@ -83,7 +83,6 @@ in
         "steam" # game
         "vmware-fusion" # virtual machine
         "vial" # keyboard configurator
-        "wetype" # input method
       ]
       ++ lib.optionals (gui && dev.enable) [
         "visual-studio-code" # editor
