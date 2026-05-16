@@ -17,6 +17,7 @@ lib.mkIf purpose.gui {
     lib.optionals isDarwin [
       stats # system monitor in your menu bar
       maccy # clipboard manager
+      # scroll-reverser # reverse the direction of scrolling
     ]
     ++ lib.optionals purpose.daily (
       [
@@ -28,6 +29,7 @@ lib.mkIf purpose.gui {
 
         # design
         # openscad # 3D parametric design
+        blender # 3D design
       ]
       ++ lib.optionals isDarwin [
         yzx9.vaa3d-x # only support darwin now
@@ -43,7 +45,6 @@ lib.mkIf purpose.gui {
         element-desktop # Matrix client
 
         # design
-        blender # 3D design, broken on darwin: #429309
         inkscape # SVG design, broken on darwin: #383860
       ]
     );
