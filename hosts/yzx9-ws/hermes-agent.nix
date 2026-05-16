@@ -25,10 +25,26 @@
       max_turns = 100;
       web.backend = "tavily";
 
+      custom_providers = [
+        {
+          name = "uni";
+          base_url = "https://maas-api.ai-yuanjing.com/openapi/compatible-mode/v1";
+          api_mode = "chat_completions";
+          key_env = "YUANJING_API_KEY";
+        }
+      ];
+
       model = {
         provider = "zai";
-        default = "GLM-5.1";
+        default = "glm-5.1";
         base_url = "https://open.bigmodel.cn/api/coding/paas/v4";
+        context_length = 200000;
+      };
+
+      fallback_model = {
+        provider = "custom:uni";
+        model = "glm-5";
+        context_length = 200000;
       };
 
       terminal = {
