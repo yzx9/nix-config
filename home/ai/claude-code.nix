@@ -177,6 +177,8 @@ in
             "get_tag"
             "search_code"
             "search_repositories"
+            "search_issues"
+            "search_pull_requests"
           ])
           ++ (mkHmMcpCmds "zotero-mcp" [
             "create_note"
@@ -214,8 +216,8 @@ in
         network = {
           allowedDomains = [
             "github.com"
-            "*.npmjs.org"
             "registry.yarnpkg.com"
+            "*.npmjs.org"
             "*.crates.io"
           ];
           allowUnixSockets = [
