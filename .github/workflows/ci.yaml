@@ -24,6 +24,8 @@ jobs:
           - hapi
           - nixvim
           - nixvim-lsp
+          - paseo
+          - paseo-relay
           - pmp-library
           - vaa3d-x
           - with-secrets
