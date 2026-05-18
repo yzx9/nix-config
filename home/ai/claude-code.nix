@@ -84,6 +84,7 @@ in
 
       permissions =
         let
+          mkBashCmds = lib.map (cmd: "Bash(${cmd} *)");
           mkBashSubCmds = cmd: lib.map (subcmd: "Bash(${cmd} ${subcmd} *)");
           mkHmMcps = lib.map (mcp: "mcp__plugin_claude-code-home-manager_${mcp}");
           mkHmMcpCmds = mcp: lib.map (cmd: "mcp__plugin_claude-code-home-manager_${mcp}__${cmd}");
@@ -99,24 +100,25 @@ in
             "Read(./secrets/**)"
           ];
 
-          ask = [
-            "Bash(rm -rf *)"
-            "Bash(cargo add *)"
-          ]
-          ++ (mkBashSubCmds "git" [
-            "force"
-            "reset"
-            "push"
-          ])
-          ++ (mkBashSubCmds "gh" [ "run" ])
-          ++ (mkBashSubCmds "gh pr" [
-            "close"
-            "create"
-          ])
-          ++ (mkBashSubCmds "gh issue" [
-            "close"
-            "delete"
-          ]);
+          ask =
+            mkBashCmds [
+              "rm -rf"
+              "cargo add"
+            ]
+            ++ (mkBashSubCmds "git" [
+              "force"
+              "reset"
+              "push"
+            ])
+            ++ (mkBashSubCmds "gh" [ "run" ])
+            ++ (mkBashSubCmds "gh pr" [
+              "close"
+              "create"
+            ])
+            ++ (mkBashSubCmds "gh issue" [
+              "close"
+              "delete"
+            ]);
 
           allow = [
             "Read(**/*)" # allow reading all files, but deny specific sensitive files below
@@ -126,9 +128,8 @@ in
             "Search"
             "WebFetch" # allow any fetches
             "WebSearch" # allow any searches
-
-            "Bash(curl *)"
           ]
+          ++ (mkBashCmds [ "curl" ])
           ++ (mkBashSubCmds "git" [
             "add"
             "commit"
@@ -150,13 +151,13 @@ in
             "build"
             "eval"
             "hash"
-            "build"
+            "log"
             "why-depends"
           ])
-          ++ [
-            "Bash(nix-instantiate *)"
-            "Bash(nix-prefetch-url:*)"
-          ]
+          ++ (mkBashCmds [
+            "nix-instantiate"
+            "nix-prefetch-url"
+          ])
           ++ (mkHmMcps [
             "context7"
             "playwright"
@@ -332,23 +333,23 @@ in
 
     context = ''
       ## General Guidelines
-      - You are living in a nix-managed environment with declarative configuration.
-        Don't install packages imperatively.
-        Instead, try to use `nix-env` or `npx` to add packages and tools to the environment
-      - Use `github` MCP for GitHub-related interactions, such as searching and exploring repositorie.
-      - Use `context7` MCP tools whenever you need to search documentation
+      - You are living in a nix-managed environment with declarative configuration. Don't install packages imperatively.
+        Instead, use tools such as `nix-env` or `npx` to make packages and utilities available in the environment
+      - Use `rg` instead of `find -exec` when searching files
+      - Use `github` MCP for GitHub-related interactions, such as searching and exploring repositorie
+      - Use `context7` MCP whenever you need to search documentation
       - Use `playwright` MCP for any web automation tasks, such as testing web apps
     '';
 
     lspServers = {
       go = {
-        command = "gopls";
+        command = lib.getExe pkgs.gopls;
         args = [ "serve" ];
         extensionToLanguage.".go" = "go";
       };
 
       pyright = {
-        command = "pyright-langserver";
+        command = lib.getExe pkgs.pyright;
         args = [ "--stdio" ];
         extensionToLanguage = {
           ".py" = "python";
@@ -362,7 +363,7 @@ in
       };
 
       typescript = {
-        command = "typescript-language-server";
+        command = lib.getExe pkgs.typescript-language-server;
         args = [ "--stdio" ];
         extensionToLanguage = {
           ".ts" = "typescript";
@@ -377,7 +378,7 @@ in
       };
 
       vue = {
-        command = "vue-language-server";
+        command = lib.getExe pkgs.vue-language-server;
         args = [ "--stdio" ];
         extensionToLanguage.".vue" = "vue";
       };
@@ -444,7 +445,7 @@ in
       # };
     };
 
-    # see also: https://github.com/VoltAgent/awesome-claude-code-subagents
+    # See also: https://github.com/VoltAgent/awesome-claude-code-subagents
     agents =
       let
         awesome-subagents = pkgs.fetchFromGitHub {
