@@ -22,8 +22,6 @@ jobs:
           - catppuccin-yazi-flavor
           - gstack
           - hapi
-          - nixvim
-          - nixvim-lsp
           - paseo
           - paseo-relay
           - pmp-library
