@@ -96,6 +96,7 @@ in
 
       mcp = {
         github = {
+          enabled = true;
           type = "http";
           url = "https://api.githubcopilot.com/mcp/";
           headers.Authorization = "Bearer {env:GITHUB_PAT}";
