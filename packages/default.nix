@@ -18,7 +18,6 @@ in
     catppuccin-bat
     catppuccin-yazi-flavor
     gstack
-    hapi
     nixvim
     nixvim-lsp
     paseo

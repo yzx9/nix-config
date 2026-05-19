@@ -21,7 +21,6 @@ jobs:
           - catppuccin-bat
           - catppuccin-yazi-flavor
           - gstack
-          - hapi
           - paseo
           - paseo-relay
           - pmp-library
