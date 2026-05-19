@@ -16,8 +16,6 @@ in
 
   gstack = pkgs.callPackage ./gstack { };
 
-  hapi = pkgs.callPackage ./hapi { };
-
   nixvim = nixvim';
   nixvim-lsp = nixvim'.extend { lsp.enable = true; };
 

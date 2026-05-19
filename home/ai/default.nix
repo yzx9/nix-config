@@ -4,7 +4,6 @@
   imports = [
     ./claude-code.nix
     ./codex.nix
-    ./hapi.nix
     ./opencode.nix
     ./paseo.nix
   ];
