@@ -21,7 +21,7 @@ in
       (toSshPath config.age.secrets.ssh-config.path)
     ];
 
-    matchBlocks = {
+    settings = {
       "*" = {
         addKeysToAgent = "yes";
         forwardAgent = false;
@@ -34,7 +34,7 @@ in
         hostname = "github.com";
         user = "git";
         proxyCommand = proxyCommand;
-        extraOptions.TCPKeepAlive = "yes";
+        TCPKeepAlive = "yes";
       };
 
       "ssh.github.com" = {
@@ -42,7 +42,7 @@ in
         port = 443;
         user = "git";
         proxyCommand = proxyCommand;
-        extraOptions.TCPKeepAlive = "yes";
+        TCPKeepAlive = "yes";
       };
     };
   };
