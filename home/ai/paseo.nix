@@ -32,6 +32,36 @@
       '';
     };
 
+    providers = {
+      copilot.enable = false;
+      pi.enable = false;
+
+      custom.glm = {
+        extends = "claude";
+        label = "GLM (Z.AI)";
+        env = {
+          ANTHROPIC_BASE_URL = "https://open.bigmodel.cn/api/anthropic";
+          API_TIMEOUT_MS = "3000000";
+        };
+        disallowedTools = [ "WebSearch" ];
+        models = [
+          {
+            id = "glm-5.1";
+            label = "GLM 5.1";
+            isDefault = true;
+          }
+          {
+            id = "glm-4.7";
+            label = "GLM 4.7";
+          }
+        ];
+      };
+    };
+
+    additionalPackages = [ pkgs.gh ];
+
+    inheritUserEnvironment = true;
+
     relay = {
       enable = true;
       endpoint = "10.6.141.234:51185";
@@ -47,33 +77,6 @@
       };
 
       app.baseUrl = "https://app.paseo.sh";
-
-      agents.providers = {
-        copilot.enabled = false;
-        pi.enabled = false;
-
-        # GLM via Z.AI / 智谱 (Anthropic-compatible API)
-        glm = {
-          extends = "claude";
-          label = "GLM (Z.AI)";
-          env = {
-            ANTHROPIC_BASE_URL = "https://open.bigmodel.cn/api/anthropic";
-            API_TIMEOUT_MS = "3000000";
-          };
-          disallowedTools = [ "WebSearch" ];
-          models = [
-            {
-              id = "glm-5.1";
-              label = "GLM 5.1";
-              isDefault = true;
-            }
-            {
-              id = "glm-4.7";
-              label = "GLM 4.7";
-            }
-          ];
-        };
-      };
     };
   };
 }
