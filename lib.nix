@@ -28,8 +28,8 @@ let
       extraSpecialArgs = specialArgs;
       users.${cfg.config.vars.user.name} = import ./home;
       sharedModules = (mkHmModules cfg) ++ [
+        inputs.self.homeManagerModules.default
         agenix.homeManagerModules.default
-        inputs.self.homeManagerModules.gstack
       ];
     };
   };

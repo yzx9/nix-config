@@ -1,14 +1,11 @@
 {
   config,
-  inputs,
   pkgs,
   lib,
   ...
 }:
 
 {
-  imports = [ inputs.self.homeManagerModules.paseo ];
-
   age.secrets = lib.mkIf config.purpose.dev.enable {
     "paseo".file = ../../secrets/paseo.age;
   };
