@@ -140,6 +140,9 @@ in
       # Config file
       configFile = pkgs.writeText "paseo-config.json" (lib.toJSON cfg.settings);
 
+      # Relative path from $HOME for home.file
+      configRelPath = lib.removePrefix "${config.home.homeDirectory}/" "${cfg.dataDir}/config.json";
+
       # User-facing wrapper with env vars and agent packages in PATH
       wrappedPkg = pkgs.symlinkJoin {
         name = "paseo";
@@ -168,6 +171,9 @@ in
     lib.mkMerge [
       {
         home.packages = [ wrappedPkg ];
+        home.file."${configRelPath}" = lib.mkIf (cfg.settings != { }) {
+          source = configFile;
+        };
       }
 
       # ── Linux: systemd user service ────────────────────────────────────
@@ -177,6 +183,7 @@ in
             Description = "Paseo - self-hosted daemon for AI coding agents";
             After = [ "network-online.target" ];
             Wants = [ "network-online.target" ];
+            X-Restart-Triggers = lib.mkIf (cfg.settings != { }) [ "${configFile}" ];
           };
 
           Service = {
@@ -202,13 +209,6 @@ in
             ) "PASEO_RELAY_PUBLIC_USE_TLS=${lib.boolToString cfg.relay.publicUseTls}"
             ++ lib.mapAttrsToList (k: v: "${k}=${v}") cfg.environment;
 
-            ExecStartPre = [
-              "${pkgs.coreutils}/bin/mkdir -p ${cfg.dataDir}"
-            ]
-            ++ lib.optionals (cfg.settings != { }) [
-              "${pkgs.coreutils}/bin/cp ${configFile} ${cfg.dataDir}/config.json"
-            ];
-
             ExecStart =
               "${cfg.package}/bin/paseo daemon start"
               + " --foreground"
@@ -229,28 +229,17 @@ in
         launchd.agents.paseo = {
           enable = true;
           config = {
-            ProgramArguments =
-              let
-                daemonArgs =
-                  lib.escapeShellArgs [
-                    "daemon"
-                    "start"
-                    "--foreground"
-                    "--listen"
-                    "${cfg.addr}:${toString cfg.port}"
-                    "--home"
-                    cfg.dataDir
-                  ]
-                  + lib.optionalString (!cfg.relay.enable) " --no-relay";
-              in
-              if cfg.settings != { } then
-                [
-                  "/bin/sh"
-                  "-c"
-                  "mkdir -p '${cfg.dataDir}' && cp '${configFile}' '${cfg.dataDir}/config.json' && exec ${cfg.package}/bin/paseo ${daemonArgs}"
-                ]
-              else
-                [ "${cfg.package}/bin/paseo" ] ++ daemonArgs;
+            ProgramArguments = [
+              "${cfg.package}/bin/paseo"
+              "daemon"
+              "start"
+              "--foreground"
+              "--listen"
+              "${cfg.addr}:${toString cfg.port}"
+              "--home"
+              cfg.dataDir
+            ]
+            ++ lib.optional (!cfg.relay.enable) "--no-relay";
             RunAtLoad = true;
             KeepAlive.SuccessfulExit = false;
             ThrottleInterval = 5;
