@@ -84,7 +84,16 @@ in
       useTls = lib.mkOption {
         type = lib.types.bool;
         default = false;
-        description = "Use wss:// for the relay connection.";
+        description = "Use wss:// for the daemon-to-relay connection.";
+      };
+
+      publicUseTls = lib.mkOption {
+        type = lib.types.nullOr lib.types.bool;
+        default = null;
+        description = ''
+          Use wss:// for the client-facing relay URL in pairing offers.
+          Defaults to useTls when null.
+        '';
       };
     };
 
@@ -146,6 +155,9 @@ in
               cfg.relay.enable && cfg.relay.endpoint != null
             ) "--set PASEO_RELAY_ENDPOINT \"${cfg.relay.endpoint}\""
             ++ lib.optional (cfg.relay.enable && cfg.relay.useTls) "--set PASEO_RELAY_USE_TLS true"
+            ++ lib.optional (
+              cfg.relay.enable && cfg.relay.publicUseTls != null
+            ) "--set PASEO_RELAY_PUBLIC_USE_TLS ${lib.boolToString cfg.relay.publicUseTls}"
             ++ lib.mapAttrsToList (k: v: "--set ${k} ${lib.escapeShellArg v}") cfg.environment;
           in
           ''
@@ -185,6 +197,9 @@ in
               cfg.relay.enable && cfg.relay.publicEndpoint != null
             ) "PASEO_RELAY_PUBLIC_ENDPOINT=${cfg.relay.publicEndpoint}"
             ++ lib.optional (cfg.relay.enable && cfg.relay.useTls) "PASEO_RELAY_USE_TLS=true"
+            ++ lib.optional (
+              cfg.relay.enable && cfg.relay.publicUseTls != null
+            ) "PASEO_RELAY_PUBLIC_USE_TLS=${lib.boolToString cfg.relay.publicUseTls}"
             ++ lib.mapAttrsToList (k: v: "${k}=${v}") cfg.environment;
 
             ExecStartPre = [
@@ -260,6 +275,9 @@ in
             }
             // lib.optionalAttrs (cfg.relay.enable && cfg.relay.useTls) {
               PASEO_RELAY_USE_TLS = "true";
+            }
+            // lib.optionalAttrs (cfg.relay.enable && cfg.relay.publicUseTls != null) {
+              PASEO_RELAY_PUBLIC_USE_TLS = lib.boolToString cfg.relay.publicUseTls;
             }
             // cfg.environment;
             StandardOutPath = "${cfg.dataDir}/logs/launchd-stdout.log";

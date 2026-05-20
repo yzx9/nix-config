@@ -43,6 +43,8 @@
     relay = {
       enable = true;
       endpoint = "10.6.141.234:51185";
+      # publicEndpoint = ""; # see env
+      publicUseTls = true;
     };
 
     settings = {
