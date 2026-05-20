@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   pkgs,
   lib,
   ...
@@ -15,6 +16,10 @@
 
   programs.hermes-agent = {
     enable = true;
+
+    package = inputs.hermes-agent.packages.${pkgs.system}.default.override {
+      extraDependencyGroups = [ "matrix" ];
+    };
 
     environmentFiles = [
       config.age.secrets.hermes-env.path
