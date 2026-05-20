@@ -58,7 +58,11 @@
       };
     };
 
-    additionalPackages = [ pkgs.gh ];
+    additionalPackages = with pkgs; [
+      # claude code sandboxing
+      bubblewrap
+      socat
+    ];
 
     inheritUserEnvironment = true;
 
