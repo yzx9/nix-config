@@ -13,8 +13,10 @@
 }:
 
 let
+  inherit (pkgs.stdenvNoCC.hostPlatform) system;
+
   cfg = config.programs.hermes-agent;
-  hermes-agent = inputs.hermes-agent.packages.${pkgs.system}.default;
+  hermes-agent = inputs.hermes-agent.packages.${system}.default;
 
   # Deep-merge config type (same as nixosModules.nix)
   deepConfigType = lib.types.mkOptionType {
@@ -466,12 +468,16 @@ in
 
           # Link documents into workspace (supports nested keys like .hermes/SOUL.md)
           ${lib.concatStringsSep "\n" (
-            lib.mapAttrsToList (name: _value: let
-              targetDir = dirOf "${cfg.workingDirectory}/${name}";
-            in ''
-              mkdir -p ${targetDir}
-              install -m 0640 ${documentDerivation}/${name} ${cfg.workingDirectory}/${name}
-            '') cfg.documents
+            lib.mapAttrsToList (
+              name: _value:
+              let
+                targetDir = dirOf "${cfg.workingDirectory}/${name}";
+              in
+              ''
+                mkdir -p ${targetDir}
+                install -m 0640 ${documentDerivation}/${name} ${cfg.workingDirectory}/${name}
+              ''
+            ) cfg.documents
           )}
         '';
       }

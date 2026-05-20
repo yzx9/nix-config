@@ -6,6 +6,9 @@
   ...
 }:
 
+let
+  inherit (pkgs.stdenvNoCC.hostPlatform) system;
+in
 {
   age.secrets.hermes-env.file = ../../secrets/hermes-env.age;
 
@@ -17,7 +20,7 @@
   programs.hermes-agent = {
     enable = true;
 
-    package = inputs.hermes-agent.packages.${pkgs.system}.default.override {
+    package = inputs.hermes-agent.packages.${system}.default.override {
       extraDependencyGroups = [ "matrix" ];
     };
 
