@@ -32,7 +32,7 @@ let
           export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
           export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5.1"
           export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5.1"
-          export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.7"
+          export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-5.1"
           ;;
         uni)
           API_KEY_NAME="UNI_YUANJING_API_KEY"
