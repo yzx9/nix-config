@@ -31,5 +31,5 @@ in
     ".ssh/id_github.pub".source = ../../secrets/id-github.pub;
   };
 
-  programs.ssh.matchBlocks."github.com".identityFile = toSshPath config.age.secrets.id-github.path;
+  programs.ssh.settings."github.com".identityFile = toSshPath config.age.secrets.id-github.path;
 }
