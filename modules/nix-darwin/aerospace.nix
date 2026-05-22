@@ -44,6 +44,15 @@
       # Fallback value (if you omit the key): on-focused-monitor-changed = []
       on-focused-monitor-changed = [ "move-mouse monitor-lazy-center" ];
 
+      # Move Typeless floating windows to the current workspace on workspace switch
+      # Workaround for https://github.com/nikitabobko/AeroSpace/issues/2
+      # Note: aerospace CLI is not in PATH for exec commands, use full path
+      exec-on-workspace-change = [
+        "/bin/bash"
+        "-c"
+        ''aero=/run/current-system/sw/bin/aerospace; $aero list-windows --all --format '%{window-id}|%{app-bundle-id}' | grep 'now.typeless.desktop' | cut -d'|' -f1 | while read -r WIN; do $aero move-node-to-workspace --window-id "$WIN" "$AEROSPACE_FOCUSED_WORKSPACE"; done''
+      ];
+
       # You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
       # Useful if you don't use this macOS feature, but accidentally hit cmd-h or cmd-alt-h key
       # Also see: https://nikitabobko.github.io/AeroSpace/goodies#disable-hide-app
@@ -247,6 +256,11 @@
             "if".app-id = appId;
             run = "move-node-to-workspace ${workspace}";
           };
+
+          mkFloating = appId: {
+            "if".app-id = appId;
+            run = "layout floating";
+          };
         in
         [
           (mkMove "B" "org.nixos.firefox")
@@ -270,10 +284,8 @@
           (mkMove "W" "com.microsoft.Excel")
           (mkMove "X" "sc.fiji")
 
-          {
-            "if".app-id = "com.apple.finder";
-            run = "layout floating";
-          }
+          (mkFloating "com.apple.finder")
+          (mkFloating "now.typeless.desktop")
 
           # Most windows of wechat need to be float, including picture preview, video
           # call, etc. The only exception is the main window, howevery it's not easy to

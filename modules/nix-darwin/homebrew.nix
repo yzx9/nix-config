@@ -49,7 +49,10 @@ in
       let
         inherit (config.purpose) daily gui dev;
       in
-      lib.optionals gui [
+      [
+        "karabiner-elements"
+      ]
+      ++ lib.optionals gui [
         "middleclick" # mouse
         "scroll-reverser" # mouse
         "snipaste" # screen shot
@@ -81,6 +84,7 @@ in
         "steam" # game
         "vmware-fusion" # virtual machine
         "vial" # keyboard configurator
+        "typeless" # voice input
       ]
       ++ lib.optionals (gui && dev.enable) [
         "visual-studio-code" # editor
