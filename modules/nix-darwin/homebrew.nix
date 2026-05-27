@@ -50,7 +50,7 @@ in
         inherit (config.purpose) daily gui dev;
       in
       [
-        "karabiner-elements"
+        # "karabiner-elements"
       ]
       ++ lib.optionals gui [
         "middleclick" # mouse
