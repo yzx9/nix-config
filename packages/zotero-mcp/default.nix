@@ -8,14 +8,14 @@
 
 python3Packages.buildPythonApplication (finalAttrs: {
   pname = "zotero-mcp";
-  version = "0.3.0";
+  version = "0.4.1";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "54yyyu";
     repo = "zotero-mcp";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-h23KyRDmFryBQ517oIzCKPSUXDBbpKvHItq7T20oPJw=";
+    hash = "sha256-o1h5DUmRwXrvep9MVmsAU0GpEknlIwXQbkBTL+4LC4M=";
   };
 
   build-system = with python3Packages; [
