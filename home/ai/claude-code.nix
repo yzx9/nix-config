@@ -94,11 +94,7 @@ in
           defaultMode = "acceptEdits";
 
           # Deny > Ask > Allow
-          deny = [
-            "Read(./.env)"
-            "Read(./.env.*)"
-            "Read(./secrets/**)"
-          ];
+          deny = [ ];
 
           ask =
             mkBashCmds [
@@ -195,9 +191,10 @@ in
 
           # Additional working directories Claude can access
           additionalDirectories = [
+            "~/.m2/" # for maven dependencies
             "~/.matplotlib/" # for python plotting
             "~/.cache/" # for various language toolchains
-            "/nix/store" # nix store for reading installed packages and tools
+            "/nix/store" # nix store for reading installed packages and toolsclaude
           ];
         };
 
@@ -335,10 +332,11 @@ in
       ## General Guidelines
       - You are living in a nix-managed environment with declarative configuration. Don't install packages imperatively.
         Instead, use tools such as `nix-env` or `npx` to make packages and utilities available in the environment
-      - Use `rg` instead of `find -exec` when searching files
-      - Use `github` MCP for GitHub-related interactions, such as searching and exploring repositorie
-      - Use `context7` MCP whenever you need to search documentation
-      - Use `playwright` MCP for any web automation tasks, such as testing web apps
+      - Prefer `rg` over `find -exec` when searching files. If you invoke the Explore agent, explicitly instruct it to
+        follow this rule
+      - For GitHub-related tasks, use the `github` MCP, such as repository search, code exploration
+      - For web automation tasks, use the `playwright` MCP, especially when testing web applications
+      - For documentation lookups, try the `context7` MCP first
     '';
 
     lspServers = {
