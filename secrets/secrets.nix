@@ -45,6 +45,7 @@ in
   "llm-api-keys.age".publicKeys = all_keys;
   "paseo.age".publicKeys = all_keys;
   "radicale-auth.age".publicKeys = all_keys;
+  "readeck-env.age".publicKeys = all_keys;
   "ssh-config.age".publicKeys = all_keys;
   "xray.json.age".publicKeys = all_keys;
 
