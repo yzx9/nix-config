@@ -16,7 +16,6 @@
     ./btop.nix
     ./delta.nix
     ./git.nix
-    ./gitmoji.nix
     ./gopass.nix
     ./gpg.nix
     ./nvim.nix
