@@ -29,6 +29,7 @@ inputs.self.lib.mkNixosRpiConfiguration {
       ./n8n.nix
       ./paseo.nix
       ./radicale.nix
+      ./readeck.nix
       ./trilium.nix
     ];
 
