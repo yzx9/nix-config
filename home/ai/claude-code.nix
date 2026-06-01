@@ -81,6 +81,7 @@ in
       theme = "dark";
       editorMode = "vim";
       effortLevel = "high"; # "low", "medium", "high"
+      tui = "fullscreen";
 
       permissions =
         let
@@ -125,7 +126,10 @@ in
             "WebFetch" # allow any fetches
             "WebSearch" # allow any searches
           ]
-          ++ (mkBashCmds [ "curl" ])
+          ++ (mkBashCmds [
+            "curl"
+            "rg"
+          ])
           ++ (mkBashSubCmds "git" [
             "add"
             "commit"
