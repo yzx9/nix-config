@@ -29,7 +29,7 @@ lib.mkIf purpose.gui {
 
         # design
         # openscad # 3D parametric design
-        blender # 3D design
+        # blender # 3D design
       ]
       ++ lib.optionals isDarwin [
         yzx9.vaa3d-x # only support darwin now
