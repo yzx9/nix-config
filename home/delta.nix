@@ -11,8 +11,8 @@ let
   catppuccin = pkgs.fetchFromGitHub {
     owner = "catppuccin";
     repo = "delta";
-    rev = "74b47a345638a2f19b3e5bdb9d7e4984066f9ac7";
-    hash = "sha256-NjqqB/BHqduiNWKeksiRZUMfjRUodJlsVu1yaEIZRsM=";
+    rev = "011516f5d14f66b771b3e716f29c77231e008c74";
+    hash = "sha256-lztkxX9O41YossvRzpR7tqxMhDNT1Efy2JvkCwtsiXQ=";
   };
 in
 {
