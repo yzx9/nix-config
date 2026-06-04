@@ -69,7 +69,6 @@ in
       env = {
         # Custom API endpoint
         API_TIMEOUT_MS = "3000000";
-
         # Disable non-essential traffic for privacy
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
         # Disable 1M token context for 3rd party models
@@ -93,6 +92,8 @@ in
         {
           # Default permission mode
           defaultMode = "acceptEdits";
+          # Disable auto mode as we dont use Claude API directly
+          disableAutoMode = "disable";
 
           # Deny > Ask > Allow
           deny = [ ];
@@ -129,6 +130,7 @@ in
           ++ (mkBashCmds [
             "curl"
             "rg"
+            "mvn"
           ])
           ++ (mkBashSubCmds "git" [
             "add"
