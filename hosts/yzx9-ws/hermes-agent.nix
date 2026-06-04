@@ -69,6 +69,7 @@ in
 
       display = {
         compact = false;
+        busy_input_mode = "queue"; # steer, queue, or interrupt (default)
         personality = "kawaii";
       };
 
@@ -85,6 +86,7 @@ in
       matrix = {
         require_mention = false; # Require @mention in rooms (default: true)
         auto_thread = true; # Auto-create threads for responses (default: true)
+        dm_auto_thread = true; # bug: NousResearch/hermes-agent#24114
         encryption = true; # End-to-End Encryption
       };
     };
