@@ -1,5 +1,13 @@
-{ config, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
+let
+  cfg = config.purpose.dev;
+in
 {
   imports = [
     ./claude-code.nix
@@ -9,10 +17,17 @@
   ];
 
   # Secrets
-  age.secrets = lib.mkIf config.purpose.dev.enable {
+  age.secrets = lib.mkIf cfg.enable {
     "llm-api-keys".file = ../../secrets/llm-api-keys.age;
   };
 
   # Enable gstack when claude-code is enabled
-  programs.gstack.enable = config.purpose.dev.enable;
+  programs.gstack.enable = cfg.enable;
+
+  home.packages = lib.optionals cfg.enable (
+    with pkgs;
+    [
+      skills
+    ]
+  );
 }
