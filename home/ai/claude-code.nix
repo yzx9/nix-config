@@ -173,10 +173,12 @@ in
             "pull_request_read"
             "list_commits"
             "list_issues"
+            "list_pull_requests"
             "list_releases"
             "list_tags"
             "get_file_contents"
             "get_latest_release"
+            "get_me"
             "get_tag"
             "search_code"
             "search_repositories"
@@ -197,9 +199,10 @@ in
 
           # Additional working directories Claude can access
           additionalDirectories = [
-            "~/.m2/" # for maven dependencies
-            "~/.matplotlib/" # for python plotting
-            "~/.cache/" # for various language toolchains
+            "~/.cache/" # various language toolchains
+            "~/.m2/" # maven dependencies
+            "~/.matplotlib/" # python plotting
+            "~/.npm/" # npm packages and cache
             "/nix/store" # nix store for reading installed packages and toolsclaude
           ];
         };
@@ -219,10 +222,13 @@ in
 
         network = {
           allowedDomains = [
-            "github.com"
             "registry.yarnpkg.com"
-            "*.npmjs.org"
+            "raw.githubusercontent.com"
+            "files.pythonhosted.org"
             "*.crates.io"
+            "*.github.com"
+            "*.npmjs.org"
+            "*.pypi.org"
           ];
           allowUnixSockets = [
             "/var/run/docker.sock"
