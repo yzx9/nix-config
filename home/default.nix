@@ -18,6 +18,7 @@
     ./git.nix
     ./gopass.nix
     ./gpg.nix
+    ./gradle.nix
     ./nvim.nix
     ./pim.nix
     ./shell.nix
