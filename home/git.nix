@@ -65,6 +65,9 @@ in
   # Github cli tool
   programs.gh = {
     enable = config.purpose.daily;
+
+    gitCredentialHelper.enable = true;
+
     settings = {
       git_protocol = "ssh";
 
@@ -74,5 +77,4 @@ in
       };
     };
   };
-
 }
