@@ -69,8 +69,8 @@ in
       env = {
         # Custom API endpoint
         API_TIMEOUT_MS = "3000000";
-        # Enable tool search for all tools
-        ENABLE_TOOL_SEARCH = "yes";
+        ## Enable tool search for all tools
+        #ENABLE_TOOL_SEARCH = "yes";
         # Disable non-essential traffic for privacy
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
         # Disable 1M token context for 3rd party models
@@ -377,8 +377,8 @@ in
         exact tool names
       - Some tools may be available through tool search, including GitHub, Context7, Playwright, vision, web search, and
         web reader tools. Search when needed; do not assume exact tool names
-      - For GitHub-related tasks, use the `github` MCP, such as repository search and code exploration. When the GitHub
-        MCP is insufficient, use the `gh` CLI
+      - For read-only GitHub-related tasks, use the `github` MCP, such as repository search and code exploration. When
+        the GitHub MCP is insufficient, use the `gh` CLI
       - For web automation tasks, use the `playwright` MCP, especially when testing web applications
       - For documentation lookups, try the `context7` MCP first
       - Perform visual checks with `zai-vision`
@@ -440,7 +440,10 @@ in
       github = {
         type = "stdio";
         command = lib.getExe pkgs.github-mcp-server;
-        args = [ "stdio" ];
+        args = [
+          "stdio"
+          "--read-only"
+        ];
         env.GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_PERSONAL_ACCESS_TOKEN}";
       };
 
