@@ -29,7 +29,7 @@ let
     text = ''
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
         --allow CONTEXT7_API_KEY \
-        --allow GITHUB_PAT \
+        --allow GITHUB_PERSONAL_ACCESS_TOKEN \
         --allow GLM_CODING_API_KEY \
         --allow UNI_YUANJING_API_KEY \
         -- opencode "$@"
@@ -97,9 +97,10 @@ in
       mcp = {
         github = {
           enabled = true;
-          type = "http";
-          url = "https://api.githubcopilot.com/mcp/";
-          headers.Authorization = "Bearer {env:GITHUB_PAT}";
+          type = "local";
+          command = lib.getExe pkgs.github-mcp-server;
+          args = [ "stdio" ];
+          environment.GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_PERSONAL_ACCESS_TOKEN}";
         };
 
         context7 = {

@@ -99,9 +99,9 @@ in
       };
 
       github = {
-        url = "https://api.githubcopilot.com/mcp/";
-        headers.Authorization = "Bearer \${GITHUB_PAT}";
-        timeout = 180;
+        command = lib.getExe pkgs.github-mcp-server;
+        args = [ "stdio" ];
+        env.GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_PERSONAL_ACCESS_TOKEN}";
       };
 
       playwright = {

@@ -30,7 +30,7 @@ let
     text = ''
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
         --allow CONTEXT7_API_KEY \
-        --allow GITHUB_PAT \
+        --allow GITHUB_PERSONAL_ACCESS_TOKEN \
         -- codex "$@"
     '';
   };
@@ -61,8 +61,9 @@ in
         };
 
         github = {
-          url = "https://api.githubcopilot.com/mcp/";
-          bearer_token_env_var = "GITHUB_PAT";
+          command = lib.getExe pkgs.playwright-mcp;
+          args = [ "stdio" ];
+          env_vars = [ "GITHUB_PERSONAL_ACCESS_TOKEN" ];
         };
 
         playwright = {

@@ -50,7 +50,7 @@ let
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
         --map "$API_KEY_NAME" ANTHROPIC_AUTH_TOKEN \
         --allow CONTEXT7_API_KEY \
-        --allow GITHUB_PAT \
+        --allow GITHUB_PERSONAL_ACCESS_TOKEN \
         --allow GLM_CODING_API_KEY \
         --allow ZOTERO_API_KEY \
         --allow ZOTERO_LIBRARY_ID \
@@ -396,9 +396,10 @@ in
 
     mcpServers = {
       github = {
-        type = "http";
-        url = "https://api.githubcopilot.com/mcp/";
-        headers.Authorization = "Bearer \${GITHUB_PAT}";
+        type = "stdio";
+        command = lib.getExe pkgs.github-mcp-server;
+        args = [ "stdio" ];
+        env.GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_PERSONAL_ACCESS_TOKEN}";
       };
 
       context7 = {
