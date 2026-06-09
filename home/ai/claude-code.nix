@@ -69,6 +69,8 @@ in
       env = {
         # Custom API endpoint
         API_TIMEOUT_MS = "3000000";
+        # Enable tool search for all tools
+        ENABLE_TOOL_SEARCH = "yes";
         # Disable non-essential traffic for privacy
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
         # Disable 1M token context for 3rd party models
@@ -108,7 +110,6 @@ in
               "reset"
               "push"
             ])
-            ++ (mkBashSubCmds "gh" [ "run" ])
             ++ (mkBashSubCmds "gh pr" [
               "close"
               "create"
@@ -142,6 +143,10 @@ in
             "stash"
             "status"
           ])
+          ++ (mkBashSubCmds "gh" [
+            "run"
+            "workflow"
+          ])
           ++ (mkBashSubCmds "cargo" [
             "build"
             "check"
@@ -171,16 +176,19 @@ in
           ++ (mkHmMcpCmds "github" [
             "issue_read"
             "pull_request_read"
+            "list_branches"
             "list_commits"
             "list_issues"
             "list_pull_requests"
             "list_releases"
             "list_tags"
+            "get_commit"
             "get_file_contents"
             "get_latest_release"
             "get_me"
             "get_tag"
             "search_code"
+            "search_commits"
             "search_repositories"
             "search_issues"
             "search_pull_requests"
@@ -213,6 +221,7 @@ in
         excludedCommands = [
           "codex"
           "docker"
+          "gh"
           "nix"
         ];
 
@@ -287,38 +296,24 @@ in
         let
           toKV = value: skills: lib.listToAttrs (lib.map (name: { inherit name value; }) skills);
           mkNameOnly = toKV "name-only";
+          mkUserInvocableOnly = toKV "user-invocable-only";
+          mkOff = toKV "off";
         in
         mkNameOnly [
           # gstack
-          "autoplan"
-          "benchmark-models"
           "browse"
-          "canary"
-          "careful"
           "codex"
-          "context-restore"
-          "context-save"
           "cso"
           "design-consultation"
           "design-html"
           "design-review"
           "design-shotgun"
           "devex-review"
-          "document-release"
-          "find-skills"
-          "freeze"
           "gstack"
-          "gstack-upgrade"
-          "guard"
-          "health"
           "investigate"
           "land-and-deploy"
           "landing-report"
-          "make-pdf"
           "office-hours"
-          "connect-chrome"
-          "open-gstack-browser"
-          "pair-agent"
           "plan-ceo-review"
           "plan-design-review"
           "plan-devex-review"
@@ -326,29 +321,76 @@ in
           "plan-tune"
           "qa"
           "qa-only"
-          "retro"
           "review"
-          "scrape"
+          "ship"
+          "spec"
+        ]
+        // mkUserInvocableOnly [
+          # gstack
+          "autoplan"
+          "context-restore"
+          "context-save"
+          "document-generate"
+          "document-release"
+          "retro"
+          "make-pdf"
+        ]
+        // mkOff [
+          # gstack - sprint
+          "pair-agent"
+          # gstack - power tools
+          "careful"
+          "canary"
+          "freeze"
+          "unfreeze"
+          "gstack-upgrade"
+          "guard"
           "setup-browser-cookies"
           "setup-deploy"
           "setup-gbrain"
-          "ship"
-          "skill-creator"
-          "skillify"
           "sync-gbrain"
-          "unfreeze"
+          "ios-clean"
+          "ios-design-review"
+          "ios-fix"
+          "ios-qa"
+          "ios-sync"
+          # gstack - misc
+          "benchmark-models"
+          "connect-chrome"
+          "health"
+          "open-gstack-browser"
+          "scrape"
+          "skillify"
         ];
     };
 
     context = ''
       ## General Guidelines
+
       - You are living in a nix-managed environment with declarative configuration. Don't install packages imperatively.
         Instead, use tools such as `nix-env` or `npx` to make packages and utilities available in the environment
       - Prefer `rg` over `find -exec` when searching files. If you invoke the Explore agent, explicitly instruct it to
         follow this rule
-      - For GitHub-related tasks, use the `github` MCP, such as repository search, code exploration
+      - Additional tools may be available through tool search. Search for the relevant tool when you need to use GitHub,
+        fetch library/documentation context with Context7, automate or inspect web pages with Playwright, perform visual
+        checks with zai-vision, search the web with zai-web-search, or read web pages with zai-web-reader. Do not assume
+        exact tool names
+      - Some tools may be available through tool search, including GitHub, Context7, Playwright, vision, web search, and
+        web reader tools. Search when needed; do not assume exact tool names
+      - For GitHub-related tasks, use the `github` MCP, such as repository search and code exploration. When the GitHub
+        MCP is insufficient, use the `gh` CLI
       - For web automation tasks, use the `playwright` MCP, especially when testing web applications
       - For documentation lookups, try the `context7` MCP first
+      - Perform visual checks with `zai-vision`
+      - Search the web with `zai-web-search`; read web pages with `zai-web-reader`
+
+      ## Understanding tool_reference Response Type
+
+      When ToolSearch returns a response containing:
+      {"type": "tool_reference", "tool_name": "Workflow"}
+
+      This means the tool is now available. Call it directly:
+      Workflow({script: "...", title: "..."})
     '';
 
     lspServers = {
