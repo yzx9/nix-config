@@ -75,8 +75,6 @@ in
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
         # Disable 1M token context for 3rd party models
         CLAUDE_CODE_DISABLE_1M_CONTEXT = 1;
-        # Enable experimental agent teams feature
-        CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
       };
 
       theme = "dark";
@@ -138,6 +136,7 @@ in
             "commit"
             "diff"
             "fetch"
+            "log"
             "pull"
             "rebase"
             "stash"
