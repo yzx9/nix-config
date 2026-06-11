@@ -507,8 +507,8 @@ in
         awesome-subagents = pkgs.fetchFromGitHub {
           owner = "VoltAgent";
           repo = "awesome-claude-code-subagents";
-          rev = "945f491f0f453dfd735262d4d98825a5227ac301";
-          hash = "sha256-XBSYxi2qZMbmTOKLTnSmmvSMyrnGzT4WiSeUOcVyYEU=";
+          rev = "2f9cf8b9562dcc235cc2296bda6df82d60e800be";
+          hash = "sha256-ywObyscvl+/hnZMGJvWnqebS5gHBICMbMl4OabY10ys=";
         };
 
         # PERF: remove readFile
