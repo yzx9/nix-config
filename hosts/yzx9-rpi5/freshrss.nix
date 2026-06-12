@@ -41,6 +41,20 @@ in
     baseUrl = "127.0.0.1";
     defaultUser = vars.user.name;
     passwordFile = config.age.secrets."freshrss-pwd".path;
+
+    extensions = [
+      (pkgs.freshrss-extensions.buildFreshRssExtension {
+        FreshRssExtUniqueId = "readeck-button";
+        pname = "xExtension-readeck-button";
+        version = "0.14";
+        src = pkgs.fetchFromGitHub {
+          owner = "Joedmin";
+          repo = "xExtension-readeck-button";
+          tag = "0.14";
+          hash = "sha256-f+PwifmLXzVOCyVivgP/E8Rmjv03TES3LX2GO6n8uM0=";
+        };
+      })
+    ];
   };
 
   services.nginx.virtualHosts.${virtualHost} = {
