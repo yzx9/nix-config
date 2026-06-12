@@ -377,8 +377,6 @@ in
 
       - You are living in a nix-managed environment with declarative configuration. Don't install packages imperatively.
         Instead, use tools such as `nix-env` or `npx` to make packages and utilities available in the environment
-      - Prefer `rg` over `find -exec` when searching files. If you invoke the Explore agent, explicitly instruct it to
-        follow this rule
       - Additional tools may be available through tool search. Search for the relevant tool when you need to use GitHub,
         fetch library/documentation context with Context7, automate or inspect web pages with Playwright, perform visual
         checks with zai-vision, search the web with zai-web-search, or read web pages with zai-web-reader. Do not assume
