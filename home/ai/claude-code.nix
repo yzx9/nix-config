@@ -28,8 +28,8 @@ let
         glm)
           API_KEY_NAME="GLM_CODING_API_KEY"
           export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
-          export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5.1"
-          export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5.1"
+          export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5.2"
+          export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5.2"
           export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.7"
           ;;
         uni)
@@ -70,8 +70,8 @@ in
         #ENABLE_TOOL_SEARCH = "yes";
         # Disable non-essential traffic for privacy
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
-        # Disable 1M token context for 3rd party models
-        CLAUDE_CODE_DISABLE_1M_CONTEXT = 1;
+        # # Disable 1M token context for 3rd party models
+        # CLAUDE_CODE_DISABLE_1M_CONTEXT = 1;
       };
 
       theme = "dark";
