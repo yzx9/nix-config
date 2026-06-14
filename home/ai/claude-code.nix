@@ -200,18 +200,14 @@ in
           ]);
 
           # Additional working directories Claude can access
-          additionalDirectories = [
-            "~/.cache/" # various language toolchains
-            "~/.m2/" # maven dependencies
-            "~/.matplotlib/" # python plotting
-            "~/.npm/" # npm packages and cache
-            "/nix/store" # nix store for reading installed packages and toolsclaude
-          ];
+          # additionalDirectories = [ ];
         };
 
       sandbox = {
         enabled = true;
         autoAllowBashIfSandboxed = true;
+        failIfUnavailable = true;
+
         excludedCommands = [
           "codex"
           "docker"
@@ -219,8 +215,15 @@ in
           "nix"
         ];
 
-        filesystem.allowRead = [
-          "/nix/store/"
+        # Default read behavior: read access to the entire computer
+        filesystem.allowWrite = [
+          "~/.cache/" # various language toolchains
+          "~/.m2/" # maven dependencies
+          "~/.matplotlib/" # python plotting
+          "~/.npm/" # npm packages and cache
+        ]
+        ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
+          "~/Library/pnpm/store" # pnpm store on macOS
         ];
 
         network = {
@@ -238,6 +241,7 @@ in
             "/nix/var/nix/daemon-socket/socket"
           ];
           allowLocalBinding = true;
+          httpProxyPort = config.proxy.httpPublicPort;
         };
       };
 
