@@ -89,8 +89,6 @@ in
         {
           # Default permission mode
           defaultMode = "acceptEdits";
-          # Disable auto mode as we dont use Claude API directly
-          disableAutoMode = "disable";
 
           # Deny > Ask > Allow
           deny = [ ];
