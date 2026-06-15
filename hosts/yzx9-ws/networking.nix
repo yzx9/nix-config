@@ -14,11 +14,8 @@ in
           ip46tables -C INPUT -j nixos-extra 2>/dev/null || ip46tables -A INPUT -j nixos-extra
           ip46tables -F nixos-extra
 
-          # IPv4: allow all traffic from 10.6.141.233
-          iptables -A nixos-extra -s 10.6.141.233 -j ACCEPT
-
           # IPv4: allow HTTP, HTTPS, common development ports from 10.6.141.0/24
-          iptables -A nixos-extra -s 10.6.141.0/24 -p tcp -m multiport --dports 80,443,8080,30202 -j ACCEPT
+          iptables -A nixos-extra -s 10.6.141.0/24 -p tcp -m multiport --dports 30202 -j ACCEPT
         '';
 
         extraStopCommands = ''
