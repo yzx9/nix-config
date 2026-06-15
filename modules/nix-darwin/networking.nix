@@ -31,8 +31,8 @@ lib.mkIf cfg.selfHost.enable {
     serviceConfig = {
       RunAtLoad = true;
       KeepAlive = true;
-      StandardOutPath = "/var/lib/xray.out";
-      StandardErrorPath = "/var/lib/xray.err";
+      StandardOutPath = "/var/log/xray.log";
+      StandardErrorPath = "/var/log/xray.log";
 
       # https://xtls.github.io/config/features/env.html
       EnvironmentVariables.XRAY_LOCATION_ASSET = "${assets}/share/v2ray";
