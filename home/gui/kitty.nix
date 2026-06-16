@@ -9,11 +9,13 @@
   ...
 }:
 
+let
+  inherit (pkgs.stdenvNoCC.hostPlatform) isDarwin;
+in
 lib.mkMerge [
   (lib.mkIf config.purpose.gui {
     programs.kitty = {
       enable = true;
-      themeFile = "Catppuccin-Mocha";
     };
     home.shellAliases.s = "kitten ssh";
   })
@@ -21,6 +23,8 @@ lib.mkMerge [
   # only configure kitty in daily used host
   (lib.mkIf config.purpose.daily {
     programs.kitty = {
+      themeFile = "Catppuccin-Mocha";
+
       font = {
         name = "FiraCode Nerd Font";
         package = pkgs.nerd-fonts.fira-code;
@@ -28,7 +32,7 @@ lib.mkMerge [
       };
 
       settings = {
-        hide_window_decorations = if pkgs.stdenvNoCC.hostPlatform.isDarwin then "titlebar-only" else "yes";
+        hide_window_decorations = if isDarwin then "titlebar-only" else "yes";
         window_margin_width = 5;
         background_opacity = 0.9;
 
@@ -44,5 +48,9 @@ lib.mkMerge [
     };
 
     xdg.configFile."kitty/tab_bar.py".source = ./kitty_tab_bar.py;
+  })
+
+  (lib.mkIf (isDarwin && config.programs.firefox.enable) {
+    programs.kitty.settings.open_url_with = "${config.programs.firefox.package}/Content/MacOS/firefox";
   })
 ]
