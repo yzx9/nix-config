@@ -226,23 +226,28 @@ in
           "~/Library/pnpm/store" # pnpm store on macOS
         ];
 
-        network = {
-          allowedDomains = [
-            "registry.yarnpkg.com"
-            "raw.githubusercontent.com"
-            "files.pythonhosted.org"
-            "*.crates.io"
-            "*.github.com"
-            "*.npmjs.org"
-            "*.pypi.org"
-          ];
-          allowUnixSockets = [
-            "/var/run/docker.sock"
-            "/nix/var/nix/daemon-socket/socket"
-          ];
-          allowLocalBinding = true;
-          httpProxyPort = config.proxy.httpPublicPort;
-        };
+        network = lib.mkMerge [
+          {
+            allowedDomains = [
+              "registry.yarnpkg.com"
+              "raw.githubusercontent.com"
+              "files.pythonhosted.org"
+              "*.crates.io"
+              "*.github.com"
+              "*.npmjs.org"
+              "*.pypi.org"
+            ];
+            allowUnixSockets = [
+              "/var/run/docker.sock"
+              "/nix/var/nix/daemon-socket/socket"
+            ];
+            allowLocalBinding = true;
+          }
+
+          (lib.mkIf hasProxy {
+            httpProxyPort = config.proxy.httpPublicPort;
+          })
+        ];
       };
 
       attribution = {
