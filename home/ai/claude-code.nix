@@ -38,6 +38,8 @@ let
           export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5"
           export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5"
           export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-5"
+          # # Disable 1M token context for 3rd party models
+          export CLAUDE_CODE_DISABLE_1M_CONTEXT="1"
           ;;
         *)
           echo "Unknown PROVIDER: $PROVIDER"
@@ -64,14 +66,12 @@ in
     # See: https://code.claude.com/docs/en/settings
     settings = {
       env = {
-        # Custom API endpoint
-        API_TIMEOUT_MS = "3000000";
         ## Enable tool search for all tools
         #ENABLE_TOOL_SEARCH = "yes";
+        # Custom API endpoint
+        API_TIMEOUT_MS = "3000000";
         # Disable non-essential traffic for privacy
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
-        # # Disable 1M token context for 3rd party models
-        # CLAUDE_CODE_DISABLE_1M_CONTEXT = 1;
       };
 
       theme = "dark";
@@ -96,7 +96,6 @@ in
           ask =
             mkBashCmds [
               "rm -rf"
-              "cargo add"
             ]
             ++ (mkBashSubCmds "git" [
               "force"
@@ -125,6 +124,8 @@ in
             "curl"
             "rg"
             "mvn"
+            "nix-instantiate"
+            "nix-prefetch-url"
           ])
           ++ (mkBashSubCmds "git" [
             "add"
@@ -154,10 +155,6 @@ in
             "hash"
             "log"
             "why-depends"
-          ])
-          ++ (mkBashCmds [
-            "nix-instantiate"
-            "nix-prefetch-url"
           ])
           ++ (mkHmMcps [
             "context7"
@@ -218,12 +215,13 @@ in
         # Default read behavior: read access to the entire computer
         filesystem.allowWrite = [
           "~/.cache/" # various language toolchains
+          "~/.gradle" # gradle dependencies and cache
           "~/.m2/" # maven dependencies
           "~/.matplotlib/" # python plotting
           "~/.npm/" # npm packages and cache
         ]
         ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
-          "~/Library/pnpm/store" # pnpm store on macOS
+          "~/Library/pnpm" # pnpm v11 global store location, otherwise pnpm falls back to <project>/.pnpm-store
         ];
 
         network = lib.mkMerge [
@@ -305,8 +303,6 @@ in
           ];
         };
 
-      skills = import ./skills.nix { inherit pkgs; };
-
       skillOverrides =
         let
           toKV = value: skills: lib.listToAttrs (lib.map (name: { inherit name value; }) skills);
@@ -378,6 +374,8 @@ in
           "skillify"
         ];
     };
+
+    skills = import ./skills.nix { inherit pkgs; };
 
     context = ''
       ## General Guidelines
