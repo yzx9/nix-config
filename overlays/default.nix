@@ -8,6 +8,7 @@ let
     nur = import ./nur.nix inputs;
     packages = import ./packages.nix inputs;
     python-packages = import ./python-packages.nix inputs;
+    worktrunk = import ./worktrunk.nix inputs;
   };
 in
 overlays

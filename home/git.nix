@@ -1,17 +1,9 @@
-{ config, lib, ... }:
+{ config, ... }:
 
 let
   inherit (config.vars.user) git;
 in
 {
-  # `programs.git` will generate the config file: ~/.config/git/config
-  # to make git use this config file, `~/.gitconfig` should not exist!
-  #
-  #    https://git-scm.com/docs/git-config#Documentation/git-config.txt---global
-  home.activation.removeExistingGitconfig = lib.hm.dag.entryBefore [ "checkLinkTargets" ] ''
-    rm -f ~/.gitconfig
-  '';
-
   home.file.".ssh/id_git.pub".source = ../secrets/id-git.pub;
 
   programs.git = {
@@ -75,6 +67,21 @@ in
         co = "pr checkout";
         pv = "pr view";
       };
+    };
+  };
+
+  # Worktrunk (git worktree management)
+  programs.worktrunk = {
+    enable = config.purpose.dev.enable;
+
+    claudeCodeIntegration = {
+      statusLine = true;
+      worktreeHooks = true;
+    };
+
+    settings = {
+      # LLM-generated commit messages (https://worktrunk.dev/llm-commits/).
+      commit.generation.command = "MAX_THINKING_TOKENS=0 claude -p --no-session-persistence --model=haiku --tools='' --disable-slash-commands --setting-sources='' --system-prompt=''";
     };
   };
 }
