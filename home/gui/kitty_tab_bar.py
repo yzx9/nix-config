@@ -147,6 +147,11 @@ def git_git_root(path: str) -> str | None:
                 common_dir = os.path.normpath(os.path.join(root, common_dir))
             main_root = os.path.dirname(common_dir)
             if main_root != root:
+                main_repo_name = os.path.basename(main_root)
+                worktree_name = os.path.basename(root)
+                if worktree_name.startswith(main_repo_name):
+                    return worktree_name  # show worktree name only if it starts with main repo name
+
                 # In a worktree: show main repo name + worktree dir name
                 return f"{os.path.basename(main_root)}/{os.path.basename(root)}"
 
