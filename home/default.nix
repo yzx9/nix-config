@@ -23,6 +23,7 @@
     ./pim.nix
     ./shell.nix
     ./ssh.nix
+    ./worktrunk.nix
     ./yazi.nix
   ];
 
