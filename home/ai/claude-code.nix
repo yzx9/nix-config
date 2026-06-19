@@ -206,21 +206,24 @@ in
         failIfUnavailable = true;
 
         excludedCommands = [
-          "codex"
-          "docker"
-          "gh"
-          "nix"
+          "codex *"
+          "docker *"
+          "gh *"
+          "mvn *"
+          "nix *"
         ];
 
         # Default read behavior: read access to the entire computer
         filesystem.allowWrite = [
-          "~/.cache/" # various language toolchains
+          "~/.cache/"
+          "~/.cargo" # rust dependencies and cache
           "~/.gradle" # gradle dependencies and cache
           "~/.m2/" # maven dependencies
           "~/.matplotlib/" # python plotting
           "~/.npm/" # npm packages and cache
         ]
         ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
+          "~/Library/Caches"
           "~/Library/pnpm" # pnpm v11 global store location, otherwise pnpm falls back to <project>/.pnpm-store
         ];
 
@@ -382,10 +385,11 @@ in
 
       - You are living in a nix-managed environment with declarative configuration. Don't install packages imperatively.
         Instead, use tools such as `nix-env` or `npx` to make packages and utilities available in the environment
-      - Additional tools may be available through tool search. Search for the relevant tool when you need to use GitHub,
-        fetch library/documentation context with Context7, automate or inspect web pages with Playwright, perform visual
-        checks with zai-vision, search the web with zai-web-search, or read web pages with zai-web-reader. Do not assume
-        exact tool names
+      - The user often use voice input, which may occasionally lead to transcription errors. If a word or phrase doesn’t
+        seem to make sense, please first consider possible phonetic alternatives.
+
+      ## Tool Usage
+
       - Some tools may be available through tool search, including GitHub, Context7, Playwright, vision, web search, and
         web reader tools. Search when needed; do not assume exact tool names
       - For read-only GitHub-related tasks, use the `github` MCP, such as repository search and code exploration. When
