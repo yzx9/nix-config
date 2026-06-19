@@ -10,6 +10,13 @@ let
   wt = lib.getExe' cfg.package "wt";
   jq = lib.getExe pkgs.jq;
   tomlFormat = pkgs.formats.toml { };
+
+  # Best-effort `wt config state marker` hook entry. `|| true` ensures a failure
+  # (e.g. running outside a git worktree) never blocks Claude Code.
+  marker = op: {
+    type = "command";
+    command = "${wt} config state marker ${op} || true";
+  };
 in
 {
   options.programs.worktrunk = {
@@ -39,17 +46,38 @@ in
 
     # Claude Code integration
     claudeCodeIntegration = {
+      enable =
+        lib.mkEnableOption "Integrate worktrunk with Claude Code's statusLine, worktree isolation, and skills"
+        // {
+          default = true;
+        };
+
       # Opt-in to use `wt` for Claude Code's statusLine, which shows the current worktree and branch.
-      statusLine = lib.mkEnableOption "Claude Code statusLine powered by worktrunk";
+      statusLine = lib.mkEnableOption "Claude Code statusLine powered by worktrunk" // {
+        default = config.programs.worktrunk.claudeCodeIntegration.enable;
+      };
 
       # Route Claude Code worktree isolation (`isolation: "worktree"`) through `wt`
       # instead of `git worktree add`, so agent-created worktrees get worktrunk's
       # naming, hooks, and lifecycle. https://worktrunk.dev/claude-code/#worktree-isolation
-      worktreeHooks = lib.mkEnableOption "Claude Code WorktreeCreate/WorktreeRemove hooks";
+      worktreeHooks = lib.mkEnableOption "Claude Code WorktreeCreate/WorktreeRemove hooks" // {
+        default = config.programs.worktrunk.claudeCodeIntegration.enable;
+      };
 
       # Install the `/worktrunk` config skill and `/wt-switch-create` skill (invokable
       # as a slash command) directly into Claude Code — no plugin marketplace.
-      skills = lib.mkEnableOption "worktrunk's /worktrunk and /wt-switch-create skills";
+      skills = lib.mkEnableOption "worktrunk's /worktrunk and /wt-switch-create skills" // {
+        default = config.programs.worktrunk.claudeCodeIntegration.enable;
+      };
+
+      # Activity tracking: mirror upstream's state-marker hooks so `wt list` (and
+      # the statusline) show 🤖 (working) / 💬 (waiting) per branch, cleared on
+      # session end. https://worktrunk.dev/claude-code/#activity-tracking
+      activityTracking =
+        lib.mkEnableOption "Claude Code activity-tracking state markers (🤖/💬 in wt list)"
+        // {
+          default = config.programs.worktrunk.claudeCodeIntegration.enable;
+        };
     };
   };
 
@@ -119,6 +147,44 @@ in
                 command = "bash -c 'p=$(${jq} -er .worktree_path) || exit 1; ${wt} remove --foreground \"$p\"'";
               }
             ];
+          }
+        ];
+      };
+    })
+
+    # Activity tracking — mirrors the upstream plugin's marker hooks
+    # (https://github.com/max-sixty/worktrunk/blob/v0.60.0/plugins/worktrunk/hooks/hooks.json),
+    # calling `wt` by absolute nix path. The hook-list type merges with
+    # claude-code.nix's own hooks (e.g. the GUI Notification) by concatenation.
+    (lib.mkIf cfg.claudeCodeIntegration.activityTracking {
+      programs.claude-code.settings.hooks = {
+        # 🤖 the user submitted a prompt → the agent is working.
+        UserPromptSubmit = [ { hooks = [ (marker "set 🤖") ]; } ];
+        # 💬 the agent paused and is waiting for the user.
+        Notification = [
+          {
+            matcher = "";
+            hooks = [ (marker "set 💬") ];
+          }
+        ];
+        PreToolUse = [
+          {
+            matcher = "AskUserQuestion";
+            hooks = [ (marker "set 💬") ];
+          }
+        ];
+        PermissionRequest = [
+          {
+            matcher = "";
+            hooks = [ (marker "set 💬") ];
+          }
+        ];
+        Stop = [ { hooks = [ (marker "set 💬") ]; } ];
+        # Clear the marker when the session ends.
+        SessionEnd = [
+          {
+            matcher = "";
+            hooks = [ (marker "clear") ];
           }
         ];
       };

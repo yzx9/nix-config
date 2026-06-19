@@ -28,17 +28,15 @@ in
   programs.worktrunk = {
     enable = config.purpose.dev.enable;
 
-    claudeCodeIntegration = {
-      statusLine = true;
-      worktreeHooks = true;
-    };
+    claudeCodeIntegration.skills = false;
 
     settings = {
       aliases = {
-        co = "wt switch {{ args }}";
         rm = "wt remove {{ args }}";
         ls = "wt list {{ args }}";
       };
+
+      merge.squash = false;
 
       # LLM-generated commit messages (https://worktrunk.dev/llm-commits/).
       commit.generation.command = "MAX_THINKING_TOKENS=0 claude -p --no-session-persistence --model=haiku --tools='' --disable-slash-commands --setting-sources='' --system-prompt=''";
