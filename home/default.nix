@@ -15,10 +15,12 @@
     ./bat.nix
     ./btop.nix
     ./delta.nix
+    ./gh.nix
     ./git.nix
     ./gopass.nix
     ./gpg.nix
     ./gradle.nix
+    ./lazygit.nix
     ./nvim.nix
     ./pim.nix
     ./shell.nix

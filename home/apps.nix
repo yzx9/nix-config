@@ -32,7 +32,6 @@ lib.mkMerge [
         tree
 
         just # command runner
-        lazygit # simple terminal UI for git
         ripgrep # a line-oriented search tool
         fastfetch # system information tool
         kitty.kitten # always install kitten for terminal control
@@ -48,7 +47,7 @@ lib.mkMerge [
   }
 
   # Daily or dev
-  (lib.mkIf config.purpose.daily {
+  (lib.mkIf (with config.purpose; daily || dev.enable) {
     home.packages = with pkgs; [
       python3
       nodejs
