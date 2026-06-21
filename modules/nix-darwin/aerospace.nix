@@ -278,7 +278,6 @@
           (mkMove "W" "com.microsoft.Word")
           (mkMove "W" "com.microsoft.Excel")
           (mkMove "X" "sc.fiji")
-          (mkMove "X" "now.typeless.desktop")
 
           (mkFloating "com.apple.finder")
 
