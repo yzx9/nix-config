@@ -103,15 +103,6 @@ def get_ssh_target(ta) -> str | None:
 
 
 def get_cwd(data: dict) -> str:
-    # Fastpath: use the last reported cwd from the window, which is updated by
-    # the shell integration and should be more responsive than querying the
-    # tab's active_wd
-    window = data.get("window", {})
-    cwd = window.get("screen", {}).get("last_reported_cwd")
-    if cwd:
-        return cwd
-
-    # Fallback
     tab = data.get("tab", {})
     cwd = tab.active_wd or ""
     return cwd
