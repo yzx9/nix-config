@@ -142,16 +142,32 @@ stdenv.mkDerivation (finalAttrs: {
     install -m755 bin/gstack-global-discover $dest/bin/
 
     # ── Shell scripts from bin/ ──
+    # gstack scripts invoke `bun` at runtime — either bare (e.g. the JSON
+    # validation `bun -e` in gstack-review-log) or via a `#!/usr/bin/env bun`
+    # shebang (the .ts helpers / gstack-decision-log). bun is only a build
+    # input here, so patch shebangs to absolute paths and wrap each script to
+    # put bun on PATH. Keep the real file and its wrapper in the same dir so
+    # the scripts' SCRIPT_DIR=$(dirname "$0") still resolves siblings.
+    # gstack-global-discover is a compiled binary, installed separately above.
     for script in bin/gstack-* bin/chrome-cdp; do
-      if [ -f "$script" ]; then
-        install -m755 "$script" $dest/$script
+      if [ -f "$script" ] && [ "$script" != "bin/gstack-global-discover" ]; then
+        base=''${script##*/}
+        install -m755 "$script" $dest/bin/.$base-wrapped
+        patchShebangs $dest/bin/.$base-wrapped
+        makeWrapper $dest/bin/.$base-wrapped $dest/bin/$base \
+          --prefix PATH : ${lib.makeBinPath [ bun ]}
       fi
     done
 
     # ── Browse bin scripts ──
+    # Same bun-on-PATH wrapping as above (helpers may spawn bun).
     for script in browse/bin/*; do
       if [ -f "$script" ]; then
-        install -m755 "$script" $dest/$script
+        base=''${script##*/}
+        install -m755 "$script" $dest/browse/bin/.$base-wrapped
+        patchShebangs $dest/browse/bin/.$base-wrapped
+        makeWrapper $dest/browse/bin/.$base-wrapped $dest/browse/bin/$base \
+          --prefix PATH : ${lib.makeBinPath [ bun ]}
       fi
     done
 
