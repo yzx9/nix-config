@@ -32,6 +32,7 @@ in
 
     settings = {
       aliases = {
+        co = "wt switch {{ args }}";
         rm = "wt remove {{ args }}";
         ls = "wt list {{ args }}";
       };
@@ -43,6 +44,9 @@ in
 
       # On worktree creation: if the primary repo's direnv is allowed, allow the new worktree.
       "pre-start".direnv = "${propagateDirenv} {{ worktree_path }} {{ primary_worktree_path }}";
+
+      # On worktree creation: if a .worktreeinclude file exists, copy ignored files to the new worktree.
+      "post-start".copy = "if [ -f .worktreeinclude ]; then wt step copy-ignored; fi";
     };
   };
 }
