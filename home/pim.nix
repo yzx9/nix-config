@@ -19,7 +19,7 @@ lib.mkIf enable (
 
       xdg.configFile."aim/config.toml".source = tomlFormat.generate "config.toml" {
         core = {
-          calendar_path = "~/.local/share/calendars/home/";
+          calendar_path = "${config.home.homeDirectory}/.local/share/calendars/home/";
           default_due = "24h";
           default_priority = "low";
         };
