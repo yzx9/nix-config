@@ -65,10 +65,12 @@ let
       settings = {
         env = {
           ANTHROPIC_BASE_URL = "https://open.bigmodel.cn/api/anthropic";
-          ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5.2";
-          ANTHROPIC_DEFAULT_SONNET_MODEL = "glm-5.2";
+          ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5.2[1m]";
+          ANTHROPIC_DEFAULT_SONNET_MODEL = "glm-5.2[1m]";
           ANTHROPIC_DEFAULT_HAIKU_MODEL = "glm-4.7";
         };
+
+        attribution.commit = "Assisted-by: Claude-Code:GLM-5.2";
       };
     };
     uni = {
@@ -76,12 +78,14 @@ let
       settings = {
         env = {
           ANTHROPIC_BASE_URL = "https://maas-api.ai-yuanjing.com/openapi/compatible-mode";
-          ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5";
+          ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5.2";
           ANTHROPIC_DEFAULT_SONNET_MODEL = "glm-5";
           ANTHROPIC_DEFAULT_HAIKU_MODEL = "glm-5";
           # Disable 1M token context for 3rd party models
           CLAUDE_CODE_DISABLE_1M_CONTEXT = "1";
         };
+
+        attribution.commit = "Assisted-by: Claude-Code:GLM-5";
       };
     };
   };
@@ -165,7 +169,7 @@ in
         in
         {
           # Default permission mode
-          defaultMode = "acceptEdits";
+          defaultMode = "auto";
 
           # Deny > Ask > Allow
           deny = [ ];
@@ -328,11 +332,8 @@ in
         ];
       };
 
-      attribution = {
-        # To hide all attribution, set commit and pr to empty strings.
-        commit = "";
-        pr = "";
-      };
+      # To hide attribution, set to empty strings.
+      attribution.pr = "";
 
       hooks =
         let
@@ -421,6 +422,7 @@ in
           "autoplan"
           "context-restore"
           "context-save"
+          "diagram"
           "document-generate"
           "document-release"
           "retro"
