@@ -8,53 +8,130 @@
 let
   hasProxy = config.proxy.httpPublic != null;
 
-  # Claude Code wrapper script to inject API keys at runtime
+  # age-managed secret file. `.envrc`-style lines: `KEY=value` or
+  # `export KEY=value`.
+  secretFile = config.age.secrets."llm-api-keys".path;
+
+  # Prints a single API key from the trusted age secret file to stdout, for use
+  # as Claude Code's `apiKeyHelper`. Routing auth through `apiKeyHelper` (a
+  # settings-level credential) rather than an `ANTHROPIC_AUTH_TOKEN` shell var
+  # means the token no longer depends on env inheritance, which background /
+  # AgentView sessions drop since v2.1.174. Errors go to stderr; a missing file
+  # or empty key exits non-zero. Only the trusted age file is parsed, never an
+  # arbitrary project `.envrc`.
+  mkApiKeyHelper =
+    name: key:
+    pkgs.writeShellApplication {
+      inherit name;
+      text = ''
+        # NB: on Darwin agenix sets `.path` to `$(getconf DARWIN_USER_TEMP_DIR)/…`,
+        # so this must stay double-quoted for the command substitution to expand.
+        file="${secretFile}"
+        key="${key}"
+
+        if [[ ! -r "$file" ]]; then
+          echo "${name}: cannot read secret file: $file" >&2
+          exit 1
+        fi
+
+        value=""
+        while IFS= read -r line || [ -n "$line" ]; do
+          case "$line" in
+            "" | \#*) continue ;;
+            export\ *) line="''${line#export }" ;;
+          esac
+          case "$line" in
+            "$key="*) value="''${line#"$key="}" ;;
+          esac
+        done < "$file"
+
+        if [[ -z "$value" ]]; then
+          echo "${name}: key '$key' not found or empty in: $file" >&2
+          exit 1
+        fi
+
+        printf '%s' "$value"
+      '';
+    };
+
+  # Per-provider profiles. The base URL, model aliases (and the proxy, when set)
+  # are written into a generated settings JSON passed via `claude --settings`,
+  # so they are read by every session type — including background workers, which
+  # no longer inherit these from the dispatch shell. The API key itself is never
+  # written to disk; it is resolved at call time via `apiKeyHelper`.
+  providers = {
+    glm = {
+      key = "GLM_CODING_API_KEY";
+      settings = {
+        env = {
+          ANTHROPIC_BASE_URL = "https://open.bigmodel.cn/api/anthropic";
+          ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5.2";
+          ANTHROPIC_DEFAULT_SONNET_MODEL = "glm-5.2";
+          ANTHROPIC_DEFAULT_HAIKU_MODEL = "glm-4.7";
+        };
+      };
+    };
+    uni = {
+      key = "UNI_YUANJING_API_KEY";
+      settings = {
+        env = {
+          ANTHROPIC_BASE_URL = "https://maas-api.ai-yuanjing.com/openapi/compatible-mode";
+          ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5";
+          ANTHROPIC_DEFAULT_SONNET_MODEL = "glm-5";
+          ANTHROPIC_DEFAULT_HAIKU_MODEL = "glm-5";
+          # Disable 1M token context for 3rd party models
+          CLAUDE_CODE_DISABLE_1M_CONTEXT = "1";
+        };
+      };
+    };
+  };
+
+  # One generated `settings.json` per provider: the profile `env` plus the
+  # matching `apiKeyHelper`. Deep-merged with the HM-managed user settings, so
+  # permissions/sandbox/hooks/etc. are preserved.
+  providerSettings = lib.mapAttrs (
+    name: p:
+    pkgs.writeText "claude-code-${name}-settings.json" (
+      builtins.toJSON (
+        p.settings // { apiKeyHelper = lib.getExe (mkApiKeyHelper "claude-${name}-api-key-helper" p.key); }
+      )
+    )
+  ) providers;
+
+  # Claude Code wrapper. `$PROVIDER` (default `glm`) selects the profile, then
+  # the upstream binary runs with the matching generated settings file.
+  # `with-secrets` now only exposes non-Anthropic secrets (MCP tokens) to the
+  # process; the Anthropic auth token comes from `apiKeyHelper`. The upstream
+  # binary is invoked by absolute path to avoid recursing into this wrapper, and
+  # `--plugin-dir` (added by the home-manager module for mcp/lsp servers) is
+  # carried through untouched via `"$@"`.
   claude-code' = pkgs.writeShellApplication {
     name = "claude";
 
-    runtimeInputs = [
-      pkgs.yzx9.with-secrets
-      pkgs.claude-code
-    ];
+    runtimeInputs = [ pkgs.yzx9.with-secrets ];
 
-    runtimeEnv = lib.optionalAttrs hasProxy {
-      HTTPS_PROXY = config.proxy.httpPublic;
-    };
+    runtimeEnv = lib.optionalAttrs hasProxy { HTTPS_PROXY = config.proxy.httpPublic; };
 
     text = ''
       PROVIDER="''${PROVIDER:-glm}"
 
       case "$PROVIDER" in
         glm)
-          API_KEY_NAME="GLM_CODING_API_KEY"
-          export ANTHROPIC_BASE_URL="https://open.bigmodel.cn/api/anthropic"
-          export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5.2"
-          export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5.2"
-          export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-4.7"
-          ;;
+          settings="${providerSettings.glm}" ;;
         uni)
-          API_KEY_NAME="UNI_YUANJING_API_KEY"
-          export ANTHROPIC_BASE_URL="https://maas-api.ai-yuanjing.com/openapi/compatible-mode"
-          export ANTHROPIC_DEFAULT_OPUS_MODEL="glm-5"
-          export ANTHROPIC_DEFAULT_SONNET_MODEL="glm-5"
-          export ANTHROPIC_DEFAULT_HAIKU_MODEL="glm-5"
-          # # Disable 1M token context for 3rd party models
-          export CLAUDE_CODE_DISABLE_1M_CONTEXT="1"
-          ;;
+          settings="${providerSettings.uni}" ;;
         *)
-          echo "Unknown PROVIDER: $PROVIDER"
-          exit 1
-          ;;
+          echo "claude: unknown PROVIDER: $PROVIDER (expected glm|uni)" >&2
+          exit 1 ;;
       esac
 
-      with-secrets "${config.age.secrets."llm-api-keys".path}" \
-        --map "$API_KEY_NAME" ANTHROPIC_AUTH_TOKEN \
+      with-secrets "${secretFile}" \
         --allow CONTEXT7_API_KEY \
         --allow GITHUB_PERSONAL_ACCESS_TOKEN \
         --allow GLM_CODING_API_KEY \
         --allow ZOTERO_API_KEY \
         --allow ZOTERO_LIBRARY_ID \
-        -- claude "$@"
+        -- "${lib.getExe pkgs.claude-code}" --settings "$settings" "$@"
     '';
   };
 in
