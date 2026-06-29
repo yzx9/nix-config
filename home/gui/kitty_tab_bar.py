@@ -115,14 +115,11 @@ def get_git_worktree_root(path: str, root: str, *, max_length: int) -> str | Non
             return None
 
         main_repo_name = os.path.basename(main_root)
-        worktree_name = os.path.basename(root)
-        if worktree_name.startswith(main_repo_name):
-            return worktree_name  # show worktree name only if it starts with main repo name
+        root_name = os.path.basename(root)
+        if root_name.startswith(main_repo_name):
+            return root_name  # show worktree name only if it starts with main repo name
 
         # In a worktree: show main repo name + worktree dir name
-        main_repo_name = os.path.basename(main_root)
-        root_name = os.path.basename(root)
-
         if len(main_repo_name) + len(root_name) > max_length - 1:  # -1 for the slash
             if len(root_name) > 10:
                 root_name = root_name[:7] + "..."
