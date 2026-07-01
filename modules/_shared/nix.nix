@@ -55,4 +55,8 @@
   nixpkgs.overlays = [
     inputs.self.overlays.default
   ];
+
+  nixpkgs.config.permittedInsecurePackages = [
+    "pnpm-10.34.0" # used by vue-language-server in build time
+  ];
 }
