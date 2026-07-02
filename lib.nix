@@ -43,10 +43,10 @@ in
     };
   };
 
-  mkNixosRpiConfiguration = cfg: {
-    nixosConfigurations."${cfg.config.vars.hostname}" = nixos-raspberrypi.lib.nixosSystem {
-      inherit (cfg.config.vars) system;
-      modules = (mkModules cfg) ++ [
+  mkNixosRpiConfiguration =
+    cfg:
+    let
+      rpiCommonModules = (mkModules cfg) ++ [
         ./modules/nixos
 
         {
@@ -66,11 +66,33 @@ in
           };
         }
       ];
-      specialArgs = specialArgs // {
+
+      rpiSpecialArgs = specialArgs // {
         inherit nixos-raspberrypi;
       };
+
+      # Build the Raspberry Pi NixOS system from the shared module set.
+      # `extraModules` is used to layer the `sd-image` module on top for image
+      # builds without affecting the running system.
+      rpiSystem =
+        extraModules:
+        nixos-raspberrypi.lib.nixosSystem {
+          inherit (cfg.config.vars) system;
+          modules = rpiCommonModules ++ extraModules;
+          specialArgs = rpiSpecialArgs;
+        };
+    in
+    {
+      nixosConfigurations."${cfg.config.vars.hostname}" = rpiSystem [ ];
+
+      # Pre-provisioned SD-card image, built from the very same host config.
+      # The `sd-image` module is added only here so the running system stays
+      # untouched; it produces `config.system.build.sdImage` with the
+      # `FIRMWARE` / `NIXOS_SD` partition labels already expected by the
+      # host's `hardware-configuration.nix`.
+      images."${cfg.config.vars.hostname}" =
+        (rpiSystem [ nixos-raspberrypi.nixosModules.sd-image ]).config.system.build.sdImage;
     };
-  };
 
   mkDarwinConfiguration = cfg: {
     darwinConfigurations."${cfg.config.vars.hostname}" = nix-darwin.lib.darwinSystem {

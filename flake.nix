@@ -114,7 +114,12 @@
       eachSystem = nixpkgs.lib.genAttrs (import systems);
     in
     {
-      inherit (import ./hosts inputs) nixosConfigurations darwinConfigurations homeConfigurations;
+      inherit (import ./hosts inputs)
+        nixosConfigurations
+        darwinConfigurations
+        homeConfigurations
+        images
+        ;
 
       # nix run .#<command>
       packages = eachSystem (import ./packages inputs);

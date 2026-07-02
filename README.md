@@ -28,23 +28,21 @@ General way:
 We use [`nixos-raspberrypi`](https://github.com/nvmd/nixos-raspberrypi) for Raspberry Pi setup. Make sure to check the
 documentation first.
 
-Building an image and flashing it to an SD card is an effective way to set up your Raspberry Pi. However, creating an
-SD card image using `nixos-raspberrypi` can take some effort. We recommend starting with an official example:
+Each Raspberry Pi host exposes a ready-to-flash SD-card image built from its own configuration, via the `images.<host>`
+flake output. The image bakes in your full system (services, users, secrets wiring) so it boots straight into the
+deployed state — no separate `nixos-rebuild` step needed.
 
 ```sh
-# Clone the repo and update the config as needed
-nix build 'github:nvmd/nixos-raspberrypi#nixosConfigurations.installerImages.rpi5'
+# Build the image (on macOS this dispatches to the configured linux-builder)
+nix build .#images.yzx9-rpi5
+
+# Flash it (macOS: use /dev/rdiskN after `diskutil unmountDisk`)
+zstdcat result/sd-image/*.img.zst | sudo dd of=/dev/rdiskN bs=100M
 ```
 
-This method builds a ready-to-use NixOS image. You can flash it directly to your SD card:
-
-```sh
-zstdcat result/sd-image/nixos-sd-image-23.11.20230703.ea4c80b-aarch64-linux.img.zst \
-    | sudo dd of=/dev/mmcblk0 bs=100M
-```
-
-After booting, you’ll have a running NixOS system on your Raspberry Pi. From there, you can deploy your own
-configuration.
+The image uses the `FIRMWARE` / `NIXOS_SD` partition labels that `hardware-configuration.nix` already expects, and
+grows the root partition on first boot. It is a full `aarch64-linux` build of the entire system closure, so the first
+build is slow unless covered by the configured binary caches.
 
 ## Known issues
 
