@@ -56,7 +56,13 @@
     inputs.self.overlays.default
   ];
 
-  nixpkgs.config.permittedInsecurePackages = [
+  # Allow insecure packages (mirrors `allowedUnfree`; see options.nix).
+  # Wired here because this is the only `_shared` module imported by
+  # home-manager too, so insecure packages (e.g. pnpm for vue-language-server)
+  # are permitted in every evaluation context.
+  nixpkgs.config.permittedInsecurePackages = config.allowedInsecure;
+
+  allowedInsecure = [
     "pnpm-10.34.0" # used by vue-language-server in build time
   ];
 }

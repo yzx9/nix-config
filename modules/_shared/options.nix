@@ -145,6 +145,12 @@ in
     description = "List of unfree package names to allow";
   };
 
+  options.allowedInsecure = lib.mkOption {
+    type = lib.types.listOf lib.types.str;
+    default = [ ];
+    description = "List of insecure package names to permit";
+  };
+
   options.docker = {
     enable = lib.mkEnableOption "docker";
     rootless = mkEnabledOption "rootless";

@@ -34,7 +34,7 @@ inputs.self.lib.mkNixosConfiguration {
       ./xorg.nix
     ];
 
-    nixpkgs.config.permittedInsecurePackages = [
+    allowedInsecure = [
       "olm-3.2.16"
     ];
 
