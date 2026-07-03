@@ -1,7 +1,7 @@
 inputs:
 
 let
-  inherit (import ../_shared.nix) user_yzx9 networkingLabWireless;
+  inherit (import ../_shared.nix) user_yzx9;
 in
 inputs.self.lib.mkNixosRpiConfiguration {
   config = {
@@ -17,14 +17,8 @@ inputs.self.lib.mkNixosRpiConfiguration {
     proxy.selfHost.enable = true;
   };
 
-  host = {
-    imports = [
-      ./hardware-configuration.nix
-      ./gnome.nix
-    ];
-
-    networking = networkingLabWireless // {
-      wireless.enable = false;
-    };
-  };
+  host.imports = [
+    ./hardware-configuration.nix
+    ./gnome.nix
+  ];
 }
