@@ -97,7 +97,7 @@ def get_git_root(path: str, *, max_length: int) -> str | None:
 def get_git_worktree_root(path: str, root: str, *, max_length: int) -> str | None:
     try:
         result = subprocess.run(
-            ["git", "-C", path, "rev-parse", "--show-toplevel"],
+            ["git", "-C", path, "rev-parse", "--git-common-dir"],
             capture_output=True,
             text=True,
             timeout=0.2,
