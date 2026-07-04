@@ -13,6 +13,14 @@
     };
   };
 
+  # Phosh forces `services.gnome.core-os-services.enable = true`, and the GNOME
+  # module defaults `i18n.inputMethod.type = "ibus"` under that flag. The ibus
+  # module then injects GTK_IM_MODULE/QT_IM_MODULE/XMODIFIERS=ibus into the
+  # session, which routes GTK/libadwaita entry fields through IBus instead of
+  # the Wayland text-input path and prevents Stevia from auto-activating.
+  # Both upstream assignments use `mkDefault`, so a plain override wins.
+  i18n.inputMethod.enable = false;
+
   environment.systemPackages = with pkgs; [
     phosh-mobile-settings
   ];
