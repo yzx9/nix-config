@@ -144,7 +144,7 @@ sudo systemctl restart nix-daemon
 ```sh
 sudo mount -o remount,rw /nix/store
 # Look for the file and remove the lines:
-sudo systemstd cat nix-daemon
+sudo systemctl cat nix-daemon
 sudo mount -o remount,ro /nix/store
 sudo systemctl stop nix-daemon.socket nix-daemon
 sudo systemctl start nix-daemon
