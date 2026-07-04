@@ -3,6 +3,13 @@
 let
   inherit (pkgs) lib;
 in
+# NOTE: Uses the legacy standalone API (`makeNixvimWithModule`), which nixvim has
+# soft-deprecated in favour of `nixvim.lib.evalNixvim`. Intentionally not migrated:
+# no removal date is announced, it emits no build-time warning, and it is just a
+# thin shim over `evalNixvim` anyway.
+# To migrate later: `nixvim.lib.evalNixvim { modules = [...]; }` + `.config.build.package`,
+# and `.extend` → `.extendModules`.
+# Ref: https://nix-community.github.io/nixvim/platforms/standalone-legacy.html
 nixvim.makeNixvimWithModule {
   inherit pkgs;
 
