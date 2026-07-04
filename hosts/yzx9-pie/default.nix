@@ -19,6 +19,10 @@ inputs.self.lib.mkNixosRpiConfiguration {
 
   host.imports = [
     ./hardware-configuration.nix
-    ./gnome.nix
+    ./phosh.nix
+  ];
+
+  home.imports = [
+    ./dconf.nix
   ];
 }

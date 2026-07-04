@@ -1,5 +1,7 @@
+{ config, ... }:
+
 {
   programs.thunderbird = {
-    enable = true;
+    enable = with config.purpose; gui && daily;
   };
 }
