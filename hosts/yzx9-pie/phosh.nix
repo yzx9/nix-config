@@ -24,4 +24,16 @@
   environment.systemPackages = with pkgs; [
     phosh-mobile-settings
   ];
+
+  # E-ink monitoring kiosk: never auto-suspend. Phosh's `enable-suspend`
+  # gsetting only toggles the system-menu entry, not idle auto-suspend, so
+  # block it at the logind / systemd level too.
+  services.logind.extraConfig = ''
+    IdleAction=ignore
+    HandlePowerKey=ignore
+  '';
+  systemd.sleep.extraConfig = ''
+    AllowSuspend=no
+    AllowHibernation=no
+  '';
 }
