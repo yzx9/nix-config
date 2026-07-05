@@ -19,6 +19,7 @@ let
         '.state.foundRC.path == $p and .state.foundRC.allowed == 0') >/dev/null 2>&1; then
       echo "wt: primary direnv is allowed — propagating to $worktree" >&2
       direnv allow "$worktree"
+      direnv export bash >/dev/null # evaluate the new .envrc in the new worktree
     else
       echo "wt: primary direnv present but not allowed — skipping" >&2
     fi
