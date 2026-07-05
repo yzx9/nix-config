@@ -51,6 +51,10 @@ lib.mkMerge [
   })
 
   (lib.mkIf (isDarwin && config.programs.firefox.enable) {
-    programs.kitty.settings.open_url_with = "${config.programs.firefox.package}/Content/MacOS/firefox";
+    # NOTE: On macOS the firefox binary lives inside the .app bundle, so the
+    # path must include the `Contents/` (plural) directory. A common mistake
+    # is to write `Content/` (singular) or to omit the `Applications/Firefox.app`
+    # prefix — both result in a non-existent path and links silently fail to open.
+    programs.kitty.settings.open_url_with = "${config.programs.firefox.package}/Applications/Firefox.app/Contents/MacOS/firefox";
   })
 ]
