@@ -9,6 +9,7 @@ let
     packages = import ./packages.nix inputs;
     python-packages = import ./python-packages.nix inputs;
     worktrunk = import ./worktrunk.nix inputs;
+    zotero = import ./zotero.nix inputs;
   };
 in
 overlays
