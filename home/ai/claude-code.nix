@@ -292,6 +292,10 @@ in
           "gh *"
           "mvn *"
           "nix *"
+          "cargo build *"
+          "cargo check *"
+          "cargo clippy *"
+          "cargo test *"
         ];
 
         # Default read behavior: read access to the entire computer
@@ -302,8 +306,10 @@ in
           "~/.m2/" # maven dependencies
           "~/.matplotlib/" # python plotting
           "~/.npm/" # npm packages and cache
+          "~/.local/share/direnv" # direnv config
+          "~/.local/state/pnpm" # pnpm state
         ]
-        ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
+        ++ lib.optionals pkgs.stdenvNoCC.hostPlatform.isDarwin [
           "~/Library/Caches"
           "~/Library/pnpm" # pnpm v11 global store location, otherwise pnpm falls back to <project>/.pnpm-store
         ];
