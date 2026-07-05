@@ -20,6 +20,7 @@ inputs.self.lib.mkNixosRpiConfiguration {
   host.imports = [
     ./hardware-configuration.nix
     ./phosh.nix
+    ./vnc.nix
   ];
 
   home.imports = [
