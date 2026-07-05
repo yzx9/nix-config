@@ -337,26 +337,9 @@ in
 
       hooks =
         let
-          # https://github.com/direnv/direnv/wiki/Claude-Code
-          direnvHook = pkgs.writeScript "direnv-hook" ''
-            #!/bin/bash
-            # Writes direnv setup to CLAUDE_ENV_FILE, which is sourced before each Bash command.
-            # Also wraps cd so mid-command directory changes re-evaluate direnv.
-
-            if [ -n "$CLAUDE_ENV_FILE" ]; then
-              cat >> "$CLAUDE_ENV_FILE" <<'DIRENV'
-            eval "$(direnv export bash)"
-            cd() {
-              builtin cd "$@" && eval "$(direnv export bash)"
-            }
-            DIRENV
-            fi
-            exit 0
-          '';
-
-          direnvHookDef = {
+          direnvHook = {
             type = "command";
-            command = direnvHook;
+            command = "direnv export bash >> \"$CLAUDE_ENV_FILE\"";
           };
 
           mkNotifyCmd =
@@ -367,7 +350,14 @@ in
               "${lib.getBin pkgs.libnotify}/notify-send 'Claude Code' '${msg}'";
         in
         {
-          SessionStart = [ { hooks = [ direnvHookDef ]; } ];
+          CwdChanged = [ { hooks = [ direnvHook ]; } ];
+
+          FileChanged = [
+            {
+              matcher = ".envrc|.env|flake.nix|flake.lock";
+              hooks = [ direnvHook ];
+            }
+          ];
 
           # Stop: when Claude is ready for more input
           # Notification: when Claude requests permissions or noop for 60s
