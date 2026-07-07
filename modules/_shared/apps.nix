@@ -17,7 +17,6 @@
 
   allowedUnfree = [
     "claude-code"
-    "nvim-highlight-colors" # TODO: remove
   ];
 
   # List packages installed in system profile. To search, run:
