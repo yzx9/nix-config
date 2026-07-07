@@ -63,6 +63,7 @@
   nixpkgs.config.permittedInsecurePackages = config.allowedInsecure;
 
   allowedInsecure = [
+    "pnpm-10.29.2" # used by vikunja
     "pnpm-10.34.0" # used by vue-language-server in build time
   ];
 }

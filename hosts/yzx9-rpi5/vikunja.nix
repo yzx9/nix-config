@@ -34,8 +34,4 @@ in
       iptables -D nixos-fw -p tcp --dport ${toString port} -s 10.6.141.0/24 -j nixos-fw-accept 2>/dev/null || true
     '';
   };
-
-  allowedInsecure = [
-    "pnpm-10.29.2"
-  ];
 }
