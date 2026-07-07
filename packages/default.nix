@@ -20,8 +20,6 @@ in
     gstack
     nixvim
     nixvim-lsp
-    paseo
-    paseo-relay
     zai-mcp-server
     zotero-mcp
     ;

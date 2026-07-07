@@ -90,12 +90,6 @@
       url = "github:NousResearch/hermes-agent";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # Self-hosted daemon for AI coding agents
-    paseo = {
-      url = "github:getpaseo/paseo";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   # The `outputs` function will return all the build results of the flake.

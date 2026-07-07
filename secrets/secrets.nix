@@ -43,7 +43,6 @@ in
   "hermes-env.age".publicKeys = all_keys;
   "lab-account.age".publicKeys = all_keys;
   "llm-api-keys.age".publicKeys = all_keys;
-  "paseo.age".publicKeys = all_keys;
   "radicale-auth.age".publicKeys = all_keys;
   "readeck-env.age".publicKeys = all_keys;
   "ssh-config.age".publicKeys = all_keys;

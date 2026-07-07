@@ -13,7 +13,6 @@ in
     ./claude-code.nix
     ./codex.nix
     ./opencode.nix
-    ./paseo.nix
   ];
 
   # Secrets
