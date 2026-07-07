@@ -25,5 +25,6 @@ inputs.self.lib.mkNixosRpiConfiguration {
 
   home.imports = [
     ./dconf.nix
+    ./kitty.nix
   ];
 }
