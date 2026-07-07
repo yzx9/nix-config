@@ -324,6 +324,10 @@ in
               "*.github.com"
               "*.npmjs.org"
               "*.pypi.org"
+
+              # codex
+              "api.openai.com"
+              "chatgpt.com"
             ];
             allowUnixSockets = [
               "/var/run/docker.sock"
