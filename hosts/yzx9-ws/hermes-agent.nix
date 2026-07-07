@@ -29,10 +29,9 @@ in
     ];
 
     settings = {
-      toolsets = [ "all" ];
-      max_turns = 100;
-      web.backend = "tavily";
-
+      #################################
+      #            models
+      #################################
       custom_providers = [
         {
           name = "uni";
@@ -44,43 +43,38 @@ in
 
       model = {
         provider = "zai";
-        default = "glm-5.1";
+        default = "glm-5.2";
         base_url = "https://open.bigmodel.cn/api/coding/paas/v4";
-        context_length = 200000;
+        context_length = 1000000;
       };
 
-      fallback_model = {
+      fallback_providers = {
         provider = "custom:uni";
-        model = "glm-5";
-        context_length = 200000;
+        model = "glm-5.2";
+        context_length = 1000000;
       };
 
-      terminal = {
-        backend = "local";
-        cwd = ".";
-        timeout = 180;
+      auxiliary = {
+        compression = {
+          provider = "zai";
+          model = "glm-5.2";
+          base_url = "https://open.bigmodel.cn/api/coding/paas/v4";
+
+          fallback_chain = {
+            provider = "custom:uni";
+            model = "glm-5.2";
+          };
+        };
       };
 
-      compression = {
-        enabled = true;
-        threshold = 0.85;
-        summary_model = "GLM-5.1";
-      };
+      #################################
+      #           channels
+      #################################
 
       display = {
         compact = false;
         busy_input_mode = "queue"; # steer, queue, or interrupt (default)
         personality = "kawaii";
-      };
-
-      memory = {
-        memory_enabled = true;
-        user_profile_enabled = true;
-      };
-
-      agent = {
-        max_turns = 60;
-        verbose = false;
       };
 
       matrix = {
@@ -89,6 +83,34 @@ in
         dm_auto_thread = true; # bug: NousResearch/hermes-agent#24114
         encryption = true; # End-to-End Encryption
       };
+
+      #################################
+      #           functions
+      #################################
+      agent = {
+        max_turns = 60;
+        verbose = false;
+      };
+
+      toolsets = [ "all" ];
+
+      compression = {
+        enabled = true;
+        threshold = 0.85;
+      };
+
+      memory = {
+        memory_enabled = true;
+        user_profile_enabled = true;
+      };
+
+      terminal = {
+        backend = "local";
+        cwd = ".";
+        timeout = 180;
+      };
+
+      web.backend = "tavily";
     };
 
     mcpServers = {
