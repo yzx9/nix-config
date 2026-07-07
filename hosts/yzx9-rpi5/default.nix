@@ -26,7 +26,6 @@ inputs.self.lib.mkNixosRpiConfiguration {
       ./frpc.nix
       ./hardware-configuration.nix
       ./mysql.nix
-      ./n8n.nix
       ./radicale.nix
       ./readeck.nix
       ./trilium.nix
