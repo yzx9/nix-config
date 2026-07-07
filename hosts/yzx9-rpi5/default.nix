@@ -31,6 +31,7 @@ inputs.self.lib.mkNixosRpiConfiguration {
       ./radicale.nix
       ./readeck.nix
       ./trilium.nix
+      ./vikunja.nix
     ];
 
     networking = mkNetworkingLab "end0" "10.6.141.234";

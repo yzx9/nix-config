@@ -47,6 +47,7 @@ in
   "radicale-auth.age".publicKeys = all_keys;
   "readeck-env.age".publicKeys = all_keys;
   "ssh-config.age".publicKeys = all_keys;
+  "vikunja-env.age".publicKeys = all_keys;
   "xray.json.age".publicKeys = all_keys;
 
   # root only
