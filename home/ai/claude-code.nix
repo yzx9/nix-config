@@ -308,6 +308,7 @@ in
           "~/.npm/" # npm packages and cache
           "~/.local/share/direnv" # direnv config
           "~/.local/state/pnpm" # pnpm state
+          "~/go/pkg" # go dependencies and cache
         ]
         ++ lib.optionals pkgs.stdenvNoCC.hostPlatform.isDarwin [
           "~/Library/Caches"
@@ -466,6 +467,7 @@ in
         Instead, use tools such as `nix-env` or `npx` to make packages and utilities available in the environment
       - The user often use voice input, which may occasionally lead to transcription errors. If a word or phrase doesn’t
         seem to make sense, please first consider possible phonetic alternatives.
+      - Stop before pushing, even in the background session. Don’t draft a PR.
 
       ## Tool Usage
 
