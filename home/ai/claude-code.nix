@@ -417,6 +417,12 @@ in
           "review"
           "ship"
           "spec"
+
+          # mattpocock/skills: /grill-me launches /grilling by name, so keep
+          # grilling's name visible to the model but hide its description (no
+          # trigger context → it won't auto-fire). NOT user-invocable-only —
+          # that hides grilling entirely and breaks grill-me's call to it.
+          "grilling"
         ]
         // mkUserInvocableOnly [
           # gstack
