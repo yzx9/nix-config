@@ -475,7 +475,7 @@ in
               in
               ''
                 mkdir -p ${targetDir}
-                install -m 0640 ${documentDerivation}/${name} ${cfg.workingDirectory}/${name}
+                install -m 0640 ${documentDerivation}/${name} ${cfg.stateDir}/${name}
               ''
             ) cfg.documents
           )}
