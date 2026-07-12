@@ -42,28 +42,30 @@ in
       ];
 
       model = {
-        provider = "zai";
-        default = "glm-5.2";
-        base_url = "https://open.bigmodel.cn/api/coding/paas/v4";
+        provider = "deepseek";
+        default = "deepseek-v4-flash";
         context_length = 1000000;
       };
 
-      fallback_providers = {
-        provider = "custom:uni";
-        model = "glm-5.2";
-        context_length = 1000000;
-      };
+      fallback_providers = [
+        {
+          provider = "custom:uni";
+          model = "glm-5";
+          context_length = 1000000;
+        }
+      ];
 
       auxiliary = {
         compression = {
-          provider = "zai";
-          model = "glm-5.2";
-          base_url = "https://open.bigmodel.cn/api/coding/paas/v4";
+          provider = "deepseek";
+          model = "deepseek-v4-flash";
 
-          fallback_chain = {
-            provider = "custom:uni";
-            model = "glm-5.2";
-          };
+          fallback_chain = [
+            {
+              provider = "custom:uni";
+              model = "glm-5";
+            }
+          ];
         };
       };
 
