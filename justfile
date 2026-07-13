@@ -37,7 +37,7 @@ history:
 repl:
   nix repl -f flake:nixpkgs
 
-# remove all generations older than 7 days
+# Remove all generations older than 7 days
 [group('nix')]
 clean:
   sudo nix profile wipe-history --profile /nix/var/nix/profiles/system --older-than 7d
@@ -45,7 +45,6 @@ clean:
 # Garbage collect all unused nix store entries
 [group('nix')]
 gc:
-  # garbage collect all unused nix store entries
   sudo nix store gc --debug
   sudo nix-collect-garbage --delete-old
 
@@ -136,13 +135,13 @@ deploy hostname:
 #
 ############################################################################
 
+# format the nix files in this repo
 fmt:
-  # format the nix files in this repo
   nix fmt
 
-edit-secret name:
-  # edit a secret in the nixos-configuration repo
-  cd secrets/ && nix run .#agenix -- -e {{name}}.age
+# edit an age secret with shell path-completion, e.g. `just edit-secret secrets/my_secret.age`
+edit-secret path:
+  cd secrets/ && nix run .#agenix -- -e $(basename {{path}})
 
 path:
   echo $PATH | tr ':' '\n'
