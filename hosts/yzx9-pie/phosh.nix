@@ -4,6 +4,9 @@
   # PinePhone: https://nixos.wiki/wiki/PinePhone
   services.xserver = {
     enable = true;
+
+    displayManager.lightdm.enable = false;
+
     desktopManager.phosh = {
       enable = true;
       user = config.vars.user.name;
