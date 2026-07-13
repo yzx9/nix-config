@@ -486,7 +486,7 @@ in
       - Perform visual checks with `zai-vision`
       - Search the web with `zai-web-search`; read web pages with `zai-web-reader`
 
-      ## Understanding tool_reference Response Type
+      ### Understanding tool_reference Response Type
 
       When ToolSearch returns a response containing:
       {"type": "tool_reference", "tool_name": "Workflow"}
@@ -617,10 +617,8 @@ in
         read = fname: lib.readFile "${awesome-subagents}/categories/${fname}";
       in
       {
-        debugger = ./agents/debugger.md;
-        python-pro = read "02-language-specialists/python-pro.md";
-        rust-engineer = read "02-language-specialists/rust-engineer.md";
         frontend-developer = read "01-core-development/frontend-developer.md";
+        backend-developer = read "01-core-development/backend-developer.md";
         code-reviewer = read "04-quality-security/code-reviewer.md";
       };
   };
