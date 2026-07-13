@@ -1,21 +1,9 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }:
 
-let
-  assets =
-    with pkgs;
-    symlinkJoin {
-      name = "xray-assets";
-      paths = [
-        v2ray-geoip
-        v2ray-domain-list-community
-      ];
-    };
-in
 lib.mkMerge [
   (lib.mkIf (config.proxy.httpPublic != null) {
     # Configure network proxy if necessary
@@ -24,18 +12,15 @@ lib.mkMerge [
   })
 
   (lib.mkIf config.proxy.selfHost.enable {
-    age.secrets."xray.json" = {
+    age.secrets.xray = {
       file = ../../secrets/xray.json.age;
       mode = "444"; # workaround with systemd dynamic user
     };
 
     services.xray = {
       enable = true;
-      settingsFile = config.age.secrets."xray.json".path;
+      settingsFile = config.age.secrets.xray.path;
     };
-
-    # https://xtls.github.io/config/features/env.html
-    systemd.services.v2ray.environment.XRAY_LOCATION_ASSET = "${assets}/share";
 
     networking.firewall.allowedTCPPorts = lib.optionals config.proxy.selfHost.public [
       config.proxy.selfHost.httpPublicPort
