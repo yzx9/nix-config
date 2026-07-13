@@ -25,5 +25,9 @@ lib.mkMerge [
     networking.firewall.allowedTCPPorts = lib.optionals config.proxy.selfHost.public [
       config.proxy.selfHost.httpPublicPort
     ];
+
+    systemd.services.xray.restartTriggers = [
+      "${config.age.secrets.xray.file}"
+    ];
   })
 ]

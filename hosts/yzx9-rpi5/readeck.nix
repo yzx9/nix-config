@@ -17,4 +17,8 @@
       };
     };
   };
+
+  systemd.services.readeck.restartTriggers = [
+    "${config.age.secrets."readeck-env".file}"
+  ];
 }

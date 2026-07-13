@@ -22,4 +22,8 @@
       storage.filesystem_folder = "/var/lib/radicale/collections";
     };
   };
+
+  systemd.services.radicale.restartTriggers = [
+    "${config.age.secrets."radicale-auth".file}"
+  ];
 }

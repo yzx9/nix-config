@@ -7,4 +7,8 @@
     enable = true;
     configFile = config.age.secrets.frpc.path;
   };
+
+  systemd.services.frpc.restartTriggers = [
+    "${config.age.secrets.frpc.file}"
+  ];
 }
