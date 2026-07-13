@@ -24,17 +24,6 @@ in
     };
   };
 
-  # ── Firewall: only allow 10.6.141.0/24 ───────────────────────────────
-  networking.firewall = {
-    extraCommands = ''
-      iptables -A nixos-fw -p tcp --dport ${toString port} -s 10.6.141.0/24 -j nixos-fw-accept
-    '';
-
-    extraStopCommands = ''
-      iptables -D nixos-fw -p tcp --dport ${toString port} -s 10.6.141.0/24 -j nixos-fw-accept 2>/dev/null || true
-    '';
-  };
-
   systemd.services.vikunja.restartTriggers = [
     "${config.age.secrets."vikunja-env".file}"
   ];

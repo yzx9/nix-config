@@ -1,5 +1,8 @@
 { config, pkgs, ... }:
 
+let
+  port = 42808;
+in
 {
   # NOTE: ## Upgrade
   # NixOS will not run `mysql_upgrade` automatically for you after upgrading
@@ -14,11 +17,20 @@
     package = pkgs.mariadb;
 
     settings = {
-      mysqld.port = 42808;
+      mysqld = {
+        inherit port;
+      };
     };
   };
 
-  networking.firewall.allowedTCPPorts = [
-    config.services.mysql.settings.mysqld.port
-  ];
+  # ── Firewall: only allow 10.6.141.0/24 ───────────────────────────────
+  networking.firewall = {
+    extraCommands = ''
+      iptables -A nixos-fw -p tcp --dport ${toString port} -s 10.6.141.0/24 -j nixos-fw-accept
+    '';
+
+    extraStopCommands = ''
+      iptables -D nixos-fw -p tcp --dport ${toString port} -s 10.6.141.0/24 -j nixos-fw-accept 2>/dev/null || true
+    '';
+  };
 }

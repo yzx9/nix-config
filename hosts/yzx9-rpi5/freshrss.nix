@@ -67,8 +67,6 @@ in
     # forceSSL = true;
   };
 
-  #networking.firewall.allowedTCPPorts = [ port ];
-
   # `passwordFile` is consumed by the `freshrss-config` oneshot service.
   systemd.services.freshrss-config.restartTriggers = [
     "${config.age.secrets."freshrss-pwd".file}"
