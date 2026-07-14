@@ -1,21 +1,32 @@
 {
   lib,
   fetchFromGitHub,
+  fetchurl,
   python3Packages,
   versionCheckHook,
   stdenv,
 }:
 
+let
+  # tiktoken lazily downloads the cl100k_base encoding on first use; pre-seed its
+  # cache so the test suite is hermetic (the build sandbox has no network).
+  cl100kCacheKey = "9b5ad71b2ce5302211f9c61530b329a4922fc6a4";
+  tiktokenCl100k = fetchurl {
+    url = "https://openaipublic.blob.core.windows.net/encodings/cl100k_base.tiktoken";
+    hash = "sha256-Ijkht27pm96ZW3/3OFE+7xAPtR0YyTWXoRO8/+hlsqc=";
+  };
+in
+
 python3Packages.buildPythonApplication (finalAttrs: {
   pname = "zotero-mcp";
-  version = "0.6.1";
+  version = "0.6.2";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "54yyyu";
     repo = "zotero-mcp";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-zHpz7TzBBaFAp2w0tGKRkc52kvii1KMRfYchxoe3WWc=";
+    hash = "sha256-zTZ40MxZGkmxL5WzALogJ9828rz5fHkTAyDdcLfpva8=";
   };
 
   build-system = with python3Packages; [
@@ -23,12 +34,14 @@ python3Packages.buildPythonApplication (finalAttrs: {
   ];
 
   dependencies = with python3Packages; [
+    bibtexparser
     fastmcp
     markitdown
     mcp
     pydantic
     python-dotenv
     pyzotero
+    requests
     unidecode
   ];
 
@@ -56,11 +69,33 @@ python3Packages.buildPythonApplication (finalAttrs: {
   versionCheckProgramArg = "version";
   __darwinAllowLocalNetworking = true;
 
-  # Tests call @mcp.tool()-decorated functions directly (e.g. server.advanced_search(...))
-  # but fastmcp>=2.14 wraps them as FunctionTool objects, causing:
-  #   TypeError: 'FunctionTool' object is not callable
-  # Affects 202/372 tests in v0.2.2 — disable check phase entirely.
-  doCheck = false;
+  # semantic + pdf extras are needed at check time: chroma_client raises
+  # ImportError without chromadb, and several test modules import
+  # zotero_mcp.semantic_search unguarded. Mirrors upstream [dev] = [all].
+  nativeCheckInputs = with python3Packages; [
+    pytestCheckHook
+    pytest-asyncio
+    pytest-timeout
+    chromadb
+    google-genai
+    openai
+    sentence-transformers
+    tiktoken
+    ebooklib
+    pymupdf
+  ];
+  doCheck = true;
+
+  # Keep the suite hermetic under the build sandbox: give pytest a writable HOME
+  # (the default /homeless-shelter is read-only) and point tiktoken at the cache.
+  preCheck = ''
+    export HOME=$(mktemp -d)
+    export TIKTOKEN_CACHE_DIR=$(mktemp -d)
+    ln -s ${tiktokenCl100k} "$TIKTOKEN_CACHE_DIR"/${cl100kCacheKey}
+  '';
+
+  # Exercises a real PDF download (it deliberately bypasses the SSRF guard).
+  disabledTests = [ "test_cascade_order" ];
 
   pythonImportsCheck = [ "zotero_mcp" ];
 
