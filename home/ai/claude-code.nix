@@ -134,6 +134,7 @@ let
         --allow CONTEXT7_API_KEY \
         --allow GITHUB_PERSONAL_ACCESS_TOKEN \
         --allow GLM_CODING_API_KEY \
+        --allow TAVILY_API_KEY \
         --allow ZOTERO_API_KEY \
         --allow ZOTERO_LIBRARY_ID \
         -- "${lib.getExe pkgs.claude-code}" --settings "$settings" "$@"
@@ -478,14 +479,14 @@ in
 
       ## Tool Usage
 
-      - Some tools may be available through tool search, including GitHub, Context7, Playwright, vision, web search, and
-        web reader tools. Search when needed; do not assume exact tool names
+      - Some tools may be available through tool search, including GitHub, Context7, Playwright, vision and web search
+        tools. Search when needed; do not assume exact tool names
       - For read-only GitHub-related tasks, use the `github` MCP, such as repository search and code exploration. When
         the GitHub MCP is insufficient, use the `gh` CLI
       - For web automation tasks, use the `playwright` MCP, especially when testing web applications
       - For documentation lookups, try the `context7` MCP first
       - Perform visual checks with `zai-vision`
-      - Search the web with `zai-web-search`; read web pages with `zai-web-reader`
+      - Search the web with `tavily`
 
       ### Understanding tool_reference Response Type
 
@@ -565,6 +566,12 @@ in
         ];
       };
 
+      tavily = {
+        type = "stdio";
+        command = lib.getExe pkgs.yzx9.tavily-mcp;
+        env.TAVILY_API_KEY = "\${TAVILY_API_KEY}";
+      };
+
       zai-vision = {
         type = "stdio";
         command = lib.getExe pkgs.yzx9.zai-mcp-server;
@@ -572,18 +579,6 @@ in
           Z_AI_API_KEY = "\${GLM_CODING_API_KEY}";
           Z_AI_MODE = "ZHIPU";
         };
-      };
-
-      zai-web-search = {
-        type = "http";
-        url = "https://open.bigmodel.cn/api/mcp/web_search_prime/mcp";
-        headers.Authorization = "Bearer \${GLM_CODING_API_KEY}";
-      };
-
-      zai-web-reader = {
-        type = "http";
-        url = "https://open.bigmodel.cn/api/mcp/web_reader/mcp";
-        headers.Authorization = "Bearer \${GLM_CODING_API_KEY}";
       };
 
       # zotero-mcp = lib.mkIf (!pkgs.stdenv.hostPlatform.isAarch64) {
@@ -595,12 +590,6 @@ in
       #     ZOTERO_API_KEY = "\${ZOTERO_API_KEY}";
       #     ZOTERO_LIBRARY_ID = "\${ZOTERO_LIBRARY_ID}";
       #   };
-      # };
-
-      # zai-zread = {
-      #   type = "http";
-      #   url = "https://open.bigmodel.cn/api/mcp/zread/mcp";
-      #   headers.Authorization = "Bearer \${GLM_CODING_API_KEY}";
       # };
     };
 
