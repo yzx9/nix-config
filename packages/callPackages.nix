@@ -21,6 +21,8 @@ in
 
   pmp-library = pkgs.callPackage ./pmp-library { };
 
+  tavily-mcp = pkgs.callPackage ./tavily-mcp { };
+
   vaa3d-x = pkgs.callPackage ./vaa3d-x { };
 
   with-secrets = pkgs.callPackage ./with-secrets { };
