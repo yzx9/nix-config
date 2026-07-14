@@ -107,10 +107,11 @@ let
   # `with-secrets` now only exposes non-Anthropic secrets (MCP tokens) to the
   # process; the Anthropic auth token comes from `apiKeyHelper`. The upstream
   # binary is invoked by absolute path to avoid recursing into this wrapper, and
-  # `--plugin-dir` (added by the home-manager module for mcp/lsp servers) is
-  # carried through untouched via `"$@"`.
+  # any extra args from the caller (historically `--plugin-dir` from the HM
+  # module) are carried through untouched via `"$@"`.
   claude-code' = pkgs.writeShellApplication {
     name = "claude";
+    passthru.version = pkgs.claude-code.version;
 
     runtimeInputs = [ pkgs.yzx9.with-secrets ];
 
