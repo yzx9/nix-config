@@ -13,7 +13,7 @@ let
   inherit (pkgs.stdenvNoCC.hostPlatform) isDarwin;
 in
 lib.mkMerge [
-  (lib.mkIf config.purpose.gui {
+  (lib.mkIf config.my.host.gui {
     programs.kitty = {
       enable = true;
     };
@@ -21,7 +21,7 @@ lib.mkMerge [
   })
 
   # only configure kitty in daily used host
-  (lib.mkIf config.purpose.daily {
+  (lib.mkIf config.my.host.daily {
     programs.kitty = {
       themeFile = "Catppuccin-Mocha";
 

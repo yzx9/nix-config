@@ -12,7 +12,7 @@
       shellWrapperName = "y";
     }
 
-    (lib.mkIf config.purpose.daily {
+    (lib.mkIf config.my.host.daily {
       theme.flavor.dark = "mocha";
 
       flavors.mocha = pkgs.yzx9.catppuccin-yazi-flavor.override {

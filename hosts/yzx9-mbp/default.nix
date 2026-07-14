@@ -4,17 +4,14 @@ let
   inherit (import ../_shared.nix) user_yzx9;
 in
 inputs.self.lib.mkDarwinConfiguration {
-  config = {
-    vars = {
-      hostname = "yzx9-mbp";
-      type = "nix-darwin";
-      system = "aarch64-darwin";
-      user = user_yzx9;
-    };
+  config.my = {
+    hostname = "yzx9-mbp";
+    type = "nix-darwin";
+    system = "aarch64-darwin";
+    user = user_yzx9;
 
-    profile.trusted = true;
-
-    purpose = {
+    host = {
+      trusted = true;
       daily = true;
       gui = true;
       dev.enable = true;

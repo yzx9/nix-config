@@ -6,7 +6,7 @@
 }:
 
 let
-  hasProxy = config.proxy.httpPublic != null;
+  hasProxy = config.my.proxy.httpPublic != null;
 
   # Opencode wrapper script to inject API keys at runtime
   opencode' = pkgs.writeShellApplication {
@@ -22,7 +22,7 @@ let
     }
     # Proxy configuration
     // (lib.optionalAttrs hasProxy {
-      HTTPS_PROXY = config.proxy.httpPublic;
+      HTTPS_PROXY = config.my.proxy.httpPublic;
     });
 
     # Inject API keys at runtime
@@ -40,7 +40,7 @@ let
 in
 {
   programs.opencode = {
-    enable = config.purpose.dev.enable;
+    enable = config.my.host.dev.enable;
     package = opencode';
     inherit skills;
 
@@ -161,7 +161,7 @@ in
 
   # Send notification on session completion
   xdg.configFile."opencode/plugins/notification.js".text =
-    lib.optionalString config.purpose.dev.enable
+    lib.optionalString config.my.host.dev.enable
       (
         let
           msg = "Turn Completed!";

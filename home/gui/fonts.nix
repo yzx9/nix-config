@@ -5,7 +5,7 @@
   ...
 }:
 
-lib.mkIf config.purpose.gui {
+lib.mkIf config.my.host.gui {
   fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [

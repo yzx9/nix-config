@@ -6,8 +6,7 @@
 }:
 
 let
-  inherit (config) vars;
-  username = vars.user.name;
+  username = config.my.user.name;
 in
 {
   # Home Manager needs a bit of information about you and the paths it should

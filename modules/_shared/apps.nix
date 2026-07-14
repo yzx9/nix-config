@@ -13,9 +13,10 @@
 
 {
   # Allow unfree packages
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) config.allowedUnfree;
+  nixpkgs.config.allowUnfreePredicate =
+    pkg: builtins.elem (lib.getName pkg) config.my.allowUnfreePredicate;
 
-  allowedUnfree = [
+  my.allowUnfreePredicate = [
     "claude-code"
   ];
 

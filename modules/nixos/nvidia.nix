@@ -1,10 +1,10 @@
 { config, lib, ... }:
 
 let
-  cfg = config.nvidia;
+  cfg = config.my.nvidia;
 in
 lib.mkIf cfg.enable {
-  allowedUnfree = [
+  my.allowUnfreePredicate = [
     "nvidia-x11"
     "nvidia-settings"
     "nvidia-persistenced"

@@ -10,8 +10,7 @@
 }:
 
 let
-  inherit (config) vars;
-  username = vars.user.name;
+  username = config.my.user.name;
 in
 {
   # Bootloader.
@@ -22,8 +21,8 @@ in
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.hostName = vars.hostname;
-  networking.networkmanager.enable = config.purpose.gui; # For GUI host
+  networking.hostName = config.my.hostname;
+  networking.networkmanager.enable = config.my.host.gui; # For GUI host
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Set your time zone.

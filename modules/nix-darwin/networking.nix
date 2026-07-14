@@ -6,7 +6,7 @@
 }:
 
 let
-  cfg = config.proxy;
+  cfg = config.my.proxy;
 
   assets =
     with pkgs;

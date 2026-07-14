@@ -36,7 +36,7 @@
       };
     in
     {
-      enable = config.purpose.daily;
+      enable = config.my.host.daily;
       package = atuin;
       flags = [ "--disable-up-arrow" ]; # or --disable-ctrl-r
 

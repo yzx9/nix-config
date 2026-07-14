@@ -2,6 +2,6 @@
 
 {
   programs.thunderbird = {
-    enable = with config.purpose; gui && daily;
+    enable = with config.my.host; gui && daily;
   };
 }

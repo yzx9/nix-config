@@ -4,15 +4,13 @@ let
   inherit (import ../_shared.nix) user_yzx9;
 in
 inputs.self.lib.mkNixosRpiConfiguration {
-  config = {
-    vars = {
-      hostname = "yzx9-pie";
-      type = "nixos";
-      system = "aarch64-linux";
-      user = user_yzx9;
-    };
+  config.my = {
+    hostname = "yzx9-pie";
+    type = "nixos";
+    system = "aarch64-linux";
+    user = user_yzx9;
 
-    purpose.gui = true;
+    host.gui = true;
 
     proxy.selfHost.enable = true;
   };

@@ -6,7 +6,7 @@
 }:
 
 let
-  hasProxy = config.proxy.httpPublic != null;
+  hasProxy = config.my.proxy.httpPublic != null;
 
   # age-managed secret file. `.envrc`-style lines: `KEY=value` or
   # `export KEY=value`.
@@ -115,7 +115,7 @@ let
 
     runtimeInputs = [ pkgs.yzx9.with-secrets ];
 
-    runtimeEnv = lib.optionalAttrs hasProxy { HTTPS_PROXY = config.proxy.httpPublic; };
+    runtimeEnv = lib.optionalAttrs hasProxy { HTTPS_PROXY = config.my.proxy.httpPublic; };
 
     text = ''
       PROVIDER="''${PROVIDER:-glm}"
@@ -143,7 +143,7 @@ let
 in
 {
   programs.claude-code = {
-    enable = config.purpose.dev.enable;
+    enable = config.my.host.dev.enable;
     package = claude-code';
 
     # See: https://code.claude.com/docs/en/settings
@@ -340,7 +340,7 @@ in
           }
 
           (lib.mkIf hasProxy {
-            httpProxyPort = config.proxy.httpPublicPort;
+            httpProxyPort = config.my.proxy.httpPublicPort;
           })
         ];
       };
@@ -374,7 +374,7 @@ in
 
           # Stop: when Claude is ready for more input
           # Notification: when Claude requests permissions or noop for 60s
-          Notification = lib.optionals config.purpose.gui [
+          Notification = lib.optionals config.my.host.gui [
             {
               matcher = "*";
               hooks = [

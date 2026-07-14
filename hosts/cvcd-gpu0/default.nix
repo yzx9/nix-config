@@ -4,14 +4,12 @@ let
   inherit (import ../_shared.nix) user_yzx;
 in
 inputs.self.lib.mkHomeConfiguration {
-  config = {
-    vars = {
-      hostname = "cvcd-gpu0";
-      type = "home-manager";
-      system = "x86_64-linux";
-      user = user_yzx;
-    };
+  config.my = {
+    hostname = "cvcd-gpu0";
+    type = "home-manager";
+    system = "x86_64-linux";
+    user = user_yzx;
 
-    purpose.dev.enable = true;
+    host.dev.enable = true;
   };
 }

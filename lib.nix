@@ -26,7 +26,7 @@ let
       useGlobalPkgs = true;
       useUserPackages = true;
       extraSpecialArgs = specialArgs;
-      users.${cfg.config.vars.user.name} = import ./home;
+      users.${cfg.config.my.user.name} = import ./home;
       sharedModules = (mkHmModules cfg) ++ [
         inputs.self.homeManagerModules.default
         agenix.homeManagerModules.default
@@ -36,8 +36,8 @@ let
 in
 {
   mkNixosConfiguration = cfg: {
-    nixosConfigurations."${cfg.config.vars.hostname}" = nixpkgs.lib.nixosSystem {
-      inherit (cfg.config.vars) system;
+    nixosConfigurations."${cfg.config.my.hostname}" = nixpkgs.lib.nixosSystem {
+      inherit (cfg.config.my) system;
       inherit specialArgs;
       modules = (mkModules cfg) ++ [ ./modules/nixos ];
     };
@@ -77,34 +77,34 @@ in
       rpiSystem =
         extraModules:
         nixos-raspberrypi.lib.nixosSystem {
-          inherit (cfg.config.vars) system;
+          inherit (cfg.config.my) system;
           modules = rpiCommonModules ++ extraModules;
           specialArgs = rpiSpecialArgs;
         };
     in
     {
-      nixosConfigurations."${cfg.config.vars.hostname}" = rpiSystem [ ];
+      nixosConfigurations."${cfg.config.my.hostname}" = rpiSystem [ ];
 
       # Pre-provisioned SD-card image, built from the very same host config.
       # The `sd-image` module is added only here so the running system stays
       # untouched; it produces `config.system.build.sdImage` with the
       # `FIRMWARE` / `NIXOS_SD` partition labels already expected by the
       # host's `hardware-configuration.nix`.
-      images."${cfg.config.vars.hostname}" =
+      images."${cfg.config.my.hostname}" =
         (rpiSystem [ nixos-raspberrypi.nixosModules.sd-image ]).config.system.build.sdImage;
     };
 
   mkDarwinConfiguration = cfg: {
-    darwinConfigurations."${cfg.config.vars.hostname}" = nix-darwin.lib.darwinSystem {
-      inherit (cfg.config.vars) system;
+    darwinConfigurations."${cfg.config.my.hostname}" = nix-darwin.lib.darwinSystem {
+      inherit (cfg.config.my) system;
       inherit specialArgs;
       modules = (mkModules cfg) ++ [ ./modules/nix-darwin ];
     };
   };
 
   mkHomeConfiguration = cfg: {
-    homeConfigurations."${cfg.config.vars.hostname}" = home-manager.lib.homeManagerConfiguration {
-      pkgs = nixpkgs.legacyPackages.${cfg.config.vars.system};
+    homeConfigurations."${cfg.config.my.hostname}" = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.${cfg.config.my.system};
       modules = (mkHmModules cfg) ++ [ ./modules/home-manager ];
       extraSpecialArgs = specialArgs;
     };

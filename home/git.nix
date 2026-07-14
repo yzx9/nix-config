@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 let
-  inherit (config.vars.user) git;
+  inherit (config.my.user) git;
 
   ssh = "${config.home.homeDirectory}/.ssh/";
   toSshPath = lib.removePrefix ssh;
@@ -12,7 +12,7 @@ lib.mkMerge [
 
     programs.git = {
       enable = true;
-      lfs.enable = config.purpose.daily;
+      lfs.enable = config.my.host.daily;
 
       # includes = [
       #   {
@@ -59,7 +59,7 @@ lib.mkMerge [
     };
   }
 
-  (lib.mkIf config.profile.trusted {
+  (lib.mkIf config.my.host.trusted {
     age.secrets = {
       id-git = {
         file = ../secrets/id-git.age;

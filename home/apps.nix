@@ -47,7 +47,7 @@ lib.mkMerge [
   }
 
   # Daily or dev
-  (lib.mkIf (with config.purpose; daily || dev.enable) {
+  (lib.mkIf (with config.my.host; daily || dev.enable) {
     home.packages = with pkgs; [
       python3
       nodejs
@@ -55,7 +55,7 @@ lib.mkMerge [
   })
 
   # Daily
-  (lib.mkIf config.purpose.daily {
+  (lib.mkIf config.my.host.daily {
     home.packages = with pkgs; [
       # fantastic
       asciiquarium
@@ -73,7 +73,7 @@ lib.mkMerge [
   })
 
   # Dev
-  (lib.mkIf config.purpose.dev.enable {
+  (lib.mkIf config.my.host.dev.enable {
     home.packages = with pkgs; [
       binutils
       hyperfine # benchmarking tool
@@ -86,7 +86,7 @@ lib.mkMerge [
   })
 
   # Dev - Nix
-  (lib.mkIf config.purpose.dev.nix.enable {
+  (lib.mkIf config.my.host.dev.nix.enable {
     home.packages = with pkgs; [
       hydra-check # check hydra status
 
@@ -99,7 +99,7 @@ lib.mkMerge [
   })
 
   # Dev - Ops
-  (lib.mkIf config.purpose.dev.ops.enable {
+  (lib.mkIf config.my.host.dev.ops.enable {
     home.packages = with pkgs; [
       lsof
 

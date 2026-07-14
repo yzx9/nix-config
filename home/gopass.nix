@@ -7,7 +7,7 @@
 }:
 
 let
-  enable = config.purpose.daily;
+  enable = config.my.host.daily;
 in
 lib.mkMerge [
   {

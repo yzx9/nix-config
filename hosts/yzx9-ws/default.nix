@@ -4,20 +4,21 @@ let
   inherit (import ../_shared.nix) user_yzx9;
 in
 inputs.self.lib.mkNixosConfiguration {
-  config = {
-    vars = {
-      hostname = "yzx9-ws";
-      type = "nixos";
-      system = "x86_64-linux";
-      user = user_yzx9;
-    };
+  config.my = {
+    hostname = "yzx9-ws";
+    type = "nixos";
+    system = "x86_64-linux";
+    user = user_yzx9;
 
-    profile.trusted = true;
-
-    purpose = {
+    host = {
+      trusted = true;
       daily = true;
       dev.enable = true;
     };
+
+    permittedInsecurePackages = [
+      "olm-3.2.16"
+    ];
 
     proxy.selfHost.enable = true;
     nvidia.enable = true;
@@ -34,10 +35,6 @@ inputs.self.lib.mkNixosConfiguration {
 
       ./networking.nix
       ./xorg.nix
-    ];
-
-    allowedInsecure = [
-      "olm-3.2.16"
     ];
 
     # enable binfmt QEMU

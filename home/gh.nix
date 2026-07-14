@@ -3,7 +3,7 @@
 
 {
   programs.gh = {
-    enable = config.purpose.daily;
+    enable = config.my.host.daily;
 
     gitCredentialHelper.enable = true;
 

@@ -38,7 +38,7 @@
 
     trusted-users = [
       "root"
-      config.vars.user.name
+      config.my.user.name
     ];
   };
 
@@ -56,13 +56,12 @@
     inputs.self.overlays.default
   ];
 
-  # Allow insecure packages (mirrors `allowedUnfree`; see options.nix).
-  # Wired here because this is the only `_shared` module imported by
-  # home-manager too, so insecure packages (e.g. pnpm for vue-language-server)
-  # are permitted in every evaluation context.
-  nixpkgs.config.permittedInsecurePackages = config.allowedInsecure;
+  # Allow insecure packages. Wired here because this is the only `_shared`
+  # module imported by home-manager too, so insecure packages are permitted
+  # in every evaluation context.
+  nixpkgs.config.permittedInsecurePackages = config.my.permittedInsecurePackages;
 
-  allowedInsecure = [
+  my.permittedInsecurePackages = [
     "pnpm-10.29.2" # used by vikunja
     "pnpm-10.34.0" # used by vue-language-server in build time
   ];

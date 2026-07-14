@@ -6,7 +6,7 @@
 }:
 
 let
-  cfg = config.purpose.dev;
+  cfg = config.my.host.dev;
 in
 {
   imports = [

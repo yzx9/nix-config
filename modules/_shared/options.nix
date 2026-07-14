@@ -4,7 +4,7 @@ let
   mkEnabledOption = name: (lib.mkEnableOption name) // { default = true; };
 in
 {
-  options.vars = {
+  options.my = {
     type = lib.mkOption {
       type = lib.types.enum [
         "nixos"
@@ -47,116 +47,115 @@ in
         };
       };
     };
-  };
 
-  options.profile = {
-    trusted = lib.mkEnableOption "trusted profile, allowing secrets to be installed";
-  };
+    host = {
+      trusted = lib.mkEnableOption "trusted host, allowing secrets to be installed";
 
-  options.purpose = {
-    daily = lib.mkEnableOption "for daily use, including coding, will install many applications";
-    gui = lib.mkEnableOption "for GUI use, will install GUI-specific applications";
+      daily = lib.mkEnableOption "for daily use, including coding, will install many applications";
 
-    dev = {
-      enable = lib.mkEnableOption "for development, will install development-specific applications";
+      gui = lib.mkEnableOption "for GUI use, will install GUI-specific applications";
 
-      nix.enable = (lib.mkEnableOption "for Nix development, will install Nix-specific applications") // {
-        default = config.purpose.dev.enable;
-      };
+      dev = {
+        enable = lib.mkEnableOption "for development, will install development-specific applications";
 
-      ops.enable = (lib.mkEnableOption "for Ops, will install Ops-specific applications") // {
-        default = config.purpose.dev.enable;
+        nix.enable = (lib.mkEnableOption "for Nix development, will install Nix-specific applications") // {
+          default = config.my.host.dev.enable;
+        };
+
+        ops.enable = (lib.mkEnableOption "for Ops, will install Ops-specific applications") // {
+          default = config.my.host.dev.enable;
+        };
       };
     };
-  };
 
-  options.proxy = {
-    selfHost = {
-      enable = lib.mkEnableOption "self-hosted proxy";
-      public = lib.mkEnableOption "public & auto switching http proxy";
+    allowUnfreePredicate = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      description = "List of unfree package names to allow";
+    };
+
+    permittedInsecurePackages = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+      description = "List of insecure package names to permit";
+    };
+
+    proxy = {
+      selfHost = {
+        enable = lib.mkEnableOption "self-hosted proxy";
+        public = lib.mkEnableOption "public & auto switching http proxy";
+
+        socks5Port = lib.mkOption {
+          type = lib.types.int;
+          default = 10086;
+        };
+
+        httpPort = lib.mkOption {
+          type = lib.types.int;
+          default = 10087;
+        };
+
+        httpPublicPort = lib.mkOption {
+          type = lib.types.int;
+          default = 12345;
+        };
+      };
 
       socks5Port = lib.mkOption {
         type = lib.types.int;
-        default = 10086;
+        default = if config.my.proxy.selfHost.enable then config.my.proxy.selfHost.socks5Port else null;
       };
 
       httpPort = lib.mkOption {
         type = lib.types.int;
-        default = 10087;
+        default = if config.my.proxy.selfHost.enable then config.my.proxy.selfHost.httpPort else null;
       };
 
       httpPublicPort = lib.mkOption {
         type = lib.types.int;
-        default = 12345;
+        default = if config.my.proxy.selfHost.enable then config.my.proxy.selfHost.httpPublicPort else null;
+      };
+
+      socks5 = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default =
+          if config.my.proxy.selfHost.enable then
+            "socks5://127.0.0.1:${toString config.my.proxy.selfHost.socks5Port}"
+          else
+            null;
+      };
+
+      http = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default =
+          if config.my.proxy.selfHost.enable then
+            "http://127.0.0.1:${toString config.my.proxy.selfHost.httpPort}"
+          else
+            null;
+      };
+
+      httpPublic = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default =
+          if config.my.proxy.selfHost.enable then
+            "http://127.0.0.1:${toString config.my.proxy.selfHost.httpPublicPort}"
+          else
+            null;
       };
     };
 
-    socks5Port = lib.mkOption {
-      type = lib.types.int;
-      default = if config.proxy.selfHost.enable then config.proxy.selfHost.socks5Port else null;
+    nvidia = {
+      enable = lib.mkEnableOption "NVIDIA driver";
+      package = lib.mkOption {
+        description = "The NVIDIA driver package to use";
+        type = lib.types.package;
+        default = config.boot.kernelPackages.nvidiaPackages.stable;
+      };
     };
 
-    httpPort = lib.mkOption {
-      type = lib.types.int;
-      default = if config.proxy.selfHost.enable then config.proxy.selfHost.httpPort else null;
+    docker = {
+      enable = lib.mkEnableOption "docker";
+      rootless = mkEnabledOption "rootless";
     };
-
-    httpPublicPort = lib.mkOption {
-      type = lib.types.int;
-      default = if config.proxy.selfHost.enable then config.proxy.selfHost.httpPublicPort else null;
-    };
-
-    socks5 = lib.mkOption {
-      type = lib.types.nullOr lib.types.str;
-      default =
-        if config.proxy.selfHost.enable then
-          "socks5://127.0.0.1:${toString config.proxy.selfHost.socks5Port}"
-        else
-          null;
-    };
-
-    http = lib.mkOption {
-      type = lib.types.nullOr lib.types.str;
-      default =
-        if config.proxy.selfHost.enable then
-          "http://127.0.0.1:${toString config.proxy.selfHost.httpPort}"
-        else
-          null;
-    };
-
-    httpPublic = lib.mkOption {
-      type = lib.types.nullOr lib.types.str;
-      default =
-        if config.proxy.selfHost.enable then
-          "http://127.0.0.1:${toString config.proxy.selfHost.httpPublicPort}"
-        else
-          null;
-    };
-  };
-
-  options.nvidia = {
-    enable = lib.mkEnableOption "NVIDIA driver";
-    package = lib.mkOption {
-      description = "The NVIDIA driver package to use";
-      type = lib.types.package;
-      default = config.boot.kernelPackages.nvidiaPackages.stable;
-    };
-  };
-
-  options.allowedUnfree = lib.mkOption {
-    type = lib.types.listOf lib.types.str;
-    default = [ ];
-    description = "List of unfree package names to allow";
-  };
-
-  options.allowedInsecure = lib.mkOption {
-    type = lib.types.listOf lib.types.str;
-    default = [ ];
-    description = "List of insecure package names to permit";
-  };
-
-  options.docker = {
-    enable = lib.mkEnableOption "docker";
-    rootless = mkEnabledOption "rootless";
   };
 }

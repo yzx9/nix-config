@@ -48,7 +48,7 @@ in
     # `brew install --cask`
     casks =
       let
-        inherit (config.purpose) daily gui dev;
+        inherit (config.my.host) daily gui dev;
       in
       [
         # "karabiner-elements"

@@ -1,8 +1,6 @@
 { config, pkgs, ... }:
 
 let
-  inherit (config) vars;
-
   virtualHost = "freshrss";
 
   # Custom configuration for FreshRSS.
@@ -15,7 +13,7 @@ let
         # Options to use a proxy for retrieving feeds.
         CURLOPT_PROXYTYPE => CURLPROXY_HTTP,
         CURLOPT_PROXY => '127.0.0.1',
-        CURLOPT_PROXYPORT => ${toString config.proxy.selfHost.httpPublicPort},
+        CURLOPT_PROXYPORT => ${toString config.my.proxy.selfHost.httpPublicPort},
       ]
     ];
   '';
@@ -39,7 +37,7 @@ in
 
     enable = true;
     baseUrl = "127.0.0.1";
-    defaultUser = vars.user.name;
+    defaultUser = config.my.user.name;
     passwordFile = config.age.secrets."freshrss-pwd".path;
 
     extensions = [

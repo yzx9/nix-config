@@ -6,10 +6,9 @@
 }:
 
 let
-  inherit (config) purpose;
   inherit (pkgs.stdenvNoCC.hostPlatform) isDarwin;
 in
-lib.mkIf purpose.gui {
+lib.mkIf config.my.host.gui {
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages =
@@ -19,7 +18,7 @@ lib.mkIf purpose.gui {
       maccy # clipboard manager
       # scroll-reverser # reverse the direction of scrolling
     ]
-    ++ lib.optionals purpose.daily (
+    ++ lib.optionals config.my.host.daily (
       [
         dbeaver-bin # SQL client
         trilium-desktop # note taking app
@@ -37,7 +36,7 @@ lib.mkIf purpose.gui {
         (pkgs.writeShellApplication {
           name = "element-desktop";
           text = ''
-            open -a Element --args --proxy-server=${config.proxy.socks5}
+            open -a Element --args --proxy-server=${config.my.proxy.socks5}
           '';
         }) # element was installed via brew, so we add a wrapper to set the proxy for it
       ]

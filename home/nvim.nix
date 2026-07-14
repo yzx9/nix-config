@@ -7,8 +7,8 @@
       viAlias = true;
       vimAlias = true;
 
-      proxy = config.proxy.http;
-      lsp.enable = config.purpose.dev.enable; # disable lsp to minimize size by default
+      proxy = config.my.proxy.http;
+      lsp.enable = config.my.host.dev.enable; # disable lsp to minimize size by default
     })
   ];
 

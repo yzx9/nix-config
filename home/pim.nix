@@ -7,10 +7,9 @@
 }:
 
 let
-  enable = config.purpose.daily;
   tomlFormat = pkgs.formats.toml { };
 in
-lib.mkIf enable {
+lib.mkIf config.my.host.daily {
   home.packages = [ pkgs.aim ];
 
   xdg.configFile."aim/config.toml".source = tomlFormat.generate "config.toml" {

@@ -27,7 +27,7 @@ let
 in
 {
   programs.worktrunk = {
-    enable = config.purpose.dev.enable;
+    enable = config.my.host.dev.enable;
 
     claudeCodeIntegration.skills = false;
 

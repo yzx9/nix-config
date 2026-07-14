@@ -6,7 +6,7 @@
 }:
 
 let
-  enable = config.purpose.daily;
+  enable = config.my.host.daily;
 
   catppuccin = pkgs.fetchFromGitHub {
     owner = "catppuccin";

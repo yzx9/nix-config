@@ -25,7 +25,7 @@ let
       pkgs.codex
     ];
 
-    runtimeEnv.HTTPS_PROXY = config.proxy.http;
+    runtimeEnv.HTTPS_PROXY = config.my.proxy.http;
 
     text = ''
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
@@ -37,7 +37,7 @@ let
 in
 {
   programs.codex = {
-    enable = config.purpose.dev.enable;
+    enable = config.my.host.dev.enable;
     package = codex';
     inherit skills;
 

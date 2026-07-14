@@ -2,7 +2,7 @@
 
 {
   services.aerospace = {
-    enable = config.purpose.gui;
+    enable = config.my.host.gui;
 
     settings = {
       config-version = 2;

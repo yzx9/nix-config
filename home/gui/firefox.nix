@@ -15,7 +15,7 @@ in
   # https://nix-community.github.io/home-manager/options.xhtml#opt-programs.firefox.enable
   # https://hugosum.com/blog/customizing-firefox-with-nix-and-home-manager#installing-firefox-with-home-manager
   programs.firefox = {
-    enable = config.purpose.gui;
+    enable = config.my.host.gui;
 
     # https://releases.mozilla.org/pub/firefox/releases/${version}/linux-x86_64/xpi/
     languagePacks = [
@@ -32,7 +32,7 @@ in
       PasswordManagerEnabled = false;
     };
 
-    profiles.${config.vars.user.name} = {
+    profiles.${config.my.user.name} = {
       isDefault = true;
 
       # https://searchfox.org/mozilla-release/source/modules/libpref/init/all.js
@@ -105,7 +105,7 @@ in
         force = true;
 
         # TODO: Permission Allow Lists
-        packages = with inputs.firefox-addons.packages."${config.vars.system}"; [
+        packages = with inputs.firefox-addons.packages."${config.my.system}"; [
           gopass-bridge
           privacy-badger
           readeck

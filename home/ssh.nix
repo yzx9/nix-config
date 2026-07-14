@@ -4,8 +4,8 @@ let
   ssh = "${config.home.homeDirectory}/.ssh/";
   toSshPath = path: lib.removePrefix ssh path;
 
-  hasProxy = config.proxy.socks5Port != null;
-  proxyCommand = lib.mkIf hasProxy "nc -v -x 127.0.0.1:${toString config.proxy.socks5Port} %h %p";
+  hasProxy = config.my.proxy.socks5Port != null;
+  proxyCommand = lib.mkIf hasProxy "nc -v -x 127.0.0.1:${toString config.my.proxy.socks5Port} %h %p";
 in
 {
   age.secrets.ssh-config = {

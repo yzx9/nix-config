@@ -8,7 +8,7 @@
 lib.mkMerge [
   {
     programs.gpg = {
-      enable = config.purpose.daily;
+      enable = config.my.host.daily;
 
       settings = {
         keyid-format = "0xlong";
@@ -29,7 +29,7 @@ lib.mkMerge [
     };
   }
 
-  (lib.mkIf (config.purpose.gui && pkgs.stdenvNoCC.hostPlatform.isDarwin) {
+  (lib.mkIf (config.my.host.gui && pkgs.stdenvNoCC.hostPlatform.isDarwin) {
     services.gpg-agent.pinentry = {
       package = pkgs.pinentry_mac;
       program = "pinentry-mac";

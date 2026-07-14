@@ -3,7 +3,7 @@
 
 {
   gtk = {
-    enable = config.purpose.gui;
+    enable = config.my.host.gui;
 
     # Icon Theme
     # Required by inkscape, see: #228730
