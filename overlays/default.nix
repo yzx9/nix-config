@@ -4,7 +4,6 @@ let
   inherit (nixpkgs) lib;
 
   overlays = {
-    ctranslate2 = import ./ctranslate2.nix inputs;
     aim = import ./aim.nix inputs;
     gopass = import ./gopass.nix inputs;
     nur = import ./nur.nix inputs;
