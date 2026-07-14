@@ -3,7 +3,7 @@
   # > sudo launchctl kickstart -k system/org.nixos.nix-daemon
   age.secrets = {
     id-auth = {
-      file = ../../secrets/id-auth_root.age;
+      file = ../../secrets/id-auth.age;
       path = "/var/root/.ssh/id_auth";
       owner = "root";
       group = "wheel";

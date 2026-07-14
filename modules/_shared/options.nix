@@ -49,6 +49,10 @@ in
     };
   };
 
+  options.profile = {
+    trusted = lib.mkEnableOption "trusted profile, allowing secrets to be installed";
+  };
+
   options.purpose = {
     daily = lib.mkEnableOption "for daily use, including coding, will install many applications";
     gui = lib.mkEnableOption "for GUI use, will install GUI-specific applications";

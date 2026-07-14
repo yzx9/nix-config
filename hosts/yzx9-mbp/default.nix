@@ -12,6 +12,8 @@ inputs.self.lib.mkDarwinConfiguration {
       user = user_yzx9;
     };
 
+    profile.trusted = true;
+
     purpose = {
       daily = true;
       gui = true;

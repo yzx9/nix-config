@@ -27,6 +27,12 @@ let
 
   rescue = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH1wXmjC1JYCCj0ONwe2BfAdaZNw/TQUF7T4Rn0xbFLp rescue@yzx9.xyz";
 
+  trusted = [
+    user_yzx9-mbp
+    user_yzx9-ws
+    rescue
+  ];
+
   root = [
     user_yzx9-mbp
     rescue
@@ -49,8 +55,10 @@ in
   "vikunja-env.age".publicKeys = all_keys;
   "xray.json.age".publicKeys = all_keys;
 
+  # trusted only
+  "id-git.age".publicKeys = trusted;
+  "id-github.age".publicKeys = trusted;
+
   # root only
-  "id-auth_root.age".publicKeys = root ++ [ system_yzx9-mbp ];
-  "id-git_root.age".publicKeys = root;
-  "id-github_root.age".publicKeys = root;
+  "id-auth.age".publicKeys = root ++ [ system_yzx9-mbp ];
 }
