@@ -9,6 +9,7 @@ let
     nur = import ./nur.nix inputs;
     packages = import ./packages.nix inputs;
     python-packages = import ./python-packages.nix inputs;
+    terminal-notifier = import ./terminal-notifier.nix inputs;
     worktrunk = import ./worktrunk.nix inputs;
     zotero = import ./zotero.nix inputs;
   };
