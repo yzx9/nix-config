@@ -569,7 +569,13 @@ in
       tavily = {
         type = "stdio";
         command = lib.getExe pkgs.yzx9.tavily-mcp;
-        env.TAVILY_API_KEY = "\${TAVILY_API_KEY}";
+        env = {
+          TAVILY_API_KEY = "\${TAVILY_API_KEY}";
+          # axios 1.16 mishandles HTTP proxies for HTTPS targets (plain HTTP -> 443).
+          # Tavily is reachable directly, so bypass the local proxy.
+          NO_PROXY = "\${NO_PROXY},api.tavily.com";
+          no_proxy = "\${no_proxy},api.tavily.com";
+        };
       };
 
       zai-vision = {
