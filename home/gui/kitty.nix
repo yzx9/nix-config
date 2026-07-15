@@ -17,7 +17,13 @@ lib.mkMerge [
     programs.kitty = {
       enable = true;
     };
+
     home.shellAliases.s = "kitten ssh";
+
+    xdg.configFile."kitty/ssh.conf".text = ''
+      hostname *
+      shell_integration enabled
+    '';
   })
 
   # only configure kitty in daily used host
@@ -48,6 +54,7 @@ lib.mkMerge [
     };
 
     xdg.configFile."kitty/tab_bar.py".source = ./kitty_tab_bar.py;
+
   })
 
   (lib.mkIf (isDarwin && config.programs.firefox.enable) {
