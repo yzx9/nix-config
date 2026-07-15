@@ -242,6 +242,7 @@ in
           ++ (mkHmMcps [
             "context7"
             "playwright"
+            "tavily"
             "zai-vision"
             "zai-web-reader"
             "zai-web-search"
