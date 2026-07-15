@@ -363,8 +363,8 @@ in
               "${lib.getBin pkgs.libnotify}/notify-send 'Claude Code' '${msg}'";
         in
         {
+          SessionStart = [ { hooks = [ direnvHook ]; } ];
           CwdChanged = [ { hooks = [ direnvHook ]; } ];
-
           FileChanged = [
             {
               matcher = ".envrc|.env|flake.nix|flake.lock";
