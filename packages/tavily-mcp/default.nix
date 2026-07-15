@@ -2,6 +2,7 @@
   lib,
   buildNpmPackage,
   fetchurl,
+  nix-update-script,
 }:
 
 buildNpmPackage (finalAttrs: {
@@ -20,11 +21,16 @@ buildNpmPackage (finalAttrs: {
     cp ${./package-lock.json} package-lock.json
   '';
 
-  npmDepsHash = "sha256-EWs6hTEk8PtKzlSe13Smssd3aB2HzDe3h/meqkBOXrY=";
-  npmDepsFetcherVersion = 2;
+  npmDepsHash = "sha256-G/cTvKMWzlc/u4peEjO977BwXNgzCIJXt+/0rArk3+w=";
 
   dontNpmBuild = true;
   npmPackFlags = [ "--ignore-scripts" ];
+
+  # `nix-update --generate-lockfile` regenerates the vendored package-lock.json
+  # (the npm tarball ships none) and refreshes npmDepsHash in one shot.
+  passthru.updateScript = nix-update-script {
+    extraArgs = [ "--generate-lockfile" ];
+  };
 
   meta = {
     description = "MCP server for advanced web search using Tavily";
@@ -32,5 +38,6 @@ buildNpmPackage (finalAttrs: {
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ yzx9 ];
     mainProgram = "tavily-mcp";
+    platforms = lib.platforms.all;
   };
 })
