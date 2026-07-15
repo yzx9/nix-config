@@ -137,7 +137,7 @@ let
         --allow TAVILY_API_KEY \
         --allow ZOTERO_API_KEY \
         --allow ZOTERO_LIBRARY_ID \
-        -- "${lib.getExe pkgs.claude-code}" --settings "$settings" "$@"
+        -- "${lib.getExe pkgs.claude-code}" "$@" --settings "$settings"
     '';
   };
 in
