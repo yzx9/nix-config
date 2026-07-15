@@ -313,6 +313,9 @@ in
           "~/.local/state/pnpm" # pnpm state
           "~/go/pkg" # go dependencies and cache
         ]
+        ++ lib.optionals pkgs.stdenvNoCC.hostPlatform.isLinux [
+          "~/.local/share/pnpm" # pnpm store
+        ]
         ++ lib.optionals pkgs.stdenvNoCC.hostPlatform.isDarwin [
           "~/Library/Caches"
           "~/Library/pnpm" # pnpm v11 global store location, otherwise pnpm falls back to <project>/.pnpm-store
