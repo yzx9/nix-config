@@ -35,8 +35,6 @@
     util-linux
     dosfstools # fat filesystem
     e2fsprogs # ext filesystem
-
-    kitty.terminfo # always install kitty terminfo
   ];
 
   programs.zsh.enable = true;
