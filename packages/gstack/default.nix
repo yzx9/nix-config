@@ -18,7 +18,7 @@ stdenv.mkDerivation (finalAttrs: {
     owner = "garrytan";
     repo = "gstack";
     rev = "a3259400a366593e0c909dd9ac3e59752efd2488";
-    hash = "sha256-1543yijl9pfxr5ks651xlhnrk658ys79j8z3vjwxi68wddqykgv6=";
+    hash = "sha256-Zr/pcWscmdi53OMjmY72qJiZLaQ9FKNnyd3dRGX0g5Q=";
   };
 
   # Fixed-output derivation for node_modules (network access allowed in sandbox)
