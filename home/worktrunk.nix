@@ -47,7 +47,7 @@ in
       "pre-start".direnv = "${propagateDirenv} {{ worktree_path }} {{ primary_worktree_path }}";
 
       # On worktree creation: if a .worktreeinclude file exists, copy ignored files to the new worktree.
-      "post-start".copy = "if [ -f .worktreeinclude ]; then wt step copy-ignored; fi";
+      "post-start".copy = "wt step copy-ignored --require-include";
     };
   };
 }
