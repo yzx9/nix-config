@@ -285,7 +285,7 @@ in
         };
 
       sandbox = {
-        enabled = false; # disable due to E2BIG: #73437 #73468 #74032 #74081
+        enabled = true;
         autoAllowBashIfSandboxed = true;
         failIfUnavailable = true;
 
