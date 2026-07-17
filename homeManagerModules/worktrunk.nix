@@ -144,7 +144,7 @@ in
             hooks = [
               {
                 type = "command";
-                command = "bash -c 'p=$(${jq} -er .worktree_path) || exit 1; ${wt} remove --foreground \"$p\"'";
+                command = "bash -c 'p=$(${jq} -er .worktree_path) || exit 1; cd \"\${CLAUDE_PROJECT_DIR:-.}\" || exit 1; [ -e \"$p\" ] || exit 0; ${wt} remove --foreground \"$p\"'";
               }
             ];
           }
