@@ -50,9 +50,15 @@ def get_ssh_target(ta) -> str | None:
         return None
 
     # strip common ssh config prefixes that some users use to group hosts, e.g. "yzx9-" or "cvcd-"
-    for prefix in ["yzx9-", "cvcd-"]:
+    for prefix in ("yzx9-", "cvcd-"):
         if target.startswith(prefix):
             target = target[len(prefix) :]
+            break
+
+    # strip common ssh config suffixes that some users use, e.g. "hostname-frp"
+    for suffix in ("-frp",):
+        if target.endswith(suffix):
+            target = target[: -len(suffix)]
             break
 
     return target
