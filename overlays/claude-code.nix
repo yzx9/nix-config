@@ -1,9 +1,9 @@
-# Pin claude-code to 2.1.195.
+# Pin claude-code to 2.1.215.
 #
 # claude-code's version and per-platform binary checksum live in a manifest
 # (pkgs/by-name/cl/claude-code/manifest.json) that package.nix reads via
 # lib.importJSON — a `let` binding, so it can't be reached by overrideAttrs.
-# Instead we re-derive `version` + `src` from a local copy of the 2.1.195
+# Instead we re-derive `version` + `src` from a local copy of the 2.1.215
 # manifest and let the rest of the derivation (installPhase, versionCheckHook,
 # meta) carry over unchanged. Checksums are the SHA-256 of the `claude` binary
 # published at downloads.claude.ai/claude-code-releases/<version>/<platform>/claude.
@@ -13,12 +13,12 @@ final: prev:
 
 let
   manifest = {
-    version = "2.1.195";
+    version = "2.1.215";
     platforms = {
-      darwin-arm64.checksum = "8b45adad93f336ab95f33e714494b19fd3377a494eb05c122c8677bc895876ad";
-      darwin-x64.checksum = "7eb8716e6d6e6a278d13158793529336290837fca457facfec656f1b1a287c60";
-      linux-arm64.checksum = "b02279999058dc80a0e1c5d39463d1545a178615492f84139aac8d61214a7e9a";
-      linux-x64.checksum = "8323e70125063147a4478b957745d835a87e5e72ffd25b838ea9a841c03e6a37";
+      darwin-arm64.checksum = "90608b5c5ab504e96e77365cea6203d046e291d59b2bb42cf28dcb2ccdf9dd58";
+      darwin-x64.checksum = "1ef5f5e56ede9f7765a9bef654ece6045dba58f48b7f5b699765375953d52b6b";
+      linux-arm64.checksum = "2b43a3d5b0787217e5d7381fad42c7314292546fe9db9eb8b9b379de90509b30";
+      linux-x64.checksum = "c1efffaaf370aa187cb6a09dd93d4e511c646899b0078476f83791b664bde7fe";
     };
   };
   platformKey = "${final.stdenv.hostPlatform.node.platform}-${final.stdenv.hostPlatform.node.arch}";
