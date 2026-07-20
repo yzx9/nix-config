@@ -18,15 +18,7 @@ jobs:
 
         package:
           - aim
-          - catppuccin-bat
-          - catppuccin-yazi-flavor
           - gstack
-          - paseo
-          - paseo-relay
-          - pmp-library
-          - vaa3d-x
-          - with-secrets
-          - zai-mcp-server
           - zotero-mcp
 
     runs-on: ${{ matrix.os }}
@@ -45,7 +37,7 @@ jobs:
           if [ "$available" = "true" ]; then
             nix --accept-flake-config build .#${{ matrix.package }}
           else
-            echo "⏭️ Skipping ${{ matrix.package }} - not available on this platform"
+            echo "Skipping ${{ matrix.package }} - not available on this platform"
           fi
 
   build-nixos-configuration:
