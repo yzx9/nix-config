@@ -7,16 +7,6 @@
 
 let
   cfg = config.my.proxy;
-
-  assets =
-    with pkgs;
-    symlinkJoin {
-      name = "xray-assets";
-      paths = [
-        v2ray-geoip
-        v2ray-domain-list-community
-      ];
-    };
 in
 lib.mkIf cfg.selfHost.enable {
   age.secrets."xray.json".file = ../../secrets/xray.json.age;
@@ -33,9 +23,6 @@ lib.mkIf cfg.selfHost.enable {
       KeepAlive = true;
       StandardOutPath = "/var/log/xray.log";
       StandardErrorPath = "/var/log/xray.log";
-
-      # https://xtls.github.io/config/features/env.html
-      EnvironmentVariables.XRAY_LOCATION_ASSET = "${assets}/share/v2ray";
     };
   };
 }
