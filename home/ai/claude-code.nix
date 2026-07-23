@@ -7,6 +7,7 @@
 
 let
   hasProxy = config.my.proxy.httpPublic != null;
+  enableSearch = false;
 
   # age-managed secret file. `.envrc`-style lines: `KEY=value` or
   # `export KEY=value`.
@@ -150,7 +151,7 @@ in
     settings = {
       env = {
         ## Enable tool search for all tools
-        #ENABLE_TOOL_SEARCH = "yes";
+        ENABLE_TOOL_SEARCH = if enableSearch then "yes" else "false";
         # Custom API endpoint
         API_TIMEOUT_MS = "3000000";
         # Disable non-essential traffic for privacy
@@ -181,7 +182,6 @@ in
               "rm -rf"
             ]
             ++ (mkBashSubCmds "git" [
-              "force"
               "reset"
               "push"
             ])
@@ -198,6 +198,7 @@ in
             "Read(**/*)" # allow reading all files, but deny specific sensitive files below
             "Read(~/.cargo/registry/*)"
             "Read(/nix/store/*)"
+            "Agent(isolation:worktree)"
 
             "Search"
             "WebFetch" # allow any fetches
@@ -249,34 +250,18 @@ in
             # "zai-zread"
           ])
           ++ (mkHmMcpCmds "github" [
+            "get_*"
+            "list_*"
+            "search_*"
             "issue_read"
             "pull_request_read"
-            "list_branches"
-            "list_commits"
-            "list_issues"
-            "list_pull_requests"
-            "list_releases"
-            "list_tags"
-            "get_commit"
-            "get_file_contents"
-            "get_latest_release"
-            "get_me"
-            "get_tag"
-            "search_code"
-            "search_commits"
-            "search_repositories"
-            "search_issues"
-            "search_pull_requests"
           ])
           ++ (mkHmMcpCmds "zotero-mcp" [
+            "get_*"
+            "list_*"
+            "search_*"
             "create_note"
-            "get_item_metadata"
-            "get_item_fulltext"
-            "get_item_children"
-            "list_libraries"
             "semantic_search"
-            "get_notes"
-            "search_items"
             "switch_library"
           ]);
 
@@ -323,32 +308,29 @@ in
           "~/Library/pnpm" # pnpm v11 global store location, otherwise pnpm falls back to <project>/.pnpm-store
         ];
 
-        network = lib.mkMerge [
-          {
-            allowedDomains = [
-              "registry.yarnpkg.com"
-              "raw.githubusercontent.com"
-              "files.pythonhosted.org"
-              "*.crates.io"
-              "*.github.com"
-              "*.npmjs.org"
-              "*.pypi.org"
+        network = {
+          allowedDomains = [
+            "registry.yarnpkg.com"
+            "raw.githubusercontent.com"
+            "files.pythonhosted.org"
+            "*.crates.io"
+            "*.github.com"
+            "*.npmjs.org"
+            "*.pypi.org"
 
-              # codex
-              "api.openai.com"
-              "chatgpt.com"
-            ];
-            allowUnixSockets = [
-              "/var/run/docker.sock"
-              "/nix/var/nix/daemon-socket/socket"
-            ];
-            allowLocalBinding = true;
-          }
-
-          (lib.mkIf hasProxy {
-            httpProxyPort = config.my.proxy.httpPublicPort;
-          })
-        ];
+            # codex
+            "api.openai.com"
+            "chatgpt.com"
+          ];
+          allowUnixSockets = [
+            "/var/run/docker.sock"
+            "/nix/var/nix/daemon-socket/socket"
+          ];
+          allowLocalBinding = true;
+        }
+        // (lib.optionalAttrs hasProxy {
+          httpProxyPort = config.my.proxy.httpPublicPort;
+        });
       };
 
       # To hide attribution, set to empty strings.
@@ -476,7 +458,6 @@ in
 
     context = ''
       ## General Guidelines
-
       - You are living in a nix-managed environment with declarative configuration. Don't install packages imperatively.
         Instead, use tools such as `nix-env` or `npx` to make packages and utilities available in the environment
       - The user often use voice input, which may occasionally lead to transcription errors. If a word or phrase doesn’t
@@ -484,23 +465,20 @@ in
       - Stop before pushing, even in the background session. Don’t draft a PR.
 
       ## Tool Usage
-
-      - Some tools may be available through tool search, including GitHub, Context7, Playwright, vision and web search
-        tools. Search when needed; do not assume exact tool names
       - For read-only GitHub-related tasks, use the `github` MCP, such as repository search and code exploration. When
         the GitHub MCP is insufficient, use the `gh` CLI
       - For web automation tasks, use the `playwright` MCP, especially when testing web applications
       - For documentation lookups, try the `context7` MCP first
       - Perform visual checks with `zai-vision`
       - Search the web with `tavily`
+    ''
+    + lib.optionalString enableSearch ''
+      - Some tools may be available through tool search, including GitHub, Context7, Playwright, vision and web search
+        tools. Search when needed; do not assume exact tool names
 
       ### Understanding tool_reference Response Type
-
-      When ToolSearch returns a response containing:
-      {"type": "tool_reference", "tool_name": "Workflow"}
-
-      This means the tool is now available. Call it directly:
-      Workflow({script: "...", title: "..."})
+      When ToolSearch returns a response containing: {"type": "tool_reference", "tool_name": "Workflow"}
+      This means the tool is now available. Call it directly: Workflow({script: "...", title: "..."})
     '';
 
     lspServers = {
