@@ -13,7 +13,7 @@ let
     owner = "mattpocock";
     repo = "skills";
     rev = "9603c1cc8118d08bc1b3bf34cf714f62178dea3b";
-    hash = "sha256-0ha4c5fp4ign40qds26f13id78b0ndp1dpd5if96383xmx241ajb=";
+    hash = "sha256-S6pARK99oGGSi6XdFm6zYKHT4gjOCN0wIPZFcl1hREE=";
   };
 in
 {
