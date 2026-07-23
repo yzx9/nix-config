@@ -344,9 +344,9 @@ in
 
             if [ -n "$CLAUDE_ENV_FILE" ]; then
               cat >> "$CLAUDE_ENV_FILE" <<'DIRENV'
-            eval "$(direnv export bash)"
+            eval "$(direnv export zsh)"
             cd() {
-              builtin cd "$@" && eval "$(direnv export bash)"
+              builtin cd "$@" && eval "$(direnv export zsh)"
             }
             DIRENV
             fi
