@@ -80,7 +80,6 @@ in
         # misc
         "hyperconnect" # xiaomi remote control
         "fiji" # image viewer
-        "google-chrome" # browser
         # "master-pdf-editor"
         "steam" # game
         "vmware-fusion" # virtual machine
