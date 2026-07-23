@@ -200,6 +200,7 @@ in
             "Read(/nix/store/*)"
             "Agent(isolation:worktree)"
 
+            "EnterWorktree"
             "Search"
             "WebFetch" # allow any fetches
             "WebSearch" # allow any searches
