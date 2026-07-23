@@ -285,7 +285,7 @@ in
         };
 
       sandbox = {
-        enabled = false; # disable due to E2BIG: #73437 #73468 #74032 #74081
+        enabled = true;
         autoAllowBashIfSandboxed = true;
         failIfUnavailable = true;
 
@@ -300,6 +300,8 @@ in
           "cargo clippy *"
           "cargo test *"
         ];
+
+        sandbox.filesystem.disabled = true; # disable due to E2BIG: #73437 #73468 #74032 #74081
 
         # Default read behavior: read access to the entire computer
         filesystem.allowWrite = [
