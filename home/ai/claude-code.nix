@@ -338,7 +338,6 @@ in
         let
           # https://github.com/direnv/direnv/wiki/Claude-Code
           direnvHook = pkgs.writeScript "direnv-hook" ''
-            #!/bin/bash
             # Writes direnv setup to CLAUDE_ENV_FILE, which is sourced before each Bash command.
             # Also wraps cd so mid-command directory changes re-evaluate direnv.
 
