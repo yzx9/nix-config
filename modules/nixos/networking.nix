@@ -12,10 +12,7 @@ lib.mkMerge [
   })
 
   (lib.mkIf config.my.proxy.selfHost.enable {
-    age.secrets.xray = {
-      file = ../../secrets/xray.json.age;
-      mode = "444"; # workaround with systemd dynamic user
-    };
+    age.secrets.xray.file = ../../secrets/xray.json.age;
 
     services.xray = {
       enable = true;
