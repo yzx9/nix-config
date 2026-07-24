@@ -133,7 +133,7 @@ in
             hooks = [
               {
                 type = "command";
-                command = "bash -c 'name=$(${jq} -er .name) || exit 1; ${wt} switch --create \"$name\" --no-cd --format=json | ${jq} -er .path'";
+                command = "bash -c 'set -o pipefail; name=$(${jq} -er .name) || exit 1; cd \"\${CLAUDE_PROJECT_DIR:-.}\" || exit 1; ${wt} switch --create \"$name\" --no-cd --format=json | ${jq} -er .path'";
               }
             ];
           }
@@ -153,7 +153,7 @@ in
     })
 
     # Activity tracking — mirrors the upstream plugin's marker hooks
-    # (https://github.com/max-sixty/worktrunk/blob/v0.60.0/plugins/worktrunk/hooks/hooks.json),
+    # (https://github.com/max-sixty/worktrunk/blob/v0.69.0/plugins/worktrunk/hooks/hooks.json),
     # calling `wt` by absolute nix path. The hook-list type merges with
     # claude-code.nix's own hooks (e.g. the GUI Notification) by concatenation.
     (lib.mkIf cfg.claudeCodeIntegration.activityTracking {
