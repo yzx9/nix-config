@@ -43,11 +43,13 @@ jobs:
   build-nixos-configuration:
     strategy:
       fail-fast: false # Continue with the remaining packages if one fails
-
+      max-parallel: 1 # To reuse the cache
       matrix:
         conf:
           - os: ubuntu-24.04-arm
             host: yzx9-rpi5
+          - os: ubuntu-24.04-arm
+            host: yzx9-pie
 
     runs-on: ${{ matrix.conf.os }}
 
