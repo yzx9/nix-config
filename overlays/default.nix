@@ -10,7 +10,6 @@ let
     nur = import ./nur.nix inputs;
     packages = import ./packages.nix inputs;
     python-fastmcp = import ./python-fastmcp.nix inputs;
-    python-pandas-stubs = import ./python-pandas-stubs.nix inputs;
     stats = import ./stats.nix inputs;
     terminal-notifier = import ./terminal-notifier.nix inputs;
     zotero = import ./zotero.nix inputs;
