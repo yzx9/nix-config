@@ -5,11 +5,12 @@ let
 
   overlays = {
     aim = import ./aim.nix inputs;
-    gopass = import ./gopass.nix inputs;
     nur = import ./nur.nix inputs;
     packages = import ./packages.nix inputs;
-    python-fastmcp = import ./python-fastmcp.nix inputs;
-    terminal-notifier = import ./terminal-notifier.nix inputs;
+
+    gopass = import ./gopass.nix;
+    python-fastmcp = import ./python-fastmcp.nix;
+    terminal-notifier = import ./terminal-notifier.nix;
   };
 in
 overlays

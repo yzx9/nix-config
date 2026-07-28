@@ -1,5 +1,3 @@
-{ ... }:
-
 final: prev:
 
 # terminal-notifier is darwin-only, and this is a darwin build fix, so gate on it.

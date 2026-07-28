@@ -1,5 +1,3 @@
-_inputs:
-
 final: prev:
 
 let
