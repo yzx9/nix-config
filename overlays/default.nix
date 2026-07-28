@@ -11,7 +11,6 @@ let
     packages = import ./packages.nix inputs;
     python-fastmcp = import ./python-fastmcp.nix inputs;
     terminal-notifier = import ./terminal-notifier.nix inputs;
-    zotero = import ./zotero.nix inputs;
   };
 in
 overlays
