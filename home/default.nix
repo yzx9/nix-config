@@ -9,6 +9,7 @@
     ./ai
     ./gui
 
+    ./aim.nix
     ./apps.nix
     ./atuin.nix
     ./base.nix
@@ -22,7 +23,6 @@
     ./gradle.nix
     ./lazygit.nix
     ./nvim.nix
-    ./pim.nix
     ./shell.nix
     ./ssh.nix
     ./worktrunk.nix
