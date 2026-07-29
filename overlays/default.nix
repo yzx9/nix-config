@@ -12,6 +12,7 @@ let
     kitty = import ./kitty.nix;
     python-fastmcp = import ./python-fastmcp.nix;
     terminal-notifier = import ./terminal-notifier.nix;
+    worktrunk = import ./worktrunk.nix;
   };
 in
 overlays
