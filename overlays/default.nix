@@ -9,6 +9,7 @@ let
     packages = import ./packages.nix inputs;
 
     gopass = import ./gopass.nix;
+    kitty = import ./kitty.nix;
     python-fastmcp = import ./python-fastmcp.nix;
     terminal-notifier = import ./terminal-notifier.nix;
   };
