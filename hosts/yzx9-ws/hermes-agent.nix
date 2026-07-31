@@ -128,14 +128,6 @@ in
         env.GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_PERSONAL_ACCESS_TOKEN}";
       };
 
-      playwright = {
-        command = lib.getExe pkgs.playwright-mcp;
-        args = [
-          "--headless"
-          "--isolated"
-        ];
-      };
-
       zai-vision = {
         command = lib.getExe pkgs.yzx9.zai-mcp-server;
         env = {

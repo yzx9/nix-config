@@ -61,17 +61,9 @@ in
         };
 
         github = {
-          command = lib.getExe pkgs.playwright-mcp;
+          command = lib.getExe pkgs.github-mcp-server;
           args = [ "stdio" ];
           env_vars = [ "GITHUB_PERSONAL_ACCESS_TOKEN" ];
-        };
-
-        playwright = {
-          command = lib.getExe pkgs.playwright-mcp;
-          args = [
-            "--headless"
-            "--isolated"
-          ];
         };
       };
     };

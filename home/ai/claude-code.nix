@@ -549,15 +549,6 @@ in
         headers.CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
       };
 
-      playwright = {
-        type = "stdio";
-        command = lib.getExe pkgs.playwright-mcp;
-        args = [
-          "--headless"
-          "--isolated"
-        ];
-      };
-
       tavily = {
         type = "stdio";
         command = lib.getExe pkgs.yzx9.tavily-mcp;

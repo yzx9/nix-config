@@ -110,16 +110,6 @@ in
           headers.CONTEXT7_API_KEY = "{env:CONTEXT7_API_KEY}";
         };
 
-        playwright = {
-          enabled = true;
-          type = "local";
-          command = lib.getExe pkgs.playwright-mcp;
-          args = [
-            "--headless"
-            "--isolated"
-          ];
-        };
-
         zai-vision = {
           enabled = true;
           type = "local";
