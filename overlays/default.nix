@@ -11,6 +11,7 @@ let
     gopass = import ./gopass.nix;
     kitty = import ./kitty.nix;
     python-fastmcp = import ./python-fastmcp.nix;
+    python-pandas-stubs = import ./python-pandas-stubs.nix;
     terminal-notifier = import ./terminal-notifier.nix;
     worktrunk = import ./worktrunk.nix;
   };
