@@ -33,7 +33,24 @@
   };
 
   # A multi-shell multi-command argument completer
-  programs.carapace.enable = true;
+  programs.carapace = {
+    enable = true;
+    # carapace ships a static `wt` completer that shadows wt's own dynamic
+    # completer (real-time git branches, per-user aliases, #3172 mirror), so
+    # `wt co<Tab>` returns nothing. Exclude `wt` so carapace never claims it
+    # and wt's `compdef _wt_lazy_complete wt` wins. The env var is baked into
+    # the carapace binary only -- it does not pollute the shell environment.
+    # (Mirrors HM's own `ignoreCase` wrapping with CARAPACE_MATCH.)
+    package = pkgs.symlinkJoin {
+      name = "carapace";
+      paths = [ pkgs.carapace ];
+      nativeBuildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/carapace --set CARAPACE_EXCLUDES wt
+      '';
+      meta.mainProgram = "carapace";
+    };
+  };
 
   # The minimal, blazing-fast, and infinitely customizable prompt for any shell!
   programs.starship = {
