@@ -1,0 +1,118 @@
+diff --git a/internal/backend/crypto/age/age.go b/internal/backend/crypto/age/age.go
+index e92a13b..e755e82 100644
+--- a/internal/backend/crypto/age/age.go
++++ b/internal/backend/crypto/age/age.go
+@@ -99,20 +99,23 @@ func (a *Age) tryStartAgent(ctx context.Context) {
+ 	}
+ 
+ 	// send identities to agent
+-	ids, err := a.getAllIdentities(ctx)
++	ids, err := a.getAllIds(ctx)
+ 	if err != nil {
+ 		debug.Log("failed to get identities: %s", err)
+ 
+ 		return
+ 	}
+ 
+-	idStrs := make([]string, 0, len(ids))
+-	for _, id := range ids {
+-		idStrs = append(idStrs, fmt.Sprintf("%s", id))
+-	}
++	sIds, err := a.identitiesToString(ids)
++	if err != nil {
++		debug.Log("failed to serialize identities: %s", err)
+ 
+-	if err := client.SendIdentities(strings.Join(idStrs, "\n")); err != nil {
+-		debug.Log("failed to send identities to agent: %s", err)
++		return
++	}
++	if sIds != "" {
++		if err := client.SendIdentities(sIds); err != nil {
++			debug.Log("failed to send identities to agent: %s", err)
++		}
+ 	}
+ 
+ 	// set timeout
+@@ -167,13 +170,35 @@ func (a *Age) Lock() {
+ 	a.askPass.Lock()
+ }
+ 
++// identitiesToString serializes the given identities into a single-line,
++// space-separated string for the age agent's line-oriented "identities"
++// command.
++//
++// The agent reads commands one line at a time and parses only the tokens on
++// that line (it re-joins them with newlines before parsing). Sending identities
++// newline-separated therefore turns every identity after the first into a
++// spurious "unknown command" that the agent discards. All identities must live
++// on a single line, i.e. space-separated.
++//
++// Only natively serializable identity types are included. SSH identities
++// (filippo.io/age/agessh) expose no String() form for the private key and
++// cannot be round-tripped through the wire format; they are skipped here, and
++// decryption for them falls back to the local code path exactly as before. All
++// of these encodings are bech32 and therefore whitespace-free, so separating
++// them with spaces is unambiguous to the agent's space-splitting parser.
+ func (a *Age) identitiesToString(ids []age.Identity) (string, error) {
+-	var sb strings.Builder
++	parts := make([]string, 0, len(ids))
+ 	for _, id := range ids {
+-		fmt.Fprintln(&sb, id)
++		s, ok := identityToString(id)
++		if !ok {
++			debug.Log("skipping non-serializable identity %T for agent transfer", id)
++
++			continue
++		}
++		parts = append(parts, s)
+ 	}
+ 
+-	return sb.String(), nil
++	return strings.Join(parts, " "), nil
+ }
+ 
+ // String implements fmt.Stringer.
+diff --git a/internal/backend/crypto/age/decrypt.go b/internal/backend/crypto/age/decrypt.go
+index b0a542b..745992a 100644
+--- a/internal/backend/crypto/age/decrypt.go
++++ b/internal/backend/crypto/age/decrypt.go
+@@ -74,8 +74,10 @@ func (a *Age) decryptWithAgent(ctx context.Context, ciphertext []byte) ([]byte,
+ 	if err != nil {
+ 		return nil, err
+ 	}
+-	if err := client.SendIdentities(sIds); err != nil {
+-		debug.Log("failed to send identities to agent: %s", err)
++	if sIds != "" {
++		if err := client.SendIdentities(sIds); err != nil {
++			debug.Log("failed to send identities to agent: %s", err)
++		}
+ 	}
+ 	// set timeout
+ 	if timeout := config.AsInt(config.String(ctx, "age.agent-timeout")); timeout > 0 {
+diff --git a/internal/backend/crypto/age/identities.go b/internal/backend/crypto/age/identities.go
+index 9a034e2..dcad912 100644
+--- a/internal/backend/crypto/age/identities.go
++++ b/internal/backend/crypto/age/identities.go
+@@ -207,6 +207,22 @@ func (a *Age) IdentityRecipients(ctx context.Context) ([]age.Recipient, error) {
+ 	return r, nil
+ }
+ 
++// identityToString returns the portable string encoding of a natively
++// serializable age identity. It returns ok=false for types that cannot be
++// round-tripped through a string — notably SSH identities from
++// filippo.io/age/agessh, whose private-key types implement no String() method
++// and therefore format as an unparseable Go struct (e.g. "&{[185 .. 233]}").
++func identityToString(id age.Identity) (string, bool) {
++	switch id := id.(type) {
++	case *age.X25519Identity:
++		return id.String(), true
++	case *wrappedIdentity:
++		return id.String(), true
++	default:
++		return "", false
++	}
++}
++
+ func IdentityToRecipient(id age.Identity) age.Recipient {
+ 	switch id := id.(type) {
+ 	case *age.X25519Identity:

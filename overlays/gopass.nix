@@ -21,6 +21,23 @@ final: prev:
         # so test files are never compiled and it would be dead source here — drop it.
         excludes = [ "internal/backend/crypto/age/decrypt_agent_test.go" ];
       })
+
+      # gopasspw/gopass#3509 — "fix(age): send agent identities space-separated
+      # on a single line". The client serialized identities newline-separated,
+      # but the age agent's line-oriented parser reads only the first line, so
+      # every identity after the first was discarded — the agent loaded at most
+      # one identity, and Go's randomized map order made this non-deterministic
+      # (the browser extension and CLI appeared to behave differently).
+      #
+      # Vendored (not fetchpatch) because the upstream commit doesn't apply to
+      # v1.16.1 cleanly: it also touches commands.go and three _test.go files
+      # whose context/helpers don't exist on this tag, and its identityToString
+      # switch adds `case *age.HybridIdentity` and `case *plugin.Identity` —
+      # both absent from the filippo.io/age v1.2.1 that v1.16.1 vendors
+      # (HybridIdentity arrived in age v1.3.x; plugin.Identity has no String()
+      # method yet). Both cases are dropped here; the production hunks otherwise
+      # match the PR byte-for-byte.
+      ./gopass/pr3509.patch
     ];
   });
 }
