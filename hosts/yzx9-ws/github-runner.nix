@@ -13,7 +13,7 @@
     extraEnvironment = {
       http_proxy = config.my.proxy.http;
       https_proxy = config.my.proxy.http;
-      no_proxy = "localhost,.internal.example.com";
+      no_proxy = "127.0.0.1,localhost,::1";
     };
   };
 }
