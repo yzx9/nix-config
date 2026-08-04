@@ -32,7 +32,6 @@ lib.mkMerge [
         tree
 
         just # command runner
-        ripgrep # a line-oriented search tool
         fastfetch # system information tool
         kitty.kitten # always install kitten for terminal control
       ])
@@ -42,6 +41,11 @@ lib.mkMerge [
           coreutils-prefixed
         ]
       );
+
+    programs = {
+      fd.enable = true; # a simple, fast and user-friendly alternative to {command}`find`
+      ripgrep.enable = true; # a line-oriented search tool
+    };
 
     home.shellAliases.j = "just";
   }

@@ -16,6 +16,7 @@
     ./bat.nix
     ./btop.nix
     ./delta.nix
+    ./fzf.nix
     ./gh.nix
     ./git.nix
     ./gopass.nix
