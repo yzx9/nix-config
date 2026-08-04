@@ -6,6 +6,9 @@
   writableTmpDirAsHomeHook,
   nodejs,
   bun,
+  jq,
+  curl,
+  git,
   perl,
   playwright-driver,
 }:
@@ -149,13 +152,23 @@ stdenv.mkDerivation (finalAttrs: {
     # put bun on PATH. Keep the real file and its wrapper in the same dir so
     # the scripts' SCRIPT_DIR=$(dirname "$0") still resolves siblings.
     # gstack-global-discover is a compiled binary, installed separately above.
+    # jq/curl/git are also pinned: the scripts hard-require them via
+    # `command -v <tool>` guards, so a caller shell that lacks them (e.g. a
+    # project direnv without jq) would break with "command not found: jq".
     for script in bin/gstack-* bin/chrome-cdp; do
       if [ -f "$script" ] && [ "$script" != "bin/gstack-global-discover" ]; then
         base=''${script##*/}
         install -m755 "$script" $dest/bin/.$base-wrapped
         patchShebangs $dest/bin/.$base-wrapped
         makeWrapper $dest/bin/.$base-wrapped $dest/bin/$base \
-          --prefix PATH : ${lib.makeBinPath [ bun ]}
+          --prefix PATH : ${
+            lib.makeBinPath [
+              bun
+              jq
+              curl
+              git
+            ]
+          }
       fi
     done
 
@@ -167,7 +180,14 @@ stdenv.mkDerivation (finalAttrs: {
         install -m755 "$script" $dest/browse/bin/.$base-wrapped
         patchShebangs $dest/browse/bin/.$base-wrapped
         makeWrapper $dest/browse/bin/.$base-wrapped $dest/browse/bin/$base \
-          --prefix PATH : ${lib.makeBinPath [ bun ]}
+          --prefix PATH : ${
+            lib.makeBinPath [
+              bun
+              jq
+              curl
+              git
+            ]
+          }
       fi
     done
 
