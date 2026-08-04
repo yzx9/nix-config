@@ -470,7 +470,7 @@ in
         Instead, use tools such as `nix-env` or `npx` to make packages and utilities available in the environment
       - The user often use voice input, which may occasionally lead to transcription errors. If a word or phrase doesn’t
         seem to make sense, please first consider possible phonetic alternatives.
-      - Stop before pushing, even in the background session. Don’t draft a PR.
+      - Don't push or open PRs without asking — even in background sessions; publishing stays under my manual control.
 
       ## Tool Usage
       - For read-only GitHub-related tasks, use the `github` MCP, such as repository search and code exploration. When
