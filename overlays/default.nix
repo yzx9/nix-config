@@ -12,7 +12,6 @@ let
     gopass = import ./gopass.nix;
     python-pandas-stubs = import ./python-pandas-stubs.nix;
     terminal-notifier = import ./terminal-notifier.nix;
-    worktrunk = import ./worktrunk.nix;
   };
 in
 overlays
