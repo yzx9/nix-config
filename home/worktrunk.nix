@@ -48,6 +48,25 @@ in
 
       # On worktree creation: if a .worktreeinclude file exists, copy ignored files to the new worktree.
       "post-start".copy = "wt step copy-ignored --require-include";
+
+      # TODO: Move to "github.com/yzx9/*" in v0.72.0
+      projects =
+        let
+          projects = [
+            "gpm"
+            "nex"
+          ];
+
+          # On worktree creation: if a pnpm-lock.yaml exists, run pnpm install in the new worktree.
+          value."post-start".pnpm-install =
+            "if [ -f {{ primary_worktree_path }}/pnpm-lock.yaml ]; then pnpm install --dir {{ worktree_path }}; fi";
+
+          mkConfig = project: {
+            name = "github.com/yzx9/${project}";
+            inherit value;
+          };
+        in
+        lib.listToAttrs (lib.map mkConfig projects);
     };
   };
 }
