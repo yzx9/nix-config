@@ -116,12 +116,6 @@ in
     };
 
     mcpServers = {
-      context7 = {
-        url = "https://mcp.context7.com/mcp";
-        headers.CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
-        timeout = 180;
-      };
-
       github = {
         command = lib.getExe pkgs.github-mcp-server;
         args = [ "stdio" ];

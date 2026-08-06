@@ -29,7 +29,6 @@ let
 
     text = ''
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
-        --allow CONTEXT7_API_KEY \
         --allow GITHUB_PERSONAL_ACCESS_TOKEN \
         -- codex "$@"
     '';
@@ -55,11 +54,6 @@ in
       ];
 
       mcp_servers = {
-        context7 = {
-          url = "https://mcp.context7.com/mcp";
-          env_http_headers.CONTEXT7_API_KEY = "\$CONTEXT7_API_KEY";
-        };
-
         github = {
           command = lib.getExe pkgs.github-mcp-server;
           args = [ "stdio" ];

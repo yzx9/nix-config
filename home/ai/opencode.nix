@@ -28,7 +28,6 @@ let
     # Inject API keys at runtime
     text = ''
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
-        --allow CONTEXT7_API_KEY \
         --allow GITHUB_PERSONAL_ACCESS_TOKEN \
         --allow GLM_CODING_API_KEY \
         --allow UNI_YUANJING_API_KEY \
@@ -103,13 +102,6 @@ in
           environment.GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_PERSONAL_ACCESS_TOKEN}";
         };
 
-        context7 = {
-          enabled = true;
-          type = "remote";
-          url = "https://mcp.context7.com/mcp";
-          headers.CONTEXT7_API_KEY = "{env:CONTEXT7_API_KEY}";
-        };
-
         zai-vision = {
           enabled = true;
           type = "local";
@@ -144,8 +136,7 @@ in
     };
 
     context = ''
-      ## General Guidelines
-      - When you need to search docs, use `context7` tools.
+      ## General
     '';
   };
 

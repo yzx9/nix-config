@@ -132,7 +132,6 @@ let
       esac
 
       with-secrets "${secretFile}" \
-        --allow CONTEXT7_API_KEY \
         --allow GITHUB_PERSONAL_ACCESS_TOKEN \
         --allow GLM_CODING_API_KEY \
         --allow TAVILY_API_KEY \
@@ -242,7 +241,6 @@ in
             "why-depends"
           ])
           ++ (mkHmMcps [
-            "context7"
             "playwright"
             "tavily"
             "zai-vision"
@@ -392,29 +390,15 @@ in
         in
         mkNameOnly [
           # gstack
-          "browse"
           "codex"
-          "cso"
-          "design-consultation"
-          "design-html"
-          "design-review"
-          "design-shotgun"
-          "devex-review"
           "gstack"
-          "investigate"
-          "land-and-deploy"
-          "landing-report"
           "office-hours"
           "plan-ceo-review"
           "plan-design-review"
           "plan-devex-review"
           "plan-eng-review"
           "plan-tune"
-          "qa"
-          "qa-only"
           "review"
-          "ship"
-          "spec"
 
           # mattpocock/skills: /grill-me launches /grilling by name, so keep
           # grilling's name visible to the model but hide its description (no
@@ -425,12 +409,26 @@ in
         // mkUserInvocableOnly [
           # gstack
           "autoplan"
+          "browse"
           "context-restore"
           "context-save"
+          "cso"
+          "design-consultation"
+          "design-html"
+          "design-review"
+          "design-shotgun"
+          "devex-review"
           "diagram"
           "document-generate"
           "document-release"
+          "investigate"
+          "land-and-deploy"
+          "landing-report"
+          "qa"
+          "qa-only"
           "retro"
+          "ship"
+          "spec"
           "make-pdf"
         ]
         // mkOff [
@@ -465,28 +463,22 @@ in
     skills = import ./skills.nix { inherit pkgs; };
 
     context = ''
-      ## General Guidelines
-      - You are living in a nix-managed environment with declarative configuration. Don't install packages imperatively.
-        Instead, use tools such as `nix-env` or `npx` to make packages and utilities available in the environment
-      - The user often use voice input, which may occasionally lead to transcription errors. If a word or phrase doesn’t
-        seem to make sense, please first consider possible phonetic alternatives.
-      - Don't push or open PRs without asking — even in background sessions; publishing stays under my manual control.
+      ## General
+      - You are living in a nix-managed environment with declarative configuration. Don't install packages imperatively. Instead, use `nix-shell` to use packages and utilities
+      - The user often use voice input, which may occasionally lead to transcription errors. If a word or phrase doesn’t seem to make sense, please first consider possible phonetic alternatives
+      - Don't push or open PRs without asking — even in background sessions; publishing stays under my manual control
 
       ## Tool Usage
-      - For read-only GitHub-related tasks, use the `github` MCP, such as repository search and code exploration. When
-        the GitHub MCP is insufficient, use the `gh` CLI
+      - For read-only GitHub-related tasks, use the `github` MCP, such as repository search and code exploration. When the GitHub MCP is insufficient, use the `gh` CLI
       - For web automation tasks, use the `playwright` MCP, especially when testing web applications
-      - For documentation lookups, try the `context7` MCP first
       - Perform visual checks with `zai-vision`
       - Search the web with `tavily`
     ''
     + lib.optionalString enableSearch ''
-      - Some tools may be available through tool search, including GitHub, Context7, Playwright, vision and web search
-        tools. Search when needed; do not assume exact tool names
+      - Some tools may be available through tool search, including GitHub, vision and web search tools. Search when needed; do not assume exact tool names
 
       ### Understanding tool_reference Response Type
-      When ToolSearch returns a response containing: {"type": "tool_reference", "tool_name": "Workflow"}
-      This means the tool is now available. Call it directly: Workflow({script: "...", title: "..."})
+      When ToolSearch returns a response containing: {"type": "tool_reference", "tool_name": "Workflow"}. This means the tool is now available. Call it directly: Workflow({script: "...", title: "..."})
     '';
 
     lspServers = {
@@ -541,12 +533,6 @@ in
           "--read-only"
         ];
         env.GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_PERSONAL_ACCESS_TOKEN}";
-      };
-
-      context7 = {
-        type = "http";
-        url = "https://mcp.context7.com/mcp";
-        headers.CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
       };
 
       tavily = {
