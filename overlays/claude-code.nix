@@ -1,4 +1,4 @@
-# Pin claude-code to 2.1.221.
+# Pin claude-code.
 #
 # claude-code's version and per-platform binary checksum live in a manifest
 # (pkgs/by-name/cl/claude-code/manifest.json) that package.nix reads via
@@ -11,12 +11,12 @@ final: prev:
 
 let
   manifest = {
-    version = "2.1.221";
+    version = "2.1.223";
     platforms = {
-      darwin-arm64.checksum = "7a181f36ed0fc4fbac6cee4ecf2b615eff93d8b434221fff5d7c878dc5ebf380";
-      darwin-x64.checksum = "f408b9f7e46439f6e34a3687ff67433fc6bc189f40220ce4f0a1e829e58f0a52";
-      linux-arm64.checksum = "d3c59d6bcc4adcf4cd85abca3bc13fa1131a34cb32f982bdf030d83a3b11e700";
-      linux-x64.checksum = "60db8e88d42c24b5199c92cfd56ec88370c510c3789c6f364af748354f087ada";
+      darwin-arm64.checksum = "fcbe0b8d47570c501302dd1ad31cc26ac2810f022c45fa253936a6961dee32bf";
+      darwin-x64.checksum = "350e657428a6d34f7cf71f6738c5ebb6a1952ccb12fc1747f64297e065b1846f";
+      linux-arm64.checksum = "60e83d8db0e894d0e54413e5e7daa256d180db660f51e139a51b614fc30cf3ac";
+      linux-x64.checksum = "98226474f802e3094d6a86c5ade8883c16206d0fcb5c400b7401c800063e99d7";
     };
   };
   platformKey = "${final.stdenv.hostPlatform.node.platform}-${final.stdenv.hostPlatform.node.arch}";
