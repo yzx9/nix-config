@@ -11,12 +11,12 @@ final: prev:
 
 let
   manifest = {
-    version = "2.1.223";
+    version = "2.1.224";
     platforms = {
-      darwin-arm64.checksum = "fcbe0b8d47570c501302dd1ad31cc26ac2810f022c45fa253936a6961dee32bf";
-      darwin-x64.checksum = "350e657428a6d34f7cf71f6738c5ebb6a1952ccb12fc1747f64297e065b1846f";
-      linux-arm64.checksum = "60e83d8db0e894d0e54413e5e7daa256d180db660f51e139a51b614fc30cf3ac";
-      linux-x64.checksum = "98226474f802e3094d6a86c5ade8883c16206d0fcb5c400b7401c800063e99d7";
+      darwin-arm64.checksum = "391df9d2ab04e4cf32199335720ac7715a582e91eaecfd4d2198a16f57ea59b3";
+      darwin-x64.checksum = "7ae17a768a7270c7bd6c5484587c3c650dff425b4beeeb03addc1f2a4a7d702a";
+      linux-arm64.checksum = "3e50836e227868746273653e0f8115cf5fc9cb34a081847c6040c81d80812c33";
+      linux-x64.checksum = "a2b5add7dc4bcd8eaa029f4e8bdac4df7769b4073698db7989d206baf9419c2d";
     };
   };
   platformKey = "${final.stdenv.hostPlatform.node.platform}-${final.stdenv.hostPlatform.node.arch}";
