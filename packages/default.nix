@@ -21,7 +21,6 @@ in
     nixvim
     nixvim-lsp
     tavily-mcp
-    zai-mcp-server
     zotero-mcp
     ;
 

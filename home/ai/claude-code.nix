@@ -132,7 +132,6 @@ let
       esac
 
       with-secrets "${secretFile}" \
-        --allow GLM_CODING_API_KEY \
         --allow TAVILY_API_KEY \
         --allow ZOTERO_API_KEY \
         --allow ZOTERO_LIBRARY_ID \
@@ -242,10 +241,6 @@ in
           ++ (mkHmMcps [
             "playwright"
             "tavily"
-            "zai-vision"
-            "zai-web-reader"
-            "zai-web-search"
-            # "zai-zread"
           ])
           ++ (mkHmMcpCmds "zotero-mcp" [
             "get_*"
@@ -462,7 +457,6 @@ in
 
       ## Tool Usage
       - For GitHub-related tasks, use the `gh` CLI
-      - Perform visual checks with `zai-vision`
       - Search the web with `tavily`
     ''
     + lib.optionalString enableSearch ''
@@ -525,15 +519,6 @@ in
           # Tavily is reachable directly, so bypass the local proxy.
           NO_PROXY = "\${NO_PROXY},api.tavily.com";
           no_proxy = "\${no_proxy},api.tavily.com";
-        };
-      };
-
-      zai-vision = {
-        type = "stdio";
-        command = lib.getExe pkgs.yzx9.zai-mcp-server;
-        env = {
-          Z_AI_API_KEY = "\${GLM_CODING_API_KEY}";
-          Z_AI_MODE = "ZHIPU";
         };
       };
 

@@ -27,7 +27,5 @@ in
 
   with-secrets = pkgs.callPackage ./with-secrets { };
 
-  zai-mcp-server = pkgs.callPackage ./zai-mcp-server { };
-
   zotero-mcp = pkgs.callPackage ./zotero-mcp { };
 }

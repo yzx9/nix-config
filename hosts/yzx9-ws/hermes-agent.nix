@@ -116,22 +116,8 @@ in
     };
 
     mcpServers = {
-      zai-vision = {
-        command = lib.getExe pkgs.yzx9.zai-mcp-server;
-        env = {
-          Z_AI_API_KEY = "\${GLM_API_KEY}";
-          Z_AI_MODE = "ZHIPU";
-        };
-      };
-
       zai-web-search = {
         url = "https://open.bigmodel.cn/api/mcp/web_search_prime/mcp";
-        headers.Authorization = "Bearer \${GLM_API_KEY}";
-        timeout = 180;
-      };
-
-      zai-web-reader = {
-        url = "https://open.bigmodel.cn/api/mcp/web_reader/mcp";
         headers.Authorization = "Bearer \${GLM_API_KEY}";
         timeout = 180;
       };
@@ -143,12 +129,6 @@ in
       #     ZOTERO_API_KEY = "\${ZOTERO_API_KEY}";
       #     ZOTERO_LIBRARY_ID = "\${ZOTERO_LIBRARY_ID}";
       #   };
-      # };
-
-      # zai-zread = {
-      #   url = "https://open.bigmodel.cn/api/mcp/zread/mcp";
-      #   headers.Authorization = "Bearer \${GLM_API_KEY}";
-      #   timeout = 180;
       # };
     };
 
