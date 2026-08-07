@@ -116,12 +116,6 @@ in
     };
 
     mcpServers = {
-      github = {
-        command = lib.getExe pkgs.github-mcp-server;
-        args = [ "stdio" ];
-        env.GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_PERSONAL_ACCESS_TOKEN}";
-      };
-
       zai-vision = {
         command = lib.getExe pkgs.yzx9.zai-mcp-server;
         env = {

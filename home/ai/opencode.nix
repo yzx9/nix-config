@@ -28,7 +28,6 @@ let
     # Inject API keys at runtime
     text = ''
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
-        --allow GITHUB_PERSONAL_ACCESS_TOKEN \
         --allow GLM_CODING_API_KEY \
         --allow UNI_YUANJING_API_KEY \
         -- opencode "$@"
@@ -94,14 +93,6 @@ in
       };
 
       mcp = {
-        github = {
-          enabled = true;
-          type = "local";
-          command = lib.getExe pkgs.github-mcp-server;
-          args = [ "stdio" ];
-          environment.GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_PERSONAL_ACCESS_TOKEN}";
-        };
-
         zai-vision = {
           enabled = true;
           type = "local";

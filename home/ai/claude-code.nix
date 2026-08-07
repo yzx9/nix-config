@@ -132,7 +132,6 @@ let
       esac
 
       with-secrets "${secretFile}" \
-        --allow GITHUB_PERSONAL_ACCESS_TOKEN \
         --allow GLM_CODING_API_KEY \
         --allow TAVILY_API_KEY \
         --allow ZOTERO_API_KEY \
@@ -247,13 +246,6 @@ in
             "zai-web-reader"
             "zai-web-search"
             # "zai-zread"
-          ])
-          ++ (mkHmMcpCmds "github" [
-            "get_*"
-            "list_*"
-            "search_*"
-            "issue_read"
-            "pull_request_read"
           ])
           ++ (mkHmMcpCmds "zotero-mcp" [
             "get_*"
@@ -469,8 +461,7 @@ in
       - Don't push or open PRs without asking — even in background sessions; publishing stays under my manual control
 
       ## Tool Usage
-      - For read-only GitHub-related tasks, use the `github` MCP, such as repository search and code exploration. When the GitHub MCP is insufficient, use the `gh` CLI
-      - For web automation tasks, use the `playwright` MCP, especially when testing web applications
+      - For GitHub-related tasks, use the `gh` CLI
       - Perform visual checks with `zai-vision`
       - Search the web with `tavily`
     ''
@@ -525,16 +516,6 @@ in
     };
 
     mcpServers = {
-      github = {
-        type = "stdio";
-        command = lib.getExe pkgs.github-mcp-server;
-        args = [
-          "stdio"
-          "--read-only"
-        ];
-        env.GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_PERSONAL_ACCESS_TOKEN}";
-      };
-
       tavily = {
         type = "stdio";
         command = lib.getExe pkgs.yzx9.tavily-mcp;

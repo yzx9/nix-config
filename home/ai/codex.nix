@@ -29,7 +29,6 @@ let
 
     text = ''
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
-        --allow GITHUB_PERSONAL_ACCESS_TOKEN \
         -- codex "$@"
     '';
   };
@@ -53,13 +52,7 @@ in
         "${codex-notify}"
       ];
 
-      mcp_servers = {
-        github = {
-          command = lib.getExe pkgs.github-mcp-server;
-          args = [ "stdio" ];
-          env_vars = [ "GITHUB_PERSONAL_ACCESS_TOKEN" ];
-        };
-      };
+      mcp_servers = { };
     };
   };
 }
