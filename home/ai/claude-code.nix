@@ -172,7 +172,7 @@ in
           defaultMode = "auto";
 
           # Deny > Ask > Allow
-          deny = [ ];
+          deny = mkHmMcpCmds "tavily" [ "research" ]; # Too expensive
 
           ask =
             mkBashCmds [
@@ -239,7 +239,6 @@ in
             "why-depends"
           ])
           ++ (mkHmMcps [
-            "playwright"
             "tavily"
           ])
           ++ (mkHmMcpCmds "zotero-mcp" [
