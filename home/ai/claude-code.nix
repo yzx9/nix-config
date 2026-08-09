@@ -305,10 +305,7 @@ in
             "api.openai.com"
             "chatgpt.com"
           ];
-          allowUnixSockets = [
-            "/var/run/docker.sock"
-            "/nix/var/nix/daemon-socket/socket"
-          ];
+          allowAllUnixSockets = true;
           allowLocalBinding = true;
         }
         // (lib.optionalAttrs hasProxy {
