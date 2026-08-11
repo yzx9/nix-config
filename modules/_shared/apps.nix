@@ -18,6 +18,7 @@
 
   my.allowUnfreePredicate = [
     "claude-code"
+    "copilot-language-server"
     "google-chrome"
   ];
 
