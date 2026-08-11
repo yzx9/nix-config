@@ -172,7 +172,7 @@ in
           defaultMode = "auto";
 
           # Deny > Ask > Allow
-          deny = mkHmMcpCmds "tavily" [ "research" ]; # Too expensive
+          deny = mkHmMcpCmds "tavily" [ "tavily_research" ]; # Too expensive
 
           ask =
             mkBashCmds [
