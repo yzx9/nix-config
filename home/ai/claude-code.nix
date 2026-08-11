@@ -164,8 +164,8 @@ in
         let
           mkBashCmds = lib.map (cmd: "Bash(${cmd} *)");
           mkBashSubCmds = cmd: lib.map (subcmd: "Bash(${cmd} ${subcmd} *)");
-          mkHmMcps = lib.map (mcp: "mcp__plugin_claude-code-home-manager_${mcp}");
-          mkHmMcpCmds = mcp: lib.map (cmd: "mcp__plugin_claude-code-home-manager_${mcp}__${cmd}");
+          mkHmMcps = lib.map (mcp: "mcp__plugin_hm_${mcp}");
+          mkHmMcpCmds = mcp: lib.map (cmd: "mcp__plugin_hm_${mcp}__${cmd}");
         in
         {
           # Default permission mode
