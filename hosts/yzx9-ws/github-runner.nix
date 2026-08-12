@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
   age.secrets.nex-runner-pat.file = ../../secrets/nex-runner-pat.age;
@@ -12,6 +12,13 @@
   users.users.github-runner = {
     isSystemUser = true;
     group = "github-runner";
+    # Grant access to the host docker daemon socket (/var/run/docker.sock is
+    # 0660 root:docker). Without this, the deploy-release workflow's
+    # `docker load` / `docker compose` hit "permission denied while trying to
+    # connect to the Docker daemon socket". NOTE: docker group membership is
+    # equivalent to root — acceptable here because this user is dedicated to a
+    # single repo's runner and nothing else.
+    extraGroups = [ "docker" ];
   };
   users.groups.github-runner = { };
 
@@ -36,6 +43,14 @@
     workDir = "/var/lib/github-runner/nex-1-work";
     user = "github-runner";
     group = "github-runner";
+
+    # The module's default service PATH is just bash/coreutils/git/gnutar/gzip/
+    # nix — it deliberately excludes /run/current-system/sw/bin, so job steps
+    # can't see the docker CLI (`docker: command not found`, exit 127, killed
+    # deploy-release). Ship docker on the service PATH directly. docker 29 has
+    # `compose` compiled into the main binary, so this single package covers
+    # `docker load`, `docker tag`, and `docker compose` alike.
+    extraPackages = [ pkgs.docker ];
 
     extraEnvironment = {
       http_proxy = config.my.proxy.http;
