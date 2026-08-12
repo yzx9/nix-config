@@ -8,7 +8,6 @@ let
     nur = import ./nur.nix inputs;
     packages = import ./packages.nix inputs;
 
-    claude-code = import ./claude-code.nix;
     gopass = import ./gopass.nix;
     python-pandas-stubs = import ./python-pandas-stubs.nix;
     terminal-notifier = import ./terminal-notifier.nix;
