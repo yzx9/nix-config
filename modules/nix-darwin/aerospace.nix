@@ -49,10 +49,6 @@
       # Also see: https://nikitabobko.github.io/AeroSpace/goodies#disable-hide-app
       automatically-unhide-macos-hidden-apps = true;
 
-      # List of workspaces that should stay alive even when they contain no windows,
-      # even when they are invisible.
-      persistent-workspaces = lib.stringToCharacters "QWERTASDFGZXCVB";
-
       # A callback that runs every time binding mode changes
       # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
       # See: https://nikitabobko.github.io/AeroSpace/commands#mode
@@ -213,21 +209,25 @@
         ];
       };
 
-      # A: main
-      # B: [B]rowser
-      # C: [C]hat: Wechat
-      # D: [D]evelopment
-      # E: [E]udic, [E]mail
-      # F:
-      # G: [G]raphics design: Bambu Studio, FreeCAD, Inkscape, Powerpoint
-      # Q: Dbeaver
-      # R:
-      # S: [S]tudy: Preview, Zotero
-      # T: [T]rilium
-      # V: [V]iture machine
-      # W: [W]ord: Microsoft Word, Excel
-      # X: misc
-      # Z: [Z]otero
+      # List of workspaces that should stay alive even when they contain no windows,
+      # even when they are invisible.
+      persistent-workspaces = [
+        "A" # main
+        "B" # [B]rowser
+        "C" # [C]hat: Wechat
+        "D" # [D]evelopment
+        "E" # [E]udic, [E]mail
+        "F"
+        "G" # [G]raphics design: Bambu Studio, FreeCAD, Inkscape, Powerpoint
+        "Q" # Dbeaver
+        "R"
+        "S" # [S]tudy: Preview, Zotero
+        "T" # [T]rilium
+        "V" # [V]iture machine
+        "W" # [W]ord: Microsoft Word, Excel
+        "X" # misc
+        "Z" # [Z]otero
+      ];
 
       workspace-to-monitor-force-assignment = {
         "A" = "main";
