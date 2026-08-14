@@ -66,12 +66,12 @@ let
       settings = {
         env = {
           ANTHROPIC_BASE_URL = "https://open.bigmodel.cn/api/anthropic";
-          ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5.2[1m]";
-          ANTHROPIC_DEFAULT_SONNET_MODEL = "glm-5.2[1m]";
+          ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5.3[1m]";
+          ANTHROPIC_DEFAULT_SONNET_MODEL = "glm-5.3[1m]";
           ANTHROPIC_DEFAULT_HAIKU_MODEL = "glm-4.7";
         };
 
-        attribution.commit = "Assisted-by: Claude-Code:GLM-5.2";
+        attribution.commit = "Assisted-by: Claude-Code:GLM-5.3";
       };
     };
     uni = {
