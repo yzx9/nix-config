@@ -21,7 +21,6 @@ in
     nixvim
     nixvim-lsp
     tavily-mcp
-    zotero-mcp
     ;
 
   # External packages

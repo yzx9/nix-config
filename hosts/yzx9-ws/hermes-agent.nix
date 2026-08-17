@@ -121,15 +121,6 @@ in
         headers.Authorization = "Bearer \${GLM_API_KEY}";
         timeout = 180;
       };
-
-      # zotero-mcp = {
-      #   command = lib.getExe pkgs.yzx9.zotero-mcp;
-      #   args = [ "serve" ];
-      #   env = {
-      #     ZOTERO_API_KEY = "\${ZOTERO_API_KEY}";
-      #     ZOTERO_LIBRARY_ID = "\${ZOTERO_LIBRARY_ID}";
-      #   };
-      # };
     };
 
     documents.".hermes/SOUL.md" = ''

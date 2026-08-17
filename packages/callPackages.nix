@@ -26,6 +26,4 @@ in
   vaa3d-x = pkgs.callPackage ./vaa3d-x { };
 
   with-secrets = pkgs.callPackage ./with-secrets { };
-
-  zotero-mcp = pkgs.callPackage ./zotero-mcp { };
 }
