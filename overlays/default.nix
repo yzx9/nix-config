@@ -9,7 +9,6 @@ let
     packages = import ./packages.nix inputs;
 
     gopass = import ./gopass.nix;
-    python-pandas-stubs = import ./python-pandas-stubs.nix;
     terminal-notifier = import ./terminal-notifier.nix;
   };
 in
