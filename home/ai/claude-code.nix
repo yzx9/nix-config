@@ -159,6 +159,7 @@ in
       editorMode = "vim";
       effortLevel = "high"; # "low", "medium", "high"
       tui = "fullscreen";
+      disableDeepLinkRegistration = "disable"; # claude-cli:// and Claude Code URL Handler.app
 
       permissions =
         let
