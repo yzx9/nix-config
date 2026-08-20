@@ -58,8 +58,8 @@ stdenv.mkDerivation (finalAttrs: {
     outputHash =
       {
         x86_64-linux = "sha256-TnS4+cDirVE8orRzh2/iWajS/kTjOoqgWPVnfTO4tpw=";
-        aarch64-linux = "sha256-r1+VP34SiAVBm/l1QvIr238ha5Su3THFA9aAn6cpZ/E=";
-        aarch64-darwin = "sha256-wC/aKWuEnShhAKK0MXXtS5z8zZLYg2Q5rPJHuAk2OsM=";
+        aarch64-linux = "sha256-WFT0RFJ5Xbh0myRY8O2Vkkzuoqwe4HgyA+CLZ9uehm4=";
+        aarch64-darwin = "sha256-F/tSMTwnlvL7dh/kO7vmtT30iCszLvUDzH+07mZi0Zo=";
       }
       .${stdenv.hostPlatform.system}
         or (throw "gstack node_modules hash not available for ${stdenv.hostPlatform.system}");
