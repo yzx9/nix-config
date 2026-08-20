@@ -8,6 +8,7 @@ let
     nur = import ./nur.nix inputs;
     packages = import ./packages.nix inputs;
 
+    claude-code = import ./claude-code.nix;
     gopass = import ./gopass.nix;
     terminal-notifier = import ./terminal-notifier.nix;
     yazi = import ./yazi;
