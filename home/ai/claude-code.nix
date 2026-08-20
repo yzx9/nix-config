@@ -69,6 +69,7 @@ let
           ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5.3[1m]";
           ANTHROPIC_DEFAULT_SONNET_MODEL = "glm-5.3[1m]";
           ANTHROPIC_DEFAULT_HAIKU_MODEL = "glm-4.7";
+          CLAUDE_CODE_AUTO_COMPACT_WINDOW = "400000"; # Auto-compact on 400k boundary, but not 1M
         };
 
         attribution.commit = "Assisted-by: Claude-Code:GLM-5.3";
