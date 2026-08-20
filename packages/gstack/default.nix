@@ -15,13 +15,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "gstack";
-  version = "0-unstable-2026-08-12";
+  version = "0-unstable-2026-08-20";
 
   src = fetchFromGitHub {
     owner = "garrytan";
     repo = "gstack";
-    rev = "d078622b73539fc1a7a27e709861e9b6b058ae98";
-    hash = "sha256-28fkbcY/VFAq9W9LF8Bpq2SqHZnncKOdRhmuRZh5AdU=";
+    rev = "51932eceef9cf45ad5fbf2b19e15615f96df2872";
+    hash = "sha256-fIk3cGjeNDTxxQGr75Y2cQHIdGdhfNCZsttWPx53HN4=";
   };
 
   # Fixed-output derivation for node_modules (network access allowed in sandbox)
@@ -57,7 +57,7 @@ stdenv.mkDerivation (finalAttrs: {
 
     outputHash =
       {
-        x86_64-linux = "sha256-4ydW9f/svvMEMTZN1lk4C5uoUxxxDyFdKTSu8c8bxgo=";
+        x86_64-linux = "sha256-TnS4+cDirVE8orRzh2/iWajS/kTjOoqgWPVnfTO4tpw=";
         aarch64-linux = "sha256-r1+VP34SiAVBm/l1QvIr238ha5Su3THFA9aAn6cpZ/E=";
         aarch64-darwin = "sha256-wC/aKWuEnShhAKK0MXXtS5z8zZLYg2Q5rPJHuAk2OsM=";
       }
