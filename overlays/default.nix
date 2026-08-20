@@ -10,6 +10,7 @@ let
 
     gopass = import ./gopass.nix;
     terminal-notifier = import ./terminal-notifier.nix;
+    yazi = import ./yazi;
   };
 in
 overlays
