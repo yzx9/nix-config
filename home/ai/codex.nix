@@ -40,11 +40,9 @@ in
     inherit skills;
 
     settings = {
-      model = "gpt-5.4";
-      notice.model_migrations."gpt-5.3-codex" = "gpt-5.4";
+      model = "gpt-5.6-sol";
 
       sandbox_mode = "workspace-write";
-      approval_policy = "untrusted";
       allow_login_shell = false;
 
       notify = [
