@@ -319,9 +319,36 @@ in
 
             if [ -n "$CLAUDE_ENV_FILE" ]; then
               cat >> "$CLAUDE_ENV_FILE" <<'DIRENV'
-            eval "$(direnv export zsh)"
+            __claude_direnv_export() {
+              local output
+              local stderr_file
+              local exit_code
+              local shell
+
+              stderr_file="$(mktemp)"
+
+              if [ -n "''${ZSH_VERSION:-}" ]; then
+                shell=zsh
+              else
+                shell=bash
+              fi
+
+              output="$(direnv export "$shell" 2>"$stderr_file")"
+              exit_code=$?
+
+              if [ "$exit_code" -ne 0 ]; then
+                cat "$stderr_file" >&2
+                rm -f "$stderr_file"
+                return "$exit_code"
+              fi
+
+              rm -f "$stderr_file"
+              eval "$output"
+            }
+
+            __claude_direnv_export
             cd() {
-              builtin cd "$@" && eval "$(direnv export zsh)"
+              builtin cd "$@" && __claude_direnv_export
             }
             DIRENV
             fi
