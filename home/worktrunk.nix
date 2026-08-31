@@ -44,16 +44,14 @@ in
       commit.generation.command = "MAX_THINKING_TOKENS=0 claude -p --no-session-persistence --model=haiku --tools='' --disable-slash-commands --setting-sources='' --system-prompt=''";
 
       # On worktree creation: if the primary repo's direnv is allowed, allow the new worktree.
-      "pre-start".direnv = "${propagateDirenv} {{ worktree_path }} {{ primary_worktree_path }}";
+      pre-start.direnv = "${propagateDirenv} {{ worktree_path }} {{ primary_worktree_path }}";
 
       # On worktree creation: if a .worktreeinclude file exists, copy ignored files to the new worktree.
-      "post-start".copy = "wt step copy-ignored --require-include";
+      post-start.copy = "wt step copy-ignored --require-include";
 
-      projects = {
-        "github.com/yzx9/*" = {
-          "post-start".pnpm-install =
-            "if [ -f {{ primary_worktree_path }}/pnpm-lock.yaml ]; then pnpm install --dir {{ worktree_path }}; fi";
-        };
+      projects."github.com/yzx9/*"."post-start" = {
+        pnpm-install = "if [ -f {{ primary_worktree_path }}/pnpm-lock.yaml ]; then pnpm install --dir {{ worktree_path }}; fi";
+        npm-install = "if [ -f {{ primary_worktree_path }}/package-lock.json ]; then npm install --prefix {{ worktree_path }}; fi";
       };
     };
   };
