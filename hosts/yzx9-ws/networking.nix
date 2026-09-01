@@ -2,6 +2,13 @@
 
 let
   inherit (import ../_shared.nix) mkNetworkingLab;
+
+  labSegment = "10.6.141.0/24";
+  portsFromLab = [
+    15290
+    30202
+  ];
+  joinPorts = ports: lib.join "," (lib.map lib.toString ports);
 in
 {
   networking = lib.mkMerge [
@@ -14,8 +21,8 @@ in
           ip46tables -C INPUT -j nixos-extra 2>/dev/null || ip46tables -A INPUT -j nixos-extra
           ip46tables -F nixos-extra
 
-          # IPv4: allow HTTP, HTTPS, common development ports from 10.6.141.0/24
-          iptables -A nixos-extra -s 10.6.141.0/24 -p tcp -m multiport --dports 30202 -j ACCEPT
+          # IPv4: allow HTTP, HTTPS, common development ports from lab
+          iptables -A nixos-extra -s ${labSegment} -p tcp -m multiport --dports ${joinPorts portsFromLab} -j ACCEPT";
         '';
 
         extraStopCommands = ''
