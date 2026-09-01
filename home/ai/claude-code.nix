@@ -123,10 +123,13 @@ let
       PROVIDER="''${PROVIDER:-glm}"
 
       case "$PROVIDER" in
-        glm)
-          settings="${providerSettings.glm}" ;;
-        uni)
-          settings="${providerSettings.uni}" ;;
+        ${lib.concatStringsSep "\n" (
+          lib.mapAttrsToList (provider: settings: ''
+            ${lib.escapeShellArg provider})
+              settings=${lib.escapeShellArg (toString settings)}
+              ;;
+          '') providerSettings
+        )}
         *)
           echo "claude: unknown PROVIDER: $PROVIDER (expected glm|uni)" >&2
           exit 1 ;;
