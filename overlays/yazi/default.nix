@@ -35,12 +35,12 @@ final: prev:
   # still carries the transitional `fetch_compact` shim).
   yaziPlugins = prev.yaziPlugins // {
     git = prev.yaziPlugins.git.overrideAttrs (old: {
-      version = "0-unstable-2026-08-25";
+      version = "0-unstable-2026-09-01";
       src = final.fetchFromGitHub {
         owner = "yazi-rs";
         repo = "plugins";
-        rev = "c591a36e7263e95497715d525e9c46c2f0a880ac";
-        hash = "sha256-mWT0yF2iG9+gYEuNiffpM93POlBqY+QKdFh5jSAxYls=";
+        rev = "4dc7f1b6458c2578f4494f10d468c68c1082214f";
+        hash = "sha256-BSAOkL4H4LVMbTRFv4kzGGRpLgtKkfNTEsDH2EQ219Q=";
       };
     });
   };
