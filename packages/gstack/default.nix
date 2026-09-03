@@ -24,6 +24,11 @@ stdenv.mkDerivation (finalAttrs: {
     hash = "sha256-/9FtIwQlYhcCoSr2BV7TV4D2qS6I8XQVX6a1TCrjRlc=";
   };
 
+  # Local overlay patches — regenerate from the new upstream file on rev bump
+  patches = [
+    ./patches/0001-feature-discovery-markers-in-gstack-home.patch
+  ];
+
   # Fixed-output derivation for node_modules (network access allowed in sandbox)
   node_modules = stdenv.mkDerivation {
     inherit (finalAttrs) src version;
