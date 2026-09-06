@@ -20,6 +20,7 @@ inputs.self.lib.mkNixosRpiConfiguration {
     imports = [
       ./atuin.nix
       ./backup.nix
+      ./cc-keepalive.nix
       ./freshrss.nix
       ./frpc.nix
       ./hardware-configuration.nix
