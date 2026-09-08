@@ -24,9 +24,27 @@ stdenv.mkDerivation (finalAttrs: {
     hash = "sha256-/9FtIwQlYhcCoSr2BV7TV4D2qS6I8XQVX6a1TCrjRlc=";
   };
 
-  # Local overlay patches — regenerate from the new upstream file on rev bump
+  # Local overlay patches — regenerate from the new upstream file on rev bump.
+  # If a rev bump makes one of these fail to apply, re-derive it from the new
+  # upstream file — do not force it. See each patch's entry (and the
+  # "[nix overlay]" header comments inside the patched files) for what it
+  # changes and why.
   patches = [
     ./patches/0001-feature-discovery-markers-in-gstack-home.patch
+    # bin/gstack-review-log: --help/--schema (embedded record schema), optional
+    # timestamp/commit (auto-generated), --file/stdin input, `logged: <path>` echo.
+    ./patches/0002-review-log-self-describing-schema.patch
+    # bin/gstack-learnings-log: --help/--schema, --file/stdin input, `logged: <path>` echo.
+    ./patches/0003-learnings-log-self-describing-schema.patch
+    # Docs: publish the type/source enums at the call sites agents read, mark
+    # timestamp/commit optional, add the missing `investigation` type, point at
+    # --help/--schema/--file. Deliberately covers only the highest-traffic
+    # generation sources (completion-status + learnings resolvers, review
+    # tmpl); sibling call sites still show $(...) interpolation — the tools'
+    # --help/--schema and tool-side defaults cover those. 0004 leaves no
+    # marker in SKILL.md.tmpl (it would leak into generated docs); its
+    # rationale lives only in these comments.
+    ./patches/0004-docs-enums-and-self-description.patch
   ];
 
   # Fixed-output derivation for node_modules (network access allowed in sandbox)
@@ -163,6 +181,28 @@ stdenv.mkDerivation (finalAttrs: {
     for script in bin/gstack-* bin/chrome-cdp; do
       if [ -f "$script" ] && [ "$script" != "bin/gstack-global-discover" ]; then
         base=''${script##*/}
+        case "$base" in
+          # Sourced libraries (`. "$script"` by gstack-update-check, brain-sync,
+          # skill-start, …), never executed. A makeBinaryWrapper product is an
+          # ELF, and sourcing an ELF fails with rc=126 "cannot execute binary
+          # file" — wrapping these broke gstack-update-check (CHECK_FAILED
+          # rc=126) and every receipted-egress consumer. Install verbatim.
+          *-lib.sh)
+            install -m644 "$script" "$dest/bin/$base"
+            continue
+            ;;
+        esac
+        # Belt and braces for the same bug class: a file with no shebang
+        # cannot be executed directly (kernel ENOEXEC) — it exists to be
+        # sourced. Wrapping it would replace it with an ELF and break every
+        # `. "$script"` consumer. Covers future upstream sourced helpers
+        # regardless of naming. Test only the first two bytes — grep would
+        # scan the whole file, so a mid-file `#!` (heredoc, doc example) in a
+        # sourced helper, or binary content, would misclassify it.
+        if [ "$(head -c 2 -- "$script")" != '#!' ]; then
+          install -m644 "$script" "$dest/bin/$base"
+          continue
+        fi
         install -m755 "$script" $dest/bin/.$base-wrapped
         patchShebangs $dest/bin/.$base-wrapped
         makeWrapper $dest/bin/.$base-wrapped $dest/bin/$base \
@@ -182,17 +222,24 @@ stdenv.mkDerivation (finalAttrs: {
     for script in browse/bin/*; do
       if [ -f "$script" ]; then
         base=''${script##*/}
-        install -m755 "$script" $dest/browse/bin/.$base-wrapped
-        patchShebangs $dest/browse/bin/.$base-wrapped
-        makeWrapper $dest/browse/bin/.$base-wrapped $dest/browse/bin/$base \
-          --prefix PATH : ${
-            lib.makeBinPath [
-              bun
-              jq
-              curl
-              git
-            ]
-          }
+        # Same rc=126 rule as bin/: a no-shebang file is sourced, never
+        # executed — wrapping it would turn it into an ELF. First two bytes
+        # only (grep would scan the whole file).
+        if [ "$(head -c 2 -- "$script")" = '#!' ]; then
+          install -m755 "$script" $dest/browse/bin/.$base-wrapped
+          patchShebangs $dest/browse/bin/.$base-wrapped
+          makeWrapper $dest/browse/bin/.$base-wrapped $dest/browse/bin/$base \
+            --prefix PATH : ${
+              lib.makeBinPath [
+                bun
+                jq
+                curl
+                git
+              ]
+            }
+        else
+          install -m644 "$script" "$dest/browse/bin/$base"
+        fi
       fi
     done
 
