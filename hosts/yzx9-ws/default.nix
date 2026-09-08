@@ -35,6 +35,7 @@ inputs.self.lib.mkNixosConfiguration {
 
       ./github-runner.nix
       ./networking.nix
+      ./swap.nix
       ./xorg.nix
     ];
 
