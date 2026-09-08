@@ -132,15 +132,13 @@
  
  # Validate and sanitize input. Errors surface (#1950): stderr is captured and
  # printed on failure instead of swallowed — a silent exit 1 here cost Windows
-@@ -25,35 +136,42 @@
+@@ -25,35 +136,40 @@
  TMPERR=$(mktemp)
  trap 'rm -f "$TMPERR"' EXIT
  set +e
--VALIDATED=$(printf '%s' "$INPUT" | bun -e "
-+# The validation constants arrive via env (same LEARN_* constants the schema
-+# above was built from) — one copy of each value in this file.
-+VALIDATED=$(printf '%s' "$INPUT" | GSTACK_TYPES="$LEARN_TYPES" GSTACK_SOURCES="$LEARN_SOURCES" GSTACK_KEY_RE="$LEARN_KEY_RE" GSTACK_CONF_MIN="$LEARN_CONF_MIN" GSTACK_CONF_MAX="$LEARN_CONF_MAX" bun -e "
- import { hasInjection } from '$SCRIPT_DIR/../lib/jsonl-store.ts';
+-VALIDATED=$(printf '%s' "$INPUT" | GSTACK_LIB_DIR="$SCRIPT_DIR/../lib" bun -e "
++VALIDATED=$(printf '%s' "$INPUT" | GSTACK_LIB_DIR="$SCRIPT_DIR/../lib" GSTACK_TYPES="$LEARN_TYPES" GSTACK_SOURCES="$LEARN_SOURCES" GSTACK_KEY_RE="$LEARN_KEY_RE" GSTACK_CONF_MIN="$LEARN_CONF_MIN" GSTACK_CONF_MAX="$LEARN_CONF_MAX" bun -e "
+ const { hasInjection } = await import(process.env.GSTACK_LIB_DIR + '/jsonl-store.ts');
  const raw = await Bun.stdin.text();
  let j;
  try { j = JSON.parse(raw); } catch { process.stderr.write('gstack-learnings-log: invalid JSON, skipping\n'); process.exit(1); }
@@ -182,7 +180,7 @@
  if (j.source && !ALLOWED_SOURCES.includes(j.source)) {
    process.stderr.write('gstack-learnings-log: invalid source, must be one of: ' + ALLOWED_SOURCES.join(', ') + '\n');
    process.exit(1);
-@@ -85,7 +203,12 @@
+@@ -85,7 +201,12 @@
    exit 1
  fi
  
