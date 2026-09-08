@@ -24,6 +24,7 @@
     ./gradle.nix
     ./lazygit.nix
     ./nvim.nix
+    ./sccache.nix
     ./shell.nix
     ./ssh.nix
     ./worktrunk.nix
