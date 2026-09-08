@@ -59,34 +59,43 @@
     };
   };
 
-  # Weekly workDir cleanup. The upstream module already wipes the workDir on
-  # every service start (ExecStartPre `find -mindepth 1 -delete`), so cleanup =
-  # restart the service — but only while idle: restarting with a job in flight
-  # would kill that job. Runner.Worker exists only for the duration of a job,
-  # so its absence means idle (a tiny race window remains if a job starts
-  # between the check and the restart; that round is simply skipped).
+  # Daily workDir cleanup, gated on a 50 GiB size threshold. The upstream
+  # module already wipes the workDir on every service start (ExecStartPre
+  # `find -mindepth 1 -delete`), so cleanup = restart the service — but only
+  # while idle: restarting with a job in flight would kill that job.
+  # Runner.Worker exists only for the duration of a job, so its absence means
+  # idle (a tiny race window remains if a job starts between the check and
+  # the restart; that round is simply skipped and the daily timer retries the
+  # next day, instead of waiting a full week as before).
   systemd.services.github-runner-nex-1-workdir-cleanup = {
-    description = "Restart the idle github-runner nex-1 to wipe its workDir";
+    description = "Restart the idle github-runner nex-1 to wipe its workDir when it exceeds 50 GiB";
     after = [ "github-runner-nex-1.service" ];
     serviceConfig.Type = "oneshot";
     script = ''
       ${pkgs.systemd}/bin/systemctl is-active --quiet github-runner-nex-1.service || exit 0
+      size_mib=$(${pkgs.coreutils}/bin/du -sm /var/lib/github-runner/nex-1-work | ${pkgs.coreutils}/bin/cut -f1)
+      echo "workDir at ''${size_mib} MiB"
+      if (( size_mib <= 50 * 1024 )); then
+        echo "workDir within 50 GiB, nothing to clean"
+        exit 0
+      fi
       if ${pkgs.procps}/bin/pgrep -u github-runner -f 'Runner.Worker' > /dev/null; then
         echo "job in flight (Runner.Worker running), skipping this round"
         exit 0
       fi
-      echo "runner idle, restarting to wipe workDir"
+      echo "workDir over 50 GiB and runner idle, restarting to wipe workDir"
       ${pkgs.systemd}/bin/systemctl restart github-runner-nex-1.service
     '';
   };
 
   systemd.timers.github-runner-nex-1-workdir-cleanup = {
     wantedBy = [ "timers.target" ];
-    # Sunday 04:37, clear of the daily nix-gc run at 03:15. Persistent so a
+    # Daily at 04:37, clear of the daily nix-gc run at 03:15. Persistent so a
     # missed run (machine off) fires after boot — the idle guard above makes
-    # that safe.
+    # that safe. The size threshold makes the frequent cadence cheap: most
+    # days the script just checks `du` and exits.
     timerConfig = {
-      OnCalendar = "Sun *-*-* 04:37:00";
+      OnCalendar = "*-*-* 04:37:00";
       Persistent = true;
     };
   };
