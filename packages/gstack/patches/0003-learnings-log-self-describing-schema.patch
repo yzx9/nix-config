@@ -1,0 +1,198 @@
+--- a/bin/gstack-learnings-log
++++ b/bin/gstack-learnings-log
+@@ -1,11 +1,89 @@
+ #!/usr/bin/env bash
+ # gstack-learnings-log — append a learning to the project learnings file
+ # Usage: gstack-learnings-log '{"skill":"review","type":"pitfall","key":"n-plus-one","insight":"...","confidence":8,"source":"observed"}'
++#        gstack-learnings-log --file record.json
++#        echo '<json>' | gstack-learnings-log -
++#        gstack-learnings-log --help | --schema
+ # Valid types: pattern, pitfall, preference, architecture, tool, operational, investigation
+ #
+ # Append-only storage. Duplicates (same key+type) are resolved at read time
+ # by gstack-learnings-search ("latest winner" per key+type).
++#
++# [nix overlay — nix-config packages/gstack] Adds a self-describing record
++# schema (--help/--schema; RECORD_SCHEMA is derived from the same LEARN_*
++# enforcement constants the validator consumes, so it cannot drift),
++# --file/stdin input, and a `logged: <path>` success line. Validation rules
++# (type/key/confidence/source) are unchanged.
+ set -euo pipefail
++
++# ── Self-description ─────────────────────────────────────────
++# Enforcement constants (single source of truth): both the published schema
++# and the validation step below derive from these, so the schema cannot drift
++# from what is actually enforced.
++# (unquoted expansion below is deliberate word-splitting)
++LEARN_TYPES="pattern pitfall preference architecture tool operational investigation"
++LEARN_SOURCES="observed user-stated inferred cross-model"
++LEARN_KEY_RE="^[A-Za-z0-9_-]+$"
++LEARN_CONF_MIN="1"
++LEARN_CONF_MAX="10"
++
++TYPES_JSON=$(printf '%s\n' $LEARN_TYPES | jq -R . | jq -sc .)
++SOURCES_JSON=$(printf '%s\n' $LEARN_SOURCES | jq -R . | jq -sc .)
++
++RECORD_SCHEMA=$(jq -n \
++  --argjson types "$TYPES_JSON" \
++  --argjson sources "$SOURCES_JSON" \
++  --arg keyre "$LEARN_KEY_RE" \
++  --argjson cmin "$LEARN_CONF_MIN" \
++  --argjson cmax "$LEARN_CONF_MAX" \
++  '{
++    title: "gstack-learnings-log record",
++    type: "object",
++    required: ["type", "key", "confidence"],
++    properties: {
++      type:       {type: "string",  enum: $types, description: "learning kind (enforced)"},
++      key:        {type: "string",  pattern: $keyre, description: ("short slug, " + $keyre + " only (enforced); duplicates (same key+type) resolve latest-wins at read time")},
++      confidence: {type: "integer", minimum: $cmin, maximum: $cmax, description: ("confidence, integer \($cmin)-\($cmax) (enforced; JS numeric coercion applies - \"8\" and true are accepted)")},
++      source:     {type: "string",  enum: $sources, description: "provenance (enforced when present); user-stated marks the record trusted"},
++      skill:      {type: "string",  description: "skill writing the record (conventional, not enforced)"},
++      insight:    {type: "string",  description: "the learning; instruction-like content is rejected by the injection filter"},
++      ts:         {type: "string",  description: "ISO-8601; optional - generated here when omitted or empty"},
++      files:      {type: "array",   description: "relevant file paths"}
++    }
++  }')
++
++case "${1:-}" in
++  -h|--help)
++    cat <<'EOF'
++gstack-learnings-log — append one learning to
++  $GSTACK_HOME/projects/<slug>/learnings.jsonl   (default ~/.gstack)
++
++usage:
++  gstack-learnings-log '<json>'        one record, a single JSON object
++  gstack-learnings-log --file <path>   read the record from a file
++  gstack-learnings-log -               read the record from stdin
++  gstack-learnings-log --schema        print the record's JSON Schema
++  gstack-learnings-log --help          this text
++
++fields (enforced rules marked; unknown fields pass through):
++EOF
++    printf '%s' "$RECORD_SCHEMA" | bun -e '
++const s = JSON.parse(await Bun.stdin.text());
++const req = s.required || [];
++for (const k of Object.keys(s.properties)) {
++  const v = s.properties[k];
++  let line = "  " + k + (req.indexOf(k) >= 0 ? " [required]" : "");
++  if (v.enum) line += " (one of: " + v.enum.join(", ") + ")";
++  line += " - " + v.description;
++  console.log(line);
++}
++'
++    exit 0 ;;
++  --schema)
++    printf '%s\n' "$RECORD_SCHEMA"
++    exit 0 ;;
++esac
++
+ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ # Windows git-bash (#1950): pwd yields a POSIX path (/c/Users/...), which Bun
+ # on Windows cannot resolve as an ES module specifier in the import below.
+@@ -17,7 +95,40 @@
+ GSTACK_HOME="${GSTACK_HOME:-$HOME/.gstack}"
+ mkdir -p "$GSTACK_HOME/projects/$SLUG"
+ 
+-INPUT="$1"
++# ── Input: positional JSON, --file <path>, or stdin ──────────
++INPUT=""
++case "${1:-}" in
++  --file)
++    if [ $# -lt 2 ] || [ ! -f "$2" ] || [ ! -r "$2" ]; then
++      echo "gstack-learnings-log: --file requires a readable path" >&2
++      exit 2
++    fi
++    INPUT="$(cat "$2")"
++    ;;
++  -)
++    INPUT="$(cat)"
++    ;;
++  "")
++    # No positional argument: no implicit stdin read. An inherited pipe that
++    # never closes (agent harness/CI spawn) would block here forever; callers
++    # must opt in with "-" so the intent is explicit.
++    ;;
++  --*)
++    echo "gstack-learnings-log: unknown option: $1 (see --help)" >&2
++    exit 2
++    ;;
++  *)
++    INPUT="$1"
++    ;;
++esac
++if [ $# -gt 1 ] && [ "$1" != "-" ] && [ "$1" != "--file" ]; then
++  echo "gstack-learnings-log: unexpected extra arguments (see --help)" >&2
++  exit 2
++fi
++if [ -z "$INPUT" ]; then
++  echo "gstack-learnings-log: no JSON input - pass a JSON argument, --file <path>, or pipe stdin (see --help)" >&2
++  exit 2
++fi
+ 
+ # Validate and sanitize input. Errors surface (#1950): stderr is captured and
+ # printed on failure instead of swallowed — a silent exit 1 here cost Windows
+@@ -25,35 +136,42 @@
+ TMPERR=$(mktemp)
+ trap 'rm -f "$TMPERR"' EXIT
+ set +e
+-VALIDATED=$(printf '%s' "$INPUT" | bun -e "
++# The validation constants arrive via env (same LEARN_* constants the schema
++# above was built from) — one copy of each value in this file.
++VALIDATED=$(printf '%s' "$INPUT" | GSTACK_TYPES="$LEARN_TYPES" GSTACK_SOURCES="$LEARN_SOURCES" GSTACK_KEY_RE="$LEARN_KEY_RE" GSTACK_CONF_MIN="$LEARN_CONF_MIN" GSTACK_CONF_MAX="$LEARN_CONF_MAX" bun -e "
+ import { hasInjection } from '$SCRIPT_DIR/../lib/jsonl-store.ts';
+ const raw = await Bun.stdin.text();
+ let j;
+ try { j = JSON.parse(raw); } catch { process.stderr.write('gstack-learnings-log: invalid JSON, skipping\n'); process.exit(1); }
+ 
++const env = process.env;
++const ALLOWED_TYPES = env.GSTACK_TYPES.split(' ');
++const ALLOWED_SOURCES = env.GSTACK_SOURCES.split(' ');
++const KEY_RE = new RegExp(env.GSTACK_KEY_RE);
++const CONF_MIN = Number(env.GSTACK_CONF_MIN);
++const CONF_MAX = Number(env.GSTACK_CONF_MAX);
++
+ // Field validation: type must be from allowed list
+-const ALLOWED_TYPES = ['pattern', 'pitfall', 'preference', 'architecture', 'tool', 'operational', 'investigation'];
+ if (!j.type || !ALLOWED_TYPES.includes(j.type)) {
+   process.stderr.write('gstack-learnings-log: invalid type \"' + (j.type || '') + '\", must be one of: ' + ALLOWED_TYPES.join(', ') + '\n');
+   process.exit(1);
+ }
+ 
+ // Field validation: key must be alphanumeric, hyphens, underscores (no injection surface)
+-if (!j.key || !/^[a-zA-Z0-9_-]+$/.test(j.key)) {
++if (!j.key || !KEY_RE.test(j.key)) {
+   process.stderr.write('gstack-learnings-log: invalid key, must be alphanumeric with hyphens/underscores only\n');
+   process.exit(1);
+ }
+ 
+-// Field validation: confidence must be 1-10
++// Field validation: confidence must be in range
+ const conf = Number(j.confidence);
+-if (!Number.isInteger(conf) || conf < 1 || conf > 10) {
+-  process.stderr.write('gstack-learnings-log: confidence must be integer 1-10\n');
++if (!Number.isInteger(conf) || conf < CONF_MIN || conf > CONF_MAX) {
++  process.stderr.write('gstack-learnings-log: confidence must be integer ' + CONF_MIN + '-' + CONF_MAX + '\n');
+   process.exit(1);
+ }
+ j.confidence = conf;
+ 
+ // Field validation: source must be from allowed list
+-const ALLOWED_SOURCES = ['observed', 'user-stated', 'inferred', 'cross-model'];
+ if (j.source && !ALLOWED_SOURCES.includes(j.source)) {
+   process.stderr.write('gstack-learnings-log: invalid source, must be one of: ' + ALLOWED_SOURCES.join(', ') + '\n');
+   process.exit(1);
+@@ -85,7 +203,12 @@
+   exit 1
+ fi
+ 
+-echo "$VALIDATED" >> "$GSTACK_HOME/projects/$SLUG/learnings.jsonl"
++DEST="$GSTACK_HOME/projects/$SLUG/learnings.jsonl"
++echo "$VALIDATED" >> "$DEST"
++
++# Confirm success and where it went (a silent append forced callers to prove
++# the write with `&& echo LOGGED`).
++echo "logged: $DEST"
+ 
+ # gbrain-sync: enqueue for cross-machine sync (no-op if sync is off).
+ "$SCRIPT_DIR/gstack-brain-enqueue" "projects/$SLUG/learnings.jsonl" 2>/dev/null &

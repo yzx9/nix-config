@@ -1,0 +1,155 @@
+--- a/bin/gstack-review-log
++++ b/bin/gstack-review-log
+@@ -1,6 +1,9 @@
+ #!/usr/bin/env bash
+ # gstack-review-log — atomically log a review result
+ # Usage: gstack-review-log '{"skill":"...","timestamp":"...","status":"..."}'
++#        gstack-review-log --file record.json
++#        echo '<json>' | gstack-review-log -
++#        gstack-review-log --help | --schema
+ #
+ # Binding fields (content-addressed staleness): every appended record is
+ # stamped with commit_full, tree, dirty (informational) and wtree (the GATING
+@@ -16,13 +19,114 @@
+ # itself applied) are certified by the stamped fingerprint. gstack-evidence
+ # closes this window for test runs (before/after capture); review flows log
+ # immediately after reviewing, which keeps the window small but nonzero.
++#
++# [nix overlay — nix-config packages/gstack] Adds a self-describing record
++# schema (--help/--schema; RECORD_SCHEMA below is the single authoritative
++# field contract), optional timestamp/commit (auto-generated when omitted —
++# sandboxes that ban command substitution cannot run the old
++# $(date)/$(git rev-parse) interpolation), --file/stdin input, and a
++# `logged: <path>` success line. Binding/stamping semantics are unchanged.
+ set -euo pipefail
++
++# ── Self-description ─────────────────────────────────────────
++# RECORD_SCHEMA is the single authoritative record contract: --help renders it
++# human-readable, --schema prints it verbatim. Enforcement below only rejects
++# invalid JSON and re-stamps the four binding keys; "required" here reflects
++# what a meaningful record needs, not what this script hard-fails on.
++RECORD_SCHEMA='{
++  "title": "gstack-review-log record",
++  "type": "object",
++  "required": ["skill"],
++  "properties": {
++    "skill":         {"type": "string", "description": "skill writing the record"},
++    "timestamp":     {"type": "string", "description": "ISO-8601 UTC; optional - generated here when omitted or empty"},
++    "status":        {"type": "string", "description": "review outcome; free-form. Conventional values (review skill): clean | issues_found"},
++    "commit":        {"type": "string", "description": "short commit hash (git-abbreviated form); optional - derived from the stamped commit_full when omitted"},
++    "issues_found":  {"type": "number", "description": "remaining unresolved findings (informational)"},
++    "critical":      {"type": "number", "description": "remaining unresolved critical findings (informational)"},
++    "informational": {"type": "number", "description": "remaining unresolved informational findings (informational)"},
++    "quality_score": {"type": "number", "description": "PR quality score (informational)"},
++    "specialists":   {"type": ["array", "object"], "description": "per-specialist stats, an object keyed by specialist name (informational)"},
++    "findings":      {"type": ["array", "number"], "description": "per-finding records, or a count for lite flows; pass via --file/stdin - inline shell-quoting of big arrays is fragile"},
++    "source":        {"type": "string", "description": "provenance; free-form. Conventional (learnings): observed | user-stated | inferred | cross-model"},
++    "commit_full":   {"type": "string",  "description": "AUTHORITATIVE - re-stamped here; caller value ignored"},
++    "tree":          {"type": "string",  "description": "AUTHORITATIVE - HEAD tree at log time"},
++    "wtree":         {"type": "string",  "description": "AUTHORITATIVE - working-tree fingerprint (gstack-wtree)"},
++    "dirty":         {"type": "boolean", "description": "AUTHORITATIVE - tracked-file dirtiness at log time"}
++  }
++}'
++
++case "${1:-}" in
++  -h|--help)
++    cat <<'EOF'
++gstack-review-log — append one review record to
++  $GSTACK_HOME/projects/<slug>/<branch>-reviews.jsonl   (default ~/.gstack)
++
++usage:
++  gstack-review-log '<json>'        one record, a single JSON object
++  gstack-review-log --file <path>   read the record from a file
++  gstack-review-log -               read the record from stdin
++  gstack-review-log --schema        print the record's JSON Schema
++  gstack-review-log --help          this text
++
++fields (unknown fields pass through; --schema is the machine-readable form):
++EOF
++    printf '%s' "$RECORD_SCHEMA" | bun -e '
++const s = JSON.parse(await Bun.stdin.text());
++const req = s.required || [];
++for (const k of Object.keys(s.properties)) {
++  const v = s.properties[k];
++  let line = "  " + k + (req.indexOf(k) >= 0 ? " [required]" : "");
++  if (v.enum) line += " (one of: " + v.enum.join(", ") + ")";
++  line += " - " + v.description;
++  console.log(line);
++}
++'
++    exit 0 ;;
++  --schema)
++    printf '%s\n' "$RECORD_SCHEMA"
++    exit 0 ;;
++esac
++
+ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ eval "$("$SCRIPT_DIR/gstack-slug" 2>/dev/null)"
+ GSTACK_HOME="${GSTACK_HOME:-$HOME/.gstack}"
+ mkdir -p "$GSTACK_HOME/projects/$SLUG"
+ 
+-INPUT="$1"
++# ── Input: positional JSON, --file <path>, or stdin ──────────
++INPUT=""
++case "${1:-}" in
++  --file)
++    if [ $# -lt 2 ] || [ ! -f "$2" ] || [ ! -r "$2" ]; then
++      echo "gstack-review-log: --file requires a readable path" >&2
++      exit 2
++    fi
++    INPUT="$(cat "$2")"
++    ;;
++  -)
++    INPUT="$(cat)"
++    ;;
++  "")
++    # No positional argument: no implicit stdin read. An inherited pipe that
++    # never closes (agent harness/CI spawn) would block here forever; callers
++    # must opt in with "-" so the intent is explicit.
++    ;;
++  --*)
++    echo "gstack-review-log: unknown option: $1 (see --help)" >&2
++    exit 2
++    ;;
++  *)
++    INPUT="$1"
++    ;;
++esac
++if [ $# -gt 1 ] && [ "$1" != "-" ] && [ "$1" != "--file" ]; then
++  echo "gstack-review-log: unexpected extra arguments (see --help)" >&2
++  exit 2
++fi
++if [ -z "$INPUT" ]; then
++  echo "gstack-review-log: no JSON input - pass a JSON argument, --file <path>, or pipe stdin (see --help)" >&2
++  exit 2
++fi
+ 
+ # Compute binding fields (best-effort; empty outside a git repo).
+ COMMIT_FULL=$(git rev-parse HEAD 2>/dev/null || true)
+@@ -49,6 +153,12 @@
+ if (env.GSTACK_STAMP_TREE) rec.tree = env.GSTACK_STAMP_TREE;
+ if (env.GSTACK_STAMP_WTREE) rec.wtree = env.GSTACK_STAMP_WTREE;
+ if (env.GSTACK_STAMP_DIRTY) rec.dirty = env.GSTACK_STAMP_DIRTY === 'true';
++// Optional-field defaults: docs used to demand shell command substitution
++// (date / git rev-parse) for these, which sandboxes banning it cannot run.
++// Only fill what the caller omitted or left empty - an explicit value still
++// wins. 7 chars matches git's default --short, the form readers compare.
++if (!rec.timestamp) rec.timestamp = new Date().toISOString();
++if (!rec.commit && env.GSTACK_STAMP_COMMIT_FULL) rec.commit = env.GSTACK_STAMP_COMMIT_FULL.slice(0, 7);
+ console.log(JSON.stringify(rec));
+ " 2>/dev/null) || {
+   # Not valid JSON — refuse to append
+@@ -56,7 +166,12 @@
+   exit 1
+ }
+ 
+-echo "$STAMPED" >> "$GSTACK_HOME/projects/$SLUG/$BRANCH-reviews.jsonl"
++DEST="$GSTACK_HOME/projects/$SLUG/$BRANCH-reviews.jsonl"
++echo "$STAMPED" >> "$DEST"
++
++# Confirm success and where it went (a silent append forced callers to prove
++# the write with `&& echo LOGGED`).
++echo "logged: $DEST"
+ 
+ # gbrain-sync: enqueue for cross-machine sync (no-op if sync is off).
+ "$SCRIPT_DIR/gstack-brain-enqueue" "projects/$SLUG/$BRANCH-reviews.jsonl" 2>/dev/null &

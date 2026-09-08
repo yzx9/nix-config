@@ -36,6 +36,10 @@ in
         # gates them on marker files in GSTACK_HOME (~/.gstack); pre-create
         # both so they never fire. Delete the files to see the prompts again
         # (they are re-created on next switch).
+        # COUPLED to packages/gstack patches/0001-feature-discovery-*: at
+        # 394db32 upstream reads these markers from the read-only store path,
+        # so this activation only works with that patch applied. Drop both
+        # together once the pin passes the upstream fix (702a1a9b).
         home.activation.gstack-feature-markers = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
           mkdir -p "$HOME/.gstack"
           touch "$HOME/.gstack/.feature-prompted-continuous-checkpoint" \
