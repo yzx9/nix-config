@@ -542,24 +542,5 @@ in
         };
       };
     };
-
-    # See also: https://github.com/VoltAgent/awesome-claude-code-subagents
-    agents =
-      let
-        awesome-subagents = pkgs.fetchFromGitHub {
-          owner = "VoltAgent";
-          repo = "awesome-claude-code-subagents";
-          rev = "009544a05267426b3896c77230177967f99f6360";
-          hash = "sha256-CQHVcqCsfHmRcVqX2P6mL5qIzweT1IXeGoowQTd+H/U=";
-        };
-
-        # PERF: remove readFile
-        read = fname: lib.readFile "${awesome-subagents}/categories/${fname}";
-      in
-      {
-        frontend-developer = read "01-core-development/frontend-developer.md";
-        backend-developer = read "01-core-development/backend-developer.md";
-        code-reviewer = read "04-quality-security/code-reviewer.md";
-      };
   };
 }
