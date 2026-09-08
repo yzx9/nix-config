@@ -58,4 +58,36 @@
       no_proxy = "127.0.0.1,localhost,::1";
     };
   };
+
+  # Weekly workDir cleanup. The upstream module already wipes the workDir on
+  # every service start (ExecStartPre `find -mindepth 1 -delete`), so cleanup =
+  # restart the service — but only while idle: restarting with a job in flight
+  # would kill that job. Runner.Worker exists only for the duration of a job,
+  # so its absence means idle (a tiny race window remains if a job starts
+  # between the check and the restart; that round is simply skipped).
+  systemd.services.github-runner-nex-1-workdir-cleanup = {
+    description = "Restart the idle github-runner nex-1 to wipe its workDir";
+    after = [ "github-runner-nex-1.service" ];
+    serviceConfig.Type = "oneshot";
+    script = ''
+      ${pkgs.systemd}/bin/systemctl is-active --quiet github-runner-nex-1.service || exit 0
+      if ${pkgs.procps}/bin/pgrep -u github-runner -f 'Runner.Worker' > /dev/null; then
+        echo "job in flight (Runner.Worker running), skipping this round"
+        exit 0
+      fi
+      echo "runner idle, restarting to wipe workDir"
+      ${pkgs.systemd}/bin/systemctl restart github-runner-nex-1.service
+    '';
+  };
+
+  systemd.timers.github-runner-nex-1-workdir-cleanup = {
+    wantedBy = [ "timers.target" ];
+    # Sunday 04:37, clear of the daily nix-gc run at 03:15. Persistent so a
+    # missed run (machine off) fires after boot — the idle guard above makes
+    # that safe.
+    timerConfig = {
+      OnCalendar = "Sun *-*-* 04:37:00";
+      Persistent = true;
+    };
+  };
 }
