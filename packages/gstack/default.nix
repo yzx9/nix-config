@@ -30,7 +30,6 @@ stdenv.mkDerivation (finalAttrs: {
   # "[nix overlay]" header comments inside the patched files) for what it
   # changes and why.
   patches = [
-    ./patches/0001-feature-discovery-markers-in-gstack-home.patch
     # bin/gstack-review-log: --help/--schema (embedded record schema), optional
     # timestamp/commit (auto-generated), --file/stdin input, `logged: <path>` echo.
     ./patches/0002-review-log-self-describing-schema.patch
