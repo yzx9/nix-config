@@ -11,6 +11,7 @@
     ../_shared/nix-registry.nix
     ../_shared/options.nix
 
+    ./atd.nix
     ./docker.nix
     ./networking.nix
     ./nvidia.nix
