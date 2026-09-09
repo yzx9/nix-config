@@ -22,7 +22,7 @@ in
           ip46tables -F nixos-extra
 
           # IPv4: allow HTTP, HTTPS, common development ports from lab
-          iptables -A nixos-extra -s ${labSegment} -p tcp -m multiport --dports ${joinPorts portsFromLab} -j ACCEPT";
+          iptables -A nixos-extra -s ${labSegment} -p tcp -m multiport --dports ${joinPorts portsFromLab} -j ACCEPT;
         '';
 
         extraStopCommands = ''
