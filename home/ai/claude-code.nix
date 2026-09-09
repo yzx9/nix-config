@@ -13,84 +13,17 @@ let
   # `export KEY=value`.
   secretFile = config.age.secrets."llm-api-keys".path;
 
-  # Prints a single API key from the trusted age secret file to stdout, for use
-  # as Claude Code's `apiKeyHelper`. Routing auth through `apiKeyHelper` (a
-  # settings-level credential) rather than an `ANTHROPIC_AUTH_TOKEN` shell var
-  # means the token no longer depends on env inheritance, which background /
-  # AgentView sessions drop since v2.1.174. Errors go to stderr; a missing file
-  # or empty key exits non-zero. Only the trusted age file is parsed, never an
-  # arbitrary project `.envrc`.
+  # Prints a single API key from the trusted age secret file to stdout; see
+  # ./api-key-helper.nix for the full rationale.
   mkApiKeyHelper =
     name: key:
-    pkgs.writeShellApplication {
-      inherit name;
-      text = ''
-        # NB: on Darwin agenix sets `.path` to `$(getconf DARWIN_USER_TEMP_DIR)/…`,
-        # so this must stay double-quoted for the command substitution to expand.
-        file="${secretFile}"
-        key="${key}"
-
-        if [[ ! -r "$file" ]]; then
-          echo "${name}: cannot read secret file: $file" >&2
-          exit 1
-        fi
-
-        value=""
-        while IFS= read -r line || [ -n "$line" ]; do
-          case "$line" in
-            "" | \#*) continue ;;
-            export\ *) line="''${line#export }" ;;
-          esac
-          case "$line" in
-            "$key="*) value="''${line#"$key="}" ;;
-          esac
-        done < "$file"
-
-        if [[ -z "$value" ]]; then
-          echo "${name}: key '$key' not found or empty in: $file" >&2
-          exit 1
-        fi
-
-        printf '%s' "$value"
-      '';
+    import ./api-key-helper.nix {
+      inherit pkgs name key;
+      file = secretFile;
     };
 
-  # Per-provider profiles. The base URL, model aliases (and the proxy, when set)
-  # are written into a generated settings JSON passed via `claude --settings`,
-  # so they are read by every session type — including background workers, which
-  # no longer inherit these from the dispatch shell. The API key itself is never
-  # written to disk; it is resolved at call time via `apiKeyHelper`.
-  providers = {
-    glm = {
-      key = "GLM_CODING_API_KEY";
-      settings = {
-        env = {
-          ANTHROPIC_BASE_URL = "https://open.bigmodel.cn/api/anthropic";
-          ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5.3[1m]";
-          ANTHROPIC_DEFAULT_SONNET_MODEL = "glm-5.3[1m]";
-          ANTHROPIC_DEFAULT_HAIKU_MODEL = "glm-5.3-flash[1m]";
-          CLAUDE_CODE_AUTO_COMPACT_WINDOW = "400000"; # Auto-compact on 400k boundary, but not 1M
-        };
-
-        attribution.commit = "Assisted-by: Claude-Code:GLM-5.3";
-      };
-    };
-    uni = {
-      key = "UNI_YUANJING_API_KEY";
-      settings = {
-        env = {
-          ANTHROPIC_BASE_URL = "https://maas-api.ai-yuanjing.com/openapi/compatible-mode";
-          ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5.2";
-          ANTHROPIC_DEFAULT_SONNET_MODEL = "glm-5";
-          ANTHROPIC_DEFAULT_HAIKU_MODEL = "glm-5";
-          # Disable 1M token context for 3rd party models
-          CLAUDE_CODE_DISABLE_1M_CONTEXT = "1";
-        };
-
-        attribution.commit = "Assisted-by: Claude-Code:GLM-5";
-      };
-    };
-  };
+  # Per-provider profiles; see ./claude-code-providers.nix for the data.
+  providers = import ./claude-code-providers.nix;
 
   # One generated `settings.json` per provider: the profile `env` plus the
   # matching `apiKeyHelper`. Deep-merged with the HM-managed user settings, so
@@ -115,9 +48,13 @@ let
     name = "claude";
     passthru.version = pkgs.claude-code.version;
 
-    runtimeInputs = [ pkgs.yzx9.with-secrets ];
+    runtimeInputs = [
+      pkgs.yzx9.with-secrets
+    ];
 
-    runtimeEnv = lib.optionalAttrs hasProxy { HTTPS_PROXY = config.my.proxy.httpPublic; };
+    runtimeEnv = lib.optionalAttrs hasProxy {
+      HTTPS_PROXY = config.my.proxy.httpPublic;
+    };
 
     text = ''
       PROVIDER="''${PROVIDER:-glm}"
