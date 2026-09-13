@@ -2,7 +2,6 @@
   config,
   inputs,
   pkgs,
-  lib,
   ...
 }:
 
@@ -43,7 +42,7 @@ in
 
       model = {
         provider = "deepseek";
-        default = "deepseek-v4-flash";
+        default = "deepseek-flash";
         context_length = 1000000;
       };
 
