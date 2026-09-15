@@ -1,5 +1,18 @@
 { config, pkgs, ... }:
 
+let
+  containerProxy = "http://172.17.0.1:${toString config.my.proxy.selfHost.httpPublicPort}";
+
+  runnerDockerConfig = pkgs.writeTextDir "config.json" (
+    builtins.toJSON {
+      proxies.default = {
+        httpProxy = containerProxy;
+        httpsProxy = containerProxy;
+        noProxy = "localhost,127.0.0.1,::1,172.16.0.0/12";
+      };
+    }
+  );
+in
 {
   age.secrets.nex-runner-pat.file = ../../secrets/nex-runner-pat.age;
 
@@ -54,9 +67,14 @@
     extraPackages = [ pkgs.docker ];
 
     extraEnvironment = {
+      # runner / workflow commands themselves use host-local proxy
       http_proxy = config.my.proxy.http;
       https_proxy = config.my.proxy.http;
       no_proxy = "127.0.0.1,localhost,::1";
+
+      # docker CLI launched by this runner uses a dedicated client config.
+      # Containers/builds get the HTTP public proxy from config.json.
+      DOCKER_CONFIG = "${runnerDockerConfig}";
     };
   };
 
