@@ -3,7 +3,7 @@
 let
   cfg = config.my.docker;
 
-  proxySettings = lib.mkIf config.my.proxy.selfHost.enable {
+  proxySettings = {
     "http-proxy" = "127.0.0.1:${toString config.my.proxy.selfHost.httpPort}";
     "no-proxy" = "127.0.0.0/8";
   };
@@ -12,7 +12,9 @@ lib.mkIf cfg.enable {
   virtualisation.docker = {
     enable = true;
 
-    daemon.settings = proxySettings;
+    daemon.settings = lib.mkIf config.my.proxy.selfHost.enable {
+      "proxies" = proxySettings;
+    };
 
     rootless = {
       enable = cfg.rootless;
