@@ -29,7 +29,10 @@ in
   programs.worktrunk = {
     enable = config.my.host.dev.enable;
 
-    claudeCodeIntegration.skills = false;
+    claudeCodeIntegration = {
+      enable = true;
+      switchCreateSkill = false;
+    };
 
     settings = {
       aliases = {
