@@ -15,9 +15,10 @@
     # Grant access to the host docker daemon socket (/var/run/docker.sock is
     # 0660 root:docker). Without this, the deploy-release workflow's
     # `docker load` / `docker compose` hit "permission denied while trying to
-    # connect to the Docker daemon socket". NOTE: docker group membership is
-    # equivalent to root — acceptable here because this user is dedicated to a
-    # single repo's runner and nothing else.
+    # connect to the Docker daemon socket".
+    #
+    # NOTE: docker group membership is equivalent to root — acceptable here
+    # because this user is dedicated to a single repo's runner and nothing else.
     extraGroups = [ "docker" ];
   };
   users.groups.github-runner = { };
@@ -59,7 +60,7 @@
     };
   };
 
-  # Daily workDir cleanup, gated on a 50 GiB size threshold. The upstream
+  # Daily workDir cleanup, gated on a 100 GiB size threshold. The upstream
   # module already wipes the workDir on every service start (ExecStartPre
   # `find -mindepth 1 -delete`), so cleanup = restart the service — but only
   # while idle: restarting with a job in flight would kill that job.
@@ -68,22 +69,22 @@
   # the restart; that round is simply skipped and the daily timer retries the
   # next day, instead of waiting a full week as before).
   systemd.services.github-runner-nex-1-workdir-cleanup = {
-    description = "Restart the idle github-runner nex-1 to wipe its workDir when it exceeds 50 GiB";
+    description = "Restart the idle github-runner nex-1 to wipe its workDir when it exceeds 100 GiB";
     after = [ "github-runner-nex-1.service" ];
     serviceConfig.Type = "oneshot";
     script = ''
       ${pkgs.systemd}/bin/systemctl is-active --quiet github-runner-nex-1.service || exit 0
       size_mib=$(${pkgs.coreutils}/bin/du -sm /var/lib/github-runner/nex-1-work | ${pkgs.coreutils}/bin/cut -f1)
       echo "workDir at ''${size_mib} MiB"
-      if (( size_mib <= 50 * 1024 )); then
-        echo "workDir within 50 GiB, nothing to clean"
+      if (( size_mib <= 100 * 1024 )); then
+        echo "workDir within 100 GiB, nothing to clean"
         exit 0
       fi
       if ${pkgs.procps}/bin/pgrep -u github-runner -f 'Runner.Worker' > /dev/null; then
         echo "job in flight (Runner.Worker running), skipping this round"
         exit 0
       fi
-      echo "workDir over 50 GiB and runner idle, restarting to wipe workDir"
+      echo "workDir over 100 GiB and runner idle, restarting to wipe workDir"
       ${pkgs.systemd}/bin/systemctl restart github-runner-nex-1.service
     '';
   };
