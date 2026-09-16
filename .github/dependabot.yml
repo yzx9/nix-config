@@ -1,0 +1,22 @@
+version: 2
+updates:
+  # Bump flake.lock inputs. Dependabot resolves each outdated input by running
+  # `nix flake lock --override-input`, so the lockfile is regenerated with real
+  # Nix semantics. Grouping keeps everything in a single weekly PR, matching the
+  # previous update-flake-lock workflow's behavior.
+  - package-ecosystem: "nix"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore"
+    groups:
+      nix-inputs:
+        patterns: ["*"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "ci:"
