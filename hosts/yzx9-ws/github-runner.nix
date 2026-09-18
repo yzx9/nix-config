@@ -3,7 +3,10 @@
 let
   containerProxy = "http://172.17.0.1:${toString config.my.proxy.selfHost.httpPublicPort}";
 
-  runnerDockerConfig = pkgs.writeTextDir "config.json" (
+  # A FILE, not a directory: it is symlinked into a writable config dir
+  # below. DOCKER_CONFIG must not point at the store itself — `docker
+  # build` makes buildx mkdir $DOCKER_CONFIG/buildx, which is EROFS there.
+  runnerDockerConfig = pkgs.writeText "docker-client-config.json" (
     builtins.toJSON {
       proxies.default = {
         httpProxy = containerProxy;
@@ -43,6 +46,11 @@ in
   # start-time `find -delete` on the workDir can't touch credentials.
   systemd.tmpfiles.rules = [
     "d /var/lib/github-runner/nex-1-work 0700 github-runner github-runner -"
+    # Writable home for the docker client config: outside the wiped workDir
+    # (the module's start-time find -delete would remove ~/.docker), with
+    # config.json kept declarative as a symlink to a store file.
+    "d /var/lib/github-runner/docker-cli-config 0755 github-runner github-runner -"
+    "L /var/lib/github-runner/docker-cli-config/config.json 0644 github-runner github-runner - ${runnerDockerConfig}"
   ];
 
   services.github-runners.nex-1 = {
@@ -74,9 +82,31 @@ in
 
       # docker CLI launched by this runner uses a dedicated client config.
       # Containers/builds get the HTTP public proxy from config.json.
-      DOCKER_CONFIG = "${runnerDockerConfig}";
+      DOCKER_CONFIG = "/var/lib/github-runner/docker-cli-config";
     };
   };
+
+  # Containers reach the host-side xray via the docker0 gateway
+  # (172.17.0.1); its dedicated inbounds are loopback-only, so the public
+  # inbound (httpPublicPort, listening on ::) is the one they can use — the
+  # firewall is the only thing in the way. Scope: docker's private ranges
+  # (every bridge, including compose's br-*) to that single port. The jump
+  # is inserted at INPUT position 1 so it is evaluated before nixos-fw's
+  # reject, regardless of module ordering.
+  networking.firewall.extraCommands = ''
+    ip46tables -N docker-to-proxy 2>/dev/null || true
+    ip46tables -C INPUT -j docker-to-proxy 2>/dev/null || ip46tables -I INPUT 1 -j docker-to-proxy
+    ip46tables -F docker-to-proxy
+    ip46tables -A docker-to-proxy -s 172.16.0.0/12 -p tcp --dport ${toString config.my.proxy.selfHost.httpPublicPort} -j ACCEPT
+  '';
+
+  # The runner's unit runs with ProtectSystem=strict: the whole filesystem
+  # is read-only to its processes except the paths explicitly granted
+  # (BindPaths workDir, StateDirectory). The docker CLI config dir must be
+  # writable — `docker build` makes buildx mkdir $DOCKER_CONFIG/buildx there.
+  systemd.services."github-runner-nex-1".serviceConfig.ReadWritePaths = [
+    "/var/lib/github-runner/docker-cli-config"
+  ];
 
   # Daily workDir cleanup, gated on a 100 GiB size threshold. The upstream
   # module already wipes the workDir on every service start (ExecStartPre
