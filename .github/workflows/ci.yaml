@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: cachix/install-nix-action@v31
-      - uses: cachix/cachix-action@v16
+      - uses: cachix/cachix-action@v17
         if: github.ref == 'refs/heads/main'
         with:
           name: "${{ secrets.CACHIX_CACHE_NAME }}"
@@ -56,7 +56,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: cachix/install-nix-action@v31
-      - uses: cachix/cachix-action@v16
+      - uses: cachix/cachix-action@v17
         if: github.ref == 'refs/heads/main'
         with:
           name: "${{ secrets.CACHIX_CACHE_NAME }}"
