@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   containerProxy = "http://172.17.0.1:${toString config.my.proxy.selfHost.httpPublicPort}";
@@ -11,7 +16,24 @@ let
       proxies.default = {
         httpProxy = containerProxy;
         httpsProxy = containerProxy;
-        noProxy = "localhost,127.0.0.1,::1,172.16.0.0/12";
+
+        noProxy = lib.join "," [
+          "localhost"
+          "127.0.0.1"
+          "::1"
+          "172.16.0.0/12"
+          # The debian mirrors are exempted from the proxy: apt is the one
+          # plain-HTTP, high-fanout consumer (~40 concurrent large downloads),
+          # and the upstream is the only link in the chain that has ever failed —
+          # under that load it intermittently drops the transfer mid-flight,
+          # while apt retries nothing, so one dropped deb fails the whole
+          # `apt-get install`. Direct Fastly peering measured 4+ MB/s over the
+          # full 284 MB / 436-package desktop toolchain closure with zero
+          # failures. If direct reachability ever degrades, remove these two
+          # hosts again and the traffic goes back through the proxy.
+          "deb.debian.org"
+          "security.debian.org"
+        ];
       };
     }
   );
@@ -50,7 +72,7 @@ in
     # (the module's start-time find -delete would remove ~/.docker), with
     # config.json kept declarative as a symlink to a store file.
     "d /var/lib/github-runner/docker-cli-config 0755 github-runner github-runner -"
-    "L /var/lib/github-runner/docker-cli-config/config.json 0644 github-runner github-runner - ${runnerDockerConfig}"
+    "L+ /var/lib/github-runner/docker-cli-config/config.json - - - - ${runnerDockerConfig}"
   ];
 
   services.github-runners.nex-1 = {
