@@ -66,6 +66,7 @@ in
         "microsoft-powerpoint"
         "onedrive" # cloud storage
         "tencent-meeting" # video conference
+        "zcode" # coding agent
 
         # design
         "krita" # 2D design
