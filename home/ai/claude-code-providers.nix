@@ -13,6 +13,7 @@
     settings = {
       env = {
         ANTHROPIC_BASE_URL = "https://open.bigmodel.cn/api/anthropic";
+        ANTHROPIC_DEFAULT_FABLE_MODEL = "glm-5.3[1m]";
         ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5.3[1m]";
         ANTHROPIC_DEFAULT_SONNET_MODEL = "glm-5.3[1m]";
         ANTHROPIC_DEFAULT_HAIKU_MODEL = "glm-5.3-flash[1m]";
@@ -20,21 +21,6 @@
       };
 
       attribution.commit = "Assisted-by: Claude-Code:GLM-5.3";
-    };
-  };
-  uni = {
-    key = "UNI_YUANJING_API_KEY";
-    settings = {
-      env = {
-        ANTHROPIC_BASE_URL = "https://maas-api.ai-yuanjing.com/openapi/compatible-mode";
-        ANTHROPIC_DEFAULT_OPUS_MODEL = "glm-5.2";
-        ANTHROPIC_DEFAULT_SONNET_MODEL = "glm-5";
-        ANTHROPIC_DEFAULT_HAIKU_MODEL = "glm-5";
-        # Disable 1M token context for 3rd party models
-        CLAUDE_CODE_DISABLE_1M_CONTEXT = "1";
-      };
-
-      attribution.commit = "Assisted-by: Claude-Code:GLM-5";
     };
   };
 }

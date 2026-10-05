@@ -37,6 +37,8 @@ let
     )
   ) providers;
 
+  providerNames = lib.attrNames providers;
+
   # Claude Code wrapper. `$PROVIDER` (default `glm`) selects the profile, then
   # the upstream binary runs with the matching generated settings file.
   # `with-secrets` now only exposes non-Anthropic secrets (MCP tokens) to the
@@ -68,7 +70,7 @@ let
           '') providerSettings
         )}
         *)
-          echo "claude: unknown PROVIDER: $PROVIDER (expected glm|uni)" >&2
+          echo "claude: unknown PROVIDER: $PROVIDER (expected ${lib.join "|" providerNames})" >&2
           exit 1 ;;
       esac
 
