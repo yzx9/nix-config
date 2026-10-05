@@ -53,12 +53,7 @@
     # age-encrypted secrets for NixOS and Home manager
     agenix = {
       url = "github:ryantm/agenix";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        systems.follows = "systems";
-        darwin.follows = "nix-darwin";
-        home-manager.follows = "home-manager";
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Configure Neovim with Nix!
