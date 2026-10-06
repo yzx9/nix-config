@@ -17,21 +17,18 @@ lib.mkIf config.lsp.enable {
 
       formatters_by_ft =
         let
-          genPrettier =
-            langs:
-            lib.genAttrs langs (lang: {
-              __unkeyed-1 = "prettierd";
-              __unkeyed-2 = "prettier";
-              stop_after_first = true;
-            });
+          genOxfmt = langs: lib.genAttrs langs (lang: [ "oxfmt" ]);
         in
-        genPrettier [
+        genOxfmt [
           "css"
           "html"
           "javascript"
+          "javascriptreact"
           "json"
           "markdown"
+          "toml"
           "typescript"
+          "typescriptreact"
           "vue"
         ]
         // {
@@ -46,10 +43,8 @@ lib.mkIf config.lsp.enable {
             "ruff_organize_imports" # To organize the imports.
           ];
           sh = [ "shfmt" ];
-          toml = [ "taplo" ];
           yaml = [
-            "prettierd"
-            "prettier"
+            "oxfmt"
             "yamllint"
           ];
         };
@@ -62,7 +57,7 @@ lib.mkIf config.lsp.enable {
         ruff_organize_imports.command = lib.getExe pkgs.ruff;
         shfmt.command = lib.getExe pkgs.shfmt;
         toml.command = lib.getExe pkgs.taplo;
-        prettierd.command = lib.getExe pkgs.prettierd;
+        oxfmt.command = lib.getExe pkgs.oxfmt;
         nixfmt.command = lib.getExe pkgs.nixfmt;
         yamllint.command = lib.getExe pkgs.yamllint;
       };

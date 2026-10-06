@@ -14,12 +14,10 @@ let
   #
   # nixfmt only: this repo is ~150 .nix files, so nixfmt does the real
   # work. The few non-Nix files (CI YAML, READMEs) are hand-maintained and
-  # don't warrant pulling in prettier.
+  # don't warrant pulling in oxfmt.
   pre-commit-checks = git-hooks.lib.${system}.run {
     src = ./.;
-    hooks = {
-      nixfmt.enable = true;
-    };
+    hooks.nixfmt.enable = true;
   };
 in
 {
