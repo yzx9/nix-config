@@ -37,4 +37,34 @@ in
       address = "10.6.141.1";
     };
   };
+
+  mkNetworkingLabWireless = interface: address: {
+    inherit nameservers;
+
+    wireless = {
+      enable = true;
+
+      networks.WYMLAB = {
+        priority = 1;
+        # Generate pskRaw: wpa_passphrase ESSID PSK
+        pskRaw = "ff87ebdbb598401ce215e01c1c6017f83a8f2d418fbe0f91778c6de4501dbdfd";
+      };
+    };
+
+    interfaces.${interface} = {
+      useDHCP = false;
+
+      ipv4.addresses = [
+        {
+          inherit address;
+          prefixLength = 24;
+        }
+      ];
+    };
+
+    defaultGateway = {
+      inherit interface;
+      address = "10.6.141.1";
+    };
+  };
 }

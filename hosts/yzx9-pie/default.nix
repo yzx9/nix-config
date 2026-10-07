@@ -1,7 +1,7 @@
 inputs:
 
 let
-  inherit (import ../_shared.nix) user_yzx9;
+  inherit (import ../_shared.nix) user_yzx9 mkNetworkingLabWireless;
 in
 inputs.self.lib.mkNixosRpiConfiguration {
   config.my = {
@@ -10,19 +10,18 @@ inputs.self.lib.mkNixosRpiConfiguration {
     system = "aarch64-linux";
     user = user_yzx9;
 
-    host.gui = true;
-
     proxy.selfHost.enable = true;
   };
 
-  host.imports = [
-    ./hardware-configuration.nix
-    ./phosh.nix
-    ./vnc.nix
-  ];
+  host = {
+    imports = [
+      ./hardware-configuration.nix
+    ];
+
+    networking = mkNetworkingLabWireless "wlan0" "10.6.141.236";
+  };
 
   home.imports = [
-    ./dconf.nix
     ./home.nix
   ];
 }
