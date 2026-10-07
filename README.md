@@ -36,8 +36,15 @@ deployed state — no separate `nixos-rebuild` step needed.
 # Build the image (on macOS this dispatches to the configured linux-builder)
 nix build .#images.yzx9-rpi5
 
-# Flash it (macOS: use /dev/rdiskN after `diskutil unmountDisk`)
-zstdcat result/sd-image/*.img.zst | sudo dd of=/dev/rdiskN bs=100M
+# Flash the whole SD card device, not a partition (e.g. /dev/sdX, not /dev/sdX1).
+#
+# Linux:
+sudo umount /dev/sdX?* 2>/dev/null || true
+zstdcat result/sd-image/*.img.zst | sudo dd of=/dev/sdb bs=100M status=progress conv=fsync
+
+# macOS:
+diskutil unmountDisk /dev/diskN
+zstdcat result/sd-image/*.img.zst | sudo dd of=/dev/rdiskN bs=100m
 ```
 
 The image uses the `FIRMWARE` / `NIXOS_SD` partition labels that `hardware-configuration.nix` already expects, and
