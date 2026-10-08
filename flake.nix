@@ -134,6 +134,6 @@
       devShells = eachSystem (import ./devShells.nix inputs);
 
       # nix fmt: nix code formatter
-      formatter = eachSystem (system: nixpkgs.legacyPackages.${system}.nixfmt);
+      formatter = eachSystem (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
     };
 }
