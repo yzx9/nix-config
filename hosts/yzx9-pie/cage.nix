@@ -14,4 +14,8 @@
         "http://10.6.141.235:15932"
     '';
   };
+
+  fonts.packages = with pkgs; [
+    noto-fonts-cjk-sans
+  ];
 }
