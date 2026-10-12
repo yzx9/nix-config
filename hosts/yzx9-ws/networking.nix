@@ -6,6 +6,7 @@ let
   labSegment = "10.6.141.0/24";
   portsFromLab = [
     15290
+    15932
     30202
   ];
   joinPorts = ports: lib.join "," (lib.map lib.toString ports);

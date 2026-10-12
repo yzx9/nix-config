@@ -15,7 +15,7 @@ inputs.self.lib.mkNixosRpiConfiguration {
 
   host = {
     imports = [
-      ./drm.nix
+      ./cage.nix
       ./hardware-configuration.nix
     ];
 
