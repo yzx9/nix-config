@@ -39,8 +39,10 @@ in
     package = codex';
     inherit skills;
 
+    mutableSettings = true;
+
     settings = {
-      model = "gpt-5.6-sol";
+      model = "gpt-6-sol";
 
       sandbox_mode = "workspace-write";
       allow_login_shell = false;
