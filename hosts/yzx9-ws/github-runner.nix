@@ -144,7 +144,7 @@ in
     serviceConfig.Type = "oneshot";
     script = ''
       ${pkgs.systemd}/bin/systemctl is-active --quiet github-runner-nex-1.service || exit 0
-      size_mib=$(${pkgs.coreutils}/bin/du -sm /var/lib/github-runner/nex-1-work | ${pkgs.coreutils}/bin/cut -f1)
+      size_mib=$(${pkgs.coreutils}/bin/du -sm ${config.services.github-runners.nex-1.workDir} | ${pkgs.coreutils}/bin/cut -f1)
       echo "workDir at ''${size_mib} MiB"
       if (( size_mib <= 100 * 1024 )); then
         echo "workDir within 100 GiB, nothing to clean"
@@ -166,7 +166,7 @@ in
     # that safe. The size threshold makes the frequent cadence cheap: most
     # days the script just checks `du` and exits.
     timerConfig = {
-      OnCalendar = "*-*-* 04:37:00";
+      OnCalendar = "*-*-* 06:37:00";
       Persistent = true;
     };
   };
