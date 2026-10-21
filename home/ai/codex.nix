@@ -45,6 +45,7 @@ in
       model = "gpt-6-sol";
 
       sandbox_mode = "workspace-write";
+      approval_policy = "on-request";
       allow_login_shell = false;
 
       notify = [
