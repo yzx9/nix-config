@@ -4,16 +4,16 @@ let
   anthropics-skills = pkgs.fetchFromGitHub {
     owner = "anthropics";
     repo = "skills";
-    rev = "683bc88e56f3e09ba94f7055977f3d3aa499f202";
-    hash = "sha256-APw+xMKqRvkLnuQxttiyyIeylrIMSxZovQnw3xEl1C4=";
+    rev = "dbd4588f9e1033efb41dad4bef2f7947c8993d44";
+    hash = "sha256-+UIqBnzyeIOvJSKYaDaE3GYPEpLw7qQqyUw5S971AfU=";
   };
 
   # https://github.com/mattpocock/skills — "Skills For Real Engineers"
   matt-skills = pkgs.fetchFromGitHub {
     owner = "mattpocock";
     repo = "skills";
-    rev = "b0618bc436ad893b3c5e84e55fba86586d34a404";
-    hash = "sha256-1QwFBwG+gORvDvW4HM0LrZlHZKmKtWr7pUHU0MAXF2Y=";
+    rev = "5beb35b040e3de97e54fa9e386d7e42d15c295c2";
+    hash = "sha256-2FKfe3/Fwc4MmwBLa+d/oQW4/gtYIssdWapy2MPd39I=";
   };
 in
 {
