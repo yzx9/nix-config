@@ -264,6 +264,26 @@
         "type": "github"
       }
     },
+    "mira-panel": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792675472,
+        "narHash": "sha256-qCQIcixybyGc6j2AboVgVqG9UaQoWi3Z5tjSvbBC4h4=",
+        "owner": "yzx9",
+        "repo": "mira-panel",
+        "rev": "2de21f1fd23638bfefb6ae9706601d844959d564",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yzx9",
+        "repo": "mira-panel",
+        "type": "github"
+      }
+    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
@@ -470,6 +490,7 @@
         "git-hooks": "git-hooks",
         "hermes-agent": "hermes-agent",
         "home-manager": "home-manager_2",
+        "mira-panel": "mira-panel",
         "nix-darwin": "nix-darwin",
         "nixos-raspberrypi": "nixos-raspberrypi",
         "nixpkgs": "nixpkgs",

@@ -80,6 +80,12 @@
       };
     };
 
+    # BOOX Mira e-paper panel companion (macOS notifier + presence sensor)
+    mira-panel = {
+      url = "github:yzx9/mira-panel";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # The self-improving AI agent built by Nous Research
     hermes-agent = {
       url = "github:NousResearch/hermes-agent";
