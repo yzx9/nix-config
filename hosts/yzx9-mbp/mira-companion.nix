@@ -5,16 +5,16 @@
 }:
 
 {
-  imports = [ inputs.mira-panel.darwinModules.panelCompanion ];
+  imports = [ inputs.mira-panel.homeManagerModules.panelCompanion ];
 
-  # The controller device key, agenix-managed (secrets/mira-companion.age).
-  # The companion runs as the user's launchd agent, so the runtime file must
-  # be owned by the user — agenix's root-only default would be unreadable to
-  # it and presence would silently idle.
+  # The controller device key, agenix-managed at the home level: decrypted
+  # with the user's own key during activation, owned by the user by
+  # construction. The path is pinned to a plain literal (the agenix default
+  # embeds a `$(getconf DARWIN_USER_TEMP_DIR)` command substitution that
+  # only resolves inside a shell — launchd EnvironmentVariables don't).
   age.secrets.mira-companion = {
     file = ../../secrets/mira-companion.age;
-    owner = config.my.user.name;
-    group = "staff";
+    path = "${config.home.homeDirectory}/.config/mira-panel/controller.key";
     mode = "400";
   };
 

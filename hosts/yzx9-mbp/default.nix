@@ -26,10 +26,10 @@ inputs.self.lib.mkDarwinConfiguration {
 
   host.imports = [
     ./distributed-builds.nix
-    ./mira-companion.nix
   ];
 
   home.imports = [
     ./ssh.nix
+    ./mira-companion.nix
   ];
 }
