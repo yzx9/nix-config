@@ -7,11 +7,11 @@
 
 buildNpmPackage (finalAttrs: {
   pname = "tavily-mcp";
-  version = "0.2.21";
+  version = "0.2.22";
 
   src = fetchurl {
     url = "https://registry.npmjs.org/tavily-mcp/-/tavily-mcp-${finalAttrs.version}.tgz";
-    hash = "sha256-kjD7sWzjCbLbNwRgbXxNHBOd9UG55ICMdZEI5naX1Pc=";
+    hash = "sha256-rBqv/qITHYfVHFIpGV1i1hwIH3vHYgJMAK8Pr0i46s8=";
   };
 
   # The published npm tarball ships the prebuilt build/index.js but, like all
@@ -21,7 +21,7 @@ buildNpmPackage (finalAttrs: {
     cp ${./package-lock.json} package-lock.json
   '';
 
-  npmDepsHash = "sha256-G/cTvKMWzlc/u4peEjO977BwXNgzCIJXt+/0rArk3+w=";
+  npmDepsHash = "sha256-bS9t9N2/L2NKBX5gi5x5eZPf/y6h/5AEEdf+GQcVong=";
 
   dontNpmBuild = true;
   npmPackFlags = [ "--ignore-scripts" ];
