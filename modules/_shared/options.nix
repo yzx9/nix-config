@@ -102,17 +102,17 @@ in
       };
 
       socks5Port = lib.mkOption {
-        type = lib.types.int;
+        type = lib.types.nullOr lib.types.int;
         default = if config.my.proxy.selfHost.enable then config.my.proxy.selfHost.socks5Port else null;
       };
 
       httpPort = lib.mkOption {
-        type = lib.types.int;
+        type = lib.types.nullOr lib.types.int;
         default = if config.my.proxy.selfHost.enable then config.my.proxy.selfHost.httpPort else null;
       };
 
       httpPublicPort = lib.mkOption {
-        type = lib.types.int;
+        type = lib.types.nullOr lib.types.int;
         default = if config.my.proxy.selfHost.enable then config.my.proxy.selfHost.httpPublicPort else null;
       };
 
