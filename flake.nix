@@ -92,6 +92,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Local Anthropic-compatible proxy backed by ChatGPT/Codex subscription
+    claude-code-proxy = {
+      url = "github:raine/claude-code-proxy";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Git pre-commit hooks, wired into the dev shell (core.hooksPath)
     git-hooks = {
       url = "github:cachix/git-hooks.nix";

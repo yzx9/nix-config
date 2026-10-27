@@ -9,42 +9,26 @@ let
   hasProxy = config.my.proxy.httpPublic != null;
   enableSearch = false;
 
-  # age-managed secret file. `.envrc`-style lines: `KEY=value` or
-  # `export KEY=value`.
-  secretFile = config.age.secrets."llm-api-keys".path;
-
-  # Prints a single API key from the trusted age secret file to stdout; see
-  # ./api-key-helper.nix for the full rationale.
-  mkApiKeyHelper =
-    name: key:
-    import ./api-key-helper.nix {
-      inherit pkgs name key;
-      file = secretFile;
-    };
-
-  # Per-provider profiles; see ./claude-code-providers.nix for the data.
-  providers = import ./claude-code-providers.nix;
-
-  # One generated `settings.json` per provider: the profile `env` plus the
-  # matching `apiKeyHelper`. Deep-merged with the HM-managed user settings, so
+  # One generated `settings.json` per provider: the profile `env`.
+  # Deep-merged with the HM-managed user settings, so
   # permissions/sandbox/hooks/etc. are preserved.
-  providerSettings = lib.mapAttrs (
-    name: p:
-    pkgs.writeText "claude-code-${name}-settings.json" (
-      builtins.toJSON (
-        p.settings // { apiKeyHelper = lib.getExe (mkApiKeyHelper "claude-${name}-api-key-helper" p.key); }
-      )
-    )
-  ) providers;
+  settings = pkgs.writeText "claude-code-settings.json" (
+    builtins.toJSON {
+      env = {
+        # All model traffic goes through the local claude-code-proxy
+        ANTHROPIC_BASE_URL = "http://127.0.0.1:18765";
+        ANTHROPIC_AUTH_TOKEN = "unused"; # loopback proxy needs no credential
 
-  providerNames = lib.attrNames providers;
+      };
+    }
+  );
 
-  # Claude Code wrapper. `$PROVIDER` (default `glm`) selects the profile, then
-  # the upstream binary runs with the matching generated settings file.
-  # `with-secrets` now only exposes non-Anthropic secrets (MCP tokens) to the
-  # process; the Anthropic auth token comes from `apiKeyHelper`. The upstream
-  # binary is invoked by absolute path to avoid recursing into this wrapper, and
-  # any extra args from the caller (historically `--plugin-dir` from the HM
+  # Claude Code wrapper: runs with the HM-managed settings below (the local
+  # claude-code-proxy, which needs no client credential — hence the literal
+  # `ANTHROPIC_AUTH_TOKEN=unused` there). `with-secrets` only exposes
+  # non-Anthropic secrets (MCP tokens) to the process. The upstream binary is
+  # invoked by absolute path to avoid recursing into this wrapper, and any
+  # extra args from the caller (historically `--plugin-dir` from the HM
   # module) are carried through untouched via `"$@"`.
   claude-code' = pkgs.writeShellApplication {
     name = "claude";
@@ -59,32 +43,51 @@ let
     };
 
     text = ''
-      PROVIDER="''${PROVIDER:-glm}"
-
-      case "$PROVIDER" in
-        ${lib.concatStringsSep "\n" (
-          lib.mapAttrsToList (provider: settings: ''
-            ${lib.escapeShellArg provider})
-              settings=${lib.escapeShellArg (toString settings)}
-              ;;
-          '') providerSettings
-        )}
-        *)
-          echo "claude: unknown PROVIDER: $PROVIDER (expected ${lib.join "|" providerNames})" >&2
-          exit 1 ;;
-      esac
-
-      with-secrets "${secretFile}" \
+      with-secrets "${config.age.secrets."llm-api-keys".path}" \
         --allow TAVILY_API_KEY \
         --allow ZOTERO_API_KEY \
         --allow ZOTERO_LIBRARY_ID \
-        -- "${lib.getExe pkgs.claude-code}" "$@" --settings "$settings"
+        -- "${lib.getExe pkgs.claude-code}" "$@" --settings "${toString settings}"
     '';
   };
+
+  models = [
+    {
+      model = "gpt-6.1-astra";
+      label = "astra";
+      effortLevel = "medium"; # "low", "medium", "high", "xhigh", "max"
+      autoCompactWindow = 272000;
+      behavesAs = "fable";
+    }
+
+    {
+      model = "gpt-6.1-sol";
+      label = "sol";
+      effortLevel = "medium";
+      autoCompactWindow = 272000;
+      behavesAs = "opus";
+    }
+
+    {
+      model = "glm-5.3";
+      label = "glm";
+      effortLevel = "high";
+      autoCompactWindow = 400000;
+      behavesAs = "sonnet";
+    }
+
+    {
+      model = "glm-5.3-flash";
+      label = "glm-flash";
+      effortLevel = "high";
+      autoCompactWindow = 400000;
+      behavesAs = "haiku";
+    }
+  ];
 in
 {
   programs.claude-code = {
-    enable = config.my.host.dev.enable;
+    enable = config.my.host.dev.ai.enable;
     package = claude-code';
 
     # See: https://code.claude.com/docs/en/settings
@@ -96,13 +99,35 @@ in
         API_TIMEOUT_MS = "3000000";
         # Disable non-essential traffic for privacy
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
+        # Upstream recommendation: never replay a broken stream as one shot — it can duplicate tool calls.
+        CLAUDE_CODE_DISABLE_NONSTREAMING_FALLBACK = 1;
       };
 
       theme = "dark";
       editorMode = "vim";
-      effortLevel = "high"; # "low", "medium", "high"
       tui = "fullscreen";
       disableDeepLinkRegistration = "disable"; # claude-cli:// and Claude Code URL Handler.app
+
+      model = "glm-5.3[1m]";
+      availableModels = lib.map (a: a.model) models;
+      modelSettings = lib.listToAttrs (
+        lib.map (item: {
+          name = item.model;
+          value = { inherit (item) effortLevel autoCompactWindow; };
+        }) models
+      );
+      modelPicker = {
+        replaceBuiltInOptions = true;
+        options = lib.map (item: {
+          model = item.model + "[1m]";
+          inherit (item) label behavesAs;
+        }) models;
+      };
+
+      attribution = {
+        pr = ""; # To hide attribution, set to empty strings.
+        commit = "Assisted-by: Claude-Code:GPT-6.1\nAssisted-by: Claude-Code:GLM-5.3";
+      };
 
       permissions =
         let
@@ -248,9 +273,6 @@ in
           httpProxyPort = config.my.proxy.httpPublicPort;
         });
       };
-
-      # To hide attribution, set to empty strings.
-      attribution.pr = "";
 
       hooks =
         let

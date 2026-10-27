@@ -6,7 +6,7 @@
 }:
 
 let
-  cfg = config.my.host.dev;
+  cfg = config.my.host.dev.ai;
 in
 {
   imports = [

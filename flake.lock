@@ -59,6 +59,26 @@
         "type": "github"
       }
     },
+    "claude-code-proxy": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792936390,
+        "narHash": "sha256-y23ODw2+X9OxhuDbu+MIoHLddiCcaFFQod5e3tF9fQs=",
+        "owner": "raine",
+        "repo": "claude-code-proxy",
+        "rev": "a08de6a52132b538f5b617722d03feb3c082d9a5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "raine",
+        "repo": "claude-code-proxy",
+        "type": "github"
+      }
+    },
     "firefox-addons": {
       "inputs": {
         "nixpkgs": [
@@ -486,6 +506,7 @@
       "inputs": {
         "agenix": "agenix",
         "aim": "aim",
+        "claude-code-proxy": "claude-code-proxy",
         "firefox-addons": "firefox-addons",
         "git-hooks": "git-hooks",
         "hermes-agent": "hermes-agent",

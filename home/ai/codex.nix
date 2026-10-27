@@ -35,7 +35,7 @@ let
 in
 {
   programs.codex = {
-    enable = config.my.host.dev.enable;
+    enable = config.my.host.dev.ai.enable;
     package = codex';
     inherit skills;
 

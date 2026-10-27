@@ -37,7 +37,7 @@ let
 in
 {
   programs.opencode = {
-    enable = config.my.host.dev.enable;
+    enable = config.my.host.dev.ai.enable;
     package = opencode';
     inherit skills;
 
@@ -83,7 +83,7 @@ in
 
   # Send notification on session completion
   xdg.configFile."opencode/plugins/notification.js".text =
-    lib.optionalString config.my.host.dev.enable
+    lib.optionalString config.my.host.dev.ai.enable
       (
         let
           msg = "Turn Completed!";

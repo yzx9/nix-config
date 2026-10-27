@@ -65,6 +65,13 @@ in
         ops.enable = (lib.mkEnableOption "for Ops, will install Ops-specific applications") // {
           default = config.my.host.dev.enable;
         };
+
+        # AI coding tools (claude-code, codex, opencode, claude-code-proxy)
+        # stay on personal daily machines only — `daily` is what separates
+        # them from shared dev boxes like cvcd-gpu*.
+        ai.enable = (lib.mkEnableOption "AI coding tools (daily personal machines only)") // {
+          default = config.my.host.daily && config.my.host.dev.enable;
+        };
       };
     };
 
