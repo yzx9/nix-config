@@ -236,6 +236,7 @@ in
         filesystem.allowWrite = [
           "~/.cache/"
           "~/.cargo" # rust dependencies and cache
+          "~/.codex" # codex state and cache
           "~/.gradle" # gradle dependencies and cache
           "~/.m2/" # maven dependencies
           "~/.matplotlib/" # python plotting
