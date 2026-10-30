@@ -29,7 +29,6 @@ let
     text = ''
       with-secrets "${config.age.secrets."llm-api-keys".path}" \
         --allow GLM_CODING_API_KEY \
-        --allow UNI_YUANJING_API_KEY \
         -- opencode "$@"
     '';
   };
@@ -45,25 +44,7 @@ in
     settings = {
       theme = "system";
 
-      provider = {
-        zhipuai-coding-plan.options.apiKey = "{env:GLM_CODING_API_KEY}";
-
-        uni = {
-          npm = "@ai-sdk/openai-compatible";
-          name = "UNI Yuanjing";
-          options = {
-            baseURL = "https://maas-api.ai-yuanjing.com/openapi/compatible-mode/v1";
-            apiKey = "{env:UNI_YUANJING_API_KEY}";
-          };
-          models.glm-5 = {
-            name = "GLM-5";
-            limit = {
-              context = 204800;
-              output = 131072;
-            };
-          };
-        };
-      };
+      provider.zhipuai-coding-plan.options.apiKey = "{env:GLM_CODING_API_KEY}";
 
       permission = {
         read = {

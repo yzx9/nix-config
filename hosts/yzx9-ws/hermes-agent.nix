@@ -31,40 +31,16 @@ in
       #################################
       #            models
       #################################
-      custom_providers = [
-        {
-          name = "uni";
-          base_url = "https://maas-api.ai-yuanjing.com/openapi/compatible-mode/v1";
-          api_mode = "chat_completions";
-          key_env = "YUANJING_API_KEY";
-        }
-      ];
-
       model = {
         provider = "deepseek";
         default = "deepseek-flash";
         context_length = 1000000;
       };
 
-      fallback_providers = [
-        {
-          provider = "custom:uni";
-          model = "glm-5";
-          context_length = 1000000;
-        }
-      ];
-
       auxiliary = {
         compression = {
           provider = "deepseek";
           model = "deepseek-v4-flash";
-
-          fallback_chain = [
-            {
-              provider = "custom:uni";
-              model = "glm-5";
-            }
-          ];
         };
       };
 
