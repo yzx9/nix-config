@@ -44,6 +44,10 @@ in
     wireless = {
       enable = true;
 
+      interfaces = [
+        interface
+      ];
+
       networks.WYMLAB = {
         priority = 1;
         # Generate pskRaw: wpa_passphrase ESSID PSK
