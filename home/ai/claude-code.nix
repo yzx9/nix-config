@@ -18,7 +18,6 @@ let
         # All model traffic goes through the local claude-code-proxy
         ANTHROPIC_BASE_URL = "http://127.0.0.1:18765";
         ANTHROPIC_AUTH_TOKEN = "unused"; # loopback proxy needs no credential
-
       };
     }
   );
@@ -47,10 +46,13 @@ let
         --allow TAVILY_API_KEY \
         --allow ZOTERO_API_KEY \
         --allow ZOTERO_LIBRARY_ID \
-        -- "${lib.getExe pkgs.claude-code}" "$@" --settings "${toString settings}"
+        -- \
+        "${lib.getExe pkgs.claude-code}" "$@" \
+        --settings "${toString settings}"
     '';
   };
 
+  defaultModel = "gpt-6.1-sol[1m]";
   models = [
     {
       model = "gpt-6.1-astra";
@@ -107,8 +109,11 @@ in
       editorMode = "vim";
       tui = "fullscreen";
       disableDeepLinkRegistration = "disable"; # claude-cli:// and Claude Code URL Handler.app
+      useAutoModeDuringPlan = true;
+      skipAutoPermissionPrompt = true;
 
-      model = "glm-5.3[1m]";
+      model = defaultModel;
+      fastMode = false;
       availableModels = lib.map (a: a.model) models;
       modelSettings = lib.listToAttrs (
         lib.map (item: {
