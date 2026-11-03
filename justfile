@@ -12,10 +12,12 @@ set default-list := true
 check:
   nix flake check --all-systems
 
-# Run eval tests
+# Force every host entry (nixos/darwin/home/images) to fully evaluate
+# (--json: the plain printer would render broken entries as «error» strings
+# and still exit 0)
 [group('flake')]
 test:
-  nix eval .#evalTests --show-trace --print-build-logs --verbose
+  NIXPKGS_ALLOW_UNFREE=1 nix eval --impure --json .#evalTests --show-trace
 
 # Update all the flake inputs
 [group('flake')]
