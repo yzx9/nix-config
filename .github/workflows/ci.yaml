@@ -2,10 +2,38 @@ name: Build and Push to cachix
 
 on:
   push:
+  pull_request:
   workflow_dispatch:
 
 jobs:
+  # Cheap evaluation-only gate: runs on every push and PR (including dependabot
+  # lock bumps) and force-evaluates the whole flake:
+  #   - `nix flake check` covers packages, dev shells and nixosConfigurations
+  #     (standard outputs only — it skips darwinConfigurations,
+  #     homeConfigurations and images entirely)
+  #   - `.#evalTests` (see flake.nix) forces every host entry of all four kinds
+  # Evaluation is architecture-independent, so one x86_64 runner suffices.
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # The packages output pulls unfree nixvim (copilot-language-server), and
+      # standalone homeConfigurations cannot whitelist unfree from within
+      # their modules (pkgs is passed directly in lib.nix).
+      NIXPKGS_ALLOW_UNFREE: "1"
+
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+      - run: nix --accept-flake-config flake check --all-systems --impure
+      # --json: the plain printer renders broken entries as «error» strings
+      # and still exits 0
+      - run: nix --accept-flake-config eval --impure --json .#evalTests --show-trace
+
   build-packages:
+    if: github.event_name != 'pull_request' # cache-filling jobs, run on push only
     strategy:
       # Continue with the remaining packages if one fails
       fail-fast: false
@@ -41,6 +69,7 @@ jobs:
           fi
 
   build-nixos-configuration:
+    if: github.event_name != 'pull_request' # cache-filling jobs, run on push only
     strategy:
       fail-fast: false # Continue with the remaining packages if one fails
       max-parallel: 1 # To reuse the cache
