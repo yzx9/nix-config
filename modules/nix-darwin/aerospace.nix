@@ -211,23 +211,7 @@
 
       # List of workspaces that should stay alive even when they contain no windows,
       # even when they are invisible.
-      persistent-workspaces = [
-        "A" # main
-        "B" # [B]rowser
-        "C" # [C]hat: Wechat
-        "D" # [D]evelopment
-        "E" # [E]udic, [E]mail
-        "F"
-        "G" # [G]raphics design: Bambu Studio, FreeCAD, Inkscape, Powerpoint
-        "Q" # Dbeaver
-        "R"
-        "S" # [S]tudy: Preview, Zotero
-        "T" # [T]rilium
-        "V" # [V]iture machine
-        "W" # [W]ord: Microsoft Word, Excel
-        "X" # ChatGPT
-        "Z"
-      ];
+      persistent-workspaces = lib.stringToCharacters "QWERTASDFGZXCVB";
 
       workspace-to-monitor-force-assignment = {
         "A" = "main";
@@ -258,42 +242,31 @@
           ];
         in
         [
-          (mkMove "B" "org.nixos.firefox")
-          (mkMove "C" "im.riot.app")
-          (mkMove "D" "net.kovidgoyal.kitty")
+          (mkMove "Q" "org.jkiss.dbeaver.core.product")
+          (mkMove "Q" "com.tencent.meeting")
+
+          # [W]ord: Microsoft Word, Excel
+          (mkMove "W" "com.microsoft.Word")
+          (mkMove "W" "com.microsoft.Excel")
+
+          # [E]udic, [E]mail
           (mkMove "E" "com.eusoft.eudic")
           (mkMove "E" "com.microsoft.Outlook")
           (mkMove "E" "org.nixos.thunderbird")
-          (mkMove "G" "com.bambulab.bambu-studio")
-          (mkMove "G" "org.freecad.FreeCAD")
-          (mkMove "G" "org.inkscape.Inkscape")
-          (mkMove "G" "com.microsoft.Powerpoint")
-          (mkMove "G" "com.blackmagic-design.DaVinciResolve")
-          (mkMove "Q" "org.jkiss.dbeaver.core.product")
-          (mkMove "Q" "com.tencent.meeting")
-          (mkMove "S" "com.apple.Preview")
-          (mkMove "S" "org.zotero.zotero-source")
+
+          # [T]rilium
           (mkMove "T" "com.electron.trilium-notes")
-          (mkMove "V" "com.vmware.fusion")
-          (mkMove "W" "com.microsoft.Word")
-          (mkMove "W" "com.microsoft.Excel")
-          (mkMove "X" "com.openai.codex")
+
+          # [S]tudy: Preview, Zotero
+          (mkMove "S" "com.apple.Preview")
+          (mkMove "S" "org.zotero.zotero")
+
+          # [D]evelopment
+          (mkMove "D" "net.kovidgoyal.kitty")
+
+          # [F]iji
           (mkMove "X" "sc.fiji")
           (mkMove "X" "Fiji")
-
-          (mkFloating "com.apple.finder")
-
-          # Most windows of wechat need to be float, including picture preview, video
-          # call, etc. The only exception is the main window, howevery it's not easy to
-          # detect the main window, so we just float all windows of wechat.
-          {
-            "if".app-id = "com.tencent.xinWeChat";
-            # # Wechat set window title after creating the window, so the following line
-            # # doesn't work.
-            # "if".window-title-regex-substring = "WeChat"; # WeChat (Chats)
-            run = mkRunFloatingAndMove "C";
-          }
-
           {
             "if" = {
               app-id = "com.azul.zulu.java";
@@ -301,6 +274,37 @@
             };
             run = mkRunFloatingAndMove "X";
           }
+
+          # [G]raphics design: Bambu Studio, FreeCAD, Inkscape, Powerpoint
+          (mkMove "G" "com.bambulab.bambu-studio")
+          (mkMove "G" "org.freecad.FreeCAD")
+          (mkMove "G" "org.inkscape.Inkscape")
+          (mkMove "G" "com.microsoft.Powerpoint")
+          (mkMove "G" "com.blackmagic-design.DaVinciResolve")
+
+          # [X]: ChatGPT
+          (mkMove "X" "com.openai.codex")
+
+          # [C]hat: Wechat
+          (mkMove "C" "im.riot.app") # Element
+          # Most windows of wechat need to be float, including picture preview, video
+          # call, etc. The only exception is the main window, howevery it's not easy to
+          # detect the main window, so we just float all windows of wechat.
+          {
+            "if".app-id = "com.tencent.xinWeChat";
+            # Wechat set window title after creating the window, so the following line
+            # doesn't work.
+            # "if".window-title-regex-substring = "WeChat"; # WeChat (Chats)
+            run = mkRunFloatingAndMove "C";
+          }
+
+          # [V]iture machine
+          (mkMove "V" "com.vmware.fusion")
+
+          # [B]rowser
+          (mkMove "B" "org.nixos.firefox")
+
+          (mkFloating "com.apple.finder")
         ];
     };
   };
