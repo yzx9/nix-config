@@ -116,10 +116,10 @@ in
   # is inserted at INPUT position 1 so it is evaluated before nixos-fw's
   # reject, regardless of module ordering.
   networking.firewall.extraCommands = ''
-    ip46tables -N docker-to-proxy 2>/dev/null || true
-    ip46tables -C INPUT -j docker-to-proxy 2>/dev/null || ip46tables -I INPUT 1 -j docker-to-proxy
-    ip46tables -F docker-to-proxy
-    ip46tables -A docker-to-proxy -s 172.16.0.0/12 -p tcp --dport ${toString config.my.proxy.selfHost.httpPublicPort} -j ACCEPT
+    iptables -N docker-to-proxy 2>/dev/null || true
+    iptables -C INPUT -j docker-to-proxy 2>/dev/null || iptables -I INPUT 1 -j docker-to-proxy
+    iptables -F docker-to-proxy
+    iptables -A docker-to-proxy -s 172.16.0.0/12 -p tcp --dport ${toString config.my.proxy.selfHost.httpPublicPort} -j ACCEPT
   '';
 
   # The runner's unit runs with ProtectSystem=strict: the whole filesystem
