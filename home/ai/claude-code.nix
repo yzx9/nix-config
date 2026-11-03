@@ -55,10 +55,10 @@ let
   defaultModel = "gpt-6.1-sol[1m]";
   models = [
     {
-      model = "gpt-6.1-astra";
+      model = "gpt-6-astra";
       label = "astra";
       effortLevel = "high"; # "low", "medium", "high", "xhigh", "max"
-      autoCompactWindow = 272000;
+      autoCompactWindow = 500000;
       behavesAs = "fable";
     }
 
@@ -66,7 +66,7 @@ let
       model = "gpt-6.1-sol";
       label = "sol";
       effortLevel = "high";
-      autoCompactWindow = 272000;
+      autoCompactWindow = 500000;
       behavesAs = "opus";
     }
 
@@ -114,7 +114,6 @@ in
 
       model = defaultModel;
       fastMode = false;
-      availableModels = lib.map (a: a.model) models;
       modelSettings = lib.listToAttrs (
         lib.map (item: {
           name = item.model;
