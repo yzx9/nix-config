@@ -66,11 +66,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792936390,
-        "narHash": "sha256-y23ODw2+X9OxhuDbu+MIoHLddiCcaFFQod5e3tF9fQs=",
+        "lastModified": 1793487851,
+        "narHash": "sha256-iyTZgJwTLi08TCbRT8rU+qA0xayRrY1v6U9truwEPiQ=",
         "owner": "raine",
         "repo": "claude-code-proxy",
-        "rev": "a08de6a52132b538f5b617722d03feb3c082d9a5",
+        "rev": "49cf15220b2efa94b3d21c1a560d3762e961628d",
         "type": "github"
       },
       "original": {
