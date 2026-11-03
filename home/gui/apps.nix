@@ -30,16 +30,31 @@ lib.mkIf config.my.host.gui {
         # openscad # 3D parametric design
         # blender # 3D design
       ]
-      ++ lib.optionals isDarwin [
-        yzx9.vaa3d-x # only support darwin now
+      ++ lib.optionals isDarwin (
+        let
+          mkAppWithProxy =
+            name: appName:
+            pkgs.writeShellApplication {
+              inherit name;
+              text = ''
+                open -a ${appName} \
+                  --env HTTP_PROXY="${config.my.proxy.http}" \
+                  --env HTTPS_PROXY="${config.my.proxy.http}" \
+                  --env NO_PROXY="localhost,127.0.0.1,::1" \
+                  --args \
+                  --proxy-server="${config.my.proxy.socks5}" \
+                  "$@"
+              '';
+            };
+        in
+        [
+          yzx9.vaa3d-x # only support darwin now
 
-        (pkgs.writeShellApplication {
-          name = "element-desktop";
-          text = ''
-            open -a Element --args --proxy-server=${config.my.proxy.socks5}
-          '';
-        }) # element was installed via brew, so we add a wrapper to set the proxy for it
-      ]
+          # installed via brew, add a wrapper to set the proxy for it
+          (mkAppWithProxy "element-desktop" "Element")
+          (mkAppWithProxy "chatgpt" "ChatGPT")
+        ]
+      )
       ++ lib.optionals (!isDarwin) [
         element-desktop # Matrix client
 

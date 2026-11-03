@@ -225,8 +225,8 @@
         "T" # [T]rilium
         "V" # [V]iture machine
         "W" # [W]ord: Microsoft Word, Excel
-        "X" # misc
-        "Z" # [Z]otero
+        "X" # ChatGPT
+        "Z"
       ];
 
       workspace-to-monitor-force-assignment = {
@@ -277,6 +277,7 @@
           (mkMove "V" "com.vmware.fusion")
           (mkMove "W" "com.microsoft.Word")
           (mkMove "W" "com.microsoft.Excel")
+          (mkMove "X" "com.openai.codex")
           (mkMove "X" "sc.fiji")
           (mkMove "X" "Fiji")
 

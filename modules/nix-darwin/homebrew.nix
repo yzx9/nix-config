@@ -50,16 +50,14 @@ in
       let
         inherit (config.my.host) daily gui dev;
       in
-      [
-        # "karabiner-elements"
-      ]
-      ++ lib.optionals gui [
+      lib.optionals gui [
         "middleclick" # mouse
         "scroll-reverser" # mouse
         "snipaste" # screen shot
       ]
       ++ lib.optionals (gui && daily) [
         # productivity
+        "chatgpt"
         "eudic" # dictionary
         "microsoft-excel"
         "microsoft-word"
