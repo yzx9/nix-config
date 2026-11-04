@@ -148,11 +148,7 @@ in
           deny = mkHmMcpCmds "tavily" [ "tavily_research" ]; # Too expensive
 
           ask =
-            mkBashCmds [
-              "rm -rf"
-            ]
-            ++ (mkBashSubCmds "git" [
-              "reset"
+            (mkBashSubCmds "git" [
               "push"
             ])
             ++ (mkBashSubCmds "gh pr" [
