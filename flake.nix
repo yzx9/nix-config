@@ -157,6 +157,15 @@
       # nixpkgs overlay
       overlays = import ./overlays inputs;
 
+      checks = eachSystem (
+        system:
+        nixpkgs.lib.optionalAttrs (system == "x86_64-linux") {
+          signoz =
+            (nixpkgs.legacyPackages.${system}.extend inputs.self.overlays.default).testers.runNixOSTest
+              ./nixosModules/tests/signoz.nix;
+        }
+      );
+
       # NixOS modules
       nixosModules = import ./nixosModules inputs;
 
