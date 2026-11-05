@@ -363,11 +363,12 @@ in
         StateDirectoryMode = "0750";
         ExecStart = "${config.services.clickhouse.package}/bin/clickhouse keeper --config-file=/etc/clickhouse-keeper/keeper.xml";
         # Keeper accepts client connections only after Raft initialization
-        # completes. One-shot `keeper-client --query` exits cleanly (unlike
-        # its interactive pipe mode) and timeout guards against hangs.
+        # completes, so a lightweight TCP connect probe is the readiness
+        # gate. Do NOT use `keeper-client` here: spawning the full ClickHouse
+        # binary per attempt exceeds any sane timeout under emulation.
         ExecStartPost = pkgs.writeShellScript "clickhouse-keeper-wait" ''
-          for _ in $(seq 1 120); do
-            if timeout 5 ${config.services.clickhouse.package}/bin/clickhouse keeper-client --host 127.0.0.1 --port 9181 --query ruok 2>/dev/null | grep -q imok; then
+          for _ in $(seq 1 300); do
+            if ${lib.getExe' pkgs.netcat "nc"} -z -w 1 127.0.0.1 9181 2>/dev/null; then
               exit 0
             fi
             sleep 1
