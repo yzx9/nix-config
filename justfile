@@ -17,7 +17,7 @@ check:
 # and still exit 0)
 [group('flake')]
 test:
-  NIXPKGS_ALLOW_UNFREE=1 nix eval --impure --json .#evalTests --show-trace
+  nix eval --json .#evalTests --show-trace
 
 # Update all the flake inputs
 [group('flake')]

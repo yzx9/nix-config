@@ -16,19 +16,13 @@ jobs:
   evaluate:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      # The packages output pulls unfree nixvim (copilot-language-server), and
-      # standalone homeConfigurations cannot whitelist unfree from within
-      # their modules (pkgs is passed directly in lib.nix).
-      NIXPKGS_ALLOW_UNFREE: "1"
 
     steps:
       - uses: actions/checkout@v7
       - uses: cachix/install-nix-action@v31
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
-      - run: nix --accept-flake-config flake check --all-systems --impure
-      # --json: the plain printer renders broken entries as «error» strings
+      - run: nix --accept-flake-config flake check --all-systems      # --json: the plain printer renders broken entries as «error» strings
       # and still exits 0
       - run: nix --accept-flake-config eval --impure --json .#evalTests --show-trace
 
