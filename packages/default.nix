@@ -4,17 +4,19 @@
   agenix,
   aim,
   ...
-}@inputs:
+}:
 
 system:
 
 let
-  callYzx9Packages = import ./callPackages.nix inputs;
-
-  pkgs = nixpkgs.legacyPackages.${system}.extend self.overlays.default;
+  pkgs = import nixpkgs {
+    inherit system;
+    config = import ../modules/_shared/nixpkgs-config.nix;
+    overlays = [ self.overlays.default ];
+  };
 in
 {
-  inherit (callYzx9Packages pkgs system)
+  inherit (pkgs.yzx9)
     catppuccin-bat
     catppuccin-yazi-flavor
     gstack

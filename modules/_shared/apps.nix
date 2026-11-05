@@ -4,25 +4,9 @@
 #
 ##########################################################################
 
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}:
+{ pkgs, ... }:
 
 {
-  # Allow unfree packages
-  nixpkgs.config.allowUnfreePredicate =
-    pkg: builtins.elem (lib.getName pkg) config.my.allowUnfreePredicate;
-
-  my.allowUnfreePredicate = [
-    "claude-code"
-    "copilot-language-server"
-    "firefox-esr-140-bin-unwrapped"
-    "google-chrome"
-  ];
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   #

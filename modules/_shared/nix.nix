@@ -56,6 +56,10 @@
     inputs.self.overlays.default
   ];
 
+  # Share the package policy with standalone packages and Home Manager.
+  nixpkgs.config.allowUnfreePackages = config.my.allowUnfreePredicate;
+  my.allowUnfreePredicate = (import ./nixpkgs-config.nix).allowUnfreePackages;
+
   # Allow insecure packages. Wired here because this is the only `_shared`
   # module imported by home-manager too, so insecure packages are permitted
   # in every evaluation context.

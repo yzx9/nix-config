@@ -127,10 +127,6 @@
       # homeConfigurations and images (only standard outputs are checked), so
       # this is the one place that covers every entry point. Run via
       # `just test` or the CI `evaluate` job.
-      #
-      # Note: the standalone homeConfigurations evaluate unfree packages
-      # (pkgs is passed directly in lib.nix), so run with
-      # `NIXPKGS_ALLOW_UNFREE=1 nix eval --impure .#evalTests`.
       evalTests = {
         nixos = nixpkgs.lib.mapAttrs (
           _: c: c.config.system.build.toplevel.drvPath
