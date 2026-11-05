@@ -21,6 +21,8 @@ jobs:
         package:
           - aim
           - gstack
+          - signoz
+          - signoz-otel-collector
           - zotero-mcp
 
     runs-on: ${{ matrix.os }}

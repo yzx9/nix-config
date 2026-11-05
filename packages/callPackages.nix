@@ -21,6 +21,10 @@ in
 
   pmp-library = pkgs.callPackage ./pmp-library { };
 
+  signoz = pkgs.callPackage ./signoz { };
+
+  signoz-otel-collector = pkgs.callPackage ./signoz-otel-collector { };
+
   tavily-mcp = pkgs.callPackage ./tavily-mcp { };
 
   vaa3d-x = pkgs.callPackage ./vaa3d-x { };
