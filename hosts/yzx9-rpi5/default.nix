@@ -27,6 +27,7 @@ inputs.self.lib.mkNixosRpiConfiguration {
       ./mysql.nix
       ./radicale.nix
       ./readeck.nix
+      ./signoz.nix
       ./trilium.nix
       ./vikunja.nix
     ];

@@ -20,6 +20,8 @@ in
     gstack
     nixvim
     nixvim-lsp
+    signoz
+    signoz-otel-collector
     tavily-mcp
     ;
 
