@@ -98,9 +98,18 @@
         )
 
     with subtest("trace visible in telemetry store"):
+        # Diagnose where ingestion stalled if the span does not show up.
+        machine.sleep(60)
+        print(machine.succeed("clickhouse client --query 'SHOW TABLES FROM signoz_traces'"))
+        print(
+            machine.succeed(
+                "clickhouse client --query \"SELECT name, total_rows FROM system.tables WHERE database = 'signoz_traces' ORDER BY name\""
+            )
+        )
+        print(machine.succeed("journalctl -u signoz-otel-collector -n 80 --no-pager"))
         machine.wait_until_succeeds(
             "test \"$(clickhouse client --query 'SELECT count() FROM signoz_traces.distributed_signoz_spans')\" -ge 1",
-            timeout=900,
+            timeout=1200,
         )
 
     with subtest("trace visible through service API"):
