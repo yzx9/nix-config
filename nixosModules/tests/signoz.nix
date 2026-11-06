@@ -80,6 +80,9 @@
         index = machine.succeed("curl -fsS http://127.0.0.1:8080/")
         assert "html" in index, "web UI did not serve index.html"
 
+    with subtest("writable PromQL query tracker"):
+        machine.succeed("test -s /var/lib/signoz/promql/queries.active")
+
     with subtest("executable histogram UDF"):
         query = "SELECT histogramQuantile([0.5, 1., 2., toFloat64('inf')], [2., 3., 4., 4.], 0.5)"
         quantile = machine.succeed(shlex.join(["clickhouse", "client", "--query", query]))

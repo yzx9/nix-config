@@ -432,6 +432,9 @@ in
         SIGNOZ_APISERVER_ADDRESS = "${cfg.host}:${toString cfg.port}";
         SIGNOZ_SQLSTORE_PROVIDER = "sqlite";
         SIGNOZ_SQLSTORE_SQLITE_PATH = "/var/lib/signoz/signoz.db";
+        # The upstream tracker is enabled with an empty default path. Keep
+        # its queries.active file in the service's writable state directory.
+        SIGNOZ_PROMETHEUS_ACTIVE__QUERY__TRACKER_PATH = "/var/lib/signoz/promql";
         SIGNOZ_TELEMETRYSTORE_PROVIDER = "clickhouse";
         SIGNOZ_TELEMETRYSTORE_CLICKHOUSE_DSN = "tcp://127.0.0.1:9000";
         SIGNOZ_TELEMETRYSTORE_CLICKHOUSE_CLUSTER = "cluster";
