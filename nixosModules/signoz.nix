@@ -114,6 +114,8 @@ let
             <console>1</console>
         </logger>
         <listen_host>127.0.0.1</listen_host>
+        <!-- Raft has a separate bind setting; listen_host only covers clients. -->
+        <interserver_listen_host>127.0.0.1</interserver_listen_host>
         <keeper_server>
             <tcp_port>9181</tcp_port>
             <server_id>1</server_id>
