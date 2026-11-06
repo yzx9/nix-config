@@ -33,10 +33,6 @@ let
     rescue
   ];
 
-  root = [
-    user_yzx9-mbp
-    rescue
-  ];
   all_keys = systems ++ users;
 in
 {
@@ -60,7 +56,5 @@ in
   # trusted only
   "id-git.age".publicKeys = trusted;
   "id-github.age".publicKeys = trusted;
-
-  # root only
-  "id-auth.age".publicKeys = root ++ [ system_yzx9-mbp ];
+  "id-auth.age".publicKeys = trusted;
 }

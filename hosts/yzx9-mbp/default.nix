@@ -29,7 +29,6 @@ inputs.self.lib.mkDarwinConfiguration {
   ];
 
   home.imports = [
-    ./ssh.nix
     ./mira-companion.nix
   ];
 }
