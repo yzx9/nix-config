@@ -58,7 +58,7 @@ let
       model = "gpt-6-astra";
       label = "astra";
       effortLevel = "high"; # "low", "medium", "high", "xhigh", "max"
-      autoCompactWindow = 500000;
+      autoCompactWindow = 400000;
       behavesAs = "fable";
     }
 
@@ -66,7 +66,7 @@ let
       model = "gpt-6.1-sol";
       label = "sol";
       effortLevel = "high";
-      autoCompactWindow = 500000;
+      autoCompactWindow = 400000;
       behavesAs = "opus";
     }
 
