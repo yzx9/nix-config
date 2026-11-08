@@ -103,7 +103,13 @@ in
         CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
         # Upstream recommendation: never replay a broken stream as one shot — it can duplicate tool calls.
         CLAUDE_CODE_DISABLE_NONSTREAMING_FALLBACK = 1;
-      };
+      }
+      // (lib.listToAttrs (
+        lib.map (value: {
+          name = "ANTHROPIC_DEFAULT_${lib.toUpper value.behavesAs}_MODEL";
+          value = value.model;
+        }) models
+      ));
 
       theme = "dark";
       editorMode = "vim";
