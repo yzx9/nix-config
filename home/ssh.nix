@@ -18,14 +18,14 @@ in
 
     (lib.mkIf config.my.host.trusted {
       id-auth = {
-        file = ../../secrets/id-auth.age;
+        file = ../secrets/id-auth.age;
         path = "${ssh}id_auth";
         mode = "400";
       };
     })
   ];
 
-  home.file.".ssh/id_auth.pub".source = ../../secrets/id-auth.pub;
+  home.file.".ssh/id_auth.pub".source = ../secrets/id-auth.pub;
 
   programs.ssh = {
     enable = true;
