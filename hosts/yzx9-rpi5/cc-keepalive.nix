@@ -105,15 +105,15 @@ in
       OnCalendar = [
         # Morning slots: early quota window often misses. Added more catch-up
         # pings so the 5h quota is refreshed before the workday.
-        "*-*-* 05:35:00"
-        "*-*-* 05:55:00"
-        "*-*-* 06:15:00"
-        "*-*-* 06:35:00"
-        "*-*-* 06:55:00"
-        "*-*-* 07:05:00"
-        "*-*-* 10:37:00"
-        "*-*-* 15:40:00"
-        "*-*-* 20:43:00"
+        "*-*-* 05:06:16"
+        "*-*-* 05:26:16"
+        "*-*-* 05:46:16"
+        "*-*-* 06:06:16"
+        "*-*-* 06:26:16"
+        "*-*-* 06:46:16"
+        "*-*-* 10:07:16"
+        "*-*-* 15:08:16"
+        "*-*-* 20:09:16"
       ];
       # If the machine was off / the timer missed a slot, run once on boot.
       Persistent = true;
