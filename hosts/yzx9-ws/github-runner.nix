@@ -106,6 +106,23 @@ in
       # Containers/builds get the HTTP public proxy from config.json.
       DOCKER_CONFIG = "/var/lib/github-runner/docker-cli-config";
     };
+
+    # relax the system call filter to allow bwrap to run, while keeping other
+    # restrictions in place.
+    serviceOverrides = {
+      RestrictNamespaces = "user mnt";
+
+      SystemCallFilter = [
+        "~@clock"
+        "~@cpu-emulation"
+        "~@module"
+        "~@obsolete"
+        "~@raw-io"
+        "~@reboot"
+        "~setdomainname"
+        "~sethostname"
+      ];
+    };
   };
 
   # Containers reach the host-side xray via the docker0 gateway
