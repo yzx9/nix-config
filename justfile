@@ -63,6 +63,11 @@ gitgc:
 
 [linux]
 [group('os')]
+boot:
+  sudo nixos-rebuild boot --flake .
+
+[linux]
+[group('os')]
 switch:
   sudo nixos-rebuild switch --flake .
 
