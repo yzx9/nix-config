@@ -1,17 +1,4 @@
-# System-level CC keepalive — survives Hermes gateway crashes.
-#
-# Background: the Claude Code quota keepalive used to run as Hermes cron jobs,
-# i.e. inside the hermes-agent gateway process. When the kernel OOM killer took
-# down the user systemd manager (user@1000.service), the gateway died and NO
-# cron fired until someone manually restarted it. This module moves keepalive
-# to a PID-1-managed systemd timer so it keeps running even if the whole user
-# session crashes.
-#
-# Everything except the secret itself is wired at eval time: endpoint, model
-# and key name are inlined below. The user `claude` wrapper on the daily
-# machines goes through the local claude-code-proxy, which this machine does
-# not run — the keepalive must stay direct-to-GLM. No runtime probing of
-# store paths.
+# System-level GLM keepalive
 {
   config,
   pkgs,
@@ -35,7 +22,7 @@ let
 
   # Inner script: expects GLM_CODING_API_KEY in the environment.
   ping = pkgs.writeShellApplication {
-    name = "cc-keepalive-ping";
+    name = "glm-keepalive-ping";
     runtimeInputs = [
       pkgs.curl
       pkgs.coreutils # mktemp, head
@@ -51,13 +38,13 @@ let
         -d '{"model":"${model}","max_tokens":5,"messages":[{"role":"user","content":"ok"}]}')
 
       case "$code" in
-        200) echo "cc-keepalive: ping ok (${model})" ;;
+        200) echo "glm-keepalive: ping ok (${model})" ;;
         429)
           # Rate-limited (bigmodel.cn code 1302): the account is already under
           # the rate-limit window — expected, self-healing, NOT a failure.
           ;;
         *)
-          echo "⚠️ CC keepalive failed (HTTP $code): $(head -c 200 "$body")" >&2
+          echo "GLM keepalive failed (HTTP $code): $(head -c 200 "$body")" >&2
           exit 1
           ;;
       esac
@@ -71,17 +58,17 @@ in
   # default root:0400 would be unreadable to it.
   age.secrets."llm-api-keys" = {
     file = ../../secrets/llm-api-keys.age;
-    owner = "yzx9";
+    owner = config.my.user.name;
   };
 
-  systemd.services.cc-keepalive = {
+  systemd.services.glm-keepalive = {
     description = "Claude Code quota keepalive (GLM API ping)";
     serviceConfig = {
       Type = "oneshot";
-      User = "yzx9"; # Runs as the quota owner, not root — the key file is chowned accordingly.
+      User = config.my.user.name; # Runs as the quota owner, not root — the key file is chowned accordingly.
       ExecStart = lib.getExe (
         pkgs.writeShellApplication {
-          name = "cc-keepalive";
+          name = "glm-keepalive";
           runtimeInputs = [ pkgs.yzx9.with-secrets ];
           text = ''
             exec with-secrets "${keyFile}" \
@@ -98,8 +85,8 @@ in
     };
   };
 
-  systemd.timers.cc-keepalive = {
-    description = "Claude Code quota keepalive timer";
+  systemd.timers.glm-keepalive = {
+    description = "GLM coding plan quota keepalive timer";
     wantedBy = [ "timers.target" ];
     timerConfig = {
       OnCalendar = [
@@ -118,7 +105,7 @@ in
       # If the machine was off / the timer missed a slot, run once on boot.
       Persistent = true;
       RandomizedDelaySec = 0;
-      Unit = "cc-keepalive.service";
+      Unit = "glm-keepalive.service";
     };
   };
 }

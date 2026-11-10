@@ -20,9 +20,9 @@ inputs.self.lib.mkNixosRpiConfiguration {
     imports = [
       ./atuin.nix
       ./backup.nix
-      ./cc-keepalive.nix
       ./freshrss.nix
       ./frpc.nix
+      ./glm-keepalive.nix
       ./hardware-configuration.nix
       ./mysql.nix
       ./radicale.nix
