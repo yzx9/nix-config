@@ -1,0 +1,67 @@
+name: Build and Push to cachix
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-packages:
+    if: github.event_name != 'pull_request' # cache-filling jobs, run on push only
+    strategy:
+      # Continue with the remaining packages if one fails
+      fail-fast: false
+
+      matrix:
+        os:
+          - ubuntu-latest # x86_64-linux
+          - ubuntu-24.04-arm # aarch64-linux
+          - macos-latest # aarch64-darwin
+
+        package:
+          - aim
+          - gstack
+          - zotero-mcp
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+      - uses: cachix/cachix-action@v17
+        if: github.ref == 'refs/heads/main'
+        with:
+          name: "${{ secrets.CACHIX_CACHE_NAME }}"
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - name: Build package
+        run: |
+          available=$(nix eval --json '.#${{ matrix.package }}.meta.available' 2>/dev/null || echo "false")
+          if [ "$available" = "true" ]; then
+            nix --accept-flake-config build .#${{ matrix.package }}
+          else
+            echo "Skipping ${{ matrix.package }} - not available on this platform"
+          fi
+
+  build-nixos-configuration:
+    if: github.event_name != 'pull_request' # cache-filling jobs, run on push only
+    strategy:
+      fail-fast: false # Continue with the remaining packages if one fails
+      max-parallel: 1 # To reuse the cache
+      matrix:
+        conf:
+          - os: ubuntu-24.04-arm
+            host: yzx9-rpi5
+          - os: ubuntu-24.04-arm
+            host: yzx9-pie
+
+    runs-on: ${{ matrix.conf.os }}
+
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+      - uses: cachix/cachix-action@v17
+        if: github.ref == 'refs/heads/main'
+        with:
+          name: "${{ secrets.CACHIX_CACHE_NAME }}"
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - run: nix --accept-flake-config build .#nixosConfigurations.${{matrix.conf.host}}.config.system.build.toplevel
