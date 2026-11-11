@@ -53,8 +53,21 @@ in
       post-start.copy = "wt step copy-ignored --require-include";
 
       projects."github.com/yzx9/*"."post-start" = {
-        pnpm-install = "if [ -f {{ primary_worktree_path }}/pnpm-lock.yaml ]; then pnpm install --dir {{ worktree_path }}; fi";
-        npm-install = "if [ -f {{ primary_worktree_path }}/package-lock.json ]; then npm install --prefix {{ worktree_path }}; fi";
+        install-pnpm = ''
+          if [ -f {{ primary_worktree_path }}/pnpm-lock.yaml ]; then
+            pnpm install --dir {{ worktree_path }}
+          fi
+        '';
+        install-npm = ''
+          if [ -f {{ primary_worktree_path }}/package-lock.json ]; then
+            npm install --prefix {{ worktree_path }}
+          fi
+        '';
+        copy-rust-target = ''
+          if [ -d {{ primary_worktree_path }}/target/ ]; then
+            cp -aT --reflink=always {{ primary_worktree_path }}/target {{ worktree_path }}/target || true
+          fi
+        '';
       };
     };
   };
