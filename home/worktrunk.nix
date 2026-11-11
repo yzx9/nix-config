@@ -54,18 +54,32 @@ in
 
       projects."github.com/yzx9/*"."post-start" = {
         install-pnpm = ''
-          if [ -f {{ primary_worktree_path }}/pnpm-lock.yaml ]; then
+          if [ -f {{ worktree_path }}/pnpm-lock.yaml ]; then
             pnpm install --dir {{ worktree_path }}
           fi
         '';
+
         install-npm = ''
-          if [ -f {{ primary_worktree_path }}/package-lock.json ]; then
+          if [ -f {{ worktree_path }}/package-lock.json ]; then
+            if [ -d {{ primary_worktree_path }}/node_modules ] &&
+               [ ! -e {{ worktree_path }}/node_modules ]; then
+              cp -aT --reflink=always \
+                {{ primary_worktree_path }}/node_modules \
+                {{ worktree_path }}/node_modules \
+                || true
+            fi
+
             npm install --prefix {{ worktree_path }}
           fi
         '';
+
         copy-rust-target = ''
-          if [ -d {{ primary_worktree_path }}/target/ ]; then
-            cp -aT --reflink=always {{ primary_worktree_path }}/target {{ worktree_path }}/target || true
+          if [ -d {{ primary_worktree_path }}/target ] &&
+             [ ! -e {{ worktree_path }}/target ]; then
+            cp -aT --reflink=always \
+              {{ primary_worktree_path }}/target \
+              {{ worktree_path }}/target \
+              || true
           fi
         '';
       };
