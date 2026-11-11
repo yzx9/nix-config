@@ -66,7 +66,11 @@
   fileSystems."/data" = {
     device = "/dev/disk/by-uuid/8c3f39c1-9af8-48dd-8654-f71714af5e68";
     fsType = "btrfs";
-    options = [ "subvol=@data" ];
+    options = [
+      "subvol=@data"
+      "compress=zstd:3"
+      "noatime"
+    ];
   };
 
   swapDevices = [ ];
