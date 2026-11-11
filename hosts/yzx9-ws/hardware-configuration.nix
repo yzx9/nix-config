@@ -21,10 +21,37 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  boot.supportedFilesystems = [ "btrfs" ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/a45b4224-c95c-495c-a20b-f8f80d8f54be";
-    fsType = "ext4";
+    device = "/dev/disk/by-uuid/d777e2c6-153d-4e5e-85a9-94f9ea844ab5";
+    fsType = "btrfs";
+    options = [
+      "subvol=@root"
+      "compress=zstd:3"
+      "noatime"
+    ];
+  };
+
+  fileSystems."/home" = {
+    device = "/dev/disk/by-uuid/d777e2c6-153d-4e5e-85a9-94f9ea844ab5";
+    fsType = "btrfs";
+    options = [
+      "subvol=@home"
+      "compress=zstd:3"
+      "noatime"
+    ];
+  };
+
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-uuid/d777e2c6-153d-4e5e-85a9-94f9ea844ab5";
+    fsType = "btrfs";
+    neededForBoot = true;
+    options = [
+      "subvol=@nix"
+      "compress=zstd:3"
+      "noatime"
+    ];
   };
 
   fileSystems."/boot" = {
