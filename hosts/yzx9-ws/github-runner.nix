@@ -112,16 +112,7 @@ in
     serviceOverrides = {
       RestrictNamespaces = "user mnt";
 
-      SystemCallFilter = [
-        "~@clock"
-        "~@cpu-emulation"
-        "~@module"
-        "~@obsolete"
-        "~@raw-io"
-        "~@reboot"
-        "~setdomainname"
-        "~sethostname"
-      ];
+      SystemCallFilter = lib.mkAfter [ "@mount capset" ];
     };
   };
 
