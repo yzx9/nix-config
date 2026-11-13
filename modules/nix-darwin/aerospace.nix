@@ -214,15 +214,16 @@
       persistent-workspaces = lib.stringToCharacters "QWERTASDFGZXCVB";
 
       workspace-to-monitor-force-assignment = {
-        "A" = "main";
-        "B" = "main";
-        "C" = "built-in";
         "D" = [
           "3"
           "built-in"
         ];
-        "E" = "built-in";
+
+        "Z" = "built-in";
         "X" = "built-in";
+        "C" = "built-in";
+        "V" = "built-in";
+        "B" = "main";
       };
 
       on-window-detected =
@@ -242,15 +243,16 @@
           ];
         in
         [
+          #[Q]
           (mkMove "Q" "org.jkiss.dbeaver.core.product")
           (mkMove "Q" "com.tencent.meeting")
+          (mkMove "Q" "com.vmware.fusion")
 
           # [W]ord: Microsoft Word, Excel
           (mkMove "W" "com.microsoft.Word")
           (mkMove "W" "com.microsoft.Excel")
 
-          # [E]udic, [E]mail
-          (mkMove "E" "com.eusoft.eudic")
+          # [E]mail
           (mkMove "E" "com.microsoft.Outlook")
           (mkMove "E" "org.nixos.thunderbird")
 
@@ -282,6 +284,9 @@
           (mkMove "G" "com.microsoft.Powerpoint")
           (mkMove "G" "com.blackmagic-design.DaVinciResolve")
 
+          # [Z]
+          (mkMove "Z" "com.eusoft.eudic")
+
           # [X]: ChatGPT
           (mkMove "X" "com.openai.codex")
 
@@ -299,7 +304,7 @@
           }
 
           # [V]iture machine
-          (mkMove "V" "com.vmware.fusion")
+          (mkMove "V" "com.super-productivity.app")
 
           # [B]rowser
           (mkMove "B" "org.nixos.firefox")

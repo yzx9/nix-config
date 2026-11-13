@@ -20,6 +20,7 @@ lib.mkIf config.my.host.gui {
     ]
     ++ lib.optionals config.my.host.daily (
       [
+        super-productivity # task management
         dbeaver-bin # SQL client
         trilium-desktop # note taking app
         zotero # reference manager, with two plugins: zotero-better-bibtex, zotmoov ({%w}/{%y})
