@@ -38,58 +38,47 @@ in
       # https://searchfox.org/mozilla-release/source/modules/libpref/init/all.js
       # https://searchfox.org/mozilla-release/source/browser/app/profile/firefox.js
       settings = {
+        # Privacy
         "app.update.auto" = false;
         "beacon.enabled" = false;
-        "browser.aboutConfig.showWarning" = false;
-        # Be kind to hard drive
-        "browser.cache.disk.enable" = false;
-        # Whether Firefox will show the Compact Mode UIDensity option.
-        "browser.compactmode.show" = true;
         "browser.formfill.enable" = false;
-        "browser.tabs.groups.enabled" = true;
-        # Resume last session.
+        "geo.enabled" = false;
+
+        # Startup: restore previous windows and tabs
         "browser.startup.page" = 3;
+
+        # UI
+        "browser.aboutConfig.showWarning" = false;
+        "browser.compactmode.show" = true;
+        "browser.tabs.warnOnClose" = true;
+
+        # Horizontal tabs: hide sidebar launcher
+        # For vertical tabs, use "hide-sidebar" instead.
+        "sidebar.visibility" = "hide-launcher";
+
+        # Search suggestions
         "browser.search.suggest.enabled" = false;
-        "browser.search.suggest.enabled.private" = false;
-        "browser.toolbars.bookmarks.visibility" = "newtab";
-        "browser.toolbarbuttons.introduced.sidebar-button" = false;
-        "browser.topsites.contile.enabled" = false;
-        "browser.urlbar.showSearchSuggestionsFirst" = false;
         "browser.urlbar.suggest.searches" = false;
-        # AI chat bot
-        "browser.ml.chat.enabled" = false;
+
+        # New tab: hide recommended and sponsored content
         "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
-        "browser.newtabpage.activity-stream.feeds.snippets" = false;
-        "browser.newtabpage.activity-stream.section.highlights.includeBookmarks" = false;
-        "browser.newtabpage.activity-stream.section.highlights.includeDownloads" = false;
-        "browser.newtabpage.activity-stream.section.highlights.includeVisited" = false;
+        "browser.newtabpage.activity-stream.feeds.section.highlights" = false;
         "browser.newtabpage.activity-stream.showSponsored" = false;
-        "browser.newtabpage.activity-stream.system.showSponsored" = false;
         "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+        "browser.topsites.contile.enabled" = false;
+
+        # AI chatbot
+        "browser.ml.chat.enabled" = false;
+
+        # Add-ons recommendations
         "extensions.getAddons.showPane" = false;
         "extensions.htmlaboutaddons.recommendations.enabled" = false;
-        "geo.enabled" = false;
-        # If set to false, FxAccounts and Sync will be unavailable.
-        "identity.fxaccounts.enabled" = true;
-        "sidebar.visibility" = "hide-sidebar";
-        "signon.rememberSignons" = true;
-        "widget.use-xdg-desktop-portal.file-picker" = 1;
 
-        # Fully disable Pocket. See
-        # https://www.reddit.com/r/linux/comments/zabm2a.
-        "extensions.pocket.enabled" = false;
-        "extensions.pocket.api" = "0.0.0.0";
-        "extensions.pocket.loggedOutVariant" = "";
-        "extensions.pocket.oAuthConsumerKey" = "";
-        "extensions.pocket.onSaveRecs" = false;
-        "extensions.pocket.onSaveRecs.locales" = "";
-        "extensions.pocket.showHome" = false;
-        "extensions.pocket.site" = "0.0.0.0";
-        "browser.newtabpage.activity-stream.pocketCta" = "";
-        "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
-        "services.sync.prefs.sync.browser.newtabpage.activity-stream.section.highlights.includePocket" =
-          false;
-      };
+      }
+      // (lib.optionalAttrs pkgs.stdenvNoCC.hostPlatform.isLinux {
+        # XDG Portal
+        "widget.use-xdg-desktop-portal.file-picker" = 1;
+      });
 
       search = {
         force = true;
