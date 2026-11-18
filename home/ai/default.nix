@@ -11,6 +11,7 @@ in
 {
   imports = [
     ./claude-code.nix
+    ./claude-code-proxy.nix
     ./codex.nix
   ];
 
@@ -19,7 +20,6 @@ in
     "llm-api-keys".file = ../../secrets/llm-api-keys.age;
   };
 
-  # Enable gstack when claude-code is enabled
   programs.gstack.enable = cfg.enable;
 
   home.packages = lib.optionals cfg.enable (
