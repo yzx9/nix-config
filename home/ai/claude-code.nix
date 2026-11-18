@@ -332,9 +332,9 @@ in
             exit 0
           '';
 
-          direnvHookDef = {
+          mkCommandHook = command: {
             type = "command";
-            command = direnvHook;
+            inherit command;
           };
 
           mkNotifyCmd =
@@ -345,19 +345,14 @@ in
               "${lib.getBin pkgs.libnotify}/notify-send 'Claude Code' '${msg}'";
         in
         {
-          SessionStart = [ { hooks = [ direnvHookDef ]; } ];
+          SessionStart = [ { hooks = [ (mkCommandHook direnvHook) ]; } ];
 
           # Stop: when Claude is ready for more input
           # Notification: when Claude requests permissions or noop for 60s
           Notification = lib.optionals config.my.host.gui [
             {
               matcher = "*";
-              hooks = [
-                {
-                  type = "command";
-                  command = mkNotifyCmd "Claude Code is ready for more action!";
-                }
-              ];
+              hooks = [ (mkCommandHook (mkNotifyCmd "Claude Code is ready for more action!")) ];
             }
           ];
         };
@@ -470,10 +465,7 @@ in
       pyright = {
         command = lib.getExe pkgs.pyright;
         args = [ "--stdio" ];
-        extensionToLanguage = {
-          ".py" = "python";
-          ".pyi" = "python";
-        };
+        extensionToLanguage = lib.genAttrs [ ".py" ".pyi" ] (_: "python");
       };
 
       rust-analyzer = {
@@ -484,16 +476,13 @@ in
       typescript = {
         command = lib.getExe pkgs.typescript-language-server;
         args = [ "--stdio" ];
-        extensionToLanguage = {
-          ".ts" = "typescript";
-          ".tsx" = "typescriptreact";
-          ".js" = "javascript";
-          ".jsx" = "javascriptreact";
-          ".mts" = "typescript";
-          ".cts" = "typescript";
-          ".mjs" = "javascript";
-          ".cjs" = "javascript";
-        };
+        extensionToLanguage =
+          lib.genAttrs [ ".js" ".mjs" ".cjs" ] (_: "javascript")
+          // lib.genAttrs [ ".ts" ".tsx" ".mts" ".cts" ] (_: "typescript")
+          // {
+            ".tsx" = "typescriptreact";
+            ".jsx" = "javascriptreact";
+          };
       };
 
       vue = {
@@ -509,11 +498,10 @@ in
         command = lib.getExe pkgs.yzx9.tavily-mcp;
         env = {
           TAVILY_API_KEY = "\${TAVILY_API_KEY}";
-          # axios 1.16 mishandles HTTP proxies for HTTPS targets (plain HTTP -> 443).
-          # Tavily is reachable directly, so bypass the local proxy.
-          NO_PROXY = "\${NO_PROXY},api.tavily.com";
-          no_proxy = "\${no_proxy},api.tavily.com";
-        };
+        }
+        # axios 1.16 mishandles HTTP proxies for HTTPS targets (plain HTTP -> 443).
+        # Tavily is reachable directly, so bypass the local proxy.
+        // lib.genAttrs [ "NO_PROXY" "no_proxy" ] (name: "\${name} = \"\${\${name}},api.tavily.com\";");
       };
     };
   };

@@ -48,11 +48,6 @@ in
     environmentVariables = lib.optionalAttrs (config.my.proxy.httpPublic != null) {
       HTTPS_PROXY = config.my.proxy.httpPublic;
       https_proxy = config.my.proxy.httpPublic;
-
-      # GLM is a domestic endpoint — pin it direct instead of gambling on
-      # the proxy's routing rules; loopback stays exempt as always.
-      NO_PROXY = "localhost,127.0.0.1,open.bigmodel.cn";
-      no_proxy = "localhost,127.0.0.1,open.bigmodel.cn";
     };
 
     settings = {
