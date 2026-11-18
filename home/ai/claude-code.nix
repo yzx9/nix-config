@@ -142,7 +142,7 @@ in
 
       attribution = {
         pr = ""; # To hide attribution, set to empty strings.
-        commit = lib.joinStrings "\n" (lib.map (item: "Assisted-by: Claude-Code:${item}") attributions);
+        commit = lib.join "\n" (lib.map (item: "Assisted-by: Claude-Code:${item}") attributions);
       };
 
       permissions =
