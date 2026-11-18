@@ -42,7 +42,7 @@ in
     mutableSettings = true;
 
     settings = {
-      model = "gpt-6-sol";
+      model = "gpt-6.2-sol";
 
       sandbox_mode = "workspace-write";
       approval_policy = "on-request";

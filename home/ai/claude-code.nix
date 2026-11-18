@@ -52,10 +52,14 @@ let
     '';
   };
 
-  defaultModel = "gpt-6.1-sol[1m]";
+  defaultModel = "gpt-6.2-sol[1m]";
+  attributions = [
+    "GPT-6.2"
+    "GLM-5.3"
+  ];
   models = [
     {
-      model = "gpt-6-astra";
+      model = "gpt-6.2-astra";
       label = "astra";
       effortLevel = "high"; # "low", "medium", "high", "xhigh", "max"
       autoCompactWindow = 400000;
@@ -63,7 +67,7 @@ let
     }
 
     {
-      model = "gpt-6.1-sol";
+      model = "gpt-6.2-sol";
       label = "sol";
       effortLevel = "high";
       autoCompactWindow = 400000;
@@ -136,7 +140,7 @@ in
 
       attribution = {
         pr = ""; # To hide attribution, set to empty strings.
-        commit = "Assisted-by: Claude-Code:GPT-6.1\nAssisted-by: Claude-Code:GLM-5.3";
+        commit = lib.joinStrings "\n" (lib.map (item: "Assisted-by: Claude-Code:${item}") attributions);
       };
 
       permissions =
