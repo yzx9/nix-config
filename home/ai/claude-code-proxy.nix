@@ -20,20 +20,13 @@ let
   # module handles CCP_CONFIG_DIR and the shared CLI/service environment.
   # umask 077 keeps CCP-written state (auth.json, logs) 0600. Invoke the
   # upstream binary by absolute path so the wrapper cannot recurse.
-  cliWrapper = pkgs.writeShellApplication {
+  package = pkgs.writeShellApplication {
     name = "claude-code-proxy";
 
     runtimeInputs = [ pkgs.yzx9.with-secrets ];
 
     text = ''
       umask 077
-      # Fail fast, but only on serve: with-secrets merely *warns* on a
-      # missing key, yet half the model slots are GLM — a silently key-less
-      # service would 401 mid-session.
-      if [ "''${1-}" = "serve" ] && ! grep -Eq '^(export )?GLM_CODING_API_KEY=.' "${keyFile}"; then
-        echo "claude-code-proxy: GLM_CODING_API_KEY missing or empty in ${keyFile}" >&2
-        exit 1
-      fi
       exec with-secrets "${keyFile}" \
         --map GLM_CODING_API_KEY CCP_OPENCODE_API_KEY \
         -- ${lib.getExe pkg} "$@"
@@ -43,7 +36,7 @@ in
 {
   programs.claude-code-proxy = {
     enable = config.my.host.dev.ai.enable;
-    package = cliWrapper;
+    inherit package;
 
     environmentVariables = lib.optionalAttrs (config.my.proxy.httpPublic != null) {
       HTTPS_PROXY = config.my.proxy.httpPublic;

@@ -2,7 +2,8 @@
 set -euo pipefail
 
 usage() {
-  echo "usage: with-secrets FILE... [--allow ENV]... [--map FROM TO]... -- command [args...]" >&2
+  echo "usage: with-secrets FILE... [--no-fast-fail] [--allow ENV]... [--map FROM TO]... -- command [args...]" >&2
+  echo "  --no-fast-fail  Warn on missing keys and allow empty values instead of failing." >&2
   exit 2
 }
 
@@ -12,11 +13,12 @@ declare -a files=()
 declare -A secrets=()
 declare -A allow=()
 declare -A map=()
+fast_fail=true
 
 # Collect FILE... until we hit an option or "--"
 while [[ $# -gt 0 ]]; do
   case "$1" in
-  --allow | --map | --)
+  --no-fast-fail | --allow | --map | --)
     break
     ;;
   *)
@@ -34,6 +36,10 @@ while [[ $# -gt 0 ]]; do
   --)
     shift
     break
+    ;;
+  --no-fast-fail)
+    fast_fail=false
+    shift
     ;;
   --allow)
     [[ -n "${2-}" ]] || {
@@ -80,6 +86,10 @@ done
 
 for env in "${!allow[@]}"; do
   key="${map[$env]:-$env}"
+  if [[ "$fast_fail" == true && -z "${secrets[$key]-}" ]]; then
+    echo "with-secrets: key '$key' missing or empty for env '$env'." >&2
+    exit 1
+  fi
   if [[ -v secrets["$key"] ]]; then
     export "$env=${secrets[$key]}"
   else

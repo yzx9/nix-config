@@ -78,19 +78,12 @@ in
     description = "Claude Code quota keepalive (GLM API ping)";
     serviceConfig = {
       Type = "oneshot";
-      # Runs as the quota owner, not root — the key file is chowned accordingly.
-      User = "yzx9";
-      # with-secrets only *warns* on a missing key; fail fast instead so the
-      # journal shows the real problem instead of an empty-key 401.
+      User = "yzx9"; # Runs as the quota owner, not root — the key file is chowned accordingly.
       ExecStart = lib.getExe (
         pkgs.writeShellApplication {
           name = "cc-keepalive";
           runtimeInputs = [ pkgs.yzx9.with-secrets ];
           text = ''
-            if ! grep -Eq '^(export )?GLM_CODING_API_KEY=.' "${keyFile}"; then
-              echo "cc-keepalive: GLM_CODING_API_KEY missing or empty in ${keyFile}" >&2
-              exit 1
-            fi
             exec with-secrets "${keyFile}" \
               --allow GLM_CODING_API_KEY \
               -- ${lib.getExe ping}
