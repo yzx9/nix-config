@@ -79,8 +79,8 @@ stdenv.mkDerivation (finalAttrs: {
 
     outputHash =
       {
-        x86_64-linux = "sha256-W6PfK3yoURt9M/GxOrifKFD0JA5r5fFVtEqmRAEbP+k=";
-        aarch64-linux = "sha256-Q7rtJ+B6f4mBTLH/WIvRrpyjJd5losB+3A6rajR0eMg=";
+        x86_64-linux = "sha256-nxkhcjgj5S8PdyeLpFPun9q2b2QpGelWNryuIXcdL1E=";
+        aarch64-linux = "sha256-+l6fvdybB/9mYrXH3qQbMuIhOfYdC8eLelNlXeaNRMk=";
         aarch64-darwin = "sha256-t0iquxpUIEJGCqm9ttc9REQevMDWQ44v8ClXeuvJaqc=";
       }
       .${stdenv.hostPlatform.system}
