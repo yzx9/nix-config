@@ -17,6 +17,8 @@ in
   programs.firefox = {
     enable = config.my.host.gui;
 
+    configPath = ".mozilla/firefox";
+
     # https://releases.mozilla.org/pub/firefox/releases/${version}/linux-x86_64/xpi/
     languagePacks = [
       "en-US"
