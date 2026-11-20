@@ -33,8 +33,8 @@ inputs.self.lib.mkNixosConfiguration {
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
 
-      ./github-runner.nix
       ./networking.nix
+      ./nex.nix
       ./signoz.nix
       ./swap.nix
       ./xorg.nix
