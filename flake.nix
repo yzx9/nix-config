@@ -160,6 +160,10 @@
       checks = eachSystem (
         system:
         nixpkgs.lib.optionalAttrs (system == "x86_64-linux") {
+          github-runners = import ./tests/github-runners {
+            pkgs = nixpkgs.legacyPackages.${system};
+            inherit (inputs.home-manager.lib) homeManagerConfiguration;
+          };
           signoz =
             (nixpkgs.legacyPackages.${system}.extend inputs.self.overlays.default).testers.runNixOSTest
               ./nixosModules/tests/signoz.nix;
