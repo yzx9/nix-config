@@ -80,7 +80,7 @@ in
     url = "https://github.com/yzx9/nex";
     name = "yzx9-ws-nex-1";
     tokenFile = config.age.secrets.nex-runner-pat.path;
-    extraLabels = [ "nixos" ];
+    extraLabels = [ "deploy" ];
 
     # Move the checkout workspace off /run (tmpfs, RAM-limited, wiped on stop)
     # and pin a fixed user/group (disables DynamicUser).
@@ -105,14 +105,6 @@ in
       # docker CLI launched by this runner uses a dedicated client config.
       # Containers/builds get the HTTP public proxy from config.json.
       DOCKER_CONFIG = "/var/lib/github-runner/docker-cli-config";
-    };
-
-    # relax the system call filter to allow bwrap to run, while keeping other
-    # restrictions in place.
-    serviceOverrides = {
-      RestrictNamespaces = "user mnt";
-
-      SystemCallFilter = lib.mkAfter [ "@mount capset" ];
     };
   };
 
