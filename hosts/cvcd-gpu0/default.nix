@@ -11,5 +11,11 @@ inputs.self.lib.mkHomeConfiguration {
     user = user_yzx;
 
     host.dev.enable = true;
+
+    proxy.httpPublic = "http://10.6.141.234:12345";
   };
+
+  home.imports = [
+    ./nex.nix
+  ];
 }
