@@ -56,6 +56,15 @@ gitgc:
   git reflog expire --expire-unreachable=now --all
   git gc --prune=now
 
+# Remote deployments
+[group('os')]
+deploy hostname:
+  nix run nixpkgs#nixos-rebuild -- \
+    switch \
+      --no-reexec \
+      --target-host {{hostname}} \
+      --flake .#{{hostname}} \
+      --elevate=sudo
 
 ############################################################################
 #
@@ -63,26 +72,31 @@ gitgc:
 #
 ############################################################################
 
+# Boot the system with the latest configuration (requires sudo)
 [linux]
 [group('os')]
 boot:
   sudo nixos-rebuild boot --flake .
 
+# Switch the system to the latest configuration (requires sudo)
 [linux]
 [group('os')]
 switch:
   sudo nixos-rebuild switch --flake .
 
+# Switch the system to the latest configuration (requires sudo) with verbose output and show trace on error
 [linux]
 [group('os')]
 switch-dev:
   sudo nixos-rebuild switch --show-trace --verbose --flake .
 
+# Rollback to the previous configuration (requires sudo)
 [linux]
 [group('os')]
 rollback:
   sudo nixos-rebuild switch --rollback
 
+# Switch the system to the latest configuration (requires sudo) with verbose output and show trace on error
 [linux]
 [group('os')]
 hm-switch hostname = `hostname`:
@@ -95,46 +109,40 @@ hm-switch hostname = `hostname`:
 #
 ############################################################################
 
+# Boot the system with the latest configuration (requires sudo)
 [macos]
 [group('os')]
 switch-noproxy:
   sudo darwin-rebuild switch --flake .
 
+# Switch the system to the latest configuration (requires sudo)
 [macos]
 [group('os')]
 switch: switch-noproxy (proxy "set")
 
+# Switch the system to the latest configuration (requires sudo) with verbose output and show trace on error
 [macos]
 [group('os')]
 switch-dev:
   sudo darwin-rebuild switch --show-trace --verbose --flake .
 
+# Rollback to the previous configuration (requires sudo)
 [macos]
 [group('os')]
 rollback: rollback-noproxy (proxy "set")
 
+# Rollback to the previous configuration (requires sudo)
 [macos]
 [group('os')]
 rollback-noproxy:
   sudo darwin-rebuild switch --rollback
 
+# Switch the system to the latest configuration (requires sudo) with verbose output and show trace on error
 [macos]
 [group('os')]
 proxy mode="auto_switch":
   sudo nix run nixpkgs#python3 scripts/darwin_proxy.py {{mode}} http://127.0.0.1:12345
   sleep 1
-
-# Remote deployments with linux-builder: https://nixcademy.com/posts/macos-linux-builder/
-[macos]
-[group('os')]
-deploy hostname:
-  nix run nixpkgs#nixos-rebuild -- \
-    switch \
-      --fast \
-      --target-host {{hostname}} \
-      --flake .#{{hostname}} \
-      --use-remote-sudo
-
 
 ############################################################################
 #
@@ -150,5 +158,6 @@ fmt:
 edit-secret path:
   cd secrets/ && nix run .#agenix -- -e $(basename {{path}})
 
+# List the current PATH, one entry per line
 path:
   echo $PATH | tr ':' '\n'
