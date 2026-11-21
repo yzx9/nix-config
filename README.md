@@ -25,31 +25,31 @@ General way:
 
 ### Raspberry Pi: Build and Flash an SD Card Image
 
-We use [`nixos-raspberrypi`](https://github.com/nvmd/nixos-raspberrypi) for Raspberry Pi setup. Make sure to check the
-documentation first.
+Each Raspberry Pi host has a ready-to-flash SD card image built with
+[`nixos-raspberrypi`](https://github.com/nvmd/nixos-raspberrypi). Choose one of the following:
 
-Each Raspberry Pi host exposes a ready-to-flash SD-card image built from its own configuration, via the `images.<host>`
-flake output. The image bakes in your full system (services, users, secrets wiring) so it boots straight into the
-deployed state — no separate `nixos-rebuild` step needed.
+- **GitHub Actions:** Open **Actions → Build SD card image → Run workflow** and select the host. Download and extract
+  the artifact within one day. From the extracted directory, verify `sd.img.zst` with `sha256sum -c SHA256SUMS`
+  (macOS: `shasum -a 256 -c SHA256SUMS`).
+- **Local build:** Build the `images.<host>` flake output, for example with `nix build .#images.yzx9-rpi5`.
+  Use `result/sd-image/*.img.zst` in place of `sd.img.zst` below.
+
+Flashing erases the card. Identify the device with `lsblk` (Linux) or `diskutil list` (macOS), then replace `sdX` or
+`diskN` below with the correct device. Write to the **whole card**, not a partition.
 
 ```sh
-# Build the image (on macOS this dispatches to the configured linux-builder)
-nix build .#images.yzx9-rpi5
-
-# Flash the whole SD card device, not a partition (e.g. /dev/sdX, not /dev/sdX1).
-#
-# Linux:
-sudo umount /dev/sdX?* 2>/dev/null || true
-zstdcat result/sd-image/*.img.zst | sudo dd of=/dev/sdb bs=100M status=progress conv=fsync
+# Linux: unmount each mounted partition on the card before writing.
+# For example: sudo umount /dev/sdX1
+zstdcat sd.img.zst | sudo dd of=/dev/sdX bs=100M status=progress conv=fsync
 
 # macOS:
 diskutil unmountDisk /dev/diskN
-zstdcat result/sd-image/*.img.zst | sudo dd of=/dev/rdiskN bs=100m
+zstdcat sd.img.zst | sudo dd of=/dev/rdiskN bs=100m
 ```
 
-The image uses the `FIRMWARE` / `NIXOS_SD` partition labels that `hardware-configuration.nix` already expects, and
-grows the root partition on first boot. It is a full `aarch64-linux` build of the entire system closure, so the first
-build is slow unless covered by the configured binary caches.
+The image contains the full `aarch64-linux` system and uses the `FIRMWARE` and `NIXOS_SD` partition labels expected by
+`hardware-configuration.nix`. The root partition expands on first boot. The image does not include agenix identity keys;
+provision the matching private keys on the Pi before starting services that need those secrets.
 
 ## Known issues
 

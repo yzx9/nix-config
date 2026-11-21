@@ -1,0 +1,44 @@
+name: Build SD card image
+run-name: Build SD card image for ${{ inputs.host }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      host:
+        description: Raspberry Pi host
+        type: choice
+        required: true
+        default: yzx9-rpi5
+        options:
+          - yzx9-rpi5
+          - yzx9-pie
+
+permissions:
+  contents: read
+
+jobs:
+  image:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+      - name: Build image
+        env:
+          HOST: ${{ inputs.host }}
+        run: nix --accept-flake-config build ".#images.$HOST"
+      - name: Prepare image download
+        run: |
+          images=(result/sd-image/*.img.zst)
+          [[ ${#images[@]} == 1 && -f ${images[0]} ]]
+          mkdir artifact
+          ln -s "../${images[0]}" artifact/sd.img.zst
+          (cd artifact && sha256sum sd.img.zst > SHA256SUMS)
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ inputs.host }}-sd-image
+          path: |
+            artifact/sd.img.zst
+            artifact/SHA256SUMS
+          if-no-files-found: error
+          compression-level: 0 # The image is already zstd-compressed.
+          retention-days: 1
