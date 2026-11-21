@@ -9,8 +9,6 @@ inputs.self.lib.mkNixosRpiConfiguration {
     type = "nixos";
     system = "aarch64-linux";
     user = user_yzx9;
-
-    proxy.selfHost.enable = true;
   };
 
   host = {
