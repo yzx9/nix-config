@@ -30,6 +30,7 @@ let
   trusted = [
     user_yzx9-mbp
     user_yzx9-ws
+    system_yzx9-mbp
     rescue
   ];
 
