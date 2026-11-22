@@ -108,7 +108,7 @@ in
         # Upstream recommendation: never replay a broken stream as one shot — it can duplicate tool calls.
         CLAUDE_CODE_DISABLE_NONSTREAMING_FALLBACK = 1;
         # https://code.claude.com/docs/zh-CN/auto-mode-classifier-billing
-        CLAUDE_CODE_AUTO_MODE_SERVER = 1;
+        CLAUDE_CODE_AUTO_MODE_SERVER = 0;
       }
       // (lib.listToAttrs (
         lib.map (value: {
