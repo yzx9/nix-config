@@ -17,7 +17,7 @@ in
   ];
 
   programs.hermes-agent = {
-    enable = true;
+    enable = false;
 
     package = inputs.hermes-agent.packages.${system}.default.override {
       extraDependencyGroups = [ "matrix" ];
