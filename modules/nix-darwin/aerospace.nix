@@ -66,12 +66,8 @@
       #                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
       #                 See: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
       gaps = {
-        inner.horizontal = 8;
-        inner.vertical = 8;
-        outer.left = 8;
-        outer.bottom = 8;
-        outer.top = 8;
-        outer.right = 8;
+        inner = lib.genAttrs [ "horizontal" "vertical" ] (_: 8);
+        outer = lib.genAttrs [ "left" "bottom" "top" "right" ] (_: 8);
       };
 
       # 'main' binding mode declaration
@@ -219,12 +215,9 @@
           "built-in"
         ];
 
-        "Z" = "built-in";
-        "X" = "built-in";
-        "C" = "built-in";
-        "V" = "built-in";
         "B" = "main";
-      };
+      }
+      // lib.genAttrs [ "Z" "X" "C" "V" ] (_: "built-in");
 
       on-window-detected =
         let
