@@ -8,6 +8,7 @@ let
     nur = import ./nur.nix inputs;
     packages = import ./packages.nix inputs;
 
+    super-productivity = import ./super-productivity.nix;
     terminal-notifier = import ./terminal-notifier.nix;
     yazi = import ./yazi;
   };
