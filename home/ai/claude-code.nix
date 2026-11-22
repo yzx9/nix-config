@@ -52,7 +52,7 @@ let
     '';
   };
 
-  defaultModel = "gpt-6.2-sol[1m]";
+  defaultModel = "gpt-6.2-astra[1m]";
   attributions = [
     "GPT-6.2"
     "GLM-5.3"
