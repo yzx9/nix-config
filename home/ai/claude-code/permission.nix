@@ -89,6 +89,20 @@
         # additionalDirectories = [ ];
       };
 
+    autoMode = {
+      environment = [
+        "$defaults"
+        "Trusted SSH hosts: yzx9-ws, cvcd-gpu0 and cvcd-gpu1."
+      ];
+
+      allow = [
+        "$defaults"
+        "SSH connections to my trusted servers are allowed for development, experimentation, and troubleshooting, including executing remote shell commands."
+      ];
+    };
+
+    settings.skillOverrides.auto-mode-setup = "off";
+
     sandbox = {
       enabled = true;
       autoAllowBashIfSandboxed = true;
@@ -104,6 +118,7 @@
         "cargo check *"
         "cargo clippy *"
         "cargo test *"
+        "ssh *"
       ];
 
       # Default read behavior: read access to the entire computer
