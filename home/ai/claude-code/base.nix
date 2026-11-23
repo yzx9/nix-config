@@ -17,7 +17,7 @@ let
     builtins.toJSON {
       env = {
         # All model traffic goes through the local claude-code-proxy
-        ANTHROPIC_BASE_URL = "http://127.0.0.1:18765";
+        ANTHROPIC_BASE_URL = "http://127.0.0.1:${config.programs.claude-code-proxy.settings.port}";
         ANTHROPIC_AUTH_TOKEN = "unused"; # loopback proxy needs no credential
       };
     }

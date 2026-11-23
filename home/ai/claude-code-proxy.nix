@@ -9,6 +9,8 @@
 let
   inherit (pkgs.stdenvNoCC.hostPlatform) system;
 
+  enable = config.my.host.dev.ai.enable;
+
   # The GLM key, single-sourced from the age file. NB: agenix `.path` is a
   # runtime-expanded value — keep it double-quoted so the shell expands it.
   keyFile = config.age.secrets."llm-api-keys".path;
@@ -35,8 +37,7 @@ let
 in
 {
   programs.claude-code-proxy = {
-    enable = config.my.host.dev.ai.enable;
-    inherit package;
+    inherit enable package;
 
     environmentVariables = lib.optionalAttrs (config.my.proxy.httpPublic != null) {
       HTTPS_PROXY = config.my.proxy.httpPublic;
@@ -44,6 +45,8 @@ in
     };
 
     settings = {
+      bindAddress = "127.0.0.1";
+      port = 18765;
       autoReviewModel = "gpt-6-luna";
 
       # GLM rides the generic opencode provider: same key, its OpenAI-
@@ -53,12 +56,10 @@ in
   };
 
   # The wrapper reads the age-decrypted llm-api-keys file.
-  systemd.user.services =
-    lib.mkIf (pkgs.stdenvNoCC.hostPlatform.isLinux && config.programs.claude-code-proxy.enable)
-      {
-        claude-code-proxy.Unit = {
-          After = [ "agenix.service" ];
-          Wants = [ "agenix.service" ];
-        };
-      };
+  systemd.user.services = lib.mkIf (enable && pkgs.stdenvNoCC.hostPlatform.isLinux) {
+    claude-code-proxy.Unit = {
+      After = [ "agenix.service" ];
+      Wants = [ "agenix.service" ];
+    };
+  };
 }
