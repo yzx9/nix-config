@@ -10,7 +10,7 @@ let
 in
 {
   imports = [
-    ./claude-code.nix
+    ./claude-code
     ./claude-code-proxy.nix
     ./codex.nix
   ];
