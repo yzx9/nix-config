@@ -97,7 +97,7 @@
 
       allow = [
         "$defaults"
-        "SSH connections to my trusted servers are allowed for development, experimentation, and troubleshooting, including executing remote shell commands."
+        "SSH connections to my trusted servers are allowed for development, experimentation, and troubleshooting, including executing remote shell commands, transfer code and data between localhost and those hosts"
       ];
     };
 
