@@ -56,7 +56,7 @@ let
   defaultModel = "gpt-6.2-astra[1m]";
   attributions = [
     "GPT-6.2"
-    "GLM-5.3"
+    "GLM-5.4"
   ];
   models = [
     {
@@ -76,7 +76,7 @@ let
     }
 
     {
-      model = "glm-5.3";
+      model = "glm-5.4";
       label = "glm";
       effortLevel = "high";
       autoCompactWindow = 400000;
