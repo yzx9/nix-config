@@ -115,11 +115,8 @@ in
         # https://code.claude.com/docs/zh-CN/auto-mode-classifier-billing
         CLAUDE_CODE_AUTO_MODE_SERVER = 0;
       }
-      // (lib.listToAttrs (
-        lib.map (value: {
-          name = "ANTHROPIC_DEFAULT_${lib.toUpper value.behavesAs}_MODEL";
-          value = value.model;
-        }) models
+      // (lib.genAttrs' models (
+        m: lib.nameValuePair "ANTHROPIC_DEFAULT_${lib.toUpper m.behavesAs}_MODEL" m.model
       ));
 
       theme = "dark";
@@ -131,11 +128,8 @@ in
 
       model = defaultModel;
       fastMode = false;
-      modelSettings = lib.listToAttrs (
-        lib.map (item: {
-          name = item.model;
-          value = { inherit (item) effortLevel autoCompactWindow; };
-        }) models
+      modelSettings = lib.genAttrs' models (
+        m: lib.nameValuePair m.model { inherit (m) effortLevel autoCompactWindow; }
       );
       modelPicker = {
         replaceBuiltInOptions = true;

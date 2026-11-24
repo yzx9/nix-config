@@ -9,7 +9,7 @@
 let
   cfg = config.programs.firefox;
 
-  genAttrsWithFixValue = value: values: lib.genAttrs values (_: value);
+  genAttrsWithFixValue = value: keys: lib.genAttrs keys (lib.const value);
 in
 {
   # https://nix-community.github.io/home-manager/options.xhtml#opt-programs.firefox.enable

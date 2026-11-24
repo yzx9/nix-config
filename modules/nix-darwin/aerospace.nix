@@ -1,5 +1,13 @@
 { config, lib, ... }:
 
+let
+  directions = {
+    h = "left";
+    j = "down";
+    k = "up";
+    l = "right";
+  };
+in
 {
   services.aerospace = {
     enable = config.my.host.gui;
@@ -66,8 +74,8 @@
       #                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
       #                 See: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
       gaps = {
-        inner = lib.genAttrs [ "horizontal" "vertical" ] (_: 8);
-        outer = lib.genAttrs [ "left" "bottom" "top" "right" ] (_: 8);
+        inner = lib.genAttrs [ "horizontal" "vertical" ] (lib.const 8);
+        outer = lib.genAttrs [ "left" "bottom" "top" "right" ] (lib.const 8);
       };
 
       # 'main' binding mode declaration
@@ -79,11 +87,8 @@
         let
           genBindings =
             toKey: toValue:
-            lib.listToAttrs (
-              lib.map (c: {
-                name = toKey c;
-                value = toValue (lib.toUpper c);
-              }) (lib.stringToCharacters "qwertasdfgzxcvb")
+            lib.genAttrs' (lib.stringToCharacters "qwertasdfgzxcvb") (
+              a: lib.nameValuePair (toKey a) (toValue (lib.toUpper a))
             );
         in
         lib.mkMerge [
@@ -116,18 +121,6 @@
             alt-slash = "layout tiles horizontal vertical";
             alt-comma = "layout accordion horizontal vertical";
 
-            # See: https://nikitabobko.github.io/AeroSpace/commands#focus
-            alt-h = "focus left";
-            alt-j = "focus down";
-            alt-k = "focus up";
-            alt-l = "focus right";
-
-            # See: https://nikitabobko.github.io/AeroSpace/commands#move
-            alt-shift-h = "move left";
-            alt-shift-j = "move down";
-            alt-shift-k = "move up";
-            alt-shift-l = "move right";
-
             # See: https://nikitabobko.github.io/AeroSpace/commands#resize
             alt-shift-minus = "resize smart -50";
             alt-shift-equal = "resize smart +50";
@@ -142,6 +135,12 @@
             # See: https://nikitabobko.github.io/AeroSpace/commands#mode
             alt-shift-semicolon = "mode service";
           }
+
+          # See: https://nikitabobko.github.io/AeroSpace/commands#focus
+          (lib.mapAttrs' (key: dir: lib.nameValuePair "alt-${key}" "focus ${dir}") directions)
+
+          # See: https://nikitabobko.github.io/AeroSpace/commands#move
+          (lib.mapAttrs' (key: dir: lib.nameValuePair "alt-shift-${key}" "move ${dir}") directions)
 
           # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
           (genBindings (c: "alt-${c}") (c: "workspace ${c}"))
@@ -217,7 +216,7 @@
 
         "B" = "main";
       }
-      // lib.genAttrs [ "Z" "X" "C" "V" ] (_: "built-in");
+      // lib.genAttrs [ "Z" "X" "C" "V" ] (lib.const "built-in");
 
       on-window-detected =
         let

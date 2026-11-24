@@ -17,7 +17,7 @@ lib.mkIf config.lsp.enable {
 
       formatters_by_ft =
         let
-          genOxfmt = langs: lib.genAttrs langs (lang: [ "oxfmt" ]);
+          genOxfmt = langs: lib.genAttrs langs (lib.const [ "oxfmt" ]);
         in
         genOxfmt [
           "css"

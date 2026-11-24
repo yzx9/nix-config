@@ -170,7 +170,7 @@
       pyright = {
         command = lib.getExe pkgs.pyright;
         args = [ "--stdio" ];
-        extensionToLanguage = lib.genAttrs [ ".py" ".pyi" ] (_: "python");
+        extensionToLanguage = lib.genAttrs [ ".py" ".pyi" ] (lib.const "python");
       };
 
       rust-analyzer = {
@@ -182,8 +182,8 @@
         command = lib.getExe pkgs.typescript-language-server;
         args = [ "--stdio" ];
         extensionToLanguage =
-          lib.genAttrs [ ".js" ".mjs" ".cjs" ] (_: "javascript")
-          // lib.genAttrs [ ".ts" ".tsx" ".mts" ".cts" ] (_: "typescript")
+          lib.genAttrs [ ".js" ".mjs" ".cjs" ] (lib.const "javascript")
+          // lib.genAttrs [ ".ts" ".tsx" ".mts" ".cts" ] (lib.const "typescript")
           // {
             ".tsx" = "typescriptreact";
             ".jsx" = "javascriptreact";
