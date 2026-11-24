@@ -78,11 +78,16 @@ deploy hostname:
 boot:
   sudo nixos-rebuild boot --flake .
 
-# Switch the system to the latest configuration (requires sudo)
+# Switch NixOS (requires sudo) or standalone Home Manager to the latest configuration
 [linux]
 [group('os')]
-switch:
-  sudo nixos-rebuild switch --flake .
+switch hostname="":
+  host={{quote(hostname)}}; \
+  if [ -r /etc/os-release ] && (ID=; . /etc/os-release && [ "$ID" = nixos ]); then \
+    sudo nixos-rebuild switch --flake ".${host:+#$host}"; \
+  else \
+    home-manager switch --flake ".#${host:-$(hostname)}"; \
+  fi
 
 # Switch the system to the latest configuration (requires sudo) with verbose output and show trace on error
 [linux]
@@ -95,13 +100,6 @@ switch-dev:
 [group('os')]
 rollback:
   sudo nixos-rebuild switch --rollback
-
-# Switch the system to the latest configuration (requires sudo) with verbose output and show trace on error
-[linux]
-[group('os')]
-hm-switch hostname = `hostname`:
-  home-manager switch --flake .#{{hostname}}
-
 
 ############################################################################
 #
