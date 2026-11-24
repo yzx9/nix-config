@@ -156,9 +156,9 @@
           "scrape"
           "skillify"
         ];
-
-      skills = import ../skills.nix { inherit pkgs; };
     };
+
+    skills = import ../skills.nix { inherit pkgs; };
 
     lspServers = {
       go = {
